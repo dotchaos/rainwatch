@@ -1,0 +1,34 @@
+name: tick
+# Self-sustaining 15-minute clock. GitHub's cron is best-effort and never fired for this repo,
+# so each tick waits, starts an update, then starts the next tick. Workflow dispatches made
+# with GITHUB_TOKEN are allowed to create runs, which is what keeps the chain alive.
+# cancel-in-progress guarantees only one chain exists: starting a new tick cancels any other.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "7 * * * *"   # backup restarter, in case GitHub's scheduler ever starts working
+
+permissions:
+  actions: write
+
+concurrency:
+  group: tick
+  cancel-in-progress: true
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Start an update now
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run update.yml -R ${{ github.repository }} --ref main
+      - name: Wait 15 minutes
+        run: sleep 900
+      - name: Start the next tick
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run tick.yml -R ${{ github.repository }} --ref main
