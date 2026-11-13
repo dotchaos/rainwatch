@@ -125,6 +125,9 @@ def test_engine_and_alerts(tmp_path):
     assert rows[(h0 + timedelta(hours=1)).isoformat()]["primary"] == "radar"
     assert rows[(h0 + timedelta(hours=3)).isoformat()]["primary"] == "ens"
     assert "Heaviest hour" in rep["bottom_line"]
+    r3 = rows[(h0 + timedelta(hours=3)).isoformat()]
+    assert r3["p"]["0.20"] == r3["p_heavy"] and r3["p"]["0.10"] >= r3["p"]["0.20"] >= r3["p"]["0.50"]
+    assert len(rep["rows"]) >= 48     # through end of the third local day
     assert rep["gauges"][0]["last_hour"] is not None            # HADS accumulator differenced
     assert det and det[0].label == "HRRR"                         # fell back to second model name
 
@@ -160,6 +163,7 @@ def test_main_end_to_end(tmp_path, monkeypatch):
     assert rc == 0
     html = (tmp_path / "site" / "index.html").read_text()
     assert "Bottom Line" in html and "Flood Advisory" in html and "L.imageOverlay" in html
+    assert "id=days" in html and "__ROWS__" not in html
     assert "Refresh" in html and "actions/workflows/'+WF+'/dispatches" in html and "__GEN__" not in html
     assert (tmp_path / "site" / "radar.png").exists()
     assert list((tmp_path / "data" / "forecasts").glob("*.jsonl"))

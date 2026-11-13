@@ -17,6 +17,9 @@ import numpy as np
 from .model import Series, hour_floor, hours
 
 
+THRESHOLDS = (0.10, 0.20, 0.30, 0.50)
+
+
 def tier(rate: float) -> str:
     if rate < 0.005:
         return "Dry"
@@ -57,7 +60,11 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
           det: list[Series], nc, gauges: list, errors: list[str]) -> dict:
     tz = ZoneInfo(cfg.tz)
     h0 = hour_floor(now)
-    hrs = hours(h0, cfg.horizon_hours)
+    # cover at least the configured horizon and through the end of the third local day
+    local_mid = now.astimezone(tz).replace(hour=0, minute=0, second=0, microsecond=0)
+    end3 = (local_mid + timedelta(days=3)).astimezone(h0.tzinfo)
+    n_hours = max(cfg.horizon_hours, int((end3 - h0).total_seconds() // 3600))
+    hrs = hours(h0, n_hours)
     radar = nc.series if nc else None
     nws_s = nws.qpf if nws else None
 
@@ -84,10 +91,12 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
         rng = _range(prim.members.get(t), prim.values.get(t))
         p_heavy = prim.p_exceed(t, cfg.heavy_in)
         p_any = prim.p_exceed(t, cfg.any_in)
+        p_thr = {f"{x:.2f}": prim.p_exceed(t, x) for x in THRESHOLDS}
         if prim is radar:   # extrapolation can't see growth/decay: never certain
             cap = 0.95 if nc.motion.confidence != "low" else 0.85
-            p_heavy = None if p_heavy is None else min(max(p_heavy, 0.02), cap)
-            p_any = None if p_any is None else min(max(p_any, 0.02), cap)
+            clip = lambda p: None if p is None else min(max(p, 0.02), cap)
+            p_heavy, p_any = clip(p_heavy), clip(p_any)
+            p_thr = {k: clip(v) for k, v in p_thr.items()}
         if p_any is None and prim is nws_s:
             p_any = nws_s.prob.get(t)
         srcs = {}
@@ -99,6 +108,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
         rows.append({
             "t": t.isoformat(), "label": fmt_hour(t, tz, now), "primary": prim.key,
             "p_heavy": p_heavy, "p_any": p_any,
+            "p": {k: (None if v is None else round(v, 3)) for k, v in p_thr.items()},
             "lo": round(rng[0], 2), "mid": round(rng[1], 2), "hi": round(rng[2], 2),
             "tier": tier(rng[1]), "basis": basis, "sources": srcs,
             "gust_mph": round(nws.gust_mph[t]) if nws and t in nws.gust_mph else None,

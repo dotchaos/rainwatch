@@ -26,6 +26,13 @@ details{margin:8px 0}summary{cursor:pointer;color:var(--acc)}#map{height:340px;b
 .bar .age{font-size:13.5px}.bar .age b{font-weight:600}.stale{color:var(--vh)}
 button.rr{font:600 14px/1 inherit;font-family:inherit;padding:9px 14px;border-radius:8px;border:1px solid var(--acc);background:var(--acc);color:var(--bg);cursor:pointer}
 button.rr:disabled{opacity:.6;cursor:default}#rrmsg{font-size:13px;margin:4px 0 0}#rrsetup{display:none;background:var(--card);border-radius:8px;padding:10px 12px;margin:6px 0;font-size:13.5px}
+.days{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 4px}
+.day{background:var(--card);border-radius:10px;padding:10px;min-height:86px}.day h3{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
+.win{font-weight:700;font-size:15px;line-height:1.3}.win small{font-weight:500;color:var(--mut);font-size:12.5px}.win.hi{color:var(--vh)}.win.md{color:var(--hv)}
+.none{color:var(--mut);font-size:14px}.dtot{font-size:12px;color:var(--mut);margin-top:6px}.lc{font-size:11px;color:var(--mut)}
+.thr{font-size:13px;color:var(--mut);display:flex;align-items:center;gap:6px;flex-wrap:wrap}.thr button{font:inherit;padding:3px 9px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.thr button.on{border-color:var(--acc);background:var(--acc);color:var(--bg)}
+@media(max-width:420px){.days{gap:6px}.day{padding:8px}.win{font-size:14px}}
 #rrsetup input{width:100%;padding:8px;margin:6px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:13px monospace}a{color:var(--acc)}ul{padding-left:18px}li{margin:3px 0}.scroll{overflow-x:auto}pre{white-space:pre-wrap;font-size:12.5px;background:var(--card);padding:10px;border-radius:8px}
 """
 
@@ -98,6 +105,45 @@ def _score_html(scores):
             "Deterministic models are scored as yes/no. Lead = how far ahead the forecast was issued.</p>")
 
 
+DAYS_JS = """
+<script>
+(function(){
+const ROWS=__ROWS__, TZ=__TZ__, DEF=__DEF__, SHOW=0.2;
+const get=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const put=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const opts=['0.10','0.20','0.30','0.50'];
+let thr=opts.includes(get('rw_thr'))?get('rw_thr'):DEF;
+const dayKey=d=>d.toLocaleDateString('en-CA',{timeZone:TZ});
+const hp=d=>{const h=+d.toLocaleString('en-US',{timeZone:TZ,hour:'numeric',hourCycle:'h23'});return [h%12||12,h<12?'a':'p'];};
+const span=(a,b)=>{const [h1,s1]=hp(a),[h2,s2]=hp(b);return s1===s2?`${h1}–${h2}${s2}`:`${h1}${s1}–${h2}${s2}`;};
+function draw(){
+  document.getElementById('thrbtns').innerHTML=opts.map(o=>`<button data-t="${o}" class="${o===thr?'on':''}">${o.replace(/^0/,'')}"</button>`).join(' ');
+  document.querySelectorAll('#thrbtns button').forEach(b=>b.onclick=()=>{thr=b.dataset.t;put('rw_thr',thr);draw();});
+  const now=new Date(), keys=[0,1,2].map(i=>dayKey(new Date(now.getTime()+i*864e5)));
+  const names=['Today','Tomorrow',new Date(now.getTime()+2*864e5).toLocaleDateString('en-US',{timeZone:TZ,weekday:'long'})];
+  const html=keys.map((k,i)=>{
+    const rs=ROWS.filter(r=>!r.missing&&dayKey(new Date(r.t))===k);
+    const p=r=>(r.p&&r.p[thr]!=null)?r.p[thr]:0;
+    const wins=[];let cur=null;
+    rs.forEach(r=>{const t=new Date(r.t);
+      if(p(r)>=SHOW){ if(cur&&t-cur.end<1){cur.end=new Date(t.getTime()+36e5);cur.max=Math.max(cur.max,p(r));cur.amt=Math.max(cur.amt,r.mid);}
+        else{cur={start:t,end:new Date(t.getTime()+36e5),max:p(r),amt:r.mid};wins.push(cur);} }
+      else cur=null;});
+    const mx=rs.reduce((a,r)=>Math.max(a,p(r)),0), tot=rs.reduce((a,r)=>a+(r.mid||0),0);
+    const radarNow=rs.some(r=>r.primary==='radar');
+    let body;
+    if(!rs.length) body='<div class=none>No data</div>';
+    else if(wins.length) body=wins.map(w=>`<div class="win ${w.max>=0.6?'hi':'md'}">${span(w.start,w.end)}<br><small>${Math.round(w.max*100)}% chance${w.amt>=0.01?' · ~'+w.amt.toFixed(2)+'"/hr':''}</small></div>`).join('');
+    else body=`<div class=none>${mx>=0.05?'Unlikely (max '+Math.round(mx*100)+'%)':'Nothing'}</div>`;
+    return `<div class=day><h3>${names[i]}</h3>${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" for the day':'Dry'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
+  }).join('');
+  document.getElementById('days').innerHTML=html;
+}
+draw();
+})();
+</script>"""
+
+
 RERUN_JS = """
 <script>
 (function(){
@@ -152,6 +198,9 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
     tz = ZoneInfo(cfg.tz)
     repo = cfg.repo
     rerun_js = RERUN_JS.replace("__GEN__", json.dumps(report["generated"])).replace("__REPO__", json.dumps(repo))
+    slim = [{k: r.get(k) for k in ("t", "missing", "p", "mid", "primary")} for r in report["rows"]]
+    days_js = (DAYS_JS.replace("__ROWS__", json.dumps(slim)).replace("__TZ__", json.dumps(cfg.tz))
+               .replace("__DEF__", json.dumps(f"{cfg.heavy_in:.2f}")))
     r = report
     tot = r["total"]
     upd = _local(r["generated"], tz, "%a %b %-d, %-I:%M %p")
@@ -216,7 +265,10 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
 <button class=rr id=rrsave>Save &amp; rerun</button> &nbsp;or&nbsp; <a href="https://github.com/{e(repo)}/actions/workflows/update.yml">rerun on GitHub instead</a>
 </div>
 <h1>Precision Rain Forecast — {e(cfg.name)}</h1>
-<div class=sub>Next {cfg.horizon_hours} h · updates itself every 15 min</div>
+<div class=sub>Next 3 days · updates itself every 15 min</div>
+
+<div class=thr>Heavy = at least <span id=thrbtns></span> in an hour · showing hours with ≥20% chance</div>
+<div class=days id=days></div>
 
 <div class=bl><b>Bottom Line:</b> {e(r['bottom_line'])}</div>
 
@@ -254,4 +306,4 @@ through {e(tot['through'])} · Confidence: <span class=pill>{e(tot['confidence']
 <li>NWS gridded QPF arrives in 6-hour blocks and is shown spread evenly; it is a cross-check, not a timing source.</li>
 <li>Nothing is invented: a missing source is listed under Problems and its column shows —.</li>
 </ul></details>
-</main>{map_js}{rerun_js}</body></html>"""
+</main>{map_js}{rerun_js}{days_js}</body></html>"""

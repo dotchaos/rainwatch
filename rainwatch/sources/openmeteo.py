@@ -14,7 +14,7 @@ ENS = "https://ensemble-api.open-meteo.com/v1/ensemble"
 FC = "https://api.open-meteo.com/v1/forecast"
 
 
-def _params(lat, lon, model, days=3):
+def _params(lat, lon, model, days=4):
     return dict(latitude=lat, longitude=lon, hourly="precipitation", models=model,
                 precipitation_unit="inch", timeformat="unixtime", timezone="GMT", forecast_days=days)
 
