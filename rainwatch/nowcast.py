@@ -91,13 +91,16 @@ class Motion:
     confidence: str = "low"
     speed_kmh: float = 0.0
     toward_deg: float = 0.0
+    source: str = "radar"   # "radar" tracking or "steering" (700 hPa wind fallback)
 
     def describe(self) -> str:
         if not self.known:
             return f"motion unknown ({self.reason})"
         dirs = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
         d = dirs[int((self.toward_deg % 360) / 22.5 + 0.5) % 16]
-        return f"moving toward {d} at {self.speed_kmh:.0f} km/h ({self.speed_kmh * 0.621:.0f} mph), {self.confidence} confidence"
+        how = "" if self.source == "radar" else " (700 hPa wind; radar tracking disagreed)"
+        return (f"moving toward {d} at {self.speed_kmh:.0f} km/h ({self.speed_kmh * 0.621:.0f} mph){how}, "
+                f"{self.confidence} confidence")
 
 
 def estimate_motion(frames: list[Frame], lat: float) -> Motion:
@@ -135,6 +138,29 @@ def estimate_motion(frames: list[Frame], lat: float) -> Motion:
                   toward_deg=math.degrees(math.atan2(east_kmh, north_kmh)) % 360)
 
 
+def check_steering(m: Motion, steering: tuple[float, float] | None, lat: float, dx: float) -> Motion:
+    """Compare tracked motion with the 700 hPa wind. Big disagreement usually means the tracker
+    locked onto the wrong pattern (widespread rain, edges of radar coverage)."""
+    if steering is None or steering[1] < 15:
+        return m
+    frm, spd = steering
+    toward = (frm + 180) % 360
+    if m.known:
+        diff = abs((m.toward_deg - toward + 180) % 360 - 180)
+        if diff <= 60 and 0.4 < m.speed_kmh / spd < 2.0:
+            return m
+        if diff <= 75:
+            m.confidence = "low"
+            return m
+    # fall back to steering wind (cells move at roughly 0.8x the 700 hPa wind)
+    sp = 0.8 * spd
+    north, east = sp * math.cos(math.radians(toward)), sp * math.sin(math.radians(toward))
+    px_km = dx * KM_PER_DEG
+    vy = -north / 60 / px_km
+    vx = east / 60 / (px_km * math.cos(math.radians(lat)))
+    return Motion(vy=vy, vx=vx, known=True, confidence="low", speed_kmh=sp, toward_deg=toward, source="steering")
+
+
 def _offsets() -> np.ndarray:
     pts = [(0.0, 0.0)]
     for frac, n in ((1 / 3, 8), (2 / 3, 16), (1.0, 24)):
@@ -157,7 +183,8 @@ class Nowcast:
     coverage: float = 0.0                     # fraction of view with echoes >= 15 dBZ
 
 
-def run(frames: list[Frame], lat: float, lon: float, max_h: float) -> Nowcast:
+def run(frames: list[Frame], lat: float, lon: float, max_h: float,
+        steering: tuple[float, float] | None = None) -> Nowcast:
     if not frames:
         return Nowcast(None, Motion(reason="no radar frames"), status="radar unavailable")
     L = frames[-1]
@@ -170,6 +197,8 @@ def run(frames: list[Frame], lat: float, lon: float, max_h: float) -> Nowcast:
         dbz_now = float(np.nanmax(win)) if np.isfinite(win).any() else None
     coverage = float((np.nan_to_num(L.dbz, nan=-99) >= 15).mean())
     motion = estimate_motion(frames, lat)
+    if coverage >= 0.0005:
+        motion = check_steering(motion, steering, lat, L.dx)
     times = [f.time for f in frames]
     t0 = L.time
 
@@ -203,13 +232,14 @@ def run(frames: list[Frame], lat: float, lon: float, max_h: float) -> Nowcast:
     for hk, arr in acc.items():
         if hk != hour_floor(t0) and hk + timedelta(hours=1) > end:
             continue                      # partially covered future hour: don't report
-        members[hk] = [float(x) for x in arr]
+        members[hk] = [float(x) for x in arr]   # probabilities from these are capped in engine
         med[hk] = float(np.median(arr))
         pd = [d for d in path_dbz[hk] if d > -99]
         if no_echo:
             basis[hk] = "Radar: no echoes within ~150 km"
         elif pd and max(pd) >= MIN_DBZ_RAIN:
-            basis[hk] = f"Radar: {min(pd):.0f}–{max(pd):.0f} dBZ upstream, {motion.describe().split(',')[0]}"
+            rng = f"{max(pd):.0f}" if round(min(pd)) == round(max(pd)) else f"{min(pd):.0f}–{max(pd):.0f}"
+            basis[hk] = f"Radar: {rng} dBZ upstream, {motion.describe().split(',')[0]}"
         else:
             basis[hk] = "Radar: no echo on upstream track"
     s = Series(key="radar", label="Radar nowcast (KMUX via IEM N0Q mosaic)", issued=t0,

@@ -67,7 +67,12 @@ def main(argv=None) -> int:
     frames, errs = radar.fetch_frames(s, cfg.lat, cfg.lon, cfg.radar_box_deg, now, cfg.radar_frames, cfg.radar_span_min)
     if errs and not frames:
         errors += [f"radar {x}" for x in errs[:3]]
-    nc = nowcast.run(frames, cfg.lat, cfg.lon, cfg.nowcast_max_h)
+    steering = None
+    try:
+        steering = openmeteo.fetch_steering(s, cfg.lat, cfg.lon, now)
+    except Exception as e:
+        errors.append(f"700 hPa wind: {e}")
+    nc = nowcast.run(frames, cfg.lat, cfg.lon, cfg.nowcast_max_h, steering)
     overlay = None
     if frames:
         sw, ne = nowcast.overlay_png(frames[-1], str(out / "radar.png"))
@@ -109,6 +114,7 @@ def main(argv=None) -> int:
             print(line)
         arc.save_state(st)
 
+    print("radar:", nc.status, "/ 700 hPa from, km/h:", steering)
     print(report["bottom_line"])
     for x in errors:
         print("WARN", x, file=sys.stderr)

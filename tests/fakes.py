@@ -113,6 +113,10 @@ class FakeSession:
             return Resp(text=text)
         if "ensemble-api" in url:
             return Resp(om_ensemble(n))
+        if "api.open-meteo.com" in url and "wind_speed_700hPa" in params.get("hourly", ""):
+            h0 = n.replace(minute=0, second=0, microsecond=0)
+            ts = [int((h0 + timedelta(hours=i - 2)).timestamp()) for i in range(26)]
+            return Resp({"hourly": {"time": ts, "wind_speed_700hPa": [45.0] * 26, "wind_direction_700hPa": [270.0] * 26}})
         if "api.open-meteo.com" in url:
             if params["models"] == "gfs_hrrr":
                 return Resp(status=400)

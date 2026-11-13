@@ -137,8 +137,9 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const O={json.dumps(radar_overlay)};
-const m=L.map('map',{{zoomControl:true,attributionControl:true}}).setView([O.lat,O.lon],9);
-L.tileLayer('https://{{s}}.basemaps.cartocdn.com/light_all/{{z}}/{{x}}/{{y}}{{r}}.png',{{maxZoom:13,attribution:'© OpenStreetMap, © CARTO; radar © IEM/NWS'}}).addTo(m);
+const m=L.map('map',{{zoomControl:true,attributionControl:true}}).setView([O.lat,O.lon],8);
+L.tileLayer('https://tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png',{{maxZoom:12,attribution:'© OpenStreetMap contributors; radar © IEM/NWS'}}).addTo(m);
+setTimeout(()=>m.invalidateSize(),200);
 L.imageOverlay(O.img+'?v='+O.v,O.bounds,{{opacity:.85}}).addTo(m);
 L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',fillOpacity:1}}).addTo(m).bindTooltip('{e(cfg.name)}');
 (O.upstream||[]).forEach(u=>{{L.circle([u.lat,u.lon],{{radius:u.radius_km*1000,color:'#0a5bd3',weight:1,fill:false,dashArray:'4'}}).addTo(m).bindTooltip('rain here now arrives in ~'+u.lead+' min');}});

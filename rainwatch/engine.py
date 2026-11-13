@@ -84,6 +84,10 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
         rng = _range(prim.members.get(t), prim.values.get(t))
         p_heavy = prim.p_exceed(t, cfg.heavy_in)
         p_any = prim.p_exceed(t, cfg.any_in)
+        if prim is radar:   # extrapolation can't see growth/decay: never certain
+            cap = 0.95 if nc.motion.confidence != "low" else 0.85
+            p_heavy = None if p_heavy is None else min(max(p_heavy, 0.02), cap)
+            p_any = None if p_any is None else min(max(p_any, 0.02), cap)
         if p_any is None and prim is nws_s:
             p_any = nws_s.prob.get(t)
         srcs = {}

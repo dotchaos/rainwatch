@@ -84,3 +84,13 @@ def pooled(ens: list[Series]) -> Series | None:
     med = {t: sorted(v)[len(v) // 2] for t, v in members.items()}
     return Series(key="ens", label=f"Multi-model ensemble ({n} members)", issued=None, url=ENS,
                   values=med, members=members, smoothed=any(e.smoothed for e in ens))
+
+
+def fetch_steering(s, lat, lon, now) -> tuple[float, float] | None:
+    """700 hPa wind (direction FROM, km/h) for the current hour; storms roughly move with it."""
+    d = get_json(s, FC, latitude=lat, longitude=lon, hourly="wind_speed_700hPa,wind_direction_700hPa",
+                 models="gfs_seamless", timeformat="unixtime", timezone="GMT", forecast_days=1, past_hours=2)
+    h = d["hourly"]
+    i = min(range(len(h["time"])), key=lambda k: abs(h["time"][k] - now.timestamp()))
+    spd, frm = h["wind_speed_700hPa"][i], h["wind_direction_700hPa"][i]
+    return None if spd is None or frm is None else (float(frm), float(spd))

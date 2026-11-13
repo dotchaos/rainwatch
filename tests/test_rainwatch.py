@@ -162,3 +162,20 @@ def test_main_end_to_end(tmp_path, monkeypatch):
     assert "Bottom Line" in html and "Flood Advisory" in html and "L.imageOverlay" in html
     assert (tmp_path / "site" / "radar.png").exists()
     assert list((tmp_path / "data" / "forecasts").glob("*.jsonl"))
+
+
+def test_steering_check():
+    fr = blob_frames(NOW, speed_kmh=40)            # moving east
+    m = nowcast.estimate_motion(fr, LAT)
+    ok = nowcast.check_steering(m, (270.0, 45.0), LAT, 0.005)        # wind from W: agrees
+    assert ok.source == "radar" and ok.confidence == "high"
+    bad = nowcast.check_steering(nowcast.estimate_motion(fr, LAT), (0.0, 50.0), LAT, 0.005)  # wind from N
+    assert bad.source == "steering" and bad.confidence == "low"
+    assert 170 < bad.toward_deg < 190 and bad.speed_kmh == pytest.approx(40)
+
+
+def test_radar_probability_capped():
+    cfg = Config(lat=LAT, lon=LON)
+    s = FakeSession(NOW)
+    rep, *_ = _full_report(cfg, s)
+    assert all(r["p_heavy"] <= 0.95 for r in rep["rows"] if not r.get("missing") and r["primary"] == "radar")
