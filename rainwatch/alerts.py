@@ -37,10 +37,15 @@ def decide(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
                 "priority": 4 if pk["p_heavy"] < 0.75 else 5, "tags": ["cloud_with_rain"],
             })
     seen = set(state.get("nws_seen", []))
+    groups: dict[str, list[dict]] = {}          # NWS often issues one event under several ids
     for a in report.get("alerts", []):
-        if a.get("id") and a["id"] not in seen:
-            msgs.append({"kind": "nws", "id": a["id"], "title": a.get("event") or "NWS alert",
-                         "message": a.get("headline") or "", "priority": 4, "tags": ["warning"]})
+        if a.get("id"):
+            groups.setdefault(a.get("event") or "NWS alert", []).append(a)
+    for event, items in groups.items():
+        new = [a for a in items if a["id"] not in seen]
+        if new:
+            msgs.append({"kind": "nws", "ids": [a["id"] for a in items], "title": event,
+                         "message": new[0].get("headline") or "", "priority": 4, "tags": ["warning"]})
     return msgs
 
 
@@ -64,6 +69,6 @@ def send(msgs: list[dict], state: dict, now: datetime, cfg, session) -> list[str
             if m["kind"] == "heavy":
                 state["heavy"] = {"peak": m["peak"], "p": m["p"], "sent": now.isoformat()}
             else:
-                state.setdefault("nws_seen", []).append(m["id"])
+                state.setdefault("nws_seen", []).extend(m["ids"])
     state["nws_seen"] = state.get("nws_seen", [])[-200:]
     return log

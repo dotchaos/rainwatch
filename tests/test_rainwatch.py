@@ -136,6 +136,8 @@ def test_engine_and_alerts(tmp_path):
     alerts.send(msgs, st, NOW, cfg, s)
     assert len(s.posted) == 2
     assert alerts.decide(rep, st, NOW + timedelta(minutes=15), cfg) == []   # deduped
+    rep2 = {**rep, "alerts": rep["alerts"] + [{"id": "urn:2", "event": "Flood Advisory", "headline": "x"}]}
+    assert alerts.decide(rep2, {}, NOW, cfg)[-1]["ids"] == ["urn:1", "urn:2"]   # one push per event
 
     arc = archive.Archive(tmp_path)
     assert arc.snapshot(NOW, [nc.series, *det, nb.qpf], rep, 0.2, 0.01)
