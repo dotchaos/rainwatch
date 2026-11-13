@@ -59,7 +59,7 @@ def _rows_html(rows, heavy):
             continue
         rng = f"{r['lo']:.2f}\"–{r['hi']:.2f}\"" if r["hi"] != r["lo"] else f"{r['mid']:.2f}\""
         out.append(f"<tr class=h><td class=n>{e(r['label'])}</td><td class=n>{_p(r['p_heavy'])}</td>"
-                   f"<td class=n><span class='{e(r['tier'])}'>{rng}</span> <span class=sub>{e(r['tier'])}</span></td></tr>"
+                   f"<td class=n><span class='{e(r['tier'])}'>{rng}</span><br><span class=sub>{e(r['tier'])}</span></td></tr>"
                    f"<tr class=b><td colspan=3 class=sub>{e(r['basis'])}</td></tr>")
     return (f"<div class=scroll><table><tr><th>Hour</th><th>P(≥{heavy:.2f}\")</th><th>Expected</th>"
             f"</tr>{''.join(out)}</table></div>")
