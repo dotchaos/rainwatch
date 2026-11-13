@@ -18,6 +18,7 @@ CSS = """
 main{max-width:760px;margin:0 auto;padding:14px 14px 40px}h1{font-size:19px;margin:4px 0 2px}h2{font-size:15px;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
 .sub{color:var(--mut);font-size:13px}.bl{background:var(--card);border-left:4px solid var(--acc);padding:12px 14px;border-radius:8px;margin:12px 0;font-size:16px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+tr.h td{border-bottom:none;padding-bottom:1px}tr.b td{padding-top:0;font-size:12.5px}
 th{color:var(--mut);font-weight:600;font-size:12px}td.n{white-space:nowrap}.Heavy{color:var(--hv);font-weight:600}.Very.heavy,.vh{color:var(--vh);font-weight:700}
 .pill{display:inline-block;padding:1px 7px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:12px}
 details{margin:8px 0}summary{cursor:pointer;color:var(--acc)}#map{height:340px;border-radius:8px;border:1px solid var(--line)}
@@ -54,14 +55,14 @@ def _rows_html(rows, heavy):
     out = []
     for r in rows:
         if r.get("missing"):
-            out.append(f"<tr><td class=n>{e(r['label'])}</td><td colspan=3 class=warn>no data</td></tr>")
+            out.append(f"<tr><td class=n>{e(r['label'])}</td><td colspan=2 class=warn>no data</td></tr>")
             continue
         rng = f"{r['lo']:.2f}\"–{r['hi']:.2f}\"" if r["hi"] != r["lo"] else f"{r['mid']:.2f}\""
-        out.append(f"<tr><td class=n>{e(r['label'])}</td><td class=n>{_p(r['p_heavy'])}</td>"
-                   f"<td class=n><span class='{e(r['tier'])}'>{rng}</span><br><span class=sub>{e(r['tier'])}</span></td>"
-                   f"<td>{e(r['basis'])}</td></tr>")
+        out.append(f"<tr class=h><td class=n>{e(r['label'])}</td><td class=n>{_p(r['p_heavy'])}</td>"
+                   f"<td class=n><span class='{e(r['tier'])}'>{rng}</span> <span class=sub>{e(r['tier'])}</span></td></tr>"
+                   f"<tr class=b><td colspan=3 class=sub>{e(r['basis'])}</td></tr>")
     return (f"<div class=scroll><table><tr><th>Hour</th><th>P(≥{heavy:.2f}\")</th><th>Expected</th>"
-            f"<th>Basis</th></tr>{''.join(out)}</table></div>")
+            f"</tr>{''.join(out)}</table></div>")
 
 
 def _compare_html(rows):
