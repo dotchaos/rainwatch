@@ -21,6 +21,11 @@ STEP_MIN = 5
 MIN_DBZ_RAIN = 10.0     # below this, treat as no rain (noise, drizzle-free clutter)
 CAP_DBZ = 55.0          # above ~55 dBZ hail contamination inflates Z-R rates
 MAX_SPEED_KMH = 130.0
+# Uncertainty the extrapolation can't see on its own: front arrival/exit timing, and the
+# radar-to-ground conversion (Z-R relationship, beam height, terrain shadowing). These spreads
+# are starting values; the gauge scoreboard is how they get tuned.
+TIME_SHIFTS_MIN = (-20, -10, 0, 10, 20)
+INTENSITY_FACTORS = (0.75, 1.0, 1.25)
 
 
 def rate_in_per_hr(dbz) -> np.ndarray:
@@ -212,9 +217,12 @@ def run(frames: list[Frame], lat: float, lon: float, max_h: float,
     offs = _offsets()
     n_steps = int(max_h * 60 / STEP_MIN)
     end = t0 + timedelta(minutes=n_steps * STEP_MIN)
-    acc: dict[datetime, np.ndarray] = {}
+    # Rate along each upstream sample path, extended so timing-shifted members have data.
+    max_shift = max(abs(x) for x in TIME_SHIFTS_MIN) // STEP_MIN
+    n_ext = n_steps + max_shift
+    R = np.zeros((n_ext, len(offs)))
     path_dbz: dict[datetime, list[float]] = {}
-    for k in range(n_steps):
+    for k in range(n_ext):
         lead = k * STEP_MIN
         rad_px = radius_km(lead) / px_km
         rr = r0 - motion.vy * lead + offs[:, 0] * rad_px
@@ -222,11 +230,21 @@ def run(frames: list[Frame], lat: float, lon: float, max_h: float,
         rri = np.clip(np.round(rr).astype(int), 0, h - 1)
         cci = np.clip(np.round(cc).astype(int), 0, w - 1)
         inside = (rr >= 0) & (rr < h) & (cc >= 0) & (cc < w)
-        vals = np.where(inside, rate[rri, cci], 0.0)
-        hk = hour_floor(t0 + timedelta(minutes=lead))
-        acc[hk] = acc.get(hk, 0) + vals * STEP_MIN / 60
-        cd = L.dbz[rri[0], cci[0]]
-        path_dbz.setdefault(hk, []).append(float(np.nan_to_num(cd, nan=-99)))
+        R[k] = np.where(inside, rate[rri, cci], 0.0)
+        if k < n_steps:
+            hk = hour_floor(t0 + timedelta(minutes=lead))
+            path_dbz.setdefault(hk, []).append(float(np.nan_to_num(L.dbz[rri[0], cci[0]], nan=-99)))
+    # Members = 49 positions x timing shifts x intensity factors. A positive shift means the
+    # rain arrives that many minutes later than straight extrapolation says.
+    shifts = np.array(TIME_SHIFTS_MIN) // STEP_MIN
+    mult = np.array(INTENSITY_FACTORS)
+    acc: dict[datetime, np.ndarray] = {}
+    for k in range(n_steps):
+        hk = hour_floor(t0 + timedelta(minutes=k * STEP_MIN))
+        idx = np.clip(k - shifts, 0, n_ext - 1)              # (S,)
+        step = R[idx] * STEP_MIN / 60                         # (S, J)
+        contrib = (mult[:, None, None] * step[None]).ravel()  # (M*S*J,)
+        acc[hk] = acc.get(hk, 0) + contrib
 
     members, med, basis = {}, {}, {}
     for hk, arr in acc.items():
@@ -245,7 +263,7 @@ def run(frames: list[Frame], lat: float, lon: float, max_h: float,
     s = Series(key="radar", label="Radar nowcast (KMUX via IEM N0Q mosaic)", issued=t0,
                url="https://mesonet.agron.iastate.edu/current/mcview.phtml",
                values=med, members=members,
-               note="Extrapolation of the latest radar frame; ignores growth/decay. Current hour covers only the time from the latest frame onward.")
+               note="Extrapolation of the latest radar frame with ±20 min timing and ±25% intensity spread; ignores growth/decay. Current hour covers only the time from the latest frame onward.")
     status = "no echoes in view" if no_echo else motion.describe()
     return Nowcast(s, motion, times, dbz_now, basis, status, coverage)
 

@@ -135,8 +135,18 @@ function draw(){
     let body;
     if(!rs.length) body='<div class=none>No data</div>';
     else if(wins.length) body=wins.map(w=>`<div class="win ${w.max>=0.6?'hi':'md'}">${span(w.start,w.end)}<br><small>${Math.round(w.max*100)}% chance${w.amt>=0.01?' · ~'+w.amt.toFixed(2)+'"/hr':''}</small></div>`).join('');
-    else body=`<div class=none>${mx>=0.05?'Unlikely (max '+Math.round(mx*100)+'%)':'Nothing'}</div>`;
-    return `<div class=day><h3>${names[i]}</h3>${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" for the day':'Dry'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
+    else{
+      const lbl=thr.replace(/^0/,'');
+      // light-rain spans: hours where any rain is more likely than not
+      const sp=[];let c=null;
+      rs.forEach(r=>{const t=new Date(r.t);
+        if((r.p_any||0)>=0.5){ if(c&&t-c.end<1) c.end=new Date(t.getTime()+36e5); else {c={start:t,end:new Date(t.getTime()+36e5)};sp.push(c);} } else c=null;});
+      const anyMax=rs.reduce((a,r)=>Math.max(a,r.p_any||0),0);
+      const kind=tot>=0.10?'Rain':'Light rain';
+      const rain=sp.length?`${kind} likely ${sp.slice(0,2).map(w=>span(w.start,w.end)).join(', ')}`:(anyMax>=0.2?'Showers possible':'Dry');
+      body=`<div class=none><b>No ${lbl}"+ hour</b>${mx>=0.05?' (max '+Math.round(mx*100)+'%)':''}</div>${rain==='Dry'?'':'<div class=none style="margin-top:4px">'+rain+'</div>'}`;
+    }
+    return `<div class=day><h3>${names[i]}</h3>${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" total':'No rain'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
   }).join('');
   document.getElementById('days').innerHTML=html;
 }
@@ -199,7 +209,7 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
     tz = ZoneInfo(cfg.tz)
     repo = cfg.repo
     rerun_js = RERUN_JS.replace("__GEN__", json.dumps(report["generated"])).replace("__REPO__", json.dumps(repo))
-    slim = [{k: r.get(k) for k in ("t", "missing", "p", "mid", "primary")} for r in report["rows"]]
+    slim = [{k: r.get(k) for k in ("t", "missing", "p", "p_any", "mid", "primary")} for r in report["rows"]]
     days_js = (DAYS_JS.replace("__ROWS__", json.dumps(slim)).replace("__TZ__", json.dumps(cfg.tz))
                .replace("__DEF__", json.dumps(f"{cfg.heavy_in:.2f}")))
     r = report
@@ -302,7 +312,7 @@ through {e(tot['through'])} · Confidence: <span class=pill>{e(tot['confidence']
 <details><summary>Method</summary><ul>
 <li>Intensity tiers: Light &lt;0.10"/hr · Moderate 0.10–0.20 · Heavy 0.20–0.50 · Very heavy &gt;0.50.</li>
 <li>Radar dBZ → rate with Marshall-Palmer (Z=200R<sup>1.6</sup>): 30 dBZ ≈ 0.11"/hr, 35 ≈ 0.22", 40 ≈ 0.45". Capped at 55 dBZ.</li>
-<li>Next ~2 h: the latest radar frame is moved along the measured storm motion; the chance of a heavy hour is the share of 49 nearby upstream sample points that would deliver ≥{r['heavy_in']:.2f}". Needs ≥2 frames; with echoes but no trackable motion, no radar forecast is made.</li>
+<li>Next ~2 h: the latest radar frame is moved along the measured storm motion (cross-checked against the 700 hPa steering wind). The chance of a heavy hour is the share of 735 variations that deliver ≥{r['heavy_in']:.2f}": 49 nearby upstream positions × arrival 20 min early to 20 min late × rain rate 25% lower to 25% higher. Capped at 95% (85% when motion confidence is low). Needs ≥2 frames.</li>
 <li>Later hours: share of pooled ensemble members (ECMWF, GFS, ICON) at or above the threshold. Members are pooled, never averaged with other sources. 3-hourly ensembles smooth short bursts, so compare with HRRR/NBM in the Basis column.</li>
 <li>NWS gridded QPF arrives in 6-hour blocks and is shown spread evenly; it is a cross-check, not a timing source.</li>
 <li>Nothing is invented: a missing source is listed under Problems and its column shows —.</li>

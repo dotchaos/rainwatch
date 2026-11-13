@@ -184,3 +184,11 @@ def test_radar_probability_capped():
     s = FakeSession(NOW)
     rep, *_ = _full_report(cfg, s)
     assert all(r["p_heavy"] <= 0.95 for r in rep["rows"] if not r.get("missing") and r["primary"] == "radar")
+
+
+def test_timing_spread_tempers_certainty():
+    fr = blob_frames(NOW, speed_kmh=45, start_km_west=25, peak_dbz=50, width_km=14)
+    s = nowcast.run(fr, LAT, LON, 2.0).series
+    p = s.p_exceed(hour_floor(NOW), 0.20)
+    assert 0.5 < p < 0.9            # strong and well-timed, but no longer 100%
+    assert len(s.members[hour_floor(NOW)]) == 49 * 5 * 3
