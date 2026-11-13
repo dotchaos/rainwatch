@@ -126,13 +126,22 @@ async function rerun(tok){
   btn.disabled=true;msg.textContent='Starting update…';
   try{const r=await fetch('https://api.github.com/repos/'+REPO+'/actions/workflows/'+WF+'/dispatches',
       {method:'POST',headers:{'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'},body:JSON.stringify({ref:'main'})});
-    if(r.status===204){setup.style.display='none';poll(Date.now());return;}
+    if(r.status===204){setup.style.display='none';btn.textContent='Rerun now';poll(Date.now());return;}
     if(r.status===401||r.status===403||r.status===404){put('rw_token',null);
-      msg.innerHTML='GitHub refused the token ('+r.status+'). Set it up again below.';setup.style.display='block';}
+      btn.textContent='Refresh';msg.innerHTML='GitHub refused the saved key ('+r.status+'). Set it up again below.';setup.style.display='block';}
     else msg.textContent='GitHub answered '+r.status+'. Try again in a minute.';
   }catch(e){msg.textContent='Could not reach GitHub: '+e.message;}
   btn.disabled=false;}
-btn.onclick=()=>{const t=get('rw_token'); if(t) rerun(t); else setup.style.display=setup.style.display==='block'?'none':'block';};
+async function refresh(){btn.disabled=true;msg.textContent='Checking for a newer forecast…';
+  try{const j=await (await fetch('latest.json?t='+Date.now(),{cache:'no-store'})).json();
+    if(new Date(j.generated)>GEN){location.replace(location.pathname+'?t='+Date.now());return;}
+    msg.innerHTML='This is the newest forecast. It updates itself every 15 minutes. <a href="#" id=rrlink>Set up rerun on this device</a>';
+    document.getElementById('rrlink').onclick=ev=>{ev.preventDefault();setup.style.display='block';};
+  }catch(e){msg.textContent='Could not check: '+e.message;}
+  btn.disabled=false;}
+const hasTok=()=>!!get('rw_token');
+btn.textContent=hasTok()?'Rerun now':'Refresh';
+btn.onclick=()=>{const t=get('rw_token'); if(t) rerun(t); else refresh();};
 document.getElementById('rrsave').onclick=()=>{const t=document.getElementById('rrkey').value.trim();
   if(!t) return; put('rw_token',t); rerun(t);};
 })();
@@ -197,7 +206,7 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
     return f"""<!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=refresh content=600>
 <title>Rain — {e(cfg.name)}</title><style>{CSS}</style></head><body><main>
-<div class=bar><div class=age id=age>Last checked <b>{upd}</b></div><button class=rr id=rr>Rerun now</button></div>
+<div class=bar><div class=age id=age>Last checked <b>{upd}</b></div><button class=rr id=rr>Refresh</button></div>
 <div id=rrmsg class=sub></div>
 <div id=rrsetup>
 <b>One-time setup for one-tap reruns on this device</b><br>
