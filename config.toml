@@ -1,0 +1,13 @@
+# Rainwatch settings. Every key is optional; see rainwatch/config.py for defaults.
+name = "Mission District, SF"
+lat = 37.761          # neighborhood-level, rounded
+lon = -122.415
+tz = "America/Los_Angeles"
+horizon_hours = 36
+
+heavy_in = 0.20       # inches in one hour that counts as "heavy"
+alert_prob = 0.50     # push when an hour reaches this chance of heavy...
+alert_window_h = 6    # ...within this many hours
+
+nws_station = "KSFO"
+hads_station = "SFOC1"
