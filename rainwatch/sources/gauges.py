@@ -46,7 +46,7 @@ def parse_asos(features: list[dict]) -> dict[datetime, float]:
 
 def fetch_asos(s, station: str, now: datetime) -> Gauge:
     url = f"{NWS}/stations/{station}/observations"
-    g = Gauge(station, f"{station} ASOS", f"https://www.weather.gov/wrh/timeseries?site={station}")
+    g = Gauge(station, f"{station} airport (reference only, not your neighborhood)", f"https://www.weather.gov/wrh/timeseries?site={station}")
     try:
         start = (now - timedelta(hours=36)).astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
         data = get_json(s, url, start=start)
@@ -103,7 +103,7 @@ def parse_hads_csv(text: str) -> dict[datetime, float]:
 
 
 def fetch_hads(s, station: str, now: datetime) -> Gauge:
-    g = Gauge(station, f"{station} gauge", f"https://mesonet.agron.iastate.edu/sites/site.php?station={station}&network=CA_DCP")
+    g = Gauge(station, f"{station} gauge (US Mint, ~1 mi from you)" if station == "SFOC1" else f"{station} gauge", f"https://mesonet.agron.iastate.edu/sites/site.php?station={station}&network=CA_DCP")
     try:
         sts = (now - timedelta(hours=36)).astimezone(UTC)
         ets = now.astimezone(UTC) + timedelta(hours=1)

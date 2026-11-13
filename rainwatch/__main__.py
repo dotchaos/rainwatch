@@ -95,7 +95,7 @@ def main(argv=None) -> int:
     series = [x for x in [nc.series, ens, *det, nb.qpf if nb else None] if x]
     arc.snapshot(now, series, report, cfg.heavy_in, cfg.any_in)
     obs = arc.merge_obs(gs, now)
-    truth = archive.truth(obs, [cfg.hads_station, cfg.nws_station])
+    truth = archive.truth(obs, [cfg.hads_station])   # scoring uses the nearby gauge only, never SFO
     scores = archive.score(arc.forecasts(now - timedelta(days=30)), truth, cfg.heavy_in, cfg.any_in)
 
     # --- page
