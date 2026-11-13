@@ -160,6 +160,7 @@ def test_main_end_to_end(tmp_path, monkeypatch):
     assert rc == 0
     html = (tmp_path / "site" / "index.html").read_text()
     assert "Bottom Line" in html and "Flood Advisory" in html and "L.imageOverlay" in html
+    assert "Rerun now" in html and "actions/workflows/'+WF+'/dispatches" in html and "__GEN__" not in html
     assert (tmp_path / "site" / "radar.png").exists()
     assert list((tmp_path / "data" / "forecasts").glob("*.jsonl"))
 

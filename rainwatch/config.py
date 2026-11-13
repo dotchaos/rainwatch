@@ -48,6 +48,7 @@ class Config:
     ntfy_server: str = "https://ntfy.sh"
     contact: str = "rainwatch (github.com)"
     site_url: str | None = None
+    repo: str = "dotchaos/rainwatch"
 
     @classmethod
     def load(cls, path: str | Path | None = None) -> "Config":
@@ -62,4 +63,5 @@ class Config:
         cfg.ntfy_topic = os.environ.get("NTFY_TOPIC") or cfg.ntfy_topic
         cfg.contact = os.environ.get("RAINWATCH_CONTACT") or cfg.contact
         cfg.site_url = os.environ.get("RAINWATCH_SITE_URL") or cfg.site_url
+        cfg.repo = os.environ.get("GITHUB_REPOSITORY") or cfg.repo
         return cfg

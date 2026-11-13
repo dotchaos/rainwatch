@@ -21,7 +21,12 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left
 th{color:var(--mut);font-weight:600;font-size:12px}td.n{white-space:nowrap}.Heavy{color:var(--hv);font-weight:600}.Very.heavy,.vh{color:var(--vh);font-weight:700}
 .pill{display:inline-block;padding:1px 7px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:12px}
 details{margin:8px 0}summary{cursor:pointer;color:var(--acc)}#map{height:340px;border-radius:8px;border:1px solid var(--line)}
-.warn{color:var(--vh)}a{color:var(--acc)}ul{padding-left:18px}li{margin:3px 0}.scroll{overflow-x:auto}pre{white-space:pre-wrap;font-size:12.5px;background:var(--card);padding:10px;border-radius:8px}
+.warn{color:var(--vh)}
+.bar{position:sticky;top:0;z-index:1000;display:flex;align-items:center;gap:10px;justify-content:space-between;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 0;margin-bottom:6px}
+.bar .age{font-size:13.5px}.bar .age b{font-weight:600}.stale{color:var(--vh)}
+button.rr{font:600 14px/1 inherit;font-family:inherit;padding:9px 14px;border-radius:8px;border:1px solid var(--acc);background:var(--acc);color:var(--bg);cursor:pointer}
+button.rr:disabled{opacity:.6;cursor:default}#rrmsg{font-size:13px;margin:4px 0 0}#rrsetup{display:none;background:var(--card);border-radius:8px;padding:10px 12px;margin:6px 0;font-size:13.5px}
+#rrsetup input{width:100%;padding:8px;margin:6px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:13px monospace}a{color:var(--acc)}ul{padding-left:18px}li{margin:3px 0}.scroll{overflow-x:auto}pre{white-space:pre-wrap;font-size:12.5px;background:var(--card);padding:10px;border-radius:8px}
 """
 
 
@@ -93,8 +98,51 @@ def _score_html(scores):
             "Deterministic models are scored as yes/no. Lead = how far ahead the forecast was issued.</p>")
 
 
+RERUN_JS = """
+<script>
+(function(){
+const GEN=new Date(__GEN__), REPO=__REPO__, WF='update.yml';
+const ageEl=document.getElementById('age'), btn=document.getElementById('rr'), msg=document.getElementById('rrmsg');
+const setup=document.getElementById('rrsetup');
+const fmt=d=>d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'});
+function age(){const m=Math.round((Date.now()-GEN)/60000);
+  const rel=m<1?'just now':m<60?m+' min ago':Math.floor(m/60)+' h '+(m%60)+' min ago';
+  ageEl.innerHTML='Last checked <b>'+fmt(GEN)+'</b> · '+rel+(m>35?' · <b>updates are late</b>':'');
+  ageEl.classList.toggle('stale',m>35);}
+age(); setInterval(age,30000);
+const get=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const put=(k,v)=>{try{v===null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}};
+document.getElementById('rrtok').href='https://github.com/settings/personal-access-tokens/new?name='+
+  encodeURIComponent('rainwatch rerun')+'&description='+encodeURIComponent('Lets the rainwatch page start an update')+
+  '&target_name='+REPO.split('/')[0]+'&expires_in=366&actions=write';
+async function poll(start){
+  for(let i=0;i<24;i++){await new Promise(r=>setTimeout(r,10000));
+    msg.textContent='Updating… '+Math.round((Date.now()-start)/1000)+' s (usually about 2 min)';
+    try{const j=await (await fetch('latest.json?t='+Date.now(),{cache:'no-store'})).json();
+      if(new Date(j.generated)>GEN){msg.textContent='Done, loading the new forecast…';
+        location.replace(location.pathname+'?t='+Date.now());return;}}catch(e){}}
+  msg.textContent='Still running. It will show up on the next refresh.';btn.disabled=false;}
+async function rerun(tok){
+  btn.disabled=true;msg.textContent='Starting update…';
+  try{const r=await fetch('https://api.github.com/repos/'+REPO+'/actions/workflows/'+WF+'/dispatches',
+      {method:'POST',headers:{'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json'},body:JSON.stringify({ref:'main'})});
+    if(r.status===204){setup.style.display='none';poll(Date.now());return;}
+    if(r.status===401||r.status===403||r.status===404){put('rw_token',null);
+      msg.innerHTML='GitHub refused the token ('+r.status+'). Set it up again below.';setup.style.display='block';}
+    else msg.textContent='GitHub answered '+r.status+'. Try again in a minute.';
+  }catch(e){msg.textContent='Could not reach GitHub: '+e.message;}
+  btn.disabled=false;}
+btn.onclick=()=>{const t=get('rw_token'); if(t) rerun(t); else setup.style.display=setup.style.display==='block'?'none':'block';};
+document.getElementById('rrsave').onclick=()=>{const t=document.getElementById('rrkey').value.trim();
+  if(!t) return; put('rw_token',t); rerun(t);};
+})();
+</script>"""
+
+
 def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None) -> str:
     tz = ZoneInfo(cfg.tz)
+    repo = cfg.repo
+    rerun_js = RERUN_JS.replace("__GEN__", json.dumps(report["generated"])).replace("__REPO__", json.dumps(repo))
     r = report
     tot = r["total"]
     upd = _local(r["generated"], tz, "%a %b %-d, %-I:%M %p")
@@ -147,10 +195,19 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
     map_html = ("<div id=map></div>" if radar_overlay else "<p class=sub>Radar image unavailable.</p>")
 
     return f"""<!doctype html><html lang=en><head><meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=refresh content=300>
+<meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=refresh content=600>
 <title>Rain — {e(cfg.name)}</title><style>{CSS}</style></head><body><main>
+<div class=bar><div class=age id=age>Last checked <b>{upd}</b></div><button class=rr id=rr>Rerun now</button></div>
+<div id=rrmsg class=sub></div>
+<div id=rrsetup>
+<b>One-time setup for one-tap reruns on this device</b><br>
+1. <a id=rrtok target=_blank rel=noopener>Create a GitHub token</a>: set Repository access to <i>Only select repositories → {e(repo)}</i>, and under Permissions set <i>Actions</i> to <i>Read and write</i>. Generate and copy it.<br>
+2. Paste it here (it stays in this browser only):
+<input id=rrkey type=password autocomplete=off placeholder="github_pat_...">
+<button class=rr id=rrsave>Save &amp; rerun</button> &nbsp;or&nbsp; <a href="https://github.com/{e(repo)}/actions/workflows/update.yml">rerun on GitHub instead</a>
+</div>
 <h1>Precision Rain Forecast — {e(cfg.name)}</h1>
-<div class=sub>Next {cfg.horizon_hours} h · updated {upd} · refreshes every 15 min</div>
+<div class=sub>Next {cfg.horizon_hours} h · updates itself every 15 min</div>
 
 <div class=bl><b>Bottom Line:</b> {e(r['bottom_line'])}</div>
 
@@ -188,4 +245,4 @@ through {e(tot['through'])} · Confidence: <span class=pill>{e(tot['confidence']
 <li>NWS gridded QPF arrives in 6-hour blocks and is shown spread evenly; it is a cross-check, not a timing source.</li>
 <li>Nothing is invented: a missing source is listed under Problems and its column shows —.</li>
 </ul></details>
-</main>{map_js}</body></html>"""
+</main>{map_js}{rerun_js}</body></html>"""
