@@ -344,8 +344,8 @@ def main():
         _ct.USER_AGENT = "rainwatch-floodmap/1.0 (github.com/dotchaos/rainwatch)"
     except Exception:
         pass
-    for src, attr in ((cx.providers.CartoDB.Positron, "© OpenStreetMap contributors © CARTO"),
-                      (cx.providers.Esri.WorldGrayCanvas, "Esri, HERE, Garmin, © OpenStreetMap contributors")):
+    for src, attr in ((cx.providers.Esri.WorldGrayCanvas, "Basemap: Esri, HERE, Garmin, © OpenStreetMap contributors"),
+                      (cx.providers.Esri.WorldStreetMap, "Basemap: Esri, HERE, Garmin, © OpenStreetMap contributors")):
         try:
             img, ext = cx.bounds2img(x0_, y0_, x1_, y1_, zoom=13, source=src)
             if img.std() < 3:  # blank or error tile
