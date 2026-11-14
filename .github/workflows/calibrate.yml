@@ -27,4 +27,5 @@ jobs:
           git fetch -q origin data
           git worktree add -B data data origin/data
           cp calibration.md calibration.json data/
-          cd data && git add calibration.md calibration.json && git commit -qm "calibration $(date -u +%FT%TZ)" && git push -q origin data
+          cd data && git add calibration.md calibration.json && git commit -qm "calibration $(date -u +%FT%TZ)"
+          for i in 1 2 3 4 5; do git push -q origin data && exit 0; git pull -q --rebase origin data; sleep 5; done; exit 1

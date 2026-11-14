@@ -29,13 +29,14 @@ def decide(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
         if fresh:
             msgs.append({
                 "kind": "heavy", "peak": pk["t"], "p": pk["p_heavy"],
-                "title": f"Heavy rain likely {pk['label']}",
+                "title": f"Rain at your .20\" threshold likely {pk['label']}",
                 "message": (f"{round(pk['p_heavy'] * 100)}% chance of ≥{cfg.heavy_in:.2f}\" in that hour "
                             f"(~{pk['mid']:.2f}\"/hr, {pk['tier'].lower()}). {pk['basis']}\n"
                             f"Total {report['total']['mid']:.2f}\" ({report['total']['lo']:.2f}–"
                             f"{report['total']['hi']:.2f}\") through {report['total']['through']}."),
-                "priority": 4 if pk["p_heavy"] < 0.75 else 5, "tags": ["cloud_with_rain"],
+                "priority": 3, "tags": ["cloud_with_rain"],
             })
+    msgs += block_alerts(report, state, now, cfg)
     seen = set(state.get("nws_seen", []))
     groups: dict[str, list[dict]] = {}          # NWS often issues one event under several ids
     for a in report.get("alerts", []):
@@ -47,6 +48,40 @@ def decide(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
             msgs.append({"kind": "nws", "ids": [a["id"] for a in items], "title": event,
                          "message": new[0].get("headline") or "", "priority": 4, "tags": ["warning"]})
     return msgs
+
+
+def _first_window(rows, key, prob, until):
+    hit = [r for r in rows if not r.get("missing") and r.get("levels")
+           and r["levels"][key] >= prob and datetime.fromisoformat(r["t"]) < until]
+    return (hit[0], max(hit, key=lambda r: r["levels"][key])) if hit else (None, None)
+
+
+def block_alerts(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
+    """17th & Folsom levels: an early 'long soaker' heads-up and an urgent 'driveway risk'."""
+    out = []
+    rows = report["rows"]
+    for key, prob, horizon, title, prio, tags in (
+        ("driveway", cfg.driveway_alert_prob, 6, "Driveway risk: flash-flood setup at 17th & Folsom", 5, ["rotating_light"]),
+        ("behind", cfg.behind_alert_prob, 24, "Long soaker coming: drains may fall behind", 4, ["droplet"]),
+    ):
+        first, peak = _first_window(rows, key, prob, now + timedelta(hours=horizon))
+        if not first:
+            continue
+        last = state.get(f"block_{key}")
+        if last:
+            same = abs((datetime.fromisoformat(first["t"]) - datetime.fromisoformat(last["start"])).total_seconds()) < 3 * 3600
+            recent = now - datetime.fromisoformat(last["sent"]) < timedelta(hours=12)
+            if same and recent and peak["levels"][key] - last["p"] < cfg.alert_reraise_pts:
+                continue
+        evid = ", ".join(f"{k} says {v}" for k, v in (peak.get("model_flags") or {}).items()) or "no single model run agrees yet"
+        out.append({"kind": f"block_{key}", "start": first["t"], "p": peak["levels"][key], "title": title,
+                    "message": (f"Starts around {first['label']}; worst {peak['label']}: "
+                                f"{round(peak['levels'][key] * 100)}% chance ({peak['mid']:.2f}\"/hr expected). "
+                                f"Evidence: {peak['basis']}; {evid}."),
+                    "priority": prio, "tags": tags})
+        if key == "driveway":
+            break       # the urgent alert supersedes the heads-up for the same run
+    return out
 
 
 def send(msgs: list[dict], state: dict, now: datetime, cfg, session) -> list[str]:
@@ -68,6 +103,8 @@ def send(msgs: list[dict], state: dict, now: datetime, cfg, session) -> list[str
         if ok:
             if m["kind"] == "heavy":
                 state["heavy"] = {"peak": m["peak"], "p": m["p"], "sent": now.isoformat()}
+            elif m["kind"].startswith("block_"):
+                state[m["kind"]] = {"start": m["start"], "p": m["p"], "sent": now.isoformat()}
             else:
                 state.setdefault("nws_seen", []).extend(m["ids"])
     state["nws_seen"] = state.get("nws_seen", [])[-200:]

@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 12
     environment:
       name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      url: ${{ steps.deploy.outputs.page_url || steps.deploy2.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -55,15 +55,26 @@ jobs:
           RAINWATCH_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         run: python -m rainwatch --out site --data data
 
-      - name: Save archive
-        run: |
-          cd data
-          git add -A
-          git commit -qm "update $(date -u +%FT%TZ)" || echo "no changes"
-          git push -q origin data
-
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
       - id: deploy
         uses: actions/deploy-pages@v4
+        continue-on-error: true
+      - name: Retry publish once if GitHub Pages hiccuped
+        id: deploy2
+        if: steps.deploy.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+
+      - name: Save archive (retries if another job pushed at the same moment)
+        run: |
+          cd data
+          git add -A
+          git commit -qm "update $(date -u +%FT%TZ)" || { echo "no changes"; exit 0; }
+          for i in 1 2 3 4 5; do
+            git push -q origin data && exit 0
+            echo "push rejected, rebasing (attempt $i)"
+            git pull -q --rebase origin data || git rebase --abort
+            sleep $((i * 3))
+          done
+          echo "::error::could not save archive after 5 attempts"; exit 1

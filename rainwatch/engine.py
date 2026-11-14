@@ -14,6 +14,7 @@ from zoneinfo import ZoneInfo
 
 import numpy as np
 
+from . import levels as lv
 from .model import Series, hour_floor, hours
 
 
@@ -99,6 +100,12 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
             p_thr = {k: clip(v) for k, v in p_thr.items()}
         if p_any is None and prim is nws_s:
             p_any = nws_s.prob.get(t)
+        lev = lv.hour_levels(prim, t, cfg) if prim.members else None
+        if lev and prim is radar:
+            cap = 0.95 if nc.motion.confidence != "low" else 0.85
+            for k in ("feel", "behind", "driveway"):
+                lev[k] = min(lev[k], cap)
+        flags = {d.label: f[0] for d in det if (f := lv.deterministic_flags(d.values, t, cfg))}
         srcs = {}
         for s in [radar, ens, *det, nws_s]:
             if s and t in s.values:
@@ -112,6 +119,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
             "lo": round(rng[0], 2), "mid": round(rng[1], 2), "hi": round(rng[2], 2),
             "tier": tier(rng[1]), "basis": basis, "sources": srcs,
             "gust_mph": round(nws.gust_mph[t]) if nws and t in nws.gust_mph else None,
+            "levels": lev, "model_flags": flags,
         })
 
     valid = [r for r in rows if not r.get("missing")]

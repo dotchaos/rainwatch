@@ -19,6 +19,17 @@ class Config:
     heavy_in: float = 0.20          # the threshold that matters: inches in one hour
     any_in: float = 0.01            # "measurable rain"
 
+    # Block flood levels (calibrated on 17th & Folsom floods 2012-2022 vs the downtown gauge;
+    # see data branch calibration.md). "feel" = John's own threshold.
+    feel_in: float = 0.20               # an hour at/above this: drains working hard
+    behind_run_in: float = 0.20         # 2 hours in a row at/above this ...
+    behind_3h_in: float = 0.60          # ... or this much in 3 hours: drains falling behind
+    driveway_hour_in: float = 0.45      # any hour this big ...
+    driveway_jump_in: float = 0.25      # ... or a surge this big over an hour already >= feel_in ...
+    driveway_3h_in: float = 0.80        # ... or this much in 3 hours: driveway risk
+    behind_alert_prob: float = 0.40     # early "long soaker" push (within 24 h)
+    driveway_alert_prob: float = 0.30   # urgent push (within 6 h)
+
     # Alerts
     alert_prob: float = 0.50        # push when P(>=heavy) in an hour reaches this...
     alert_window_h: int = 6         # ...within this many hours

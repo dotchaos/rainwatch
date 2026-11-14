@@ -192,3 +192,43 @@ def test_timing_spread_tempers_certainty():
     p = s.p_exceed(hour_floor(NOW), 0.20)
     assert 0.5 < p < 0.9            # strong and well-timed, but no longer 100%
     assert len(s.members[hour_floor(NOW)]) == 49 * 5 * 3
+
+
+def _series(vals_by_hour):
+    from rainwatch.model import Series
+    s = Series(key="ens", label="t", issued=None)
+    for t, members in vals_by_hour.items():
+        s.members[t] = members
+        s.values[t] = sorted(members)[len(members) // 2]
+    return s
+
+
+def test_block_levels():
+    from rainwatch import levels
+    cfg = Config()
+    h0 = hour_floor(NOW)
+    H = timedelta(hours=1)
+    # 4 members: steady .22s (behind), surge .2->.5 (driveway), single .25 (feel), dry
+    s = _series({h0 - H: [0.22, 0.20, 0.0, 0.0], h0: [0.22, 0.50, 0.25, 0.0],
+                 h0 + H: [0.22, 0.10, 0.0, 0.0], h0 + 2 * H: [0.10, 0.0, 0.0, 0.0]})
+    lv = levels.hour_levels(s, h0, cfg)
+    assert lv["feel"] == 0.75 and lv["driveway"] == 0.25 and lv["behind"] == 0.5
+
+
+def test_levels_replay_history():
+    """Deterministic flags on real downtown-gauge hours: floods flagged, near-misses not."""
+    from rainwatch import levels
+    cfg = Config()
+    H = timedelta(hours=1)
+
+    def worst(seq):
+        vals = {datetime(2020, 1, 1, tzinfo=UTC) + i * H: v for i, v in enumerate(seq)}
+        rank = {"driveway": 3, "behind": 2, "feel": 1}
+        return max((rank[f[0]] for t in vals if (f := levels.deterministic_flags(vals, t, cfg))), default=0)
+    dec11_2014 = [0.0, 0.23, 0.52, 0.23, 0.21, 0.13, 0.11, 0.14, 0.17, 0.21, 0.19]
+    dec3_2014 = [0.06, 0.19, 0.17, 0.71, 0.20]
+    near_miss_2016 = [0.06, 0.24, 0.21, 0.28, 0.16, 0.06]
+    nov13_2026 = [0.0, 0.19, 0.16, 0.13, 0.05]
+    assert worst(dec11_2014) == 3 and worst(dec3_2014) == 3
+    assert worst(near_miss_2016) == 2      # falling behind, but not driveway
+    assert worst(nov13_2026) < 2

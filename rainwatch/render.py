@@ -30,7 +30,9 @@ button.rr:disabled{opacity:.6;cursor:default}#rrmsg{font-size:13px;margin:4px 0 
 .days{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 4px}
 .day{background:var(--card);border-radius:10px;padding:10px;min-height:86px}.day h3{margin:0 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
 .win{font-weight:700;font-size:15px;line-height:1.3}.win small{font-weight:500;color:var(--mut);font-size:12.5px}.win.hi{color:var(--vh)}.win.md{color:var(--hv)}
-.none{color:var(--mut);font-size:14px}.dtot{font-size:12px;color:var(--mut);margin-top:6px}.lc{font-size:11px;color:var(--mut)}
+.none{color:var(--mut);font-size:14px}
+.lvl{font-size:13px;font-weight:700;border-radius:6px;padding:4px 6px;margin:0 0 6px;line-height:1.25}.lvl.dw{background:var(--vh);color:var(--bg)}.lvl.fb{background:var(--hv);color:var(--bg)}
+.legend{font-size:12.5px;color:var(--mut);margin:4px 0 0}.legend b{color:var(--fg)}.dtot{font-size:12px;color:var(--mut);margin-top:6px}.lc{font-size:11px;color:var(--mut)}
 .thr{font-size:13px;color:var(--mut);display:flex;align-items:center;gap:6px;flex-wrap:wrap}.thr button{font:inherit;padding:3px 9px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
 .thr button.on{border-color:var(--acc);background:var(--acc);color:var(--bg)}
 @media(max-width:420px){.days{gap:6px}.day{padding:8px}.win{font-size:14px}}
@@ -146,7 +148,14 @@ function draw(){
       const rain=sp.length?`${kind} likely ${sp.slice(0,2).map(w=>span(w.start,w.end)).join(', ')}`:(anyMax>=0.2?'Showers possible':'Dry');
       body=`<div class=none><b>No ${lbl}"+ hour</b>${mx>=0.05?' (max '+Math.round(mx*100)+'%)':''}</div>${rain==='Dry'?'':'<div class=none style="margin-top:4px">'+rain+'</div>'}`;
     }
-    return `<div class=day><h3>${names[i]}</h3>${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" total':'No rain'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
+    const lvlWins=(key,minp)=>{const out=[];let c=null;
+      rs.forEach(r=>{const t=new Date(r.t),q=(r.levels&&r.levels[key])||0;
+        if(q>=minp){ if(c&&t-c.end<1){c.end=new Date(t.getTime()+36e5);c.max=Math.max(c.max,q);} else {c={start:t,end:new Date(t.getTime()+36e5),max:q};out.push(c);} } else c=null;});
+      return out;};
+    const dw=lvlWins('driveway',0.10), fb=lvlWins('behind',0.20);
+    const badge=(w,cls,txt)=>w.map(x=>`<div class="lvl ${cls}">${txt} ${span(x.start,x.end)} · ${Math.round(x.max*100)}%</div>`).join('');
+    const lv=badge(dw,'dw','Driveway risk')+(dw.length?'':badge(fb,'fb','Drains falling behind'));
+    return `<div class=day><h3>${names[i]}</h3>${lv}${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" total':'No rain'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
   }).join('');
   document.getElementById('days').innerHTML=html;
 }
@@ -209,7 +218,7 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
     tz = ZoneInfo(cfg.tz)
     repo = cfg.repo
     rerun_js = RERUN_JS.replace("__GEN__", json.dumps(report["generated"])).replace("__REPO__", json.dumps(repo))
-    slim = [{k: r.get(k) for k in ("t", "missing", "p", "p_any", "mid", "primary")} for r in report["rows"]]
+    slim = [{k: r.get(k) for k in ("t", "missing", "p", "p_any", "mid", "primary", "levels")} for r in report["rows"]]
     days_js = (DAYS_JS.replace("__ROWS__", json.dumps(slim)).replace("__TZ__", json.dumps(cfg.tz))
                .replace("__DEF__", json.dumps(f"{cfg.heavy_in:.2f}")))
     r = report
@@ -280,6 +289,7 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
 
 <div class=thr>Heavy = at least <span id=thrbtns></span> in an hour · showing hours with ≥20% chance</div>
 <div class=days id=days></div>
+<div class=legend><b>17th &amp; Folsom levels</b> (from the 2012–2022 floods): <b>Drains falling behind</b> = 2+ hours in a row ≥.20" or ≥.60" in 3 h · <b>Driveway risk</b> = a surge of +.25" on an hour already ≥.20", any hour ≥.45", or ≥.80" in 3 h. Every past flood had a surge; the 2016 near-miss didn't.</div>
 
 <div class=bl><b>Bottom Line:</b> {e(r['bottom_line'])}</div>
 
