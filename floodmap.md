@@ -65,3 +65,4 @@ Share of land cells with any report in a big storm: 19.9%.
 | 37.7430, -122.3880 | 4 | 12 | 4 | -3.1 | 0.01 |
 | 37.7505, -122.4390 | 4 | 8 | 4 | -37.4 | 0.08 |
 | 37.7610, -122.4645 | 4 | 10 | 3 | -26.8 | 0.10 |
+(basemap: © OpenStreetMap contributors © CARTO)
