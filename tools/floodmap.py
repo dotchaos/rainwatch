@@ -340,9 +340,23 @@ def main():
     x1_, y1_ = merc(37.8115, -122.355)
     ax.set_xlim(x0_, x1_); ax.set_ylim(y0_, y1_)
     try:
-        cx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik, zoom=13, alpha=0.55, attribution="© OpenStreetMap contributors")
-    except Exception as e:
-        out(f"(basemap unavailable: {e})")
+        import contextily.tile as _ct
+        _ct.USER_AGENT = "rainwatch-floodmap/1.0 (github.com/dotchaos/rainwatch)"
+    except Exception:
+        pass
+    for src, attr in ((cx.providers.CartoDB.Positron, "© OpenStreetMap contributors © CARTO"),
+                      (cx.providers.Esri.WorldGrayCanvas, "Esri, HERE, Garmin, © OpenStreetMap contributors")):
+        try:
+            img, ext = cx.bounds2img(x0_, y0_, x1_, y1_, zoom=13, source=src)
+            if img.std() < 3:  # blank or error tile
+                raise ValueError("blank tiles")
+            ax.imshow(img, extent=ext, interpolation="bilinear", zorder=0, alpha=0.9)
+            ax.text(0.995, 0.003, attr, transform=ax.transAxes, ha="right", va="bottom", fontsize=6)
+            out(f"(basemap: {attr})")
+            break
+        except Exception as e:
+            out(f"(basemap {attr} unavailable: {e})")
+    ax.set_xlim(x0_, x1_); ax.set_ylim(y0_, y1_)
     hx, hy = merc(HOME[1], HOME[2])
     ax.plot([hx], [hy], marker="o", ms=10, mfc="none", mec="black", mew=1.6)
     ax.annotate("17th & Folsom", (hx, hy), xytext=(9, -4), textcoords="offset points", fontsize=8, weight="bold")
