@@ -3,26 +3,28 @@ on:
   workflow_dispatch:
     inputs:
       script:
-        description: "tools/<name>.py to run (writes <name>.md)"
+        description: "tools/<name>.py to run (writes <name>.md and any extra files it makes)"
         required: true
 permissions:
   contents: write
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install requests numpy shapely pygrib "xarray>=2025.1.2" "zarr>=3.0.8" fsspec aiohttp
+      - run: pip install requests numpy shapely pygrib matplotlib pillow "xarray>=2025.1.2" "zarr>=3.0.8" fsspec aiohttp
+      - name: Check out data branch (inputs and outputs live there)
+        run: git fetch -q origin data && git worktree add -B data data origin/data
       - run: python tools/${{ inputs.script }}.py > ${{ inputs.script }}.md; cat ${{ inputs.script }}.md
       - name: Save to data branch
+        if: always()
         run: |
-          git config user.name "rainwatch-bot"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch -q origin data && git worktree add -B data data origin/data
-          cp ${{ inputs.script }}.md data/; [ -f ${{ inputs.script }}.json ] && cp ${{ inputs.script }}.json data/ || true
-          cd data && git add -A && git commit -qm "analysis ${{ inputs.script }} $(date -u +%FT%TZ)"
+          git config --global user.name "rainwatch-bot"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for f in ${{ inputs.script }}.md ${{ inputs.script }}.json ${{ inputs.script }}.png storm_cases.json; do [ -f "$f" ] && cp "$f" data/ || true; done
+          cd data && git add -A && git commit -qm "analysis ${{ inputs.script }} $(date -u +%FT%TZ)" || exit 0
           for i in 1 2 3 4 5; do git push -q origin data && exit 0; git pull -q --rebase origin data; sleep 5; done; exit 1
