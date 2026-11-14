@@ -49,6 +49,7 @@ jobs:
           fi
 
       - name: Forecast
+        id: forecast
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           RAINWATCH_CONTACT: ${{ vars.RAINWATCH_CONTACT || github.repository }}
@@ -61,12 +62,17 @@ jobs:
       - id: deploy
         uses: actions/deploy-pages@v4
         continue-on-error: true
+      - name: Wait before retrying (GitHub sometimes needs a moment to register the upload)
+        if: steps.deploy.outcome == 'failure'
+        run: sleep 45
       - name: Retry publish once if GitHub Pages hiccuped
         id: deploy2
         if: steps.deploy.outcome == 'failure'
+        continue-on-error: true
         uses: actions/deploy-pages@v4
 
       - name: Save archive (retries if another job pushed at the same moment)
+        if: always() && steps.forecast.outcome == 'success'
         run: |
           cd data
           git add -A
@@ -78,3 +84,9 @@ jobs:
             sleep $((i * 3))
           done
           echo "::error::could not save archive after 5 attempts"; exit 1
+
+      - name: Flag the run as failed if the page could not be published
+        if: steps.deploy.outcome == 'failure' && steps.deploy2.outcome != 'success'
+        run: |
+          echo "::error::Page was not published (both attempts failed); archive was still saved."
+          exit 1
