@@ -1,0 +1,30 @@
+name: calibrate
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Pull historical storms
+        run: python tools/calibrate.py > calibration.md
+      - name: Show results
+        run: cat calibration.md
+      - name: Save to data branch
+        run: |
+          git config user.name "rainwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch -q origin data
+          git worktree add -B data data origin/data
+          cp calibration.md calibration.json data/
+          cd data && git add calibration.md calibration.json && git commit -qm "calibration $(date -u +%FT%TZ)" && git push -q origin data
