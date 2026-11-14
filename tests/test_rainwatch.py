@@ -243,3 +243,12 @@ def test_table_starts_now_even_when_dry():
     rows = [row(f"Sat {h} PM–{h+1} PM", 0.0) for h in range(1, 10)] + [row("Sun 4 AM–5 AM", 0.12)]
     html = _rows_html(rows, 0.20)
     assert "Sat 1 PM–10 PM" in html and "dry" in html and "Sun 4 AM–5 AM" in html
+
+
+def test_hours_with_real_rain_chance_are_not_folded():
+    from rainwatch.render import _rows_html
+    def row(label, pany):
+        return {"label": label, "hi": 0.04, "lo": 0.0, "mid": 0.01, "p_heavy": 0.0, "p_any": pany,
+                "levels": {}, "tier": "Light", "basis": "x"}
+    html = _rows_html([row("Sat 1 PM–2 PM", .05), row("Sat 2 PM–3 PM", .05), row("Sat 3 PM–4 PM", .5)], 0.20)
+    assert "Sat 1 PM–3 PM" in html and "Sat 3 PM–4 PM" in html

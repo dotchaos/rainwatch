@@ -56,7 +56,8 @@ def _local(iso: str | None, tz, fmt="%a %-I:%M %p") -> str:
 def _quiet(r) -> bool:
     """An hour that can't matter at 17th & Folsom: tiny amount, no real chance of the threshold."""
     lv = r.get("levels") or {}
-    return (r["hi"] < 0.06 and r["mid"] < 0.03 and (r["p_heavy"] or 0) < 0.05
+    # Fold only hours that are actually dry: any hour with a real chance of rain gets its own row.
+    return (r["hi"] < 0.06 and r["mid"] < 0.03 and (r["p_heavy"] or 0) < 0.05 and (r.get("p_any") or 0) < 0.3
             and lv.get("behind", 0) < 0.05 and lv.get("driveway", 0) < 0.02)
 
 
@@ -86,7 +87,7 @@ def _rows_html(rows, heavy):
             if len(grp) >= 2:
                 tot = sum(x["mid"] for x in grp)
                 pany = max((x["p_any"] or 0) for x in grp)
-                desc = "dry" if tot < 0.01 and pany < 0.2 else f"light showers at most · ~{tot:.2f}\" total"
+                desc = "dry" if tot < 0.01 and pany < 0.2 else f"mostly dry · ~{tot:.2f}\" total"
                 out.append(f"<tr class=q><td class=n>{e(_span_label(grp[0], grp[-1]))}</td>"
                            f"<td class=n>Very low</td><td class=sub>{desc}"
                            f"{'' if pany < 0.2 else f' · up to {round(pany * 100)}% chance of any rain'}</td></tr>")
