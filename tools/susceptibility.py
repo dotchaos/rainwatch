@@ -53,26 +53,44 @@ def acis_daily():
     return days
 
 
+def _get(params, tries=5):
+    import time
+    for i in range(tries):
+        r = S.get(SOCRATA, params=params, timeout=180)
+        if r.status_code in (428, 429, 503):
+            time.sleep(10 * (i + 1))
+            continue
+        r.raise_for_status()
+        time.sleep(1.5)                      # be polite to DataSF
+        return r.json()
+    r.raise_for_status()
+
+
 def flood_cases(day: str):
+    """Same query shape that worked in the feasibility test (date range only); filter locally."""
     start = f"{day}T00:00:00"
     end = (date.fromisoformat(day) + timedelta(days=1)).isoformat() + "T12:00:00"   # storms run overnight
-    where = (f"requested_datetime between '{start}' and '{end}' AND ("
-             "upper(service_subtype) like '%FLOOD%' OR upper(service_subtype) like '%BACK_UP%' "
-             "OR upper(service_name) like '%CATCH BASIN%')")
-    r = S.get(SOCRATA, params={"$where": where, "$limit": 50000,
-                               "$select": "service_request_id,requested_datetime,service_name,service_subtype,lat,long,analysis_neighborhood"},
-              timeout=180)
-    r.raise_for_status()
-    rows = []
-    for c in r.json():
+    rows, off = [], 0
+    while True:
+        b = _get({"$where": f"requested_datetime between '{start}' and '{end}'", "$limit": 50000, "$offset": off})
+        rows += b
+        if len(b) < 50000:
+            break
+        off += 50000
+    out_rows = []
+    for c in rows:
+        sub = str(c.get("service_subtype", "")).lower()
+        name = str(c.get("service_name", "")).lower()
+        if not (any(t in sub for t in ("flood", "back_up")) or "catch basin" in name):
+            continue
         try:
             la, lo = float(c["lat"]), float(c["long"])
         except (KeyError, TypeError, ValueError):
             la = lo = None
         if la is not None and not (37.6 < la < 37.85 and -122.55 < lo < -122.3):
             la = lo = None
-        rows.append({**c, "la": la, "lo": lo})
-    return rows
+        out_rows.append({**c, "la": la, "lo": lo})
+    return out_rows
 
 
 def peak_hour(day: str):
