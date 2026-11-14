@@ -1,0 +1,397 @@
+{
+ "storms": [
+  {
+   "day": "2008-11-01",
+   "rain_day_in": 1.12,
+   "reports": 190,
+   "peak_hour_in": null
+  },
+  {
+   "day": "2009-02-15",
+   "rain_day_in": 2.18,
+   "reports": 65,
+   "peak_hour_in": null
+  },
+  {
+   "day": "2009-02-22",
+   "rain_day_in": 1.24,
+   "reports": 30,
+   "peak_hour_in": null
+  },
+  {
+   "day": "2009-10-13",
+   "rain_day_in": 2.48,
+   "reports": 298,
+   "peak_hour_in": null
+  },
+  {
+   "day": "2010-01-19",
+   "rain_day_in": 1.24,
+   "reports": 124,
+   "peak_hour_in": null
+  }
+ ],
+ "top": [
+  {
+   "cell": [
+    37.788000000000004,
+    -122.394
+   ],
+   "hood": "Financial District/South Beach",
+   "storms": 4,
+   "reports": 4,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 33.5
+  },
+  {
+   "cell": [
+    37.789500000000004,
+    -122.424
+   ],
+   "hood": "Pacific Heights",
+   "storms": 3,
+   "reports": 5,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.7805,
+    -122.43
+   ],
+   "hood": "Western Addition",
+   "storms": 3,
+   "reports": 4,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 104.8
+  },
+  {
+   "cell": [
+    37.7505,
+    -122.43
+   ],
+   "hood": "Noe Valley",
+   "storms": 3,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 157.0
+  },
+  {
+   "cell": [
+    37.788000000000004,
+    -122.43
+   ],
+   "hood": "Pacific Heights",
+   "storms": 3,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 205.4
+  },
+  {
+   "cell": [
+    37.803,
+    -122.406
+   ],
+   "hood": "North Beach",
+   "storms": 3,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.7775,
+    -122.406
+   ],
+   "hood": "South of Market",
+   "storms": 3,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.7475,
+    -122.3955
+   ],
+   "hood": "Bayview Hunters Point",
+   "storms": 2,
+   "reports": 5,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 12.6
+  },
+  {
+   "cell": [
+    37.785000000000004,
+    -122.47200000000001
+   ],
+   "hood": "Outer Richmond",
+   "storms": 2,
+   "reports": 4,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.746,
+    -122.397
+   ],
+   "hood": "Bayview Hunters Point",
+   "storms": 2,
+   "reports": 4,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 10.3
+  },
+  {
+   "cell": [
+    37.800000000000004,
+    -122.4315
+   ],
+   "hood": "Marina",
+   "storms": 2,
+   "reports": 4,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 46.7
+  },
+  {
+   "cell": [
+    37.728,
+    -122.4045
+   ],
+   "hood": "Portola",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.761,
+    -122.5095
+   ],
+   "hood": "Sunset/Parkside",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 22.3
+  },
+  {
+   "cell": [
+    37.773,
+    -122.4465
+   ],
+   "hood": "Golden Gate Park",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 233.0
+  },
+  {
+   "cell": [
+    37.797000000000004,
+    -122.424
+   ],
+   "hood": "Russian Hill",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 123.7
+  },
+  {
+   "cell": [
+    37.803,
+    -122.4075
+   ],
+   "hood": "North Beach",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 196.1
+  },
+  {
+   "cell": [
+    37.779,
+    -122.397
+   ],
+   "hood": "South of Market",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 12.5
+  },
+  {
+   "cell": [
+    37.791000000000004,
+    -122.4225
+   ],
+   "hood": "Nob Hill",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.7805,
+    -122.4225
+   ],
+   "hood": "Western Addition",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 83.3
+  },
+  {
+   "cell": [
+    37.752,
+    -122.43900000000001
+   ],
+   "hood": "Noe Valley",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.785000000000004,
+    -122.4645
+   ],
+   "hood": "Inner Richmond",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 176.1
+  },
+  {
+   "cell": [
+    37.7745,
+    -122.4225
+   ],
+   "hood": "Hayes Valley",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 60.1
+  },
+  {
+   "cell": [
+    37.797000000000004,
+    -122.43900000000001
+   ],
+   "hood": "Marina",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 81.7
+  },
+  {
+   "cell": [
+    37.7175,
+    -122.4045
+   ],
+   "hood": "Visitacion Valley",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.761,
+    -122.4255
+   ],
+   "hood": "Castro/Upper Market",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 51.0
+  },
+  {
+   "cell": [
+    37.791000000000004,
+    -122.394
+   ],
+   "hood": "Financial District/South Beach",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 10.6
+  },
+  {
+   "cell": [
+    37.7685,
+    -122.45100000000001
+   ],
+   "hood": "Haight Ashbury",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 273.9
+  },
+  {
+   "cell": [
+    37.7385,
+    -122.3865
+   ],
+   "hood": "Bayview Hunters Point",
+   "storms": 2,
+   "reports": 3,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 66.0
+  },
+  {
+   "cell": [
+    37.7745,
+    -122.4165
+   ],
+   "hood": "South of Market",
+   "storms": 2,
+   "reports": 2,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": 43.8
+  },
+  {
+   "cell": [
+    37.795500000000004,
+    -122.424
+   ],
+   "hood": "Pacific Heights",
+   "storms": 2,
+   "reports": 2,
+   "dry_reports": 0,
+   "zone": null,
+   "elev_ft": null
+  }
+ ],
+ "dry_counts": []
+}
