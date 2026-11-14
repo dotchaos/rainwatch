@@ -16,7 +16,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install requests numpy shapely pygrib matplotlib pillow "xarray>=2025.1.2" "zarr>=3.0.8" fsspec aiohttp
+      - run: pip install requests numpy shapely pygrib matplotlib pillow contextily "xarray>=2025.1.2" "zarr>=3.0.8" fsspec aiohttp
       - name: Check out data branch (inputs and outputs live there)
         run: git fetch -q origin data && git worktree add -B data data origin/data
       - run: python tools/${{ inputs.script }}.py > ${{ inputs.script }}.md; cat ${{ inputs.script }}.md

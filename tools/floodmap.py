@@ -196,19 +196,27 @@ def main():
     mean = tot / (2 * k) ** 2
     tpi = el - mean[: el.shape[0], : el.shape[1]]
 
-    # per-cell terrain
-    cells = {}
+    # per-cell terrain (vectorized over every pixel)
     h, w = el.shape
-    for py in range(0, h, 4):
-        for px in range(0, w, 4):
-            la, lo = pix2latlon(px, py, x0, y0)
-            if not (BBOX[0] < la < BBOX[2] and BBOX[1] < lo < BBOX[3]) or el[py, px] < -1:
-                continue
-            c = (round(la / CELL) * CELL, round(lo / CELL) * CELL)
-            d = cells.setdefault(c, {"elev": 1e9, "tpi": 1e9, "area": 0.0})
-            d["elev"] = min(d["elev"], float(el[py, px]))
-            d["tpi"] = min(d["tpi"], float(tpi[py, px]))
-            d["area"] = max(d["area"], float(area_km2[py, px]))
+    pys, pxs = np.mgrid[0:h, 0:w]
+    n = 2 ** Z
+    lon = (x0 + pxs / 256) / n * 360 - 180
+    lat = np.degrees(np.arctan(np.sinh(np.pi * (1 - 2 * (y0 + pys / 256) / n))))
+    keep = (lat > BBOX[0]) & (lat < BBOX[2]) & (lon > BBOX[1]) & (lon < BBOX[3]) & (el > 0.5) & (lat < 37.8115)
+    ci = np.round(lat / CELL).astype(np.int64)
+    cj = np.round(lon / CELL).astype(np.int64)
+    cells = {}
+    for a, b, e_, t_, r_ in zip(ci[keep], cj[keep], el[keep], tpi[keep], area_km2[keep]):
+        c = (round(a * CELL, 4), round(b * CELL, 4))
+        d = cells.get(c)
+        if d is None:
+            cells[c] = {"elev": float(e_), "tpi": float(t_), "area": float(r_), "n": 1}
+        else:
+            if e_ < d["elev"]: d["elev"] = float(e_)
+            if t_ < d["tpi"]: d["tpi"] = float(t_)
+            if r_ > d["area"]: d["area"] = float(r_)
+            d["n"] += 1
+    cells = {c: d for c, d in cells.items() if d["n"] >= 60}     # mostly-land cells only
     out(f"Land cells: {len(cells)}")
 
     zg = zone_geom()
@@ -227,7 +235,7 @@ def main():
     for day, rows in cases.items():
         seen = set()
         for la, lo, kind in rows:
-            c = (round(la / CELL) * CELL, round(lo / CELL) * CELL)
+            c = (round(round(la / CELL) * CELL, 4), round(round(lo / CELL) * CELL, 4))
             if c not in cells:
                 continue
             if c not in seen:
@@ -289,7 +297,7 @@ def main():
     out("| Spot | Class | In SFPUC zone | Topo position (m) | Upslope area (km²) | Storms with reports (all / big) |")
     out("|---|---|---|---|---|---|")
     for name, la, lo in CHECK:
-        c = (round(la / CELL) * CELL, round(lo / CELL) * CELL)
+        c = (round(round(la / CELL) * CELL, 4), round(round(lo / CELL) * CELL, 4))
         # take the most-evidenced cell within ~150 m
         nb = [(cc_, cells[cc_]) for cc_ in cells if abs(cc_[0] - c[0]) <= CELL * 1.01 and abs(cc_[1] - c[1]) <= CELL * 1.01]
         if not nb:
@@ -306,29 +314,41 @@ def main():
         out(f"| {c[0]:.4f}, {c[1]:.4f} | {d['storms_big']} | {d['storms_all']} | {d['flood_reports_big']} | {d['tpi']:.1f} | {d['area']:.2f} |")
 
     json.dump({f"{c[0]:.4f},{c[1]:.4f}": d for c, d in cells.items()}, open("floodmap.json", "w"))
-    # ---- map
+    # ---- map on OpenStreetMap
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    colors = {"A": "#c62828", "B": "#f39c12", "C": "#5b7fbf", "D": "#e9ecef"}
-    fig, ax = plt.subplots(figsize=(8, 8), dpi=150)
+    from matplotlib.patches import Rectangle
+    import contextily as cx
+
+    def merc(la, lo):
+        x = lo * 20037508.34 / 180
+        y = math.log(math.tan((90 + la) * math.pi / 360)) * 20037508.34 / math.pi
+        return x, y
+    colors = {"A": "#c62828", "B": "#f5a623", "C": "#3d6fb6"}
+    labels = {"A": "Flood-prone: city model + reported in storms", "B": "City model says low spot; few reports",
+              "C": "Reported often, not a low spot (drain problems)"}
+    fig, ax = plt.subplots(figsize=(9, 9), dpi=160)
+    for c, d in cells.items():
+        k = d["class"][0]
+        if k not in colors:
+            continue
+        x1, y1 = merc(c[0] - CELL / 2, c[1] - CELL / 2)
+        x2, y2 = merc(c[0] + CELL / 2, c[1] + CELL / 2)
+        ax.add_patch(Rectangle((x1, y1), x2 - x1, y2 - y1, facecolor=colors[k], alpha=0.62, linewidth=0))
+    x0_, y0_ = merc(37.705, -122.515)
+    x1_, y1_ = merc(37.8115, -122.355)
+    ax.set_xlim(x0_, x1_); ax.set_ylim(y0_, y1_)
+    try:
+        cx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik, zoom=13, alpha=0.55, attribution="© OpenStreetMap contributors")
+    except Exception as e:
+        out(f"(basemap unavailable: {e})")
+    hx, hy = merc(HOME[1], HOME[2])
+    ax.plot([hx], [hy], marker="o", ms=10, mfc="none", mec="black", mew=1.6)
+    ax.annotate("17th & Folsom", (hx, hy), xytext=(9, -4), textcoords="offset points", fontsize=8, weight="bold")
     for k, col in colors.items():
-        pts = [(c[1], c[0]) for c, d in cells.items() if d["class"].startswith(k)]
-        if pts:
-            xs, ys = zip(*pts)
-            ax.scatter(xs, ys, s=3.2, c=col, marker="s", linewidths=0,
-                       label={"A": "Modeled + reported (flood-prone)", "B": "Modeled low spot, little reported",
-                              "C": "Reported, not a low spot (drains)", "D": "Neither"}[k])
-    ax.scatter([HOME[2]], [HOME[1]], s=60, facecolors="none", edgecolors="black", linewidths=1.5)
-    ax.annotate("17th & Folsom", (HOME[2], HOME[1]), xytext=(8, -12), textcoords="offset points", fontsize=8)
-    ax.set_aspect(1 / math.cos(math.radians(37.77)))
-    ax.set_xticks([]); ax.set_yticks([])
-    for s_ in ax.spines.values():
-        s_.set_visible(False)
-    ax.legend(loc="lower left", fontsize=7, frameon=False, markerscale=4)
-    ax.set_title("SF flood susceptibility evidence (150 m cells), 81 storms 2008–2026", fontsize=9)
+        ax.add_patch(Rectangle((0, 0), 0, 0, facecolor=col, alpha=0.62, label=labels[k]))
+    ax.legend(loc="lower left", fontsize=7.5, framealpha=0.9)
+    ax.set_axis_off()
+    ax.set_title("Where SF floods: city flood model + 311 reports in 81 storms (2008–2026), 150 m cells", fontsize=9)
     fig.savefig("floodmap.png", bbox_inches="tight")
-
-
-if __name__ == "__main__":
-    main()
