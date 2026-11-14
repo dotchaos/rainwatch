@@ -18,7 +18,7 @@ CSS = """
 main{max-width:760px;margin:0 auto;padding:14px 14px 40px}h1{font-size:19px;margin:4px 0 2px}h2{font-size:15px;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
 .sub{color:var(--mut);font-size:13px}.bl{background:var(--card);border-left:4px solid var(--acc);padding:12px 14px;border-radius:8px;margin:12px 0;font-size:16px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
-tr.h td{border-bottom:none;padding-bottom:1px}tr.b td{padding-top:0;font-size:12.5px}
+tr.q td{color:var(--mut)}tr.h td{border-bottom:none;padding-bottom:1px}tr.b td{padding-top:0;font-size:12.5px}
 th{color:var(--mut);font-weight:600;font-size:12px}td.n{white-space:nowrap}.Heavy{color:var(--hv);font-weight:600}.Very.heavy,.vh{color:var(--vh);font-weight:700}
 .pill{display:inline-block;padding:1px 7px;border-radius:10px;background:var(--card);border:1px solid var(--line);font-size:12px}
 details{margin:8px 0}summary{cursor:pointer;color:var(--acc)}#map{height:340px;border-radius:8px;border:1px solid var(--line)}
@@ -53,16 +53,50 @@ def _local(iso: str | None, tz, fmt="%a %-I:%M %p") -> str:
     return datetime.fromisoformat(iso).astimezone(tz).strftime(fmt)
 
 
+def _quiet(r) -> bool:
+    """An hour that can't matter at 17th & Folsom: tiny amount, no real chance of the threshold."""
+    lv = r.get("levels") or {}
+    return (r["hi"] < 0.06 and r["mid"] < 0.03 and (r["p_heavy"] or 0) < 0.05
+            and lv.get("behind", 0) < 0.05 and lv.get("driveway", 0) < 0.02)
+
+
+def _span_label(a, b):
+    """'Sun 3 PM–5 PM' + 'Sun 9 PM–10 PM' -> 'Sun 3 PM–10 PM'."""
+    da, ta = a["label"].split(" ", 1)
+    db, tb = b["label"].split(" ", 1)
+    start = ta.split("–")[0]
+    end = tb.split("–")[1]
+    return f"{da} {start}–{end}" if da == db else f"{da} {start}–{db} {end}"
+
+
 def _rows_html(rows, heavy):
     out = []
-    for r in rows:
+    i = 0
+    while i < len(rows):
+        r = rows[i]
         if r.get("missing"):
             out.append(f"<tr><td class=n>{e(r['label'])}</td><td colspan=2 class=warn>no data</td></tr>")
+            i += 1
             continue
+        if _quiet(r):
+            j = i
+            while j + 1 < len(rows) and not rows[j + 1].get("missing") and _quiet(rows[j + 1]):
+                j += 1
+            grp = rows[i:j + 1]
+            if len(grp) >= 2:
+                tot = sum(x["mid"] for x in grp)
+                pany = max((x["p_any"] or 0) for x in grp)
+                desc = "dry" if tot < 0.01 and pany < 0.2 else f"light showers at most · ~{tot:.2f}\" total"
+                out.append(f"<tr class=q><td class=n>{e(_span_label(grp[0], grp[-1]))}</td>"
+                           f"<td class=n>Very low</td><td class=sub>{desc}"
+                           f"{'' if pany < 0.2 else f' · up to {round(pany * 100)}% chance of any rain'}</td></tr>")
+                i = j + 1
+                continue
         rng = f"{r['lo']:.2f}\"–{r['hi']:.2f}\"" if r["hi"] != r["lo"] else f"{r['mid']:.2f}\""
         out.append(f"<tr class=h><td class=n>{e(r['label'])}</td><td class=n>{_p(r['p_heavy'])}</td>"
                    f"<td class=n><span class='{e(r['tier'])}'>{rng}</span><br><span class=sub>{e(r['tier'])}</span></td></tr>"
                    f"<tr class=b><td colspan=3 class=sub>{e(r['basis'])}</td></tr>")
+        i += 1
     return (f"<div class=scroll><table><tr><th>Hour</th><th>P(≥{heavy:.2f}\")</th><th>Expected</th>"
             f"</tr>{''.join(out)}</table></div>")
 
@@ -225,7 +259,12 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
     tot = r["total"]
     upd = _local(r["generated"], tz, "%a %b %-d, %-I:%M %p")
     wet = r["wet_rows"]
-    table = _rows_html(wet, r["heavy_in"]) if wet else "<p>No rain expected in any hour of this window.</p>"
+    if wet:
+        ts = [x["t"] for x in r["rows"]]
+        a, b = ts.index(wet[0]["t"]), ts.index(wet[-1]["t"])
+        table = _rows_html(r["rows"][a:b + 1], r["heavy_in"])
+    else:
+        table = "<p>No rain expected in any hour of this window.</p>"
     nws_tot = f" · NWS QPF total {tot['nws']:.2f}\"" if tot["nws"] is not None else ""
 
     gl = []
