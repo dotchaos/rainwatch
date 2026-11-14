@@ -352,3 +352,7 @@ def main():
     ax.set_axis_off()
     ax.set_title("Where SF floods: city flood model + 311 reports in 81 storms (2008–2026), 150 m cells", fontsize=9)
     fig.savefig("floodmap.png", bbox_inches="tight")
+
+
+if __name__ == "__main__":
+    main()
