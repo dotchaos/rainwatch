@@ -29,80 +29,500 @@
    "rain_day_in": 1.24,
    "reports": 124,
    "peak_hour_in": null
+  },
+  {
+   "day": "2010-01-20",
+   "rain_day_in": 1.03,
+   "reports": 51,
+   "peak_hour_in": null
+  },
+  {
+   "day": "2010-04-11",
+   "rain_day_in": 1.17,
+   "reports": 49,
+   "peak_hour_in": null
+  },
+  {
+   "day": "2010-11-07",
+   "rain_day_in": 1.18,
+   "reports": 51,
+   "peak_hour_in": null
+  },
+  {
+   "day": "2010-12-08",
+   "rain_day_in": 1.02,
+   "reports": 33,
+   "peak_hour_in": 0.17
+  },
+  {
+   "day": "2010-12-19",
+   "rain_day_in": 1.22,
+   "reports": 28,
+   "peak_hour_in": 0.26
+  },
+  {
+   "day": "2010-12-28",
+   "rain_day_in": 1.21,
+   "reports": 32,
+   "peak_hour_in": 0.21
+  },
+  {
+   "day": "2011-02-17",
+   "rain_day_in": 1.04,
+   "reports": 113,
+   "peak_hour_in": 0.3
+  },
+  {
+   "day": "2011-02-19",
+   "rain_day_in": 1.05,
+   "reports": 36,
+   "peak_hour_in": 0.16
+  },
+  {
+   "day": "2011-03-19",
+   "rain_day_in": 1.12,
+   "reports": 21,
+   "peak_hour_in": 0.27
+  },
+  {
+   "day": "2011-03-24",
+   "rain_day_in": 1.24,
+   "reports": 82,
+   "peak_hour_in": 0.21
+  },
+  {
+   "day": "2012-01-20",
+   "rain_day_in": 1.41,
+   "reports": 88,
+   "peak_hour_in": 0.26
+  },
+  {
+   "day": "2012-03-14",
+   "rain_day_in": 1.47,
+   "reports": 48,
+   "peak_hour_in": 0.19
+  },
+  {
+   "day": "2012-03-24",
+   "rain_day_in": 1.23,
+   "reports": 26,
+   "peak_hour_in": 0.12
+  },
+  {
+   "day": "2012-04-12",
+   "rain_day_in": 1.24,
+   "reports": 96,
+   "peak_hour_in": 0.41
+  },
+  {
+   "day": "2012-11-30",
+   "rain_day_in": 1.39,
+   "reports": 162,
+   "peak_hour_in": 0.19
+  },
+  {
+   "day": "2012-12-02",
+   "rain_day_in": 1.06,
+   "reports": 215,
+   "peak_hour_in": 0.5
+  },
+  {
+   "day": "2012-12-23",
+   "rain_day_in": 1.0,
+   "reports": 82,
+   "peak_hour_in": 0.15
+  },
+  {
+   "day": "2012-12-25",
+   "rain_day_in": 1.15,
+   "reports": 36,
+   "peak_hour_in": 0.3
+  },
+  {
+   "day": "2014-02-08",
+   "rain_day_in": 1.15,
+   "reports": 51,
+   "peak_hour_in": 0.32
+  },
+  {
+   "day": "2014-02-09",
+   "rain_day_in": 1.13,
+   "reports": 60,
+   "peak_hour_in": 0.32
+  },
+  {
+   "day": "2014-02-28",
+   "rain_day_in": 1.12,
+   "reports": 57,
+   "peak_hour_in": 0.24
+  },
+  {
+   "day": "2014-12-02",
+   "rain_day_in": 1.61,
+   "reports": 465,
+   "peak_hour_in": 0.71
+  },
+  {
+   "day": "2014-12-03",
+   "rain_day_in": 1.8,
+   "reports": 476,
+   "peak_hour_in": 0.71
+  },
+  {
+   "day": "2014-12-11",
+   "rain_day_in": 3.4,
+   "reports": 399,
+   "peak_hour_in": 0.52
+  },
+  {
+   "day": "2014-12-15",
+   "rain_day_in": 1.23,
+   "reports": 119,
+   "peak_hour_in": 0.26
+  },
+  {
+   "day": "2014-12-16",
+   "rain_day_in": 1.12,
+   "reports": 96,
+   "peak_hour_in": 0.28
+  },
+  {
+   "day": "2014-12-19",
+   "rain_day_in": 1.24,
+   "reports": 72,
+   "peak_hour_in": 0.45
+  },
+  {
+   "day": "2015-12-20",
+   "rain_day_in": 1.08,
+   "reports": 85,
+   "peak_hour_in": 0.27
+  },
+  {
+   "day": "2015-12-21",
+   "rain_day_in": 1.3,
+   "reports": 129,
+   "peak_hour_in": 0.14
+  },
+  {
+   "day": "2016-01-05",
+   "rain_day_in": 1.18,
+   "reports": 174,
+   "peak_hour_in": 0.35
+  },
+  {
+   "day": "2016-01-06",
+   "rain_day_in": 1.3,
+   "reports": 118,
+   "peak_hour_in": 0.35
+  },
+  {
+   "day": "2016-01-17",
+   "rain_day_in": 1.07,
+   "reports": 82,
+   "peak_hour_in": 0.43
+  },
+  {
+   "day": "2016-01-19",
+   "rain_day_in": 1.2,
+   "reports": 143,
+   "peak_hour_in": 0.41
+  },
+  {
+   "day": "2016-03-05",
+   "rain_day_in": 1.29,
+   "reports": 77,
+   "peak_hour_in": 0.19
+  },
+  {
+   "day": "2016-03-10",
+   "rain_day_in": 1.1,
+   "reports": 110,
+   "peak_hour_in": 0.27
+  },
+  {
+   "day": "2016-03-12",
+   "rain_day_in": 1.14,
+   "reports": 101,
+   "peak_hour_in": 0.42
+  },
+  {
+   "day": "2016-12-15",
+   "rain_day_in": 1.31,
+   "reports": 107,
+   "peak_hour_in": 0.28
+  },
+  {
+   "day": "2017-01-08",
+   "rain_day_in": 1.46,
+   "reports": 94,
+   "peak_hour_in": 0.21
+  },
+  {
+   "day": "2017-01-10",
+   "rain_day_in": 1.27,
+   "reports": 154,
+   "peak_hour_in": 0.18
+  },
+  {
+   "day": "2017-01-20",
+   "rain_day_in": 1.05,
+   "reports": 205,
+   "peak_hour_in": 0.41
+  },
+  {
+   "day": "2017-02-17",
+   "rain_day_in": 1.05,
+   "reports": 63,
+   "peak_hour_in": 0.13
+  },
+  {
+   "day": "2017-02-20",
+   "rain_day_in": 1.83,
+   "reports": 84,
+   "peak_hour_in": 0.3
+  },
+  {
+   "day": "2017-03-04",
+   "rain_day_in": 1.05,
+   "reports": 78,
+   "peak_hour_in": 0.48
+  },
+  {
+   "day": "2017-11-16",
+   "rain_day_in": 1.48,
+   "reports": 239,
+   "peak_hour_in": 0.26
+  },
+  {
+   "day": "2018-01-08",
+   "rain_day_in": 3.15,
+   "reports": 204,
+   "peak_hour_in": 0.26
+  },
+  {
+   "day": "2018-04-06",
+   "rain_day_in": 2.22,
+   "reports": 130,
+   "peak_hour_in": 0.3
+  },
+  {
+   "day": "2018-04-07",
+   "rain_day_in": 1.07,
+   "reports": 51,
+   "peak_hour_in": 0.07
+  },
+  {
+   "day": "2019-01-06",
+   "rain_day_in": 1.28,
+   "reports": 137,
+   "peak_hour_in": 0.2
+  },
+  {
+   "day": "2019-01-16",
+   "rain_day_in": 1.14,
+   "reports": 452,
+   "peak_hour_in": 0.24
+  },
+  {
+   "day": "2019-02-13",
+   "rain_day_in": 2.49,
+   "reports": 283,
+   "peak_hour_in": 0.53
+  },
+  {
+   "day": "2019-02-14",
+   "rain_day_in": 1.0,
+   "reports": 117,
+   "peak_hour_in": 0.14
+  },
+  {
+   "day": "2020-01-16",
+   "rain_day_in": 1.24,
+   "reports": 211,
+   "peak_hour_in": 0.39
+  },
+  {
+   "day": "2021-10-24",
+   "rain_day_in": 4.02,
+   "reports": 524,
+   "peak_hour_in": 0.45
+  },
+  {
+   "day": "2021-12-13",
+   "rain_day_in": 2.57,
+   "reports": 380,
+   "peak_hour_in": 0.28
+  },
+  {
+   "day": "2022-12-27",
+   "rain_day_in": 1.6,
+   "reports": 102,
+   "peak_hour_in": 0.43
+  },
+  {
+   "day": "2022-12-31",
+   "rain_day_in": 5.46,
+   "reports": 711,
+   "peak_hour_in": 0.97
+  },
+  {
+   "day": "2023-01-04",
+   "rain_day_in": 1.06,
+   "reports": 201,
+   "peak_hour_in": 0.24
+  },
+  {
+   "day": "2023-01-09",
+   "rain_day_in": 1.2,
+   "reports": 430,
+   "peak_hour_in": 0.31
+  },
+  {
+   "day": "2023-01-10",
+   "rain_day_in": 1.22,
+   "reports": 525,
+   "peak_hour_in": 0.28
+  },
+  {
+   "day": "2023-01-14",
+   "rain_day_in": 1.09,
+   "reports": 78,
+   "peak_hour_in": 0.17
+  },
+  {
+   "day": "2023-03-21",
+   "rain_day_in": 1.06,
+   "reports": 93,
+   "peak_hour_in": 0.24
+  },
+  {
+   "day": "2023-12-18",
+   "rain_day_in": 1.4,
+   "reports": 395,
+   "peak_hour_in": 0.46
+  },
+  {
+   "day": "2023-12-20",
+   "rain_day_in": 1.21,
+   "reports": 157,
+   "peak_hour_in": 0.22
+  },
+  {
+   "day": "2024-01-31",
+   "rain_day_in": 1.67,
+   "reports": 242,
+   "peak_hour_in": 0.47
+  },
+  {
+   "day": "2024-02-01",
+   "rain_day_in": 1.07,
+   "reports": 125,
+   "peak_hour_in": 0.3
+  },
+  {
+   "day": "2024-02-04",
+   "rain_day_in": 1.31,
+   "reports": 83,
+   "peak_hour_in": 0.26
+  },
+  {
+   "day": "2024-02-20",
+   "rain_day_in": 1.5,
+   "reports": 170,
+   "peak_hour_in": 0.88
+  },
+  {
+   "day": "2024-03-01",
+   "rain_day_in": 1.17,
+   "reports": 106,
+   "peak_hour_in": 0.44
+  },
+  {
+   "day": "2024-11-22",
+   "rain_day_in": 2.97,
+   "reports": 352,
+   "peak_hour_in": 0.47
+  },
+  {
+   "day": "2024-12-14",
+   "rain_day_in": 1.42,
+   "reports": 87,
+   "peak_hour_in": 0.32
+  },
+  {
+   "day": "2025-02-04",
+   "rain_day_in": 2.89,
+   "reports": 128,
+   "peak_hour_in": 0.32
+  },
+  {
+   "day": "2025-02-13",
+   "rain_day_in": 1.91,
+   "reports": 49,
+   "peak_hour_in": 0.4
+  },
+  {
+   "day": "2025-11-13",
+   "rain_day_in": 1.28,
+   "reports": 213,
+   "peak_hour_in": 0.38
+  },
+  {
+   "day": "2025-12-22",
+   "rain_day_in": 1.82,
+   "reports": 88,
+   "peak_hour_in": 0.41
+  },
+  {
+   "day": "2026-01-05",
+   "rain_day_in": 1.07,
+   "reports": 40,
+   "peak_hour_in": 0.19
+  },
+  {
+   "day": "2026-02-16",
+   "rain_day_in": 1.07,
+   "reports": 48,
+   "peak_hour_in": 0.25
   }
  ],
  "top": [
   {
    "cell": [
-    37.788000000000004,
-    -122.394
+    37.7745,
+    -122.436
    ],
-   "hood": "Financial District/South Beach",
-   "storms": 4,
-   "reports": 4,
+   "hood": "Hayes Valley",
+   "storms": 29,
+   "reports": 37,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 33.5
-  },
-  {
-   "cell": [
-    37.789500000000004,
-    -122.424
-   ],
-   "hood": "Pacific Heights",
-   "storms": 3,
-   "reports": 5,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": null
+   "zone": false,
+   "elev_ft": 191.6
   },
   {
    "cell": [
     37.7805,
-    -122.43
+    -122.4225
    ],
    "hood": "Western Addition",
-   "storms": 3,
-   "reports": 4,
+   "storms": 28,
+   "reports": 69,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 104.8
+   "zone": false,
+   "elev_ft": 83.3
   },
   {
    "cell": [
-    37.7505,
-    -122.43
+    37.779,
+    -122.403
    ],
-   "hood": "Noe Valley",
-   "storms": 3,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 157.0
-  },
-  {
-   "cell": [
-    37.788000000000004,
-    -122.43
-   ],
-   "hood": "Pacific Heights",
-   "storms": 3,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 205.4
-  },
-  {
-   "cell": [
-    37.803,
-    -122.406
-   ],
-   "hood": "North Beach",
-   "storms": 3,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": null
+   "hood": "South of Market",
+   "storms": 24,
+   "reports": 39,
+   "dry_reports": 3,
+   "zone": true,
+   "elev_ft": 12.2
   },
   {
    "cell": [
@@ -110,35 +530,35 @@
     -122.406
    ],
    "hood": "South of Market",
-   "storms": 3,
-   "reports": 3,
+   "storms": 24,
+   "reports": 35,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": null
+   "zone": true,
+   "elev_ft": 15.3
   },
   {
    "cell": [
-    37.7475,
-    -122.3955
+    37.782000000000004,
+    -122.424
    ],
-   "hood": "Bayview Hunters Point",
-   "storms": 2,
-   "reports": 5,
+   "hood": "Western Addition",
+   "storms": 22,
+   "reports": 46,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 12.6
+   "zone": false,
+   "elev_ft": 125.8
   },
   {
    "cell": [
-    37.785000000000004,
-    -122.47200000000001
+    37.782000000000004,
+    -122.43900000000001
    ],
-   "hood": "Outer Richmond",
-   "storms": 2,
-   "reports": 4,
+   "hood": "Western Addition",
+   "storms": 21,
+   "reports": 44,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": null
+   "zone": false,
+   "elev_ft": 165.1
   },
   {
    "cell": [
@@ -146,252 +566,329 @@
     -122.397
    ],
    "hood": "Bayview Hunters Point",
-   "storms": 2,
-   "reports": 4,
+   "storms": 21,
+   "reports": 31,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 10.3
-  },
-  {
-   "cell": [
-    37.800000000000004,
-    -122.4315
-   ],
-   "hood": "Marina",
-   "storms": 2,
-   "reports": 4,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 46.7
-  },
-  {
-   "cell": [
-    37.728,
-    -122.4045
-   ],
-   "hood": "Portola",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
+   "zone": true,
    "elev_ft": null
-  },
-  {
-   "cell": [
-    37.761,
-    -122.5095
-   ],
-   "hood": "Sunset/Parkside",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 22.3
-  },
-  {
-   "cell": [
-    37.773,
-    -122.4465
-   ],
-   "hood": "Golden Gate Park",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 233.0
-  },
-  {
-   "cell": [
-    37.797000000000004,
-    -122.424
-   ],
-   "hood": "Russian Hill",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 123.7
-  },
-  {
-   "cell": [
-    37.803,
-    -122.4075
-   ],
-   "hood": "North Beach",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 196.1
-  },
-  {
-   "cell": [
-    37.779,
-    -122.397
-   ],
-   "hood": "South of Market",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 12.5
   },
   {
    "cell": [
     37.791000000000004,
-    -122.4225
+    -122.436
    ],
-   "hood": "Nob Hill",
-   "storms": 2,
-   "reports": 3,
+   "hood": "Pacific Heights",
+   "storms": 21,
+   "reports": 26,
    "dry_reports": 0,
-   "zone": null,
+   "zone": false,
    "elev_ft": null
   },
   {
    "cell": [
-    37.7805,
+    37.743,
+    -122.427
+   ],
+   "hood": "Noe Valley",
+   "storms": 20,
+   "reports": 24,
+   "dry_reports": 1,
+   "zone": false,
+   "elev_ft": 133.5
+  },
+  {
+   "cell": [
+    37.7745,
+    -122.4
+   ],
+   "hood": "Mission Bay",
+   "storms": 19,
+   "reports": 38,
+   "dry_reports": 0,
+   "zone": true,
+   "elev_ft": 9.9
+  },
+  {
+   "cell": [
+    37.7775,
+    -122.4045
+   ],
+   "hood": "South of Market",
+   "storms": 19,
+   "reports": 31,
+   "dry_reports": 1,
+   "zone": true,
+   "elev_ft": 12.3
+  },
+  {
+   "cell": [
+    37.785000000000004,
+    -122.433
+   ],
+   "hood": "Western Addition",
+   "storms": 19,
+   "reports": 29,
+   "dry_reports": 3,
+   "zone": true,
+   "elev_ft": 130.8
+  },
+  {
+   "cell": [
+    37.7745,
+    -122.418
+   ],
+   "hood": "Mission",
+   "storms": 18,
+   "reports": 42,
+   "dry_reports": 5,
+   "zone": false,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.779,
+    -122.4105
+   ],
+   "hood": "South of Market",
+   "storms": 18,
+   "reports": 33,
+   "dry_reports": 1,
+   "zone": false,
+   "elev_ft": 37.6
+  },
+  {
+   "cell": [
+    37.789500000000004,
+    -122.424
+   ],
+   "hood": "Pacific Heights",
+   "storms": 18,
+   "reports": 24,
+   "dry_reports": 1,
+   "zone": false,
+   "elev_ft": 220.0
+  },
+  {
+   "cell": [
+    37.7685,
+    -122.415
+   ],
+   "hood": "Mission",
+   "storms": 17,
+   "reports": 25,
+   "dry_reports": 1,
+   "zone": true,
+   "elev_ft": 18.6
+  },
+  {
+   "cell": [
+    37.782000000000004,
     -122.4225
    ],
    "hood": "Western Addition",
-   "storms": 2,
-   "reports": 3,
+   "storms": 16,
+   "reports": 35,
+   "dry_reports": 1,
+   "zone": false,
+   "elev_ft": 107.3
+  },
+  {
+   "cell": [
+    37.786500000000004,
+    -122.433
+   ],
+   "hood": "Pacific Heights",
+   "storms": 16,
+   "reports": 25,
+   "dry_reports": 1,
+   "zone": true,
+   "elev_ft": 146.8
+  },
+  {
+   "cell": [
+    37.749,
+    -122.3865
+   ],
+   "hood": "Bayview Hunters Point",
+   "storms": 16,
+   "reports": 24,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 83.3
+   "zone": false,
+   "elev_ft": 12.0
+  },
+  {
+   "cell": [
+    37.773,
+    -122.436
+   ],
+   "hood": "Haight Ashbury",
+   "storms": 16,
+   "reports": 23,
+   "dry_reports": 2,
+   "zone": false,
+   "elev_ft": 176.5
   },
   {
    "cell": [
     37.752,
-    -122.43900000000001
+    -122.4615
    ],
-   "hood": "Noe Valley",
-   "storms": 2,
-   "reports": 3,
+   "hood": "West of Twin Peaks",
+   "storms": 16,
+   "reports": 19,
    "dry_reports": 0,
-   "zone": null,
+   "zone": true,
+   "elev_ft": null
+  },
+  {
+   "cell": [
+    37.731,
+    -122.47200000000001
+   ],
+   "hood": "West of Twin Peaks",
+   "storms": 16,
+   "reports": 19,
+   "dry_reports": 0,
+   "zone": false,
    "elev_ft": null
   },
   {
    "cell": [
     37.785000000000004,
-    -122.4645
+    -122.44200000000001
    ],
-   "hood": "Inner Richmond",
-   "storms": 2,
-   "reports": 3,
+   "hood": "Japantown",
+   "storms": 16,
+   "reports": 18,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 176.1
+   "zone": false,
+   "elev_ft": 158.1
   },
   {
    "cell": [
-    37.7745,
-    -122.4225
-   ],
-   "hood": "Hayes Valley",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 60.1
-  },
-  {
-   "cell": [
-    37.797000000000004,
-    -122.43900000000001
-   ],
-   "hood": "Marina",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 81.7
-  },
-  {
-   "cell": [
-    37.7175,
-    -122.4045
-   ],
-   "hood": "Visitacion Valley",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": null
-  },
-  {
-   "cell": [
-    37.761,
-    -122.4255
+    37.767,
+    -122.4285
    ],
    "hood": "Castro/Upper Market",
-   "storms": 2,
-   "reports": 3,
+   "storms": 15,
+   "reports": 33,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 51.0
+   "zone": true,
+   "elev_ft": 96.2
   },
   {
    "cell": [
-    37.791000000000004,
+    37.746,
     -122.394
    ],
-   "hood": "Financial District/South Beach",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 10.6
-  },
-  {
-   "cell": [
-    37.7685,
-    -122.45100000000001
-   ],
-   "hood": "Haight Ashbury",
-   "storms": 2,
-   "reports": 3,
-   "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 273.9
-  },
-  {
-   "cell": [
-    37.7385,
-    -122.3865
-   ],
    "hood": "Bayview Hunters Point",
-   "storms": 2,
-   "reports": 3,
+   "storms": 15,
+   "reports": 30,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 66.0
+   "zone": true,
+   "elev_ft": 10.3
   },
   {
    "cell": [
     37.7745,
-    -122.4165
+    -122.4015
    ],
-   "hood": "South of Market",
-   "storms": 2,
-   "reports": 2,
+   "hood": "Mission Bay",
+   "storms": 15,
+   "reports": 29,
    "dry_reports": 0,
-   "zone": null,
-   "elev_ft": 43.8
+   "zone": true,
+   "elev_ft": 12.6
   },
   {
    "cell": [
-    37.795500000000004,
-    -122.424
+    37.801500000000004,
+    -122.421
    ],
-   "hood": "Pacific Heights",
-   "storms": 2,
-   "reports": 2,
+   "hood": "Russian Hill",
+   "storms": 15,
+   "reports": 27,
+   "dry_reports": 3,
+   "zone": false,
+   "elev_ft": 276.8
+  },
+  {
+   "cell": [
+    37.785000000000004,
+    -122.4225
+   ],
+   "hood": "Western Addition",
+   "storms": 15,
+   "reports": 24,
+   "dry_reports": 1,
+   "zone": false,
+   "elev_ft": 174.1
+  },
+  {
+   "cell": [
+    37.743,
+    -122.421
+   ],
+   "hood": "Bernal Heights",
+   "storms": 15,
+   "reports": 17,
    "dry_reports": 0,
-   "zone": null,
+   "zone": false,
    "elev_ft": null
+  },
+  {
+   "cell": [
+    37.7325,
+    -122.4345
+   ],
+   "hood": "West of Twin Peaks",
+   "storms": 15,
+   "reports": 16,
+   "dry_reports": 1,
+   "zone": false,
+   "elev_ft": 194.8
   }
  ],
- "dry_counts": []
+ "dry_counts": [
+  13,
+  13,
+  7,
+  17,
+  9,
+  21,
+  15,
+  14,
+  15,
+  101,
+  43,
+  28,
+  13,
+  32,
+  346,
+  42,
+  22,
+  54,
+  33,
+  25,
+  34,
+  21,
+  35,
+  15,
+  21,
+  37,
+  31,
+  11,
+  24,
+  30,
+  25,
+  33,
+  30,
+  27,
+  32,
+  21,
+  5,
+  4,
+  1,
+  4
+ ]
 }

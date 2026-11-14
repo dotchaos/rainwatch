@@ -2,127 +2,130 @@
 
 Storm days (downtown SF daily rain ≥ 1.00"): **81**. Dry comparison days sampled: 40.
 
-- 2010-01-20: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272010-01-20T00%3A00%3A00%27+and+%272010-01-21T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2010-04-11: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272010-04-11T00%3A00%3A00%27+and+%272010-04-12T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2010-11-07: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272010-11-07T00%3A00%3A00%27+and+%272010-11-08T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2010-12-08: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272010-12-08T00%3A00%3A00%27+and+%272010-12-09T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2010-12-19: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272010-12-19T00%3A00%3A00%27+and+%272010-12-20T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2010-12-28: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272010-12-28T00%3A00%3A00%27+and+%272010-12-29T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2011-02-17: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272011-02-17T00%3A00%3A00%27+and+%272011-02-18T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2011-02-19: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272011-02-19T00%3A00%3A00%27+and+%272011-02-20T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2011-03-19: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272011-03-19T00%3A00%3A00%27+and+%272011-03-20T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2011-03-24: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272011-03-24T00%3A00%3A00%27+and+%272011-03-25T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2012-01-20: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272012-01-20T00%3A00%3A00%27+and+%272012-01-21T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2012-03-14: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272012-03-14T00%3A00%3A00%27+and+%272012-03-15T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2012-03-24: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272012-03-24T00%3A00%3A00%27+and+%272012-03-25T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2012-04-12: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272012-04-12T00%3A00%3A00%27+and+%272012-04-13T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2012-11-30: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272012-11-30T00%3A00%3A00%27+and+%272012-12-01T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2012-12-02: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272012-12-02T00%3A00%3A00%27+and+%272012-12-03T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2012-12-23: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272012-12-23T00%3A00%3A00%27+and+%272012-12-24T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2012-12-25: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272012-12-25T00%3A00%3A00%27+and+%272012-12-26T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-02-08: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-02-08T00%3A00%3A00%27+and+%272014-02-09T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-02-09: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-02-09T00%3A00%3A00%27+and+%272014-02-10T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-02-28: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-02-28T00%3A00%3A00%27+and+%272014-03-01T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-12-02: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-12-02T00%3A00%3A00%27+and+%272014-12-03T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-12-03: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-12-03T00%3A00%3A00%27+and+%272014-12-04T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-12-11: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-12-11T00%3A00%3A00%27+and+%272014-12-12T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-12-15: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-12-15T00%3A00%3A00%27+and+%272014-12-16T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-12-16: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-12-16T00%3A00%3A00%27+and+%272014-12-17T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2014-12-19: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272014-12-19T00%3A00%3A00%27+and+%272014-12-20T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2015-12-20: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272015-12-20T00%3A00%3A00%27+and+%272015-12-21T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2015-12-21: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272015-12-21T00%3A00%3A00%27+and+%272015-12-22T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2016-01-05: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272016-01-05T00%3A00%3A00%27+and+%272016-01-06T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2016-01-06: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272016-01-06T00%3A00%3A00%27+and+%272016-01-07T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2016-01-17: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272016-01-17T00%3A00%3A00%27+and+%272016-01-18T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2016-01-19: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272016-01-19T00%3A00%3A00%27+and+%272016-01-20T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2016-03-05: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272016-03-05T00%3A00%3A00%27+and+%272016-03-06T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2016-03-10: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272016-03-10T00%3A00%3A00%27+and+%272016-03-11T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2016-03-12: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272016-03-12T00%3A00%3A00%27+and+%272016-03-13T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2016-12-15: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272016-12-15T00%3A00%3A00%27+and+%272016-12-16T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2017-01-08: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272017-01-08T00%3A00%3A00%27+and+%272017-01-09T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2017-01-10: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272017-01-10T00%3A00%3A00%27+and+%272017-01-11T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2017-01-20: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272017-01-20T00%3A00%3A00%27+and+%272017-01-21T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2017-02-17: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272017-02-17T00%3A00%3A00%27+and+%272017-02-18T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2017-02-20: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272017-02-20T00%3A00%3A00%27+and+%272017-02-21T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2017-03-04: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272017-03-04T00%3A00%3A00%27+and+%272017-03-05T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2017-11-16: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272017-11-16T00%3A00%3A00%27+and+%272017-11-17T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2018-01-08: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272018-01-08T00%3A00%3A00%27+and+%272018-01-09T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2018-04-06: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272018-04-06T00%3A00%3A00%27+and+%272018-04-07T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2018-04-07: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272018-04-07T00%3A00%3A00%27+and+%272018-04-08T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2019-01-06: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272019-01-06T00%3A00%3A00%27+and+%272019-01-07T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2019-01-16: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272019-01-16T00%3A00%3A00%27+and+%272019-01-17T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2019-02-13: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272019-02-13T00%3A00%3A00%27+and+%272019-02-14T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2019-02-14: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272019-02-14T00%3A00%3A00%27+and+%272019-02-15T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2020-01-16: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272020-01-16T00%3A00%3A00%27+and+%272020-01-17T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2021-10-24: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272021-10-24T00%3A00%3A00%27+and+%272021-10-25T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2021-12-13: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272021-12-13T00%3A00%3A00%27+and+%272021-12-14T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2022-12-27: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272022-12-27T00%3A00%3A00%27+and+%272022-12-28T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2022-12-31: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272022-12-31T00%3A00%3A00%27+and+%272023-01-01T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2023-01-04: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272023-01-04T00%3A00%3A00%27+and+%272023-01-05T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2023-01-09: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272023-01-09T00%3A00%3A00%27+and+%272023-01-10T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2023-01-10: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272023-01-10T00%3A00%3A00%27+and+%272023-01-11T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2023-01-14: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272023-01-14T00%3A00%3A00%27+and+%272023-01-15T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2023-03-21: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272023-03-21T00%3A00%3A00%27+and+%272023-03-22T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2023-12-18: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272023-12-18T00%3A00%3A00%27+and+%272023-12-19T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2023-12-20: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272023-12-20T00%3A00%3A00%27+and+%272023-12-21T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2024-01-31: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272024-01-31T00%3A00%3A00%27+and+%272024-02-01T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2024-02-01: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272024-02-01T00%3A00%3A00%27+and+%272024-02-02T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2024-02-04: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272024-02-04T00%3A00%3A00%27+and+%272024-02-05T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2024-02-20: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272024-02-20T00%3A00%3A00%27+and+%272024-02-21T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2024-03-01: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272024-03-01T00%3A00%3A00%27+and+%272024-03-02T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2024-11-22: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272024-11-22T00%3A00%3A00%27+and+%272024-11-23T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2024-12-14: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272024-12-14T00%3A00%3A00%27+and+%272024-12-15T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2025-02-04: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272025-02-04T00%3A00%3A00%27+and+%272025-02-05T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2025-02-13: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272025-02-13T00%3A00%3A00%27+and+%272025-02-14T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2025-11-13: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272025-11-13T00%3A00%3A00%27+and+%272025-11-14T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2025-12-22: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272025-12-22T00%3A00%3A00%27+and+%272025-12-23T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2026-01-05: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272026-01-05T00%3A00%3A00%27+and+%272026-01-06T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-- 2026-02-16: 311 pull failed (428 Client Error:  for url: https://data.sfgov.org/resource/vw6y-z8j6.json?%24where=requested_datetime+between+%272026-02-16T00%3A00%3A00%27+and+%272026-02-17T12%3A00%3A00%27+AND+%28upper%28service_subtype%29+like+%27%25FLOOD%25%27+OR+upper%28service_subtype%29+like+%27%25BACK_UP%25%27+OR+upper%28service_name%29+like+%27%25CATCH+BASIN%25%27%29&%24limit=50000&%24select=service_request_id%2Crequested_datetime%2Cservice_name%2Cservice_subtype%2Clat%2Clong%2Canalysis_neighborhood)
-311 flood-type reports on storm days: **707**, of which 27 (3%) have no usable location.
-(SFPUC zone check unavailable: Expecting value: line 1 column 1 (char 0))
+311 flood-type reports on storm days: **12706**, of which 1105 (8%) have no usable location.
+Background on dry winter days: median 24 reports/day.
+
 ## Spots reported in the most separate storms
 
 | Rank | Cell (lat, lon) | Neighborhood | Storms with reports | Total reports | Dry-day reports | In SFPUC 100-yr zone | Ground elevation (ft) |
 |---|---|---|---|---|---|---|---|
-| 1 | 37.7880, -122.3940 | Financial District/South Beach | 4 | 4 | 0 | ? | 33.5 |
-| 2 | 37.7895, -122.4240 | Pacific Heights | 3 | 5 | 0 | ? | None |
-| 3 | 37.7805, -122.4300 | Western Addition | 3 | 4 | 0 | ? | 104.8 |
-| 4 | 37.7505, -122.4300 | Noe Valley | 3 | 3 | 0 | ? | 157.0 |
-| 5 | 37.7880, -122.4300 | Pacific Heights | 3 | 3 | 0 | ? | 205.4 |
-| 6 | 37.8030, -122.4060 | North Beach | 3 | 3 | 0 | ? | None |
-| 7 | 37.7775, -122.4060 | South of Market | 3 | 3 | 0 | ? | None |
-| 8 | 37.7475, -122.3955 | Bayview Hunters Point | 2 | 5 | 0 | ? | 12.6 |
-| 9 | 37.7850, -122.4720 | Outer Richmond | 2 | 4 | 0 | ? | None |
-| 10 | 37.7460, -122.3970 | Bayview Hunters Point | 2 | 4 | 0 | ? | 10.3 |
-| 11 | 37.8000, -122.4315 | Marina | 2 | 4 | 0 | ? | 46.7 |
-| 12 | 37.7280, -122.4045 | Portola | 2 | 3 | 0 | ? | None |
-| 13 | 37.7610, -122.5095 | Sunset/Parkside | 2 | 3 | 0 | ? | 22.3 |
-| 14 | 37.7730, -122.4465 | Golden Gate Park | 2 | 3 | 0 | ? | 233.0 |
-| 15 | 37.7970, -122.4240 | Russian Hill | 2 | 3 | 0 | ? | 123.7 |
-| 16 | 37.8030, -122.4075 | North Beach | 2 | 3 | 0 | ? | 196.1 |
-| 17 | 37.7790, -122.3970 | South of Market | 2 | 3 | 0 | ? | 12.5 |
-| 18 | 37.7910, -122.4225 | Nob Hill | 2 | 3 | 0 | ? | None |
-| 19 | 37.7805, -122.4225 | Western Addition | 2 | 3 | 0 | ? | 83.3 |
-| 20 | 37.7520, -122.4390 | Noe Valley | 2 | 3 | 0 | ? | None |
-| 21 | 37.7850, -122.4645 | Inner Richmond | 2 | 3 | 0 | ? | 176.1 |
-| 22 | 37.7745, -122.4225 | Hayes Valley | 2 | 3 | 0 | ? | 60.1 |
-| 23 | 37.7970, -122.4390 | Marina | 2 | 3 | 0 | ? | 81.7 |
-| 24 | 37.7175, -122.4045 | Visitacion Valley | 2 | 3 | 0 | ? | None |
-| 25 | 37.7610, -122.4255 | Castro/Upper Market | 2 | 3 | 0 | ? | 51.0 |
-| 26 | 37.7910, -122.3940 | Financial District/South Beach | 2 | 3 | 0 | ? | 10.6 |
-| 27 | 37.7685, -122.4510 | Haight Ashbury | 2 | 3 | 0 | ? | 273.9 |
-| 28 | 37.7385, -122.3865 | Bayview Hunters Point | 2 | 3 | 0 | ? | 66.0 |
-| 29 | 37.7745, -122.4165 | South of Market | 2 | 2 | 0 | ? | 43.8 |
-| 30 | 37.7955, -122.4240 | Pacific Heights | 2 | 2 | 0 | ? | None |
+| 1 | 37.7745, -122.4360 | Hayes Valley | 29 | 37 | 0 | no | 191.6 |
+| 2 | 37.7805, -122.4225 | Western Addition | 28 | 69 | 0 | no | 83.3 |
+| 3 | 37.7790, -122.4030 | South of Market | 24 | 39 | 3 | yes | 12.2 |
+| 4 | 37.7775, -122.4060 | South of Market | 24 | 35 | 0 | yes | 15.3 |
+| 5 | 37.7820, -122.4240 | Western Addition | 22 | 46 | 0 | no | 125.8 |
+| 6 | 37.7820, -122.4390 | Western Addition | 21 | 44 | 0 | no | 165.1 |
+| 7 | 37.7460, -122.3970 | Bayview Hunters Point | 21 | 31 | 0 | yes | None |
+| 8 | 37.7910, -122.4360 | Pacific Heights | 21 | 26 | 0 | no | None |
+| 9 | 37.7430, -122.4270 | Noe Valley | 20 | 24 | 1 | no | 133.5 |
+| 10 | 37.7745, -122.4000 | Mission Bay | 19 | 38 | 0 | yes | 9.9 |
+| 11 | 37.7775, -122.4045 | South of Market | 19 | 31 | 1 | yes | 12.3 |
+| 12 | 37.7850, -122.4330 | Western Addition | 19 | 29 | 3 | yes | 130.8 |
+| 13 | 37.7745, -122.4180 | Mission | 18 | 42 | 5 | no | None |
+| 14 | 37.7790, -122.4105 | South of Market | 18 | 33 | 1 | no | 37.6 |
+| 15 | 37.7895, -122.4240 | Pacific Heights | 18 | 24 | 1 | no | 220.0 |
+| 16 | 37.7685, -122.4150 | Mission | 17 | 25 | 1 | yes | 18.6 |
+| 17 | 37.7820, -122.4225 | Western Addition | 16 | 35 | 1 | no | 107.3 |
+| 18 | 37.7865, -122.4330 | Pacific Heights | 16 | 25 | 1 | yes | 146.8 |
+| 19 | 37.7490, -122.3865 | Bayview Hunters Point | 16 | 24 | 0 | no | 12.0 |
+| 20 | 37.7730, -122.4360 | Haight Ashbury | 16 | 23 | 2 | no | 176.5 |
+| 21 | 37.7520, -122.4615 | West of Twin Peaks | 16 | 19 | 0 | yes | None |
+| 22 | 37.7310, -122.4720 | West of Twin Peaks | 16 | 19 | 0 | no | None |
+| 23 | 37.7850, -122.4420 | Japantown | 16 | 18 | 0 | no | 158.1 |
+| 24 | 37.7670, -122.4285 | Castro/Upper Market | 15 | 33 | 0 | yes | 96.2 |
+| 25 | 37.7460, -122.3940 | Bayview Hunters Point | 15 | 30 | 0 | yes | 10.3 |
+| 26 | 37.7745, -122.4015 | Mission Bay | 15 | 29 | 0 | yes | 12.6 |
+| 27 | 37.8015, -122.4210 | Russian Hill | 15 | 27 | 3 | no | 276.8 |
+| 28 | 37.7850, -122.4225 | Western Addition | 15 | 24 | 1 | no | 174.1 |
+| 29 | 37.7430, -122.4210 | Bernal Heights | 15 | 17 | 0 | no | None |
+| 30 | 37.7325, -122.4345 | West of Twin Peaks | 15 | 16 | 1 | no | 194.8 |
 
-17th & Folsom cell rank: **None** of 521 cells with any storm-day report; storm-reports within 300 m: 3.
+17th & Folsom cell rank: **150** of 2899 cells with any storm-day report; storm-reports within 300 m: 59.
+
+Cells reported in ≥3 storms: 1311, of which 189 (14%) touch the SFPUC 100-year zone; cells reported in only 1 storm (sample of 300): 9% touch it.
 
 ## Citywide reports vs the storm's peak hour at the Mint gauge
 
 | Storm day | Daily rain (in) | Peak hour at Mint (in) | 311 flood-type reports |
 |---|---|---|---|
+| 2022-12-31 | 5.46 | 0.97 | 711 |
+| 2023-01-10 | 1.22 | 0.28 | 525 |
+| 2021-10-24 | 4.02 | 0.45 | 524 |
+| 2014-12-03 | 1.80 | 0.71 | 476 |
+| 2014-12-02 | 1.61 | 0.71 | 465 |
+| 2019-01-16 | 1.14 | 0.24 | 452 |
+| 2023-01-09 | 1.20 | 0.31 | 430 |
+| 2014-12-11 | 3.40 | 0.52 | 399 |
+| 2023-12-18 | 1.40 | 0.46 | 395 |
+| 2021-12-13 | 2.57 | 0.28 | 380 |
+| 2024-11-22 | 2.97 | 0.47 | 352 |
 | 2009-10-13 | 2.48 | — | 298 |
+| 2019-02-13 | 2.49 | 0.53 | 283 |
+| 2024-01-31 | 1.67 | 0.47 | 242 |
+| 2017-11-16 | 1.48 | 0.26 | 239 |
+| 2012-12-02 | 1.06 | 0.5 | 215 |
+| 2025-11-13 | 1.28 | 0.38 | 213 |
+| 2020-01-16 | 1.24 | 0.39 | 211 |
+| 2017-01-20 | 1.05 | 0.41 | 205 |
+| 2018-01-08 | 3.15 | 0.26 | 204 |
+| 2023-01-04 | 1.06 | 0.24 | 201 |
 | 2008-11-01 | 1.12 | — | 190 |
+| 2016-01-05 | 1.18 | 0.35 | 174 |
+| 2024-02-20 | 1.50 | 0.88 | 170 |
+| 2012-11-30 | 1.39 | 0.19 | 162 |
+| 2023-12-20 | 1.21 | 0.22 | 157 |
+| 2017-01-10 | 1.27 | 0.18 | 154 |
+| 2016-01-19 | 1.20 | 0.41 | 143 |
+| 2019-01-06 | 1.28 | 0.2 | 137 |
+| 2018-04-06 | 2.22 | 0.3 | 130 |
+| 2015-12-21 | 1.30 | 0.14 | 129 |
+| 2025-02-04 | 2.89 | 0.32 | 128 |
+| 2024-02-01 | 1.07 | 0.3 | 125 |
 | 2010-01-19 | 1.24 | — | 124 |
+| 2014-12-15 | 1.23 | 0.26 | 119 |
+| 2016-01-06 | 1.30 | 0.35 | 118 |
+| 2019-02-14 | 1.00 | 0.14 | 117 |
+| 2011-02-17 | 1.04 | 0.3 | 113 |
+| 2016-03-10 | 1.10 | 0.27 | 110 |
+| 2016-12-15 | 1.31 | 0.28 | 107 |
+| 2024-03-01 | 1.17 | 0.44 | 106 |
+| 2022-12-27 | 1.60 | 0.43 | 102 |
+| 2016-03-12 | 1.14 | 0.42 | 101 |
+| 2012-04-12 | 1.24 | 0.41 | 96 |
+| 2014-12-16 | 1.12 | 0.28 | 96 |
+| 2017-01-08 | 1.46 | 0.21 | 94 |
+| 2023-03-21 | 1.06 | 0.24 | 93 |
+| 2012-01-20 | 1.41 | 0.26 | 88 |
+| 2025-12-22 | 1.82 | 0.41 | 88 |
+| 2024-12-14 | 1.42 | 0.32 | 87 |
+| 2015-12-20 | 1.08 | 0.27 | 85 |
+| 2017-02-20 | 1.83 | 0.3 | 84 |
+| 2024-02-04 | 1.31 | 0.26 | 83 |
+| 2011-03-24 | 1.24 | 0.21 | 82 |
+| 2012-12-23 | 1.00 | 0.15 | 82 |
+| 2016-01-17 | 1.07 | 0.43 | 82 |
+| 2017-03-04 | 1.05 | 0.48 | 78 |
+| 2023-01-14 | 1.09 | 0.17 | 78 |
+| 2016-03-05 | 1.29 | 0.19 | 77 |
+| 2014-12-19 | 1.24 | 0.45 | 72 |
 | 2009-02-15 | 2.18 | — | 65 |
+| 2017-02-17 | 1.05 | 0.13 | 63 |
+| 2014-02-09 | 1.13 | 0.32 | 60 |
+| 2014-02-28 | 1.12 | 0.24 | 57 |
+| 2010-01-20 | 1.03 | — | 51 |
+| 2010-11-07 | 1.18 | — | 51 |
+| 2014-02-08 | 1.15 | 0.32 | 51 |
+| 2018-04-07 | 1.07 | 0.07 | 51 |
+| 2010-04-11 | 1.17 | — | 49 |
+| 2025-02-13 | 1.91 | 0.4 | 49 |
+| 2012-03-14 | 1.47 | 0.19 | 48 |
+| 2026-02-16 | 1.07 | 0.25 | 48 |
+| 2026-01-05 | 1.07 | 0.19 | 40 |
+| 2011-02-19 | 1.05 | 0.16 | 36 |
+| 2012-12-25 | 1.15 | 0.3 | 36 |
+| 2010-12-08 | 1.02 | 0.17 | 33 |
+| 2010-12-28 | 1.21 | 0.21 | 32 |
 | 2009-02-22 | 1.24 | — | 30 |
+| 2010-12-19 | 1.22 | 0.26 | 28 |
+| 2012-03-24 | 1.23 | 0.12 | 26 |
+| 2011-03-19 | 1.12 | 0.27 | 21 |
