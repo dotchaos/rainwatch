@@ -1,0 +1,23 @@
+name: feasibility
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests numpy "xarray>=2025.1.2" "zarr>=3.0.8" fsspec aiohttp requests icechunk
+      - run: python tools/feasibility.py > feasibility.md; cat feasibility.md
+      - name: Save to data branch
+        run: |
+          git config user.name "rainwatch-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch -q origin data && git worktree add -B data data origin/data
+          cp feasibility.md data/ && cd data && git add feasibility.md && git commit -qm "feasibility $(date -u +%FT%TZ)"
+          for i in 1 2 3 4 5; do git push -q origin data && exit 0; git pull -q --rebase origin data; sleep 5; done; exit 1
