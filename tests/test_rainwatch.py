@@ -232,3 +232,14 @@ def test_levels_replay_history():
     assert worst(dec11_2014) == 3 and worst(dec3_2014) == 3
     assert worst(near_miss_2016) == 2      # falling behind, but not driveway
     assert worst(nov13_2026) < 2
+
+
+def test_table_starts_now_even_when_dry():
+    """Dry hours before the first rain must appear (folded), never silently skipped."""
+    from rainwatch.render import _rows_html
+    def row(label, mid):
+        return {"label": label, "hi": mid * 1.5, "lo": mid * 0.5, "mid": mid, "p_heavy": 0.0 if mid < .05 else .3,
+                "p_any": 0.05 if mid < .01 else .8, "levels": {}, "tier": "Light", "basis": "x"}
+    rows = [row(f"Sat {h} PM–{h+1} PM", 0.0) for h in range(1, 10)] + [row("Sun 4 AM–5 AM", 0.12)]
+    html = _rows_html(rows, 0.20)
+    assert "Sat 1 PM–10 PM" in html and "dry" in html and "Sun 4 AM–5 AM" in html

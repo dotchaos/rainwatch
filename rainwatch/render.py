@@ -258,13 +258,16 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
     r = report
     tot = r["total"]
     upd = _local(r["generated"], tz, "%a %b %-d, %-I:%M %p")
+    # Always start at the current hour and cover at least the next 36 hours (longer if rain
+    # is expected later); dry stretches fold into one "dry" line so no hours silently vanish.
     wet = r["wet_rows"]
+    ts = [x["t"] for x in r["rows"]]
+    end = min(len(ts), 36)
     if wet:
-        ts = [x["t"] for x in r["rows"]]
-        a, b = ts.index(wet[0]["t"]), ts.index(wet[-1]["t"])
-        table = _rows_html(r["rows"][a:b + 1], r["heavy_in"])
-    else:
-        table = "<p>No rain expected in any hour of this window.</p>"
+        end = max(end, ts.index(wet[-1]["t"]) + 1)
+    table = _rows_html(r["rows"][:end], r["heavy_in"])
+    if not wet:
+        table = "<p>No rain expected in any hour of this window.</p>" + table
     nws_tot = f" · NWS QPF total {tot['nws']:.2f}\"" if tot["nws"] is not None else ""
 
     gl = []
