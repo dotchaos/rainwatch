@@ -25,7 +25,7 @@ from rainwatch import storms as stm  # noqa: E402
 
 UTC, PT = timezone.utc, ZoneInfo("America/Los_Angeles")
 API = "https://previous-runs-api.open-meteo.com/v1/forecast"
-MODELS = [("HRRR", ["ncep_hrrr_conus", "gfs_hrrr"]), ("NBM", ["ncep_nbm_conus"]),
+MODELS = [("HRRR", ["ncep_hrrr_conus"]), ("NBM", ["ncep_nbm_conus"]),
           ("ECMWF", ["ecmwf_ifs025"]), ("GFS", ["gfs_seamless"]), ("ICON", ["icon_seamless"])]
 LEADS = (1, 2)
 MIN_STORM = 0.25      # inches: storms worth scoring

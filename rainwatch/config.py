@@ -43,7 +43,7 @@ class Config:
     # Models (Open-Meteo names). Ensembles are pooled member-by-member, never averaged.
     ensemble_models: list[str] = field(default_factory=lambda: ["ecmwf_ifs025", "gfs_seamless", "icon_seamless"])
     deterministic_models: dict[str, list[str]] = field(default_factory=lambda: {
-        "HRRR": ["ncep_hrrr_conus", "gfs_hrrr"],
+        "HRRR": ["ncep_hrrr_conus"],   # never gfs_hrrr: beyond HRRR range it is plain GFS
         "NBM": ["ncep_nbm_conus"],
         "ECMWF": ["ecmwf_ifs025"],
     })
