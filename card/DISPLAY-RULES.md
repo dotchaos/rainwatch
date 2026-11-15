@@ -37,7 +37,7 @@ Fixtures never type a time or a period. From the forecast the card derives:
 
 ## Clock words
 - 12 PM is written "noon" and 12 AM "midnight", everywhere times appear (chart labels, alert, insight, axis): "Sun noon–10 PM", "until about midnight".
-- The hourly strip's tag says when its six snapshots fall: "Today" (all between 5 AM and 8 PM), "Today and tonight", "Overnight", or "This morning".
+- The hourly strip's heading (replacing "The next few hours") says when its six snapshots fall: "Today" (all between 5 AM and 8 PM), "Today and tonight", "Overnight", or "This morning".
 
 ## Derived labels
 - Critical-window labels always carry day and time and are computed from `startHour`/`endHour` (`windowLabel`): "Thu 4–9 PM", "Fri 8 AM–4 PM", "Thu 11 PM–Fri 2 AM". Fixtures no longer carry window labels.

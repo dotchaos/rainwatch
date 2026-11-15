@@ -2,7 +2,7 @@
 
 ## v0.6: clock words
 - "noon" and "midnight" replace 12 PM / 12 AM in every derived time (shared `clockText`); windows ending at midnight read "Thu 11 PM–midnight", not "Fri 12 AM".
-- The hourly strip's tag is derived from when the snapshots fall ("Overnight" for 7 PM–5 AM) instead of always "Today".
+- The hourly strip's heading replaces "The next few hours" and says when the snapshots fall ("Overnight" for 8 PM–6 AM, "Today" for a morning start); the separate tag is gone.
 - Effect: heat label "Sat noon–7 PM" (was "Sat 12–7 PM"); October, rain and storm unchanged (no 12 o'clock times, morning start → "Today").
 
 ## v0.5: say what to wear and when

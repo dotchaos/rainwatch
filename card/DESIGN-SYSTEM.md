@@ -21,6 +21,9 @@
 - Day labels remain quiet. A final day sliver smaller than 12h is not separately labeled.
 - `Sandbags` represents a local consequence, not a universal rainfall threshold. It cannot be inferred solely from rain intensity.
 
+## Hourly strip
+- Heading is derived from when the six snapshots fall (`hourlySpan`): "Today", "Today and tonight", "Overnight" or "This morning". No separate tag.
+
 ## Three-day outlook
 - Each row's bar spans the day's low to high on one scale shared by all three rows (`tempScale`), so warmer days sit further right and wider swings show as longer bars.
 - The section subtitle is derived from the forecast (`deriveDaysSummary`); components never hard-code scenario wording.
