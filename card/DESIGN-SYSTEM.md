@@ -5,7 +5,7 @@
 
 ## Composition rules (integrated hierarchy)
 Every scenario uses the same four sections, in this order:
-1. **Now & next.** The header shows the location and then the month and local time ("NOVEMBER · 11:39 AM"). Below it, one row has the icon and temperature on the left and the condition on the right. Then come the headline (the event and its window), a grey detail line and one action line with an icon. Flood and extreme heat lead the same way: their headline is the urgent one, the action line uses the red shield or the sun, and flood adds its validation caveat in small print. There is no separate alert block.
+1. **Now & next.** The header shows the location and, on the right, when the forecast was updated ("Updated 2:36 PM"); the page bar above the card shows only the links, plus a late warning if the update is overdue. Below it, one row has the icon and temperature on the left and the condition on the right. Then come the headline (the event and its window), a grey detail line and one action line with an icon. Flood and extreme heat lead the same way: their headline is the urgent one, the action line uses the red shield or the sun, and flood adds its validation caveat in small print. There is no separate alert block.
 2. **Next 3 days.** The action graph, shown only when precipitation or heat makes it useful (none on calm days). It is titled "Action outlook" or "Heat outlook".
 3. **Next hours.** Consecutive hours, labelled "Local time", in a sideways-scrolling row.
 4. **More information.** Daily rows, then (live) the details link and the source line.

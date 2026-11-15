@@ -13,10 +13,10 @@ import { Timeline } from './Timeline';
 const deg = (v: number | null) => v === null ? '—' : `${v}°`;
 const ACTION_ICON = { boots: Footprints, shield: ShieldAlert, sun: Sun };
 
-/** Location, then month and local time. */
+/** Location, then when the forecast was updated (local time). */
 function Header({ s }: { s: Scenario }) {
   const time = s.observedAt.split('·').pop()!.trim();
-  return <header className="location"><span><MapPin size={17} /><strong>{s.location}</strong></span><small>{`${s.season} · ${time}`.toUpperCase()}</small></header>;
+  return <header className="location"><span><MapPin size={17} /><strong>{s.location}</strong></span><small className="updated">Updated {time}</small></header>;
 }
 
 /** 1. Now & next: current conditions, then the headline, its detail and one actionable line. */

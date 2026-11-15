@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.12.4: header
+- The card header's right side reads "Updated 2:36 PM" instead of the month and time. The page bar drops its duplicate "Updated … ago" and keeps the links, plus "Late: last updated …" when an update is overdue.
+
 ## v0.12.3: graph refinements
 - **TODAY always named:** at 2 PM, today's stretch no longer sits unlabelled.
 - **Sandbags to the hour:** on flood days, a block that is only partly Sandbags splits at the hour. The storm's 4 PM start no longer fills the 3–6 PM block red.
