@@ -107,7 +107,9 @@ def build(report: dict, cond: Conditions, cfg, now: datetime) -> dict:
     hourly = []
     for k, i in enumerate((0, 2, 4, 6, 8, 10)):
         icon, _ = sky(i)
-        hourly.append({"label": "Now" if k == 0 else hours[i].astimezone(tz).strftime("%-I %p"),
+        lt = hours[i].astimezone(tz)
+        lbl = "Now" if k == 0 else "Noon" if lt.hour == 12 else "Midnight" if lt.hour == 0 else lt.strftime("%-I %p")
+        hourly.append({"label": lbl,
                        "temperatureF": round(temps[i]) if temps[i] is not None else None, "icon": icon})
     icon0, words0 = sky(0)
     td = cond.daily.get(today.isoformat()) or {}

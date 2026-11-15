@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { daysAt, layoutLabels, showTimeline, tempScale, timeAt, validateScenario, windowLabel } from './rules';
-import { actionWindow, criticalWindows, deriveAlert, deriveDaysSummary, deriveInsight, labelledWindows } from './derive';
+import { actionWindow, criticalWindows, deriveAlert, deriveDaysSummary, deriveInsight, hourlySpan, labelledWindows } from './derive';
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
 
 describe('canonical scenarios', () => {
@@ -23,11 +23,11 @@ describe('every timing statement is derived from the forecast', () => {
   });
   it('heat: hottest period and outdoor window agree with the forecast', () => {
     const s = byId('heat');
-    expect(criticalWindows(s).map(w => w.label)).toEqual(['Fri 1–6 PM', 'Sat 12–7 PM']);
+    expect(criticalWindows(s).map(w => w.label)).toEqual(['Fri 1–6 PM', 'Sat noon–7 PM']);
     const a = deriveAlert(s)!;
     expect(a.level).toBe('EXTREME HEAT · FRIDAY & SATURDAY');
     expect(a.headline).toBe('Plan to stay cool. 100°+ ahead.');
-    expect(a.summary).toBe('Hottest around Fri 1–6 PM and Sat 12–7 PM. Timing may shift. Lows near 75° may offer little relief overnight.');
+    expect(a.summary).toBe('Hottest around Fri 1–6 PM and Sat noon–7 PM. Timing may shift. Lows near 75° may offer little relief overnight.');
     expect(deriveInsight(s)).toEqual({ headline: 'Best outdoor window: Before 10 AM', detail: 'On Friday and Saturday, mornings are the safer choice.' });
     expect(deriveDaysSummary(s)).toBe('Heat peaks Saturday');
   });
@@ -49,13 +49,13 @@ describe('every timing statement is derived from the forecast', () => {
   it('rain, dry right now: says how long it stays dry (Nov 14 live case)', () => {
     const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 19;
     s.timeline!.intervals = [{ startHour: 17, endHour: 27, severity: 1, confidence: 'unknown' }];
-    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Rain jacket, about 12–10 PM', detail: 'Dry before and after. Timing may shift.' });
-    expect(labelledWindows(s)[0].label).toBe('Sun 12–10 PM');
+    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Rain jacket, about noon–10 PM', detail: 'Dry before and after. Timing may shift.' });
+    expect(labelledWindows(s)[0].label).toBe('Sun noon–10 PM');
   });
   it('rain, raining now: a dry spell across midnight still yields the next daylight stretch', () => {
     const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 19;
     s.timeline!.intervals = [{ startHour: 0, endHour: 3, severity: 1, confidence: 'unknown' }, { startHour: 17, endHour: 27, severity: 1, confidence: 'unknown' }];
-    expect(deriveInsight(s)).toEqual({ headline: 'Now: Rain jacket, until about 10 PM', detail: 'Then dry tomorrow 7 AM–12 PM. Timing may shift.' });
+    expect(deriveInsight(s)).toEqual({ headline: 'Now: Rain jacket, until about 10 PM', detail: 'Then dry tomorrow 7 AM–noon. Timing may shift.' });
   });
   it('rain, no rain at all ahead: dry for 3 days', () => {
     const s = byId('rain'); s.timeline!.intervals = s.timeline!.intervals.filter(p => p.startHour >= 72);
@@ -79,7 +79,20 @@ describe('every timing statement is derived from the forecast', () => {
 });
 
 describe('shared layout rules', () => {
-  it('labels format day and time', () => expect(windowLabel(byId('storm'), { startHour: 14, endHour: 17 })).toBe('Thu 11 PM–Fri 2 AM'));
+  it('labels format day and time, with noon and midnight in words', () => {
+    const st = byId('storm');                                             // Thu 9 AM start
+    expect(windowLabel(st, { startHour: 14, endHour: 17 })).toBe('Thu 11 PM–Fri 2 AM');
+    expect(windowLabel(st, { startHour: 3, endHour: 13 })).toBe('Thu noon–10 PM');
+    expect(windowLabel(st, { startHour: 14, endHour: 15 })).toBe('Thu 11 PM–midnight');
+    expect(windowLabel(st, { startHour: 22, endHour: 27 })).toBe('Fri 7 AM–noon');
+    expect(timeAt(st, 15)).toBe('Fri midnight');
+  });
+  it('the hourly strip is labelled by when it actually falls', () => {
+    const at = (h: number) => { const s = byId('rain'); s.startHourLocal = h; return hourlySpan(s); };
+    expect([at(9), at(14), at(19), at(22), at(3)]).toEqual(['Today', 'Today and tonight', 'Overnight', 'Overnight', 'This morning']);
+    expect(at(17)).toBe('Overnight');   // 5 PM–3 AM
+    expect(at(16)).toBe('Today and tonight');
+  });
   it('axis ends name real times', () => { const s = byId('rain'); expect([timeAt(s, 0), timeAt(s, 72)]).toEqual(['Thu 9 AM', 'Sun 9 AM']); });
   it('critical-window labels never overlap', () => {
     for (const s of scenarios) {

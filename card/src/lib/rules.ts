@@ -41,12 +41,18 @@ export function clockAt(startDay: string, startHourLocal: number, offset: number
   const total = startHourLocal + offset, h = ((total % 24) + 24) % 24;
   return { day: DAY_NAMES[(start + Math.floor(total / 24)) % 7], hour: h % 12 || 12, meridiem: h < 12 ? 'AM' : 'PM' };
 }
-export const timeAt = (s: Scenario, offset: number) => { const c = clockAt(s.startDay, s.startHourLocal, offset); return `${c.day} ${c.hour} ${c.meridiem}`; };
-/** Critical-window label, always with day and time: "Thu 4–9 PM", "Fri 8 AM–4 PM", "Thu 11 PM–Fri 2 AM". */
+/** "noon" and "midnight" instead of 12 PM / 12 AM; otherwise "4 PM". Lower case: callers capitalise when it starts a label. */
+export const clockText = (c: { hour: number; meridiem: string }) =>
+  c.hour === 12 ? (c.meridiem === 'PM' ? 'noon' : 'midnight') : `${c.hour} ${c.meridiem}`;
+const named = (c: { hour: number }) => c.hour === 12;
+export const timeAt = (s: Scenario, offset: number) => { const c = clockAt(s.startDay, s.startHourLocal, offset); return `${c.day} ${clockText(c)}`; };
+/** Critical-window label, always with day and time: "Thu 4–9 PM", "Fri 8 AM–4 PM", "Sun noon–10 PM", "Thu 11 PM–midnight", "Thu 11 PM–Fri 2 AM". */
 export function windowLabel(s: Scenario, w: { startHour: number; endHour: number }) {
   const a = clockAt(s.startDay, s.startHourLocal, w.startHour), b = clockAt(s.startDay, s.startHourLocal, w.endHour);
-  if (a.day !== b.day) return `${a.day} ${a.hour} ${a.meridiem}–${b.day} ${b.hour} ${b.meridiem}`;
-  return a.meridiem === b.meridiem ? `${a.day} ${a.hour}–${b.hour} ${b.meridiem}` : `${a.day} ${a.hour} ${a.meridiem}–${b.hour} ${b.meridiem}`;
+  const endsAtMidnight = named(b) && b.meridiem === 'AM' && b.day !== a.day && (w.endHour - w.startHour) < 24;
+  if (a.day !== b.day && !endsAtMidnight) return `${a.day} ${clockText(a)}–${b.day} ${clockText(b)}`;
+  if (named(a) || named(b) || a.meridiem !== b.meridiem) return `${a.day} ${clockText(a)}–${clockText(b)}`;
+  return `${a.day} ${a.hour}–${b.hour} ${b.meridiem}`;
 }
 /** Place window labels on one row without overlap: keep each near its bar, push neighbours apart, stay inside [min,max].
  *  Returns a second row only if one row cannot fit them all. */

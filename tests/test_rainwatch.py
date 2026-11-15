@@ -364,3 +364,12 @@ def test_live_card_heat_levels_and_calm():
     assert calm["hazard"] == "none" and "timeline" not in calm and calm["insight"]["headline"] == "Dry for the next 3 days"
     hot = card.build(dry, _cond_for(dry, temp=101, code=0), cfg, NOW)
     assert hot["hazard"] == "heat" and hot["alert"]["actionTitle"] == "Avoid the hottest hours"
+
+
+def test_live_card_hourly_labels_use_noon_and_midnight():
+    from rainwatch import card
+    cfg = Config(lat=LAT, lon=LON)
+    rep, *_ = _full_report(cfg, FakeSession(NOW))
+    labels = [h["label"] for h in card.build(rep, _cond_for(rep), cfg, NOW)["hourly"]]
+    assert "12 PM" not in labels and "12 AM" not in labels
+    assert labels[0] == "Now"

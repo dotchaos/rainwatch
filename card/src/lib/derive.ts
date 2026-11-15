@@ -4,7 +4,7 @@
  * they never type a time, a window, a "hottest period" or an "outdoor window" by hand.
  */
 import type { Scenario } from '../types';
-import { clockAt, daysAt, levelLabels, windowLabel } from './rules';
+import { clockAt, clockText, daysAt, levelLabels, windowLabel } from './rules';
 
 /** Hours of warning before the first top-rung window ("prepare before"). Provisional design constant. */
 export const PREPARE_LEAD_H = 2;
@@ -36,7 +36,7 @@ function relDay(s: Scenario, h: number) {
   const i = dayIndexAt(s, h);
   return i === 0 ? 'today' : i === 1 ? 'tomorrow' : clockAt(s.startDay, s.startHourLocal, h).day;
 }
-const clock = (s: Scenario, h: number) => { const c = clockAt(s.startDay, s.startHourLocal, h); return `${c.hour} ${c.meridiem}`; };
+const clock = (s: Scenario, h: number) => clockText(clockAt(s.startDay, s.startHourLocal, h));
 const span = (s: Scenario, a: number, b: number) => windowLabel(s, { startHour: a, endHour: b }).replace(/^\w+ /, '');
 const cap = (t: string) => t[0].toUpperCase() + t.slice(1);
 const joinAnd = (xs: string[]) => xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`;
@@ -161,6 +161,18 @@ function nextDry(s: Scenario, from: number): string | null {
     }
   }
   return null;
+}
+
+/**
+ * When the six snapshots (2 h apart, starting now, so a 10-hour span) actually fall: "Today",
+ * "Today and tonight", "Overnight" or "This morning". Never "Today" for a strip that runs through the night.
+ */
+export function hourlySpan(s: Scenario): string {
+  const a = s.startHourLocal, b = a + 2 * (s.hourly.length - 1);        // local hours of first and last snapshot
+  if (a >= 5 && b <= 20) return 'Today';
+  if (a >= 5 && a < 17) return 'Today and tonight';
+  if (a >= 17 || a < 2) return 'Overnight';
+  return 'This morning';
 }
 
 /** Subtitle for the 3-day list, from the daily rows and timeline (empty when there is no clear story). */
