@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.8: keep real dry breaks, never invent them
+**Problem.** Sunday showed one Rain-jacket interval, 1–10 PM. Hours were split only by "at least half the runs show rain", so a dip below 50% could fake a break, and ten hours above 50% hid whether any single run actually rains steadily.
+**Change.** Producer: hours are rain / forecast dry / uncertain; only 2+ forecast-dry hours split rain; uncertain gaps are bridged and marked intermittent; steady vs on-and-off is measured from the runs themselves (`pattern` on intervals). Card: `rainEvents` and `jacketPlan` drive both the bars' labels and the insight (continuous, separate periods, or "on and off" with parts of day when timing is uncertain). Rule added to DISPLAY-RULES.md.
+**Effect on the four scenarios.** None in text or chart: October has no rain; the rain scenario's next event reaches Rain boots (existing wording, its bars and gaps unchanged); storm and heat are unchanged. New tests cover continuous, separate, intermittent, and chart–insight agreement.
+
 ## v0.7: quieter label for ordinary rain
 - The next Rain jacket / Rain boots window is labelled with small plain text directly above its bar ("noon–10 PM"), instead of a filled tag above the Sandbags line. Filled tags stay only for Sandbags and Extreme windows.
 - Effect: live card and rain scenario show the quiet label; storm and heat unchanged; October has no chart.

@@ -97,9 +97,14 @@ def main(argv=None) -> int:
     meta_sources.append({"name": "Open-Meteo forecast (temperature, sky)", "url": "https://open-meteo.com/en/docs",
                          "detail": cond.error or "hourly temperature and conditions", "time": now.isoformat()})
     try:
-        live_card = card.build(report, cond, cfg, now)
+        live_card = card.build(report, cond, cfg, now, ens)
         (out / "live.json").write_text(json.dumps(live_card, indent=1))
         print("card:", live_card["hazard"], "·", len((live_card.get("timeline") or {}).get("intervals", [])), "intervals")
+        for d in live_card["_diagnostics"]["rain_periods"]:
+            note = " (bridged uncertain hours)" if d["bridged"] else ""
+            share = d["runs_with_break"]
+            runs = "" if share is None else f" · {share:.0%} of raining runs have their own dry break"
+            print(f"  rain period {d['start_local']}–{d['end_local']}: {d['pattern']}{note}{runs}")
     except Exception as ex:  # noqa: BLE001
         errors.append(f"live card: {ex}")
 

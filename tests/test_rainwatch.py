@@ -373,3 +373,30 @@ def test_live_card_hourly_labels_use_noon_and_midnight():
     labels = [h["label"] for h in card.build(rep, _cond_for(rep), cfg, NOW)["hourly"]]
     assert "12 PM" not in labels and "12 AM" not in labels
     assert labels[0] == "Now"
+
+
+def test_rain_grouping_keeps_forecast_dry_breaks_and_never_invents_them():
+    from rainwatch import card
+    from datetime import timedelta
+    from rainwatch.model import Series
+    hours = [NOW + timedelta(hours=i) for i in range(12)]
+    W, D, U = "wet", "dry", "uncertain"
+    # wet 0-2, two forecast-dry hours, wet 4-6  -> a real break: stays two periods
+    lv, pat, _ = card.group_rain([1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0], [W, W, W, D, D, W, W, W, D, D, D, D], hours, None, 0.01)
+    assert lv[3:5] == [0, 0] and pat[0] == "steady"
+    # wet, two *uncertain* hours, wet -> not a forecast break: bridged into one on-and-off period
+    lv, pat, _ = card.group_rain([1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0], [W, W, W, U, U, W, W, W, D, D, D, D], hours, None, 0.01)
+    assert lv[:8] == [1] * 8 and set(pat[:8]) == {"intermittent"}
+    # a single dry hour is not a meaningful break either
+    lv, _, _ = card.group_rain([1, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0], [W, W, D, W, W, D, D, D, D, D, D, D], hours, None, 0.01)
+    assert lv[2] == 1
+    # steady vs on-and-off from the runs: 10 runs; 8 rain every hour, 2 have their own 2-h break -> steady
+    mem = {t: [0.05] * 8 + ([0.0, 0.0] if 2 <= i <= 3 else [0.05, 0.05]) for i, t in enumerate(hours)}
+    ens = Series("ens", "x", None, values={t: 0.05 for t in hours}, members=mem)
+    _, pat, d = card.group_rain([1] * 6 + [0] * 6, [W] * 6 + [D] * 6, hours, ens, 0.01)
+    assert pat[0] == "steady" and abs(d[0]["runs_with_break"] - 0.2) < 1e-9
+    # most runs come and go -> intermittent
+    mem = {t: ([0.0] * 7 if i in (2, 3) else [0.05] * 7) + [0.05] * 3 for i, t in enumerate(hours)}
+    ens = Series("ens", "x", None, values={t: 0.05 for t in hours}, members=mem)
+    _, pat, d = card.group_rain([1] * 6 + [0] * 6, [W] * 6 + [D] * 6, hours, ens, 0.01)
+    assert pat[0] == "intermittent" and d[0]["runs_with_break"] >= 0.5

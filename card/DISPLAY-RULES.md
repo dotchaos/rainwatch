@@ -19,6 +19,18 @@ The canonical scenario datasets are in `scenarios/*.json`; the typed contract is
 - The `Sandbags` level and driveway action require independent property-specific flood risk assessment. The upstream 17th & Folsom indicator has not been validated against driveway flooding at 18th & Shotwell.
 - Prototype fixtures include illustrative warnings solely for UI testing. Do not display these as actionable real-world advice.
 
+## Dry breaks
+Preserve meaningful dry breaks between precipitation events. Do not merge intermittent showers into a continuous rain interval unless the forecast supports that interpretation. Chart intervals and action recommendations must derive from the same underlying forecast data.
+
+How it is applied:
+- **Producer (`rainwatch/card.py`)** classifies each hour: *rain* (at least half of model runs measurable), *forecast dry* (at least 80% of runs dry and no measurable typical amount), or *uncertain* (in between). Only 2+ consecutive forecast-dry hours split rain into separate intervals. Uncertain hours never create a break: they are bridged into the surrounding rain and marked `pattern: "intermittent"`.
+- A rain period is also `intermittent` when at least half of the model runs that rain in it show their own dry break (2+ dry hours between wet hours) inside the period; otherwise `steady`.
+- **Card (`rainEvents`, `jacketPlan`, `labelledWindows`)**: an hour with no interval is forecast dry, so separate intervals are separate events. When the next rain day stays at Rain jacket:
+  - continuous (one steady period): "Tomorrow: Rain jacket, about 1–10 PM"; one bar, one label.
+  - separate periods: "Tomorrow: Rain jacket, 1–3 PM and 6–10 PM" ("about" once when timing is uncertain), "Dry in between."; one bar and one label per period.
+  - intermittent without reliable timing: "Rain jacket tomorrow afternoon and evening" / "Breaks possible. Timing may shift."; the bar is labelled "on and off", with no hours.
+- When that day reaches Rain boots or higher, the action-window wording applies unchanged.
+
 ## Action windows
 Whenever a forecast interval triggers an action rung, display the action and its time window in plain language. Derive both from the same forecast data used by the chart. Never invent a time window or imply greater timing precision than the forecast supports.
 

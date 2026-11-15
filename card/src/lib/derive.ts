@@ -58,6 +58,49 @@ export function actionWindow(s: Scenario) {
            label: windowLabel(s, { startHour: ra, endHour: rb }) };
 }
 
+/** Rain events: maximal runs of hours with any interval (a gap is a forecast-dry stretch). */
+export function rainEvents(s: Scenario) {
+  const out: { start: number; end: number; rung: number; sure: boolean; intermittent: boolean }[] = [];
+  let h = 0;
+  while (h < 72) {
+    if (sevAt(s, h) === 0) { h++; continue; }
+    const a = h; while (h < 72 && sevAt(s, h) > 0) h++;
+    const iv = (s.timeline?.intervals ?? []).filter(p => p.severity > 0 && p.endHour > a && p.startHour < h);
+    out.push({ start: a, end: h, rung: Math.max(...iv.map(p => p.severity)),
+               sure: iv.every(p => p.confidence === 'higher'), intermittent: iv.some(p => p.pattern === 'intermittent') });
+  }
+  return out;
+}
+
+const PARTS: [number, number, string][] = [[0, 6, 'overnight'], [6, 12, 'morning'], [12, 17, 'afternoon'], [17, 22, 'evening'], [22, 24, 'night']];
+/** "this afternoon and evening", "tomorrow morning", "Monday afternoon": parts of day an event touches, no hours. */
+function partsPhrase(s: Scenario, a: number, b: number) {
+  const parts: string[] = [];
+  for (let h = a; h < b; h++) { const p = PARTS.find(([x, y]) => localHour(s, h) >= x && localHour(s, h) < y)![2]; if (!parts.includes(p)) parts.push(p); }
+  const d = relDay(s, a), list = joinAnd(parts);
+  if (d === 'today') return parts.length === 1 && parts[0] === 'night' ? 'tonight' : `this ${list}`;
+  return `${d} ${list}`;
+}
+
+/**
+ * Plan for a day whose rain stays at the first rung: the next rain day's events.
+ *   continuous   one steady event                      "Rain jacket, about 1–10 PM"
+ *   separate     2+ events split by forecast-dry hours "Rain jacket, 1–3 PM and 6–10 PM"
+ *   intermittent showers without reliable timing      "Rain jacket this afternoon and evening. Breaks possible."
+ * Returns null when that day reaches Rain boots or higher (the existing action-window wording applies).
+ */
+export function jacketPlan(s: Scenario) {
+  const ev = rainEvents(s);
+  if (!ev.length) return null;
+  const day = dayIndexAt(s, ev[0].start);
+  const today = ev.filter(e => dayIndexAt(s, e.start) === day);
+  if (today.some(e => e.rung > 1)) return null;
+  const sure = today.every(e => e.sure);
+  const kind: 'continuous' | 'separate' | 'intermittent' =
+    today.some(e => e.intermittent) && !sure ? 'intermittent' : today.length > 1 ? 'separate' : 'continuous';
+  return { kind, events: today, sure, day };
+}
+
 /** Plain-language "when" for hours a..b: "now until 2 PM", "11 AM–1 PM"; prefixed "about" when timing may shift. */
 function when(s: Scenario, a: number, b: number, sure: boolean) {
   if (a === 0) return sure ? `until ${clock(s, b)}` : `until about ${clock(s, b)}`;
@@ -74,6 +117,9 @@ function windowList(ws: { label: string; sure: boolean }[]) {
 export function labelledWindows(s: Scenario) {
   const crit = criticalWindows(s);
   if (crit.length || s.hazard !== 'rain') return crit.map(w => ({ ...w, rung: 3 }));
+  const plan = jacketPlan(s);
+  if (plan) return plan.events.map(e => ({ startHour: e.start, endHour: e.end, sure: e.sure, rung: 1,
+    label: plan.kind === 'intermittent' ? `${clockAt(s.startDay, s.startHourLocal, e.start).day} on and off` : windowLabel(s, { startHour: e.start, endHour: e.end }) }));
   const w = actionWindow(s);
   return w ? [{ startHour: w.startHour, endHour: w.endHour, sure: w.sure, label: w.label, rung: w.rung }] : [];
 }
@@ -118,6 +164,27 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
     if (s.hazard === 'flood') return null;      // the alert carries the message on flood days
     const aw = actionWindow(s);
     if (!aw) return { headline: 'Dry for the next 3 days', detail: 'No rain worth a jacket in the forecast.' };
+    const plan = jacketPlan(s);
+    if (plan) {
+      const jacket = levelLabels(s)[1], first = plan.events[0], last = plan.events[plan.events.length - 1];
+      const notes: string[] = [];
+      let more = last.end; while (more < 72 && sevAt(s, more) === 0) more++;
+      if (plan.kind === 'intermittent') {
+        notes.push('Breaks possible.');
+        if (!plan.sure) notes.push(MAY_SHIFT);
+        return { headline: `${jacket} ${partsPhrase(s, first.start, last.end)}`, detail: notes.join(' ') };
+      }
+      const times = plan.events.length === 1
+        ? when(s, first.start, first.end, plan.sure)
+        : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => e.start === 0 ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
+      const head = `${first.start === 0 ? 'Now' : cap(relDay(s, first.start))}: ${jacket}, ${times}`;
+      if (plan.kind === 'separate') notes.push('Dry in between.');
+      if (first.start > 0) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+      else if (more >= 72) notes.push('Dry after that.');
+      if (more < 72) { const dry = nextDry(s, last.end); if (dry) notes.push(`Then dry ${dry}.`); }
+      if (!plan.sure) notes.push(MAY_SHIFT);
+      return { headline: head, detail: notes.join(' ') };
+    }
     const day = cap(relDay(s, aw.startHour));
     const headline = `${aw.startHour === 0 ? 'Now' : day}: ${aw.action}, ${when(s, aw.startHour, aw.endHour, aw.sure)}`;
     const notes: string[] = [];

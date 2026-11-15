@@ -21,6 +21,13 @@ RAIN_ANY_P, RAIN_BOOTS_P, SANDBAGS_P = 0.5, 0.20, 0.10
 HEAT_F = (80, 90, 100)
 RAIN_WORDS = {1: ("cloud-rain", "Rain"), 2: ("cloud-rain-wind", "Heavy rain"), 3: ("cloud-rain-wind", "Intense rain")}
 HEAT_WORDS = {1: "Hot", 2: "Very hot", 3: "Extreme heat"}
+# Dry breaks (accepted Nov 15 2026): only a *forecast-dry* stretch splits rain. An hour is forecast dry when at
+# least 80% of runs are dry and the typical amount is below measurable; in-between hours are "uncertain" and never
+# create a break. A meaningful break is MIN_BREAK_H+ consecutive forecast-dry hours.
+DRY_P, MIN_BREAK_H = 0.2, 2
+# Steady vs on-and-off from the runs themselves: a rain period is intermittent when at least half of the runs
+# that rain in it show their own dry break (MIN_BREAK_H+ dry hours between wet hours) inside the period.
+BREAK_SHARE = 0.5
 
 
 def rain_level(row: dict, cfg) -> int:
@@ -42,23 +49,97 @@ def heat_level(temp: float | None) -> int:
     return 3 if temp >= HEAT_F[2] else 2 if temp >= HEAT_F[1] else 1 if temp >= HEAT_F[0] else 0
 
 
-def _runs(levels: list[int]) -> list[dict]:
+def hour_class(row: dict | None) -> str:
+    """'wet', 'dry' (forecast dry) or 'uncertain'."""
+    if not row or row.get("missing"):
+        return "uncertain"
+    pa = row.get("p_any") or 0
+    if pa >= RAIN_ANY_P:
+        return "wet"
+    if pa <= DRY_P and (row.get("mid") or 0) < 0.01:
+        return "dry"
+    return "uncertain"
+
+
+def _has_break(flags: list[bool]) -> bool:
+    """True if a run's wet/dry hours contain MIN_BREAK_H+ dry hours between two wet hours."""
+    wet = [i for i, f in enumerate(flags) if f]
+    if len(wet) < 2:
+        return False
+    run = 0
+    for f in flags[wet[0]:wet[-1] + 1]:
+        run = 0 if f else run + 1
+        if run >= MIN_BREAK_H:
+            return True
+    return False
+
+
+def group_rain(rain: list[int], classes: list[str], hours: list, ens, any_in: float):
+    """Bridge rain across gaps without a meaningful forecast-dry break; mark on-and-off periods.
+    Returns (levels, patterns, diagnostics)."""
+    rain = rain[:]
+    pattern = ["steady"] * len(rain)
+    wet = [i for i, v in enumerate(rain) if v]
+    for a, b in zip(wet, wet[1:]):
+        if b - a <= 1:
+            continue
+        gap, run, meaningful = classes[a + 1:b], 0, False
+        for c in gap:
+            run = run + 1 if c == "dry" else 0
+            meaningful = meaningful or run >= MIN_BREAK_H
+        if not meaningful:                      # uncertain hours (or a single dry hour): not a forecast break
+            for k in range(a + 1, b):
+                rain[k] = max(rain[k], 1)
+                pattern[k] = "intermittent"
+    diags, h = [], 0
+    while h < len(rain):
+        if not rain[h]:
+            h += 1
+            continue
+        a = h
+        while h < len(rain) and rain[h]:
+            h += 1
+        bridged = any(pattern[k] == "intermittent" for k in range(a, h))
+        share = None
+        if ens is not None and h - a >= 3:
+            cols = [ens.members.get(hours[k]) for k in range(a, h)]
+            n = len(cols[0]) if cols and cols[0] else 0
+            if n and all(c and len(c) == n for c in cols):
+                runs = [[cols[k][r] >= any_in for k in range(len(cols))] for r in range(n)]
+                raining = [f for f in runs if any(f)]
+                if raining:
+                    share = sum(_has_break(f) for f in raining) / len(raining)
+        on_off = bridged or (share is not None and share >= BREAK_SHARE)
+        if on_off:
+            for k in range(a, h):
+                pattern[k] = "intermittent"
+        diags.append({"start": a, "end": h, "bridged": bridged, "runs_with_break": share, "pattern": pattern[a]})
+    return rain, pattern, diags
+
+
+def _runs(levels: list[int], patterns: list[str] | None = None) -> list[dict]:
     out = []
     for h, v in enumerate(levels):
-        if v and out and out[-1]["severity"] == v and out[-1]["endHour"] == h:
+        pat = patterns[h] if patterns else "steady"
+        if v and out and out[-1]["severity"] == v and out[-1]["endHour"] == h and out[-1].get("pattern", "steady") == pat:
             out[-1]["endHour"] = h + 1
         elif v:
-            out.append({"startHour": h, "endHour": h + 1, "severity": v, "confidence": "unknown"})
+            iv = {"startHour": h, "endHour": h + 1, "severity": v, "confidence": "unknown"}
+            if patterns:
+                iv["pattern"] = pat
+            out.append(iv)
     return out
 
 
-def build(report: dict, cond: Conditions, cfg, now: datetime) -> dict:
+def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None) -> dict:
     tz = ZoneInfo(cfg.tz)
     rows = report["rows"][:HORIZON]
     t0 = datetime.fromisoformat(rows[0]["t"])
     hours = [t0 + timedelta(hours=i) for i in range(HORIZON)]
     by_t = {r["t"]: r for r in rows}
     rain = [rain_level(by_t[t.isoformat()], cfg) if t.isoformat() in by_t else 0 for t in hours]
+    classes = [hour_class(by_t.get(t.isoformat())) for t in hours]
+    rain, patterns, rain_diag = group_rain(rain, classes, hours, ens, cfg.any_in)
     temps = [(cond.hourly.get(t) or {}).get("temp") for t in hours]
     heat = [heat_level(x) for x in temps]
     rmax, hmax = max(rain), max(heat)
@@ -125,9 +206,8 @@ def build(report: dict, cond: Conditions, cfg, now: datetime) -> dict:
                        "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."},
     }
     if hazard != "none":
-        levels = heat if hazard == "heat" else rain
         card["timeline"] = {"title": {"flood": "Rain & flood outlook", "rain": "Rain outlook", "heat": "Heat outlook"}[hazard],
-                            "intervals": _runs(levels)}
+                            "intervals": _runs(heat) if hazard == "heat" else _runs(rain, patterns)}
     if hazard == "flood":
         card["alert"] = {"actionTitle": f"Driveway · {cfg.card_location}",
                          "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
@@ -142,4 +222,7 @@ def build(report: dict, cond: Conditions, cfg, now: datetime) -> dict:
         anyp = max((r.get("p_any") or 0) for r in rows if not r.get("missing"))
         card["insight"] = {"headline": "Dry for the next 3 days" if anyp < 0.2 else "Only a slight chance of showers",
                            "detail": f"Highs {min(his)}–{max(his)}°." if his else ""}
+    card["_diagnostics"] = {"rain_periods": [{**d, "start_local": hours[d["start"]].astimezone(tz).strftime("%a %-I %p"),
+                                              "end_local": hours[min(d["end"], HORIZON - 1)].astimezone(tz).strftime("%a %-I %p")}
+                                             for d in rain_diag]}
     return card

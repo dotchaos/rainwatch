@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { daysAt, layoutLabels, showTimeline, tempScale, timeAt, validateScenario, windowLabel } from './rules';
-import { actionWindow, criticalWindows, deriveAlert, deriveDaysSummary, deriveInsight, hourlySpan, labelledWindows } from './derive';
+import { actionWindow, criticalWindows, deriveAlert, deriveDaysSummary, deriveInsight, hourlySpan, jacketPlan, labelledWindows, rainEvents } from './derive';
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
 
 describe('canonical scenarios', () => {
@@ -75,6 +75,45 @@ describe('every timing statement is derived from the forecast', () => {
   it('a calm-style note on a hazard day fails validation', () => {
     const s = byId('rain'); s.insight = { headline: 'Dry all afternoon', detail: '' };
     expect(validateScenario(s).join()).toContain('derived from the forecast');
+  });
+});
+
+describe('rain patterns: dry breaks are kept, never invented', () => {
+  // Sat 8 PM start, like the live card: offset 17 = Sun 1 PM, 19 = 3 PM, 22 = 6 PM, 26 = 10 PM.
+  const jacketDay = (intervals: Scenario['timeline'] extends infer T ? T extends { intervals: infer I } ? I : never : never) => {
+    const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 20; s.timeline!.intervals = intervals; return s;
+  };
+  it('continuous rain stays one bar and one window', () => {
+    const s = jacketDay([{ startHour: 17, endHour: 26, severity: 1, confidence: 'unknown', pattern: 'steady' }]);
+    expect(jacketPlan(s)!.kind).toBe('continuous');
+    expect(deriveInsight(s)!.headline).toBe('Tomorrow: Rain jacket, about 1–10 PM');
+    expect(labelledWindows(s).map(w => w.label)).toEqual(['Sun 1–10 PM']);
+  });
+  it('a forecast-dry break gives separate bars and separate windows', () => {
+    const s = jacketDay([{ startHour: 17, endHour: 19, severity: 1, confidence: 'higher' }, { startHour: 22, endHour: 26, severity: 1, confidence: 'higher' }]);
+    expect(rainEvents(s).length).toBe(2);
+    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Rain jacket, 1–3 PM and 6–10 PM', detail: 'Dry in between. Dry before and after.' });
+    expect(labelledWindows(s).map(w => w.label)).toEqual(['Sun 1–3 PM', 'Sun 6–10 PM']);
+  });
+  it('uncertain timing on separate periods is hedged once', () => {
+    const s = jacketDay([{ startHour: 17, endHour: 19, severity: 1, confidence: 'unknown' }, { startHour: 22, endHour: 26, severity: 1, confidence: 'unknown' }]);
+    expect(deriveInsight(s)!.headline).toBe('Tomorrow: Rain jacket, about 1–3 PM and 6–10 PM');
+  });
+  it('intermittent showers without reliable timing: parts of day, no hours, breaks possible', () => {
+    const s = jacketDay([{ startHour: 17, endHour: 26, severity: 1, confidence: 'unknown', pattern: 'intermittent' }]);
+    expect(deriveInsight(s)).toEqual({ headline: 'Rain jacket tomorrow afternoon and evening', detail: 'Breaks possible. Timing may shift.' });
+    expect(labelledWindows(s).map(w => w.label)).toEqual(['Sun on and off']);
+  });
+  it('the card never adds a break the intervals do not contain', () => {
+    const s = jacketDay([{ startHour: 17, endHour: 26, severity: 1, confidence: 'unknown', pattern: 'intermittent' }]);
+    expect(rainEvents(s).length).toBe(1);
+  });
+  it('chart labels and insight describe the same periods in every scenario', () => {
+    for (const s of scenarios.filter(x => x.hazard === 'rain')) {
+      const plan = jacketPlan(s), labels = labelledWindows(s);
+      if (plan) expect(labels.map(l => [l.startHour, l.endHour])).toEqual(plan.events.map(e => [e.start, e.end]));
+      else { const aw = actionWindow(s)!; expect(labels.map(l => [l.startHour, l.endHour])).toEqual([[aw.startHour, aw.endHour]]); }
+    }
   });
 });
 

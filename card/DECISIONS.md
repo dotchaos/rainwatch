@@ -28,6 +28,8 @@
 
 - **Action windows in plain language (v0.5):** the insight/alert states the action rung and its hours, derived from the chart's intervals; the chart labels the same hours. Uncertain timing is hedged in words, never sharpened.
 
+- **Dry breaks (v0.8):** only forecast-dry hours (≥80% of runs dry, no measurable typical amount; 2+ in a row) split rain; uncertain hours are bridged as intermittent; on-and-off measured from runs (≥50% of raining runs with their own 2+ h break). Thresholds provisional.
+
 ## Open questions
 - When to promote live intervals from dashed to solid (needs calibration from the storm report card).
 - Whether the live card replaces the current rainwatch page.

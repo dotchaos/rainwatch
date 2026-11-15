@@ -21,6 +21,7 @@ export function validateScenario(s: Scenario): string[] {
       if (p.startHour < 0 || p.endHour > 72 || p.endHour <= p.startHour || p.severity < 0 || p.severity > 3) errors.push('Invalid timeline interval');
     }
   }
+  if (s.timeline?.intervals.some(p => p.pattern && p.pattern !== 'steady' && p.pattern !== 'intermittent')) errors.push('Interval pattern must be steady or intermittent');
   if (s.hazard === 'rain' && s.timeline?.intervals.some(p => p.severity === 3)) errors.push('Rain-only scenario cannot reach Sandbags: that rung needs a separate local flood assessment');
   if (s.provenance.type !== 'illustrative' && s.provenance.type !== 'live') errors.push('Provenance must say illustrative or live');
   if (s.provenance.type === 'live' && !s.provenance.generated) errors.push('A live card must say when it was generated');
