@@ -44,7 +44,9 @@ def _headline(r, cfg) -> str:
         start = c.get("Starts", {}).get("text", "")
         start = "Raining now" if start == "Already raining" else f"Rain starts {start[0].lower() + start[1:]}" if start else "Rain likely"
         pk = (ol.get("peak_rate") or {}).get("p50")
-        kind = tier(pk).lower() if pk is not None else ""
+        tbl_pk = max((x["mid"] for x in r["rows"] if not x.get("missing")), default=0)
+        a, b = tier(tbl_pk).lower(), (tier(pk).lower() if pk is not None else "")
+        kind = b if not a or a == b or a == "dry" else f"{a} to {b}" if b else a
         heav = c.get("Heaviest hour", {}).get("text", "")
         heav = f", heaviest {heav[0].lower() + heav[1:]}" if heav else ""
         thr = next((x for k, x in c.items() if k.startswith("Your ")), None)
@@ -93,7 +95,7 @@ def _strip(r, tz, heavy, hours=48) -> str:
             lab = "now"
         elif t.hour == 0:
             lab = t.strftime("%a")
-        elif t.hour % 6 == 0:
+        elif t.hour % 6 == 0 and i >= 3:
             lab = t.strftime("%-I%p").lower().replace("m", "")
         lbls.append(f"<div>{lab}</div>")
     thr = f"<div class=thrl style='bottom:{heavy / top * 100:.0f}%' title='your {heavy:.2f}\" level'></div>"
