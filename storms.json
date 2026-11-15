@@ -2,11 +2,11 @@
  "storms": [
   {
    "start": "2026-11-15T21:00:00+00:00",
-   "end": "2026-11-15T21:00:00+00:00",
-   "total": 0.12,
-   "peak_t": "2026-11-15T21:00:00+00:00",
-   "peak": 0.12,
-   "heavy": false,
+   "end": "2026-11-15T22:00:00+00:00",
+   "total": 0.37,
+   "peak_t": "2026-11-15T22:00:00+00:00",
+   "peak": 0.25,
+   "heavy": true,
    "missing_hours": 0,
    "done": false,
    "leads": [
@@ -20,7 +20,7 @@
      "peak_pred": 0.0,
      "total_pred": null,
      "p_heavy": 0.02,
-     "threshold": "correct no"
+     "threshold": "missed"
     },
     {
      "lead_h": 12,
@@ -28,15 +28,15 @@
      "issued": "2026-11-15T08:07:44.542718+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
-     "peak_err_h": 3.0,
+     "peak_err_h": 2.0,
      "peak_pred": 0.114,
      "total_pred": 0.696,
      "p_heavy": 0.066,
-     "threshold": "correct no",
+     "threshold": "missed",
      "inside": {
       "onset": true,
       "peak_t": true,
-      "peak": true,
+      "peak": false,
       "total": false
      }
     },
@@ -46,16 +46,16 @@
      "issued": "2026-11-15T14:02:34.467675+00:00",
      "onset_err_h": 0.0,
      "onset_called": true,
-     "peak_err_h": 3.0,
+     "peak_err_h": 2.0,
      "peak_pred": 0.114,
      "total_pred": 0.698,
      "p_heavy": 0.074,
-     "threshold": "correct no",
+     "threshold": "missed",
      "inside": {
       "onset": true,
       "peak_t": true,
-      "peak": true,
-      "total": false
+      "peak": false,
+      "total": true
      }
     },
     {
@@ -64,16 +64,16 @@
      "issued": "2026-11-15T17:00:27.644465+00:00",
      "onset_err_h": 0.0,
      "onset_called": true,
-     "peak_err_h": 3.0,
+     "peak_err_h": 2.0,
      "peak_pred": 0.114,
      "total_pred": 0.698,
      "p_heavy": 0.074,
-     "threshold": "correct no",
+     "threshold": "missed",
      "inside": {
       "onset": true,
       "peak_t": true,
-      "peak": true,
-      "total": false
+      "peak": false,
+      "total": true
      }
     },
     {
@@ -82,16 +82,16 @@
      "issued": "2026-11-15T19:01:49.126503+00:00",
      "onset_err_h": 0.0,
      "onset_called": true,
-     "peak_err_h": 1.0,
+     "peak_err_h": 0.0,
      "peak_pred": 0.11,
      "total_pred": 0.639,
      "p_heavy": 0.074,
-     "threshold": "correct no",
+     "threshold": "missed",
      "inside": {
       "onset": true,
       "peak_t": true,
-      "peak": true,
-      "total": false
+      "peak": false,
+      "total": true
      }
     }
    ]
@@ -107,11 +107,11 @@
    4
   ],
   "peak": [
-   4,
+   0,
    4
   ],
   "total": [
-   0,
+   3,
    4
   ]
  },
