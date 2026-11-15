@@ -10,7 +10,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from . import alerts, archive, engine, nowcast, render
+from . import alerts, archive, engine, nowcast, render, storms
 from .config import Config
 from .model import UTC
 from .net import session
@@ -97,6 +97,9 @@ def main(argv=None) -> int:
     obs = arc.merge_obs(gs, now)
     truth = archive.truth(obs, [cfg.hads_station])   # scoring uses the nearby gauge only, never SFO
     scores = archive.score(arc.forecasts(now - timedelta(days=30)), truth, cfg.heavy_in, cfg.any_in)
+    storm_card = storms.report(truth, arc.forecasts(now - timedelta(days=120)), now, cfg.any_in, cfg.heavy_in)
+    (Path(a.data) / "storms.json").write_text(json.dumps(storm_card, default=str, indent=1))
+    scores["_storms"] = storm_card
 
     # --- page
     meta = {"sources": meta_sources}

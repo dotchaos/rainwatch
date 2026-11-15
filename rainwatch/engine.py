@@ -15,6 +15,7 @@ from zoneinfo import ZoneInfo
 import numpy as np
 
 from . import levels as lv
+from . import outlook as ol
 from .model import Series, hour_floor, hours
 
 
@@ -34,10 +35,10 @@ def tier(rate: float) -> str:
 
 
 def pct(p: float | None) -> str:
+    """Words only: run-count shares are not calibrated probabilities (see outlook.py)."""
     if p is None:
         return "—"
-    word = "High" if p >= 0.6 else "Medium" if p >= 0.3 else "Low" if p >= 0.05 else "Very low"
-    return f"{word} (~{round(p * 100)}%)"
+    return ol.chance(p).capitalize()
 
 
 def fmt_hour(t: datetime, tz: ZoneInfo, now: datetime | None = None) -> str:
@@ -159,13 +160,35 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     else:
         peak = max(valid, key=lambda r: ((r["p_heavy"] or 0), r["mid"]))
         if (peak["p_heavy"] or 0) >= 0.05:
-            bottom = (f"Heaviest hour most likely {peak['label']} — {round(peak['p_heavy'] * 100)}% chance of "
-                      f"≥{cfg.heavy_in:.2f}\" that hour ({peak['tier'].lower()}, ~{peak['mid']:.2f}\"/hr); ")
+            bottom = (f"Heaviest hour most likely {peak['label']} — {ol.chance(peak['p_heavy'])} to reach "
+                      f"{cfg.heavy_in:.2f}\" that hour ({peak['tier'].lower()}, ~{peak['mid']:.2f}\"/hr); ")
         else:
             peak = max(valid, key=lambda r: r["mid"])
             bottom = (f"No heavy hour expected; wettest is {peak['label']} ({peak['tier'].lower()}, "
                       f"~{peak['mid']:.2f}\"/hr); ")
         bottom += f"about {tot_mid:.2f}\" total through {end_label}."
+
+    # ---- per-claim outlook
+    fmt_t = lambda t: t.astimezone(tz).strftime("%a %-I %p")
+    radar_rows = [{**r, "motion_conf": nc.motion.confidence} for r in valid if r["primary"] == "radar"] if nc else []
+    raining_now = bool(nc and (nc.dbz_now or 0) >= 20) or any(
+        g.hourly and max(g.hourly) >= h0 - timedelta(hours=2) and g.hourly[max(g.hourly)] >= cfg.any_in
+        for g in gauges if g.station == cfg.hads_station)
+    outlook = ol.compute(cfg, now, hrs, ens, radar_rows, raining_now, fmt_t)
+    outlook["claims"].append({"claim": "Storm total", "text": f"About {tot_mid:.2f}\" through {end_label}",
+                              "basis": f"runs {tot_lo:.2f}–{tot_hi:.2f}\" (10th–90th)"
+                                       + (f" · NWS {nws_total:.2f}\"" if nws_s else ""), "conf": conf})
+    lv_max = {k: max(((r.get("levels") or {}).get(k, 0) for r in valid), default=0) for k in ("behind", "driveway")}
+    if lv_max["driveway"] >= 0.2:
+        ftxt = "Driveway-level surge possible"
+    elif lv_max["behind"] >= 0.2 or lv_max["driveway"] >= 0.05:
+        ftxt = "Drains could fall behind"
+    elif (outlook.get("threshold") or {}).get("p", 0) >= 0.2:
+        ftxt = f"May feel it at {cfg.heavy_in:.2f}\"; below past flood levels"
+    else:
+        ftxt = "Below past flood levels"
+    outlook["flood"] = {"text": ftxt, "basis": "Rated against the 17th & Folsom levels from 4 past floods; "
+                        "not a calibrated probability", "conf": "Low"}
 
     obs = []
     for g in gauges:
@@ -181,7 +204,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     return {
         "generated": now.isoformat(), "location": cfg.name, "lat": cfg.lat, "lon": cfg.lon,
         "heavy_in": cfg.heavy_in, "bottom_line": bottom, "peak": peak,
-        "rows": rows, "wet_rows": wet,
+        "rows": rows, "wet_rows": wet, "outlook": outlook,
         "total": {"lo": round(tot_lo, 2), "mid": round(tot_mid, 2), "hi": round(tot_hi, 2),
                   "nws": round(nws_total, 2) if nws_s else None, "confidence": conf,
                   "through": end_label},

@@ -13,7 +13,8 @@ from pathlib import Path
 from .model import UTC, Series
 
 LEADS = [(0, 1, "0–1 h"), (1, 3, "1–3 h"), (3, 6, "3–6 h"), (6, 12, "6–12 h")]
-KEEP_DAYS = 45
+KEEP_DAYS = 3650     # gauge history is small; keep it for storm-by-storm scoring
+LONG_H = 72          # combined product + ensemble are saved this far ahead (other sources 12 h)
 
 
 class Archive:
@@ -47,25 +48,31 @@ class Archive:
         if st.get("last_snapshot") == hour_key and not force:
             return False
         horizon = now + timedelta(hours=12)
+        long_horizon = now + timedelta(hours=LONG_H)
         hrs: dict[str, dict] = {}
         for s in series:
             for t, v in s.values.items():
-                if now - timedelta(hours=1) <= t < horizon:
+                h_end = long_horizon if s.key == "ens" else horizon
+                if now - timedelta(hours=1) <= t < h_end:
                     e = {"v": round(v, 3)}
                     ph, pa = s.p_exceed(t, heavy), s.p_exceed(t, anyt)
                     if ph is not None:
                         e["p"], e["pa"] = round(ph, 3), round(pa, 3)
                     hrs.setdefault(t.isoformat(), {})[s.key] = e
-        for r in report["rows"]:            # the combined product the page shows
-            if r.get("missing") or r["t"] not in hrs:
+        for r in report["rows"]:            # the combined product the page shows, full window
+            if r.get("missing") or datetime.fromisoformat(r["t"]) >= long_horizon:
                 continue
+            hrs.setdefault(r["t"], {})
             e = {"v": r["mid"]}
             if r["p_heavy"] is not None:
                 e["p"] = round(r["p_heavy"], 3)
             if r["p_any"] is not None:
                 e["pa"] = round(r["p_any"], 3)
             hrs[r["t"]]["rainwatch"] = e
-        line = json.dumps({"issued": now.astimezone(UTC).isoformat(), "hours": hrs})
+        ol = report.get("outlook") or {}
+        keep = {k: ol[k] for k in ("p_rain", "n_rain", "runs", "onset", "peak", "peak_rate", "event_total", "threshold")
+                if k in ol}
+        line = json.dumps({"issued": now.astimezone(UTC).isoformat(), "hours": hrs, "outlook": keep})
         with open(self.root / "forecasts" / f"{now.astimezone(UTC):%Y-%m}.jsonl", "a") as f:
             f.write(line + "\n")
         st["last_snapshot"] = hour_key

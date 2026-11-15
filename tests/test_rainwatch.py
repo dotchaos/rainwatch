@@ -252,3 +252,46 @@ def test_hours_with_real_rain_chance_are_not_folded():
                 "levels": {}, "tier": "Light", "basis": "x"}
     html = _rows_html([row("Sat 1 PM–2 PM", .05), row("Sat 2 PM–3 PM", .05), row("Sat 3 PM–4 PM", .5)], 0.20)
     assert "Sat 1 PM–3 PM" in html and "Sat 3 PM–4 PM" in html
+
+
+def test_outlook_claims_from_run_spread():
+    from rainwatch import outlook
+    from rainwatch.model import Series
+    h0 = hour_floor(NOW)
+    hrs = [h0 + timedelta(hours=i) for i in range(24)]
+    # 10 runs: rain starts hour 5 in 8 runs (peak 0.25 at hour 7), never in 2
+    mem = {t: [] for t in hrs}
+    for r in range(10):
+        for i, t in enumerate(hrs):
+            v = 0.0
+            if r < 8 and 5 <= i <= 9:
+                v = 0.25 if i == 7 else 0.05
+            mem[t].append(v)
+    ens = Series("ens", "x", None, values={t: sorted(v)[5] for t, v in mem.items()}, members=mem)
+    cfg = Config(lat=LAT, lon=LON)
+    ol = outlook.compute(cfg, NOW, hrs, ens, [], False, lambda t: t.strftime("%a %-I %p"))
+    c = {x["claim"]: x for x in ol["claims"]}
+    assert c["Rain at all"]["basis"].startswith("8 of 10")
+    assert c["Starts"]["conf"] == "High" and "runs agree" in c["Starts"]["basis"]
+    assert ol["threshold"]["k"] == 8 and c['Your 0.20" level']["text"] == "Very likely"
+    assert outlook.chance(0.03) == "very unlikely" and outlook.chance(0.5) == "likely"
+
+
+def test_storm_detect_and_score():
+    from rainwatch import storms
+    h = lambda i: (datetime(2026, 11, 1, 0, tzinfo=UTC) + timedelta(hours=i))
+    obs = {h(i).isoformat(): 0.0 for i in range(48)}
+    for i, v in {10: 0.05, 11: 0.22, 12: 0.08, 14: 0.03}.items():
+        obs[h(i).isoformat()] = v
+    obs[h(30).isoformat()] = 0.02            # lone sprinkle: below 0.10" total, not a storm
+    st = storms.detect(obs, h(47), 0.01, 0.20)
+    assert len(st) == 1 and st[0]["total"] == 0.38 and st[0]["heavy"] and st[0]["done"]
+    # forecast issued 6.5 h before start, calling rain 1 h late and peak on time
+    fc_hours = {h(i).isoformat(): {"rainwatch": {"v": 0.0, "p": 0.0, "pa": 0.0}} for i in range(3, 20)}
+    fc_hours[h(11).isoformat()]["rainwatch"] = {"v": 0.18, "p": 0.35, "pa": 0.9}
+    fc_hours[h(12).isoformat()]["rainwatch"] = {"v": 0.05, "p": 0.0, "pa": 0.6}
+    fcs = [{"issued": (h(10) - timedelta(hours=6, minutes=30)).isoformat(), "hours": fc_hours}]
+    rep = storms.report(obs, fcs, h(47), 0.01, 0.20)
+    lead6 = next(r for r in rep["storms"][0]["leads"] if r["lead_h"] == 6)
+    assert lead6["onset_err_h"] == 1.0 and lead6["peak_err_h"] == 0.0 and lead6["threshold"] == "hit"
+    assert next(r for r in rep["storms"][0]["leads"] if r["lead_h"] == 24)["status"] == "no forecast saved"

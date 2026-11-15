@@ -16,7 +16,7 @@ CSS = """
 @media(prefers-color-scheme:dark){:root{--bg:#0f1214;--fg:#e8eaed;--mut:#9aa3ad;--line:#2a2f35;--card:#171b1f;--acc:#7fb0ff;--hv:#ffab5c;--vh:#ff6b81}}
 *{box-sizing:border-box}body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg)}
 main{max-width:760px;margin:0 auto;padding:14px 14px 40px}h1{font-size:19px;margin:4px 0 2px}h2{font-size:15px;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
-.sub{color:var(--mut);font-size:13px}.bl{background:var(--card);border-left:4px solid var(--acc);padding:12px 14px;border-radius:8px;margin:12px 0;font-size:16px}
+.sub{color:var(--mut);font-size:13px}.claims table{width:100%}.claims td{vertical-align:top}.cf{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600}.ch{background:#d8f0dc;color:#1d5a2a}.cm{background:#fbeccb;color:#6b4a06}.cl{background:#f6d9d6;color:#7a1f16}.claims tr.fl td{border-top:2px solid var(--mut)}.bl{background:var(--card);border-left:4px solid var(--acc);padding:12px 14px;border-radius:8px;margin:12px 0;font-size:16px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
 tr.q td{color:var(--mut)}tr.h td{border-bottom:none;padding-bottom:1px}tr.b td{padding-top:0;font-size:12.5px}
 th{color:var(--mut);font-weight:600;font-size:12px}td.n{white-space:nowrap}.Heavy{color:var(--hv);font-weight:600}.Very.heavy,.vh{color:var(--vh);font-weight:700}
@@ -70,6 +70,65 @@ def _span_label(a, b):
     return f"{da} {start}–{end}" if da == db else f"{da} {start}–{db} {end}"
 
 
+def _storms_html(card, tz, heavy) -> str:
+    if not card or not card.get("storms"):
+        start = _local(card.get("archive_start"), tz, "%b %-d") if card else "—"
+        return ("<p class=sub>Storm report card: no storm of 0.10\"+ at the Mint gauge since forecasts started "
+                f"being saved ({start}). Each storm will be scored here at 24, 12, 6, 3 and 1 hours ahead.</p>")
+    sgn = lambda x: "—" if x is None else ("on time" if abs(x) < 0.5 else f"{abs(x):.0f} h {'late' if x > 0 else 'early'}")
+    num = lambda x: "—" if x is None else f"{x:.2f}\""
+    blocks = []
+    for st in reversed(card["storms"][-8:]):
+        hd = (f"<b>{e(_local(st['start'], tz, '%a %b %-d %-I %p'))}</b> · measured {st['total']:.2f}\", "
+              f"wettest hour {st['peak']:.2f}\" at {e(_local(st['peak_t'], tz, '%-I %p'))}"
+              f"{' · reached ' + f'{heavy:.2f}' + chr(34) if st['heavy'] else ''}"
+              f"{'' if st['done'] else ' · still in progress'}"
+              f"{' · ' + str(st['missing_hours']) + ' gauge hours missing' if st['missing_hours'] else ''}")
+        rows = []
+        for L in st["leads"]:
+            if L["status"] != "ok":
+                rows.append(f"<tr><td class=n>{L['lead_h']} h ahead</td><td colspan=5 class=sub>{e(L['status'])}</td></tr>")
+                continue
+            onset = sgn(L["onset_err_h"]) if L["onset_called"] else "not called"
+            rows.append(f"<tr><td class=n>{L['lead_h']} h ahead</td><td>{onset}</td><td>{sgn(L['peak_err_h'])}</td>"
+                        f"<td>{num(L['peak_pred'])}</td><td>{num(L['total_pred'])}</td><td>{e(L['threshold'] or '—')}</td></tr>")
+        blocks.append(f"<p>{hd}</p><div class=scroll><table><tr><th>Forecast</th><th>Start</th><th>Peak time</th>"
+                      f"<th>Peak hour</th><th>Total</th><th>{heavy:.2f}\" call</th></tr>{''.join(rows)}</table></div>")
+    cov = card.get("range_coverage") or {}
+    names = {"onset": "start", "peak_t": "peak time", "peak": "peak strength", "total": "total"}
+    cv = " · ".join(f"{names[k]} {a}/{b}" for k, (a, b) in cov.items() if b)
+    return ("<h3 style='margin-bottom:4px'>Storm report card</h3><p class=sub>Rainfall only, against the Mint gauge. "
+            "Flood calls are scored separately once flood observations exist.</p>" + "".join(blocks)
+            + (f"<p class=sub>Times the measured value fell inside the forecast's stated range: {cv}. "
+               "Ranges cover the middle of the model runs, so roughly half to most should land inside; "
+               "far fewer means the confidence words are too generous.</p>" if cv else ""))
+
+
+CONF_CLS = {"High": "ch", "Medium": "cm", "Low": "cl"}
+
+
+def _claims_html(r, scores) -> str:
+    ol = r.get("outlook") or {}
+    rows = []
+    for c in ol.get("claims", []):
+        rows.append(f"<tr><td class=n><b>{e(c['claim'])}</b></td><td>{e(c['text'])}"
+                    f"<br><span class=sub>{e(c.get('basis', ''))}</span></td>"
+                    f"<td class=n><span class='cf {CONF_CLS.get(c['conf'], '')}'>{e(c['conf'])}</span></td></tr>")
+    fl = ol.get("flood")
+    if fl:
+        rows.append(f"<tr class=fl><td class=n><b>Flooding at 17th &amp; Folsom</b></td><td>{e(fl['text'])}"
+                    f"<br><span class=sub>{e(fl['basis'])}</span></td>"
+                    f"<td class=n><span class='cf cl'>{e(fl['conf'])}</span></td></tr>")
+    if not rows:
+        return ""
+    hh = ((scores or {}).get("rainwatch") or {}).get("0–1 h", {}).get("heavy_hours", 0)
+    return ("<div class=claims><table><tr><th>Claim</th><th>Forecast</th><th>Confidence</th></tr>"
+            + "".join(rows) + "</table>"
+            f"<p class=sub>Chances are words, not percentages: they count model runs, and the page has not yet "
+            f"seen enough heavy hours to show its percentages are trustworthy (heavy hours scored so far: {hh}). "
+            "Confidence is judged separately for each claim from how much the model runs disagree.</p></div>")
+
+
 def _rows_html(rows, heavy):
     out = []
     i = 0
@@ -98,7 +157,7 @@ def _rows_html(rows, heavy):
                    f"<td class=n><span class='{e(r['tier'])}'>{rng}</span><br><span class=sub>{e(r['tier'])}</span></td></tr>"
                    f"<tr class=b><td colspan=3 class=sub>{e(r['basis'])}</td></tr>")
         i += 1
-    return (f"<div class=scroll><table><tr><th>Hour</th><th>P(≥{heavy:.2f}\")</th><th>Expected</th>"
+    return (f"<div class=scroll><table><tr><th>Hour</th><th>Chance of ≥{heavy:.2f}\"</th><th>Expected</th>"
             f"</tr>{''.join(out)}</table></div>")
 
 
@@ -153,6 +212,7 @@ const opts=['0.10','0.20','0.30','0.50'];
 let thr=opts.includes(get('rw_thr'))?get('rw_thr'):DEF;
 const dayKey=d=>d.toLocaleDateString('en-CA',{timeZone:TZ});
 const hp=d=>{const h=+d.toLocaleString('en-US',{timeZone:TZ,hour:'numeric',hourCycle:'h23'});return [h%12||12,h<12?'a':'p'];};
+const word=p=>p<0.05?'very unlikely':p<0.2?'unlikely':p<0.5?'possible':p<0.8?'likely':'very likely';
 const span=(a,b)=>{const [h1,s1]=hp(a),[h2,s2]=hp(b);return s1===s2?`${h1}–${h2}${s2}`:`${h1}${s1}–${h2}${s2}`;};
 function draw(){
   document.getElementById('thrbtns').innerHTML=opts.map(o=>`<button data-t="${o}" class="${o===thr?'on':''}">${o.replace(/^0/,'')}"</button>`).join(' ');
@@ -171,7 +231,7 @@ function draw(){
     const radarNow=rs.some(r=>r.primary==='radar');
     let body;
     if(!rs.length) body='<div class=none>No data</div>';
-    else if(wins.length) body=wins.map(w=>`<div class="win ${w.max>=0.6?'hi':'md'}">${span(w.start,w.end)}<br><small>${Math.round(w.max*100)}% chance${w.amt>=0.01?' · ~'+w.amt.toFixed(2)+'"/hr':''}</small></div>`).join('');
+    else if(wins.length) body=wins.map(w=>`<div class="win ${w.max>=0.6?'hi':'md'}">${span(w.start,w.end)}<br><small>${word(w.max)}${w.amt>=0.01?' · ~'+w.amt.toFixed(2)+'"/hr':''}</small></div>`).join('');
     else{
       const lbl=thr.replace(/^0/,'');
       // light-rain spans: hours where any rain is more likely than not
@@ -181,14 +241,14 @@ function draw(){
       const anyMax=rs.reduce((a,r)=>Math.max(a,r.p_any||0),0);
       const kind=tot>=0.10?'Rain':'Light rain';
       const rain=sp.length?`${kind} likely ${sp.slice(0,2).map(w=>span(w.start,w.end)).join(', ')}`:(anyMax>=0.2?'Showers possible':'Dry');
-      body=`<div class=none><b>No ${lbl}"+ hour</b>${mx>=0.05?' (max '+Math.round(mx*100)+'%)':''}</div>${rain==='Dry'?'':'<div class=none style="margin-top:4px">'+rain+'</div>'}`;
+      body=`<div class=none><b>No ${lbl}"+ hour</b>${mx>=0.05?' ('+word(mx)+')':''}</div>${rain==='Dry'?'':'<div class=none style="margin-top:4px">'+rain+'</div>'}`;
     }
     const lvlWins=(key,minp)=>{const out=[];let c=null;
       rs.forEach(r=>{const t=new Date(r.t),q=(r.levels&&r.levels[key])||0;
         if(q>=minp){ if(c&&t-c.end<1){c.end=new Date(t.getTime()+36e5);c.max=Math.max(c.max,q);} else {c={start:t,end:new Date(t.getTime()+36e5),max:q};out.push(c);} } else c=null;});
       return out;};
     const dw=lvlWins('driveway',0.10), fb=lvlWins('behind',0.20);
-    const badge=(w,cls,txt)=>w.map(x=>`<div class="lvl ${cls}">${txt} ${span(x.start,x.end)} · ${Math.round(x.max*100)}%</div>`).join('');
+    const badge=(w,cls,txt)=>w.map(x=>`<div class="lvl ${cls}">${txt} ${span(x.start,x.end)} · ${word(x.max)}</div>`).join('');
     const lv=badge(dw,'dw','Driveway risk')+(dw.length?'':badge(fb,'fb','Drains falling behind'));
     return `<div class=day><h3>${names[i]}</h3>${lv}${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" total':'No rain'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
   }).join('');
@@ -330,11 +390,12 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
 <h1>Precision Rain Forecast — {e(cfg.name)}</h1>
 <div class=sub>Next 3 days · updates itself every 15 min</div>
 
-<div class=thr>Heavy = at least <span id=thrbtns></span> in an hour · showing hours with ≥20% chance</div>
+<div class=thr>Heavy = at least <span id=thrbtns></span> in an hour · showing hours where it is at least possible</div>
 <div class=days id=days></div>
 <div class=legend><b>17th &amp; Folsom levels</b> (from the 2012–2022 floods): <b>Drains falling behind</b> = 2+ hours in a row ≥.20" or ≥.60" in 3 h · <b>Driveway risk</b> = a surge of +.25" on an hour already ≥.20", any hour ≥.45", or ≥.80" in 3 h. Every past flood had a surge; the 2016 near-miss didn't.</div>
 
 <div class=bl><b>Bottom Line:</b> {e(r['bottom_line'])}</div>
+{_claims_html(r, scores)}
 
 {table}
 <details><summary>All {len(r['rows'])} hours</summary>{_rows_html(r['rows'], r['heavy_in'])}</details>
@@ -355,7 +416,8 @@ through {e(tot['through'])} · Confidence: <span class=pill>{e(tot['confidence']
 <details><summary>Show every source side by side</summary>{_compare_html(r['rows'])}</details>
 
 <h2>Accuracy so far</h2>
-{_score_html(scores)}
+{_storms_html((scores or {}).get('_storms'), tz, r['heavy_in'])}
+<details><summary>Hour-by-hour scores by source</summary>{_score_html({k: v for k, v in (scores or {}).items() if not k.startswith('_')})}</details>
 
 {afd_html}
 

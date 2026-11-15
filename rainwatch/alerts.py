@@ -7,6 +7,7 @@ Sends:
 """
 from __future__ import annotations
 
+from .outlook import chance
 from datetime import datetime, timedelta
 
 
@@ -29,8 +30,8 @@ def decide(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
         if fresh:
             msgs.append({
                 "kind": "heavy", "peak": pk["t"], "p": pk["p_heavy"],
-                "title": f"Rain at your .20\" threshold likely {pk['label']}",
-                "message": (f"{round(pk['p_heavy'] * 100)}% chance of ≥{cfg.heavy_in:.2f}\" in that hour "
+                "title": f"Rain at your .20\" threshold {chance(pk['p_heavy'])} {pk['label']}",
+                "message": (f"{chance(pk['p_heavy']).capitalize()} to reach {cfg.heavy_in:.2f}\" in that hour "
                             f"(~{pk['mid']:.2f}\"/hr, {pk['tier'].lower()}). {pk['basis']}\n"
                             f"Total {report['total']['mid']:.2f}\" ({report['total']['lo']:.2f}–"
                             f"{report['total']['hi']:.2f}\") through {report['total']['through']}."),
@@ -76,7 +77,7 @@ def block_alerts(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
         evid = ", ".join(f"{k} says {v}" for k, v in (peak.get("model_flags") or {}).items()) or "no single model run agrees yet"
         out.append({"kind": f"block_{key}", "start": first["t"], "p": peak["levels"][key], "title": title,
                     "message": (f"Starts around {first['label']}; worst {peak['label']}: "
-                                f"{round(peak['levels'][key] * 100)}% chance ({peak['mid']:.2f}\"/hr expected). "
+                                f"{chance(peak['levels'][key])} ({peak['mid']:.2f}\"/hr expected). "
                                 f"Evidence: {peak['basis']}; {evid}."),
                     "priority": prio, "tags": tags})
         if key == "driveway":
