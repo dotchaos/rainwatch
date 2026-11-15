@@ -163,8 +163,9 @@ def provenance_note(used: list[str] | None, has_site: bool) -> str:
 
 
 def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
-          used: list[str] | None = None) -> dict:
-    """The card contract. `used` names the forecast sources behind it (see forecast.note_sources)."""
+          used: list[str] | None = None, total_of=None) -> dict:
+    """The card contract. `used` names the forecast sources behind it (see forecast.note_sources).
+    `total_of(hours)` gives whole-run rain totals over those hours (rainwatch/totals.py)."""
     tz = ZoneInfo(cfg.tz)
     rows = report["rows"][:HORIZON]
     t0 = datetime.fromisoformat(rows[0]["t"])
@@ -202,6 +203,10 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
             return "cloud", "Cloudy"          # sky model says rain but the rain pipeline does not: say cloudy
         return icon, words
 
+    # Day totals: each run's own day total, then the median (engine daily_totals). Partial days get none.
+    day_totals = {d["date"]: round(d["total"]["p50"], 2) for d in report.get("days", [])
+                  if d.get("total") and d.get("complete")}
+
     local0 = t0.astimezone(tz)
     today = local0.date()
     day_rows, labels = [], ["Today", "Tomorrow", (local0 + timedelta(days=2)).strftime("%A")]
@@ -223,8 +228,12 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
             icon, words = describe(dd.get("code", 3), True)
             if icon in ("cloud-rain", "cloud-rain-wind", "cloud-drizzle", "cloud-lightning"):
                 icon, words = "cloud", "Cloudy"
-        day_rows.append({"label": labels[k], "description": words, "icon": icon,
-                         "lowF": round(dd["lo"]) if dd else None, "highF": round(dd["hi"]) if dd else None})
+        row = {"label": labels[k], "description": words, "icon": icon,
+               "lowF": round(dd["lo"]) if dd else None, "highF": round(dd["hi"]) if dd else None}
+        tot = day_totals.get(d.isoformat())
+        if tot is not None:
+            row["rainIn"] = tot
+        day_rows.append(row)
 
     hourly = []
     for k, i in enumerate((0, 2, 4, 6, 8, 10)):
@@ -250,6 +259,19 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
     if hazard != "none":
         card["timeline"] = {"title": {"flood": "Rain & flood outlook", "rain": "Rain outlook", "heat": "Heat outlook"}[hazard],
                             "intervals": _runs(heat) if hazard == "heat" else _runs(rain, patterns)}
+    if hazard in ("rain", "flood") and total_of is not None:
+        # One total per rain stretch on the chart (contiguous hours with gear), from the same hours as the bars
+        spans, a = [], None
+        for i, lvl in enumerate(rain + [0]):
+            if lvl and a is None:
+                a = i
+            elif not lvl and a is not None:
+                w = total_of(hours[a:i])
+                if w:
+                    spans.append({"startHour": a, "endHour": i, "medianIn": round(w["p50"], 2)})
+                a = None
+        if spans:
+            card["rainTotals"] = spans
     if hazard == "flood":
         card["alert"] = {"actionTitle": f"Driveway · {cfg.site.card_location}",
                          "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",

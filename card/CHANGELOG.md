@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.10: rain amounts
+**Problem.** On Nov 15, 2026 Rainwatch expected about the same Sunday rain as NWS and WU (0.5–0.7") but the card showed no amount, and Wednesday's larger rain (~0.9" by morning) was only a bar at the chart's edge.
+**Change.** Contract: `Day.rainIn` and `rainTotals` (one per rain stretch on the chart), both medians of whole-run totals from the producer. Card: day rows read "Rain at times · ~0.5""; the insight adds "About 0.5" of rain." and, when the next rain is more than a day away, "More rain Wed 1–9 AM, about 0.9"." instead of "Then dry …". Rules reject a total that doesn't match a rain stretch. Rule added to DISPLAY-RULES.md.
+**Effect on the four scenarios.** None: fixtures carry no amounts and read as before (tested).
+
 ## v0.9: missing data is unknown, never dry
 **Problem.** A leftover `horizon_hours = 36` in rainwatch's config.toml stopped the live forecast at Tuesday midnight, while the card draws 72 hours. The last hours read as "No gear", and the insight said "Dry before and after" while NWS and the models showed a larger storm Tuesday night and Wednesday.
 **Change.** Producer: override removed; the engine never makes fewer than 73 hours; ensembles fetch 5 days. Hours with no forecast are their own class (never bridged, never dry) and are listed in a new contract field, `unknownHours`. Card: the chart hatches them with a "No forecast data" legend entry; dry statements, dry stretches, events and the 3-day summary stop at them; the insight adds "Forecast only covers through …"; a calm card says "Dry through …". The rules reject intervals drawn over unknown hours. Rule added to DISPLAY-RULES.md.

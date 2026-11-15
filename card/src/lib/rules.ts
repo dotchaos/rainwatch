@@ -23,6 +23,15 @@ export function validateScenario(s: Scenario): string[] {
   }
   if (s.timeline?.intervals.some(p => p.pattern && p.pattern !== 'steady' && p.pattern !== 'intermittent')) errors.push('Interval pattern must be steady or intermittent');
   if (s.hazard === 'rain' && s.timeline?.intervals.some(p => p.severity === 3)) errors.push('Rain-only scenario cannot reach Sandbags: that rung needs a separate local flood assessment');
+  for (const d of s.days) if (d.rainIn !== undefined && !(d.rainIn >= 0)) errors.push(`Invalid rain total for ${d.label}`);
+  for (const t of s.rainTotals ?? []) {
+    if (!(t.medianIn >= 0)) errors.push('Invalid rain total');
+    const iv = s.timeline?.intervals.filter(p => p.severity > 0) ?? [];
+    const covered = (h: number) => iv.some(p => p.startHour <= h && h < p.endHour);
+    let ok = t.startHour < t.endHour && !covered(t.startHour - 1) && !covered(t.endHour);
+    for (let h = t.startHour; h < t.endHour; h++) ok = ok && covered(h);
+    if (!ok) errors.push(`Rain total ${t.startHour}–${t.endHour} does not match a rain stretch on the chart`);
+  }
   for (const u of s.unknownHours ?? []) {
     if (u.startHour < 0 || u.endHour > 72 || u.endHour <= u.startHour) errors.push('Invalid unknown-hours span');
     if (s.timeline?.intervals.some(p => p.startHour < u.endHour && u.startHour < p.endHour)) errors.push('An interval overlaps hours with no forecast');

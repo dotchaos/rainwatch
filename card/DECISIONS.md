@@ -30,6 +30,7 @@
 
 - **Dry breaks (v0.8):** only forecast-dry hours (≥80% of runs dry, no measurable typical amount; 2+ in a row) split rain; uncertain hours are bridged as intermittent; on-and-off measured from runs (≥50% of raining runs with their own 2+ h break). Thresholds provisional.
 - **Missing data is unknown, never dry (v0.9):** the live forecast always covers the full 72-hour chart (engine floor of 73 hours; 5 days of ensemble data); any hour it can't cover is marked `unknownHours`, hatched on the chart, excluded from every dry or rain claim, and the card says how far the forecast reaches. Prompted by the Nov 15, 2026 horizon bug.
+- **Rain amounts on the card (v0.10):** day rows and the insight show whole-run median totals in tenths ("~0.5""); later rain more than a day away is named with its amount. The 10th–90th range stays on the details page. Prompted by the Nov 15, 2026 comparison: Rainwatch matched NWS and WU on totals but showed none.
 
 ## Open questions
 - When to promote live intervals from dashed to solid (needs calibration from the storm report card).

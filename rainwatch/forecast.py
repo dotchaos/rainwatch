@@ -14,7 +14,7 @@ import dataclasses
 from dataclasses import dataclass, field
 from datetime import datetime
 
-from . import card, engine
+from . import card, engine, totals
 from .sources import conditions, nws, openmeteo
 
 
@@ -101,7 +101,9 @@ def forecast_at(s, cfg, now: datetime, extras: Extras | None = None) -> Forecast
                     "detail": cond.error or "hourly temperature and conditions", "time": now.isoformat()})
     live = None
     try:
-        live = card.build(report, cond, cfg, now, ens, used=note_sources(nb, ens_parts, det, ex.nowcast))
+        radar = ex.nowcast.series if ex.nowcast else None
+        live = card.build(report, cond, cfg, now, ens, used=note_sources(nb, ens_parts, det, ex.nowcast),
+                          total_of=lambda hs: totals.window(ens_parts, radar, hs))
     except Exception as e:  # noqa: BLE001
         errors.append(f"live card: {e}")
     return Forecast(cfg=cfg, report=report, card=live, conditions=cond, nws=nb, ensemble=ens,

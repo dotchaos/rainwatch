@@ -9,7 +9,11 @@ export type IconName = 'sun'|'cloud-sun'|'cloud'|'cloud-rain'|'cloud-drizzle'|'c
  */
 export interface Interval { startHour: number; endHour: number; severity: Severity; confidence: Confidence; pattern?: 'steady' | 'intermittent'; }
 export interface Hourly { label: string; temperatureF: number | null; icon: IconName; }
-export interface Day { label: string; description: string; lowF: number | null; highF: number | null; icon: IconName; }
+export interface Day {
+  label: string; description: string; lowF: number | null; highF: number | null; icon: IconName;
+  /** Median of the model runs' own totals for the day (today: the rest of it), inches. Absent if unknown or partial. */
+  rainIn?: number;
+}
 /** Non-timing advice only. Level, headline, summary and all times are derived from the forecast (src/lib/derive.ts). */
 export interface Alert { actionTitle: string; action: string; context?: string; }
 export interface Insight { headline: string; detail: string; }
@@ -26,6 +30,11 @@ export interface Scenario {
    * Unknown is never dry: the chart shows "No data", and no statement may call these hours dry.
    */
   unknownHours?: { startHour: number; endHour: number }[];
+  /**
+   * Rain amount for each rain stretch on the chart (contiguous hours with gear), end exclusive:
+   * the median of the model runs' own totals over exactly those hours.
+   */
+  rainTotals?: { startHour: number; endHour: number; medianIn: number }[];
   /** 'illustrative' for fixtures; 'live' only for the card built from the real forecast (rainwatch/card.py). */
   provenance: { type: 'illustrative' | 'live'; note: string; generated?: string };
 }

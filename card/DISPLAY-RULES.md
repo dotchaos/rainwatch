@@ -19,6 +19,14 @@ The canonical scenario datasets are in `scenarios/*.json`; the typed contract is
 - The `Sandbags` level and driveway action require independent property-specific flood risk assessment. The upstream 17th & Folsom indicator has not been validated against driveway flooding at 18th & Shotwell.
 - Prototype fixtures include illustrative warnings solely for UI testing. Do not display these as actionable real-world advice.
 
+## Rain amounts
+**Amounts are the median of the model runs' own totals, never a sum of hourly medians.** Each run's total over the window is computed first (rainwatch/totals.py), then the median.
+- Shown in tenths of an inch with "about"/"~"; under 0.05" no number; 0.05–0.1" reads "under 0.1"" ("<0.1"").
+- Day rows: the day's total (today: the rest of it), only for days the forecast fully covers, and only when it is rain worth a number (~0.1"+, or a trace on a day already described as rainy).
+- The insight states the amount of the rain stretch it is about ("About 0.5" of rain.").
+- Rain more than a day after that stretch is named with its window and amount ("More rain Wed 1–9 AM, about 0.9".") in place of the "Then dry …" note; sooner rain is already implied by "Then dry …".
+- Each amount belongs to exactly one rain stretch on the chart (`rainTotals`); the rules reject one that doesn't match.
+
 ## Missing data
 **Missing forecast data is unknown, never dry.** An hour with no rain forecast (past the end of the model data, or a gap in it) is listed in `unknownHours` and:
 - the chart hatches it, with a "No forecast data" legend entry; no interval may be drawn over it;

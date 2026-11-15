@@ -159,6 +159,26 @@ export function deriveAlert(s: Scenario): DerivedAlert | null {
 }
 
 /** The one practical line: next dry stretch (rain), best outdoor window (heat), or the fixture's calm-day note. */
+/** '~0.5"', '<0.1"' or null (nothing worth a number). Tenths: the runs don't support more precision. */
+export function rainAmount(x: number | undefined): string | null {
+  if (x === undefined || x < 0.05) return null;
+  return x < 0.1 ? '<0.1"' : `~${x.toFixed(1)}"`;
+}
+const amountOf = (s: Scenario, a: number, b: number) => s.rainTotals?.find(t => t.startHour === a && t.endHour === b)?.medianIn;
+function amountNote(s: Scenario, a: number, b: number): string | null {
+  const x = amountOf(s, a, b);
+  return x === undefined || x < 0.05 ? null : x < 0.1 ? 'Under 0.1" of rain.' : `About ${x.toFixed(1)}" of rain.`;
+}
+/** The next rain stretch, when it is more than a day after hour `from`, as "More rain Wed 1–9 AM, about 0.9".".
+ *  Sooner rain is already implied by "Then dry …", so it is not repeated. */
+function laterRain(s: Scenario, from: number): string | null {
+  const e = rainEvents(s).find(x => x.start >= from);
+  if (!e || e.start - from < 24) return null;
+  const x = amountOf(s, e.start, e.end);
+  const amt = x === undefined || x < 0.05 ? '' : x < 0.1 ? ', under 0.1"' : `, about ${x.toFixed(1)}"`;
+  return `More rain ${windowLabel(s, { startHour: e.start, endHour: e.end })}${amt}.`;
+}
+
 export function deriveInsight(s: Scenario): { headline: string; detail: string } | null {
   if (s.hazard === 'rain' || s.hazard === 'flood') {
     if (s.hazard === 'flood') return null;      // the alert carries the message on flood days
@@ -168,6 +188,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
     if (plan && plan.kind === 'intermittent') {
       const jacket = levelLabels(s)[1], first = plan.events[0], last = plan.events[plan.events.length - 1];
       const notes = ['Breaks possible.'];
+      const later = laterRain(s, last.end); if (later) notes.push(later);
       if (!plan.sure) notes.push(MAY_SHIFT);
       const cov = coverageNote(s); if (cov) notes.push(cov);
       return { headline: `${jacket} ${partsPhrase(s, first.start, last.end)}`, detail: notes.join(' ') };
@@ -175,6 +196,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
     if (plan) {
       const jacket = levelLabels(s)[1], first = plan.events[0], last = plan.events[plan.events.length - 1];
       const notes: string[] = [];
+      if (plan.events.length === 1) { const amt = amountNote(s, first.start, first.end); if (amt) notes.push(amt); }
       const more = dryUntil(s, last.end);
       const times = plan.events.length === 1
         ? when(s, first.start, first.end, plan.sure)
@@ -183,7 +205,9 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       if (plan.kind === 'separate') notes.push('Dry in between.');
       if (first.start > 0 && knownBefore(s, first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
       else if (more >= 72) notes.push('Dry after that.');
-      if (more < 72) { const dry = nextDry(s, last.end); if (dry) notes.push(`Then dry ${dry}.`); }
+      const later = laterRain(s, last.end);
+      if (later) notes.push(later);                      // the next rain matters more than the next dry spell
+      else if (more < 72) { const dry = nextDry(s, last.end); if (dry) notes.push(`Then dry ${dry}.`); }
       if (!plan.sure) notes.push(MAY_SHIFT);
       const cov = coverageNote(s); if (cov) notes.push(cov);
       return { headline: head, detail: notes.join(' ') };
@@ -191,12 +215,15 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
     const day = cap(relDay(s, aw.startHour));
     const headline = `${aw.startHour === 0 ? 'Now' : day}: ${aw.action}, ${when(s, aw.startHour, aw.endHour, aw.sure)}`;
     const notes: string[] = [];
+    { const amt = amountNote(s, aw.eventStart, aw.eventEnd); if (amt) notes.push(amt); }
     const more = dryUntil(s, aw.eventEnd);
     if (aw.eventStart > 0 && knownBefore(s, aw.eventStart)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
     if (aw.rung > 1 && (aw.eventStart < aw.startHour || aw.eventEnd > aw.endHour))
       notes.push(`${levelLabels(s)[1]} ${when(s, aw.eventStart, aw.eventEnd, aw.sure)}.`);
-    const dry = more >= 72 ? null : nextDry(s, aw.eventEnd);
+    const later = laterRain(s, aw.eventEnd);
+    const dry = more >= 72 || later ? null : nextDry(s, aw.eventEnd);
     if (more >= 72 && aw.eventStart === 0) notes.push('Dry after that.');
+    else if (later) notes.push(later);
     else if (dry) notes.push(`Then dry ${dry}.`);
     if (!aw.sure) notes.push(MAY_SHIFT);
     const cov = coverageNote(s); if (cov) notes.push(cov);

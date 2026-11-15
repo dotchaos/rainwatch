@@ -80,3 +80,24 @@ def test_details_page_shows_run_based_day_totals():
     assert "DAYS=" not in html.split("<script>")[0]
     assert f'"{rep["days"][0]["date"]}": {{"total": {{"p10": {rep["days"][0]["total"]["p10"]}' in html
     assert "rs.reduce((a,r)=>a+(r.mid||0),0)" not in html                    # no more summed hourly medians
+
+
+def test_card_amounts_come_from_the_same_whole_run_totals():
+    import json
+    out = run()
+    c, rep = json.loads(out["live.json"]), json.loads(out["latest.json"])
+    by_date = {d["date"]: d for d in rep["days"]}
+    local0 = datetime.fromisoformat(rep["rows"][0]["t"]).astimezone(ZoneInfo(Config().tz)).date()
+    for k, row in enumerate(c["days"]):
+        d = by_date[(local0 + timedelta(days=k)).isoformat()]
+        if d["complete"]:
+            assert row["rainIn"] == round(d["total"]["p50"], 2)
+        else:
+            assert "rainIn" not in row                                   # never a partial day as if whole
+    # one total per rain stretch on the chart, over exactly its hours
+    iv = [p for p in c["timeline"]["intervals"] if p["severity"] > 0]
+    wet = {h for p in iv for h in range(p["startHour"], p["endHour"])}
+    for t in c["rainTotals"]:
+        assert all(h in wet for h in range(t["startHour"], t["endHour"]))
+        assert t["startHour"] - 1 not in wet and t["endHour"] not in wet
+    assert {h for t in c["rainTotals"] for h in range(t["startHour"], t["endHour"])} == wet

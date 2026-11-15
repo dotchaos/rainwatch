@@ -52,21 +52,24 @@
    "description": "Heavy rain at times",
    "icon": "cloud-rain-wind",
    "lowF": 52,
-   "highF": 64
+   "highF": 64,
+   "rainIn": 0.45
   },
   {
    "label": "Tomorrow",
    "description": "Rain at times",
    "icon": "cloud-rain",
    "lowF": 50,
-   "highF": 61
+   "highF": 61,
+   "rainIn": 0.2
   },
   {
    "label": "Monday",
    "description": "Partly cloudy",
    "icon": "cloud-sun",
    "lowF": 53,
-   "highF": 66
+   "highF": 66,
+   "rainIn": 0.0
   }
  ],
  "provenance": {
@@ -100,6 +103,13 @@
    }
   ]
  },
+ "rainTotals": [
+  {
+   "startHour": 1,
+   "endHour": 9,
+   "medianIn": 0.65
+  }
+ ],
  "_diagnostics": {
   "rain_periods": [
    {
