@@ -71,7 +71,8 @@ def om_det(now: datetime, val=0.22, hour=3):
     return {"hourly": {"time": times, "precipitation": [val if i == hour else 0.02 for i in range(48)]}}
 
 
-TZ_BY_POINT = {(37.761, -122.415): "America/Los_Angeles"}
+TZ_BY_POINT = {(37.761, -122.415): "America/Los_Angeles", (42.36, -71.06): "America/New_York",
+               (21.31, -157.86): "Pacific/Honolulu", (51.51, -0.13): "Europe/London"}
 
 
 def om_conditions(now: datetime, params: dict):
@@ -151,3 +152,20 @@ class FakeSession:
     def post(self, url, json=None, timeout=None):
         self.posted.append(json)
         return Resp({})
+
+
+class GeoFakeSession(FakeSession):
+    """The same synthetic weather, but with real coverage gaps: no NWS outside the US and no
+    HRRR/NBM outside the contiguous US (the real APIs answer with errors there)."""
+    def __init__(self, now, us=True, conus=True):
+        super().__init__(now)
+        self.us, self.conus = us, conus
+        self.calls: list[str] = []
+
+    def get(self, url, params=None, timeout=None, headers=None):
+        self.calls.append(url)
+        if not self.us and "api.weather.gov" in url:
+            return Resp(status=404)
+        if not self.conus and "api.open-meteo.com" in url and str((params or {}).get("models", "")).startswith("ncep_"):
+            return Resp(status=400)
+        return super().get(url, params, timeout, headers)

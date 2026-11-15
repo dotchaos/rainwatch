@@ -39,18 +39,18 @@ def hour_levels(s: Series, t: datetime, cfg) -> dict | None:
     X = _aligned(s, [t, t + H, t + 2 * H])
     prev = s.members.get(t - H)
     x0 = X[0]
-    feel = float((x0 >= cfg.feel_in).mean())
+    feel = float((x0 >= cfg.site.feel_in).mean())
     behind = np.zeros_like(x0, dtype=bool)
-    drive = x0 >= cfg.driveway_hour_in
+    drive = x0 >= cfg.site.driveway_hour_in
     if len(X) >= 2:
-        behind |= (X[0] >= cfg.behind_run_in) & (X[1] >= cfg.behind_run_in)
+        behind |= (X[0] >= cfg.site.behind_run_in) & (X[1] >= cfg.site.behind_run_in)
     if len(X) >= 3:
         s3 = X[:3].sum(axis=0)
-        behind |= s3 >= cfg.behind_3h_in
-        drive |= s3 >= cfg.driveway_3h_in
+        behind |= s3 >= cfg.site.behind_3h_in
+        drive |= s3 >= cfg.site.driveway_3h_in
     if prev is not None and len(prev) == len(x0):
         p = np.array(prev)
-        drive |= (p >= cfg.feel_in) & (x0 - p >= cfg.driveway_jump_in)
+        drive |= (p >= cfg.site.feel_in) & (x0 - p >= cfg.site.driveway_jump_in)
     behind |= drive               # anything that risks the driveway is also "falling behind"
     return {"feel": round(feel, 3), "behind": round(float(behind.mean()), 3),
             "driveway": round(float(drive.mean()), 3), "window_h": len(X)}
@@ -64,11 +64,11 @@ def deterministic_flags(values: dict[datetime, float], t: datetime, cfg) -> list
         return []
     out = []
     s3 = sum(v for v in x if v is not None)
-    if x[0] >= cfg.driveway_hour_in or s3 >= cfg.driveway_3h_in or (
-            p is not None and p >= cfg.feel_in and x[0] - p >= cfg.driveway_jump_in):
+    if x[0] >= cfg.site.driveway_hour_in or s3 >= cfg.site.driveway_3h_in or (
+            p is not None and p >= cfg.site.feel_in and x[0] - p >= cfg.site.driveway_jump_in):
         out.append("driveway")
-    elif (x[1] is not None and x[0] >= cfg.behind_run_in and x[1] >= cfg.behind_run_in) or s3 >= cfg.behind_3h_in:
+    elif (x[1] is not None and x[0] >= cfg.site.behind_run_in and x[1] >= cfg.site.behind_run_in) or s3 >= cfg.site.behind_3h_in:
         out.append("behind")
-    elif x[0] >= cfg.feel_in:
+    elif x[0] >= cfg.site.feel_in:
         out.append("feel")
     return out

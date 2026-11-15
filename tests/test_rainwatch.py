@@ -303,7 +303,7 @@ def test_preview_layout_builds():
     rep, *_ = _full_report(cfg, FakeSession(NOW))
     h = render2.page(rep, cfg, {"sources": []}, {}, None)
     assert h.count("id=days") == 1 and "class=strip" in h and "Local flood risk" in h and "Confidence by claim" in h
-    cfg.flood_site = ""
+    cfg.site.flood_site = ""
     rep2, *_ = _full_report(cfg, FakeSession(NOW))
     assert "Local flood risk" not in render2.page(rep2, cfg, {"sources": []}, {}, None)
 
@@ -346,12 +346,17 @@ def test_live_card_contract_and_levels():
 
 def test_live_card_without_flood_site_never_reaches_sandbags():
     from rainwatch import card
-    cfg = Config(lat=LAT, lon=LON)
-    cfg.flood_site = ""
-    rep, *_ = _full_report(cfg, FakeSession(NOW))
-    c = card.build(rep, _cond_for(rep), cfg, NOW)
-    assert c["hazard"] in ("rain", "none", "heat")
-    assert all(p["severity"] < 3 for p in (c.get("timeline") or {}).get("intervals", []))
+    for site_off in ("flood layer off", "no site at all"):
+        cfg = Config(lat=LAT, lon=LON)
+        if site_off == "no site at all":
+            cfg.site = None
+        else:
+            cfg.site.flood_site = ""
+        rep, *_ = _full_report(cfg, FakeSession(NOW))
+        c = card.build(rep, _cond_for(rep), cfg, NOW)
+        assert c["hazard"] in ("rain", "none", "heat") and "alert" not in c, site_off
+        assert all(p["severity"] < 3 for p in (c.get("timeline") or {}).get("intervals", [])), site_off
+        assert rep["outlook"]["flood"] is None, site_off
 
 
 def test_live_card_heat_levels_and_calm():

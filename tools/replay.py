@@ -47,7 +47,7 @@ def mint_history(start: datetime, end: datetime) -> dict[str, float]:
         for attempt in range(4):
             try:
                 r = S.get("https://mesonet.agron.iastate.edu/cgi-bin/request/hads.py",
-                          params={"stations": CFG.hads_station, "sts": t.strftime("%Y-%m-%dT%H:%MZ"),
+                          params={"stations": CFG.site.hads_station, "sts": t.strftime("%Y-%m-%dT%H:%MZ"),
                                   "ets": e.strftime("%Y-%m-%dT%H:%MZ")}, timeout=120)
                 r.raise_for_status()
                 for k, v in parse_hads_csv(r.text).items():

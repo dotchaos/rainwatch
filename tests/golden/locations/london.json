@@ -1,0 +1,116 @@
+{
+ "id": "live",
+ "title": "Live",
+ "season": "November",
+ "location": "London, UK",
+ "observedAt": "Saturday \u00b7 7:07 PM",
+ "startDay": "Sat",
+ "startHourLocal": 19,
+ "hazard": "rain",
+ "current": {
+  "temperatureF": 55,
+  "condition": "Cloudy",
+  "icon": "cloud",
+  "highF": 64,
+  "lowF": 52
+ },
+ "hourly": [
+  {
+   "label": "Now",
+   "temperatureF": 55,
+   "icon": "cloud"
+  },
+  {
+   "label": "9 PM",
+   "temperatureF": 58,
+   "icon": "cloud-rain"
+  },
+  {
+   "label": "11 PM",
+   "temperatureF": 60,
+   "icon": "cloud-rain"
+  },
+  {
+   "label": "1 AM",
+   "temperatureF": 61,
+   "icon": "cloud-rain"
+  },
+  {
+   "label": "3 AM",
+   "temperatureF": 60,
+   "icon": "cloud-rain"
+  },
+  {
+   "label": "5 AM",
+   "temperatureF": 58,
+   "icon": "cloud"
+  }
+ ],
+ "days": [
+  {
+   "label": "Today",
+   "description": "Heavy rain at times",
+   "icon": "cloud-rain-wind",
+   "lowF": 52,
+   "highF": 64
+  },
+  {
+   "label": "Tomorrow",
+   "description": "Rain at times",
+   "icon": "cloud-rain",
+   "lowF": 50,
+   "highF": 61
+  },
+  {
+   "label": "Monday",
+   "description": "Partly cloudy",
+   "icon": "cloud-sun",
+   "lowF": 53,
+   "highF": 66
+  }
+ ],
+ "provenance": {
+  "type": "live",
+  "generated": "2026-11-14T19:07:00+00:00",
+  "note": "Live forecast from Open-Meteo models. No radar or local gauge check here. Not an official warning."
+ },
+ "timeline": {
+  "title": "Rain outlook",
+  "intervals": [
+   {
+    "startHour": 1,
+    "endHour": 3,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "steady"
+   },
+   {
+    "startHour": 3,
+    "endHour": 4,
+    "severity": 2,
+    "confidence": "unknown",
+    "pattern": "steady"
+   },
+   {
+    "startHour": 4,
+    "endHour": 9,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "steady"
+   }
+  ]
+ },
+ "_diagnostics": {
+  "rain_periods": [
+   {
+    "start": 1,
+    "end": 9,
+    "bridged": false,
+    "runs_with_break": 0.0,
+    "pattern": "steady",
+    "start_local": "Sat 8 PM",
+    "end_local": "Sun 4 AM"
+   }
+  ]
+ }
+}

@@ -63,8 +63,8 @@ def block_alerts(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
     out = []
     rows = report["rows"]
     for key, prob, horizon, title, prio, tags in (
-        ("driveway", cfg.driveway_alert_prob, 6, f"Driveway risk: flash-flood setup at {cfg.flood_site}", 5, ["rotating_light"]),
-        ("behind", cfg.behind_alert_prob, 24, "Long soaker coming: drains may fall behind", 4, ["droplet"]),
+        ("driveway", cfg.site.driveway_alert_prob, 6, f"Driveway risk: flash-flood setup at {cfg.flood_site}", 5, ["rotating_light"]),
+        ("behind", cfg.site.behind_alert_prob, 24, "Long soaker coming: drains may fall behind", 4, ["droplet"]),
     ):
         first, peak = _first_window(rows, key, prob, now + timedelta(hours=horizon))
         if not first:

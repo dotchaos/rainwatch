@@ -33,6 +33,22 @@ pytest
 
 Settings live in `config.toml` (location, thresholds, stations).
 
+## One engine, any coordinates
+
+Every forecast is made by `rainwatch.forecast.forecast_at(session, cfg, now, extras)`. The batch job
+calls it for 18th & Shotwell with its local extras (radar nowcast, gauges); a forecast for any other
+point calls it with `Config.at(lat, lon, name)` and no extras.
+
+* **Site profile** (`config.Site`): gauges, flood levels and their wording for one validated place.
+  Only the batch job loads one. Without a site there is no flood layer, so the card can never show
+  Sandbags, and the provenance line says there was no radar or local gauge check.
+* **Time zone**: `tz = "auto"` resolves it from the coordinates (Open-Meteo), no extra call.
+* **Upstream calls**: 8 Open-Meteo calls per general forecast, plus NWS inside the US.
+* **Guards** (`tests/test_equivalence.py`): the batch outputs stay byte-identical to `tests/golden/`;
+  a site-less forecast for the same point and inputs matches the site's general weather; Boston,
+  Honolulu and London cards pass the card app's own contract rules. Re-record only for an intended
+  change: `python -m tests.batch_run --record`, `python -m tests.test_equivalence --record`.
+
 ## Known limits
 
 * Radar extrapolation assumes storms keep their strength; cells that grow or die in the next hour will surprise it.

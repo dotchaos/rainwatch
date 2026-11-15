@@ -127,7 +127,7 @@ def _flood_html(r, cfg) -> str:
             "<div class=days id=floodays></div>"
             f"<p class=sub><b>Why this spot:</b> {e(fl['evidence'])}. This section is specific to {e(fl['site'])}; "
             "the rain forecast above is the same for anyone nearby.</p>"
-            f"<div class=legend><b>Levels</b> (from {e(cfg.flood_levels_basis)}): <b>Drains falling behind</b> = 2+ hours "
+            f"<div class=legend><b>Levels</b> (from {e(cfg.site.flood_levels_basis)}): <b>Drains falling behind</b> = 2+ hours "
             "in a row ≥.20\" or ≥.60\" in 3 h · <b>Driveway risk</b> = a surge of +.25\" on an hour already ≥.20\", any "
             "hour ≥.45\", or ≥.80\" in 3 h. Every past flood had a surge; the 2016 near-miss didn't.</div>")
 

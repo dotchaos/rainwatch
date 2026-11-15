@@ -10,11 +10,11 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from . import alerts, archive, card, engine, nowcast, render, storms
+from . import alerts, archive, forecast, nowcast, render, storms
 from .config import Config
 from .model import UTC
 from .net import session
-from .sources import conditions, gauges, nws, openmeteo, radar
+from .sources import gauges, nws, openmeteo, radar
 
 
 def afd_excerpt(text: str) -> str:
@@ -36,68 +36,38 @@ def main(argv=None) -> int:
     s = session(cfg.contact)
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
-    errors: list[str] = []
-    meta_sources: list[dict] = []
-
-    # --- NWS
-    nb = None
-    try:
-        nb = nws.fetch(s, cfg.lat, cfg.lon)
-        meta_sources.append({"name": f"NWS {nb.office} gridded forecast", "url": nb.forecast_url,
-                             "detail": "QPF, PoP, gusts", "time": nb.qpf.issued.isoformat() if nb.qpf.issued else None})
-        meta_sources.append({"name": "NWS active alerts", "url": f"https://alerts.weather.gov/search?point={cfg.lat},{cfg.lon}",
-                             "detail": f"{len(nb.alerts)} active", "time": now.isoformat()})
-    except Exception as e:
-        errors.append(f"NWS: {e}")
-
-    # --- Models
-    ens_parts, errs = openmeteo.fetch_ensembles(s, cfg.lat, cfg.lon, cfg.ensemble_models)
-    errors += errs
-    ens = openmeteo.pooled(ens_parts)
-    det, errs = openmeteo.fetch_deterministic(s, cfg.lat, cfg.lon, cfg.deterministic_models)
-    errors += errs
-    for p in ens_parts:
-        meta_sources.append({"name": f"Open-Meteo {p.label}", "url": "https://open-meteo.com/en/docs/ensemble-api",
-                             "detail": "hourly members", "time": now.isoformat()})
-    for d in det:
-        meta_sources.append({"name": f"Open-Meteo {d.label}", "url": "https://open-meteo.com/en/docs/gfs-api",
-                             "detail": "deterministic hourly", "time": now.isoformat()})
-
-    # --- Radar
+    # --- Local extras for this site: radar nowcast and gauges (general forecasts run without them)
+    ex = forecast.Extras()
     frames, errs = radar.fetch_frames(s, cfg.lat, cfg.lon, cfg.radar_box_deg, now, cfg.radar_frames, cfg.radar_span_min)
     if errs and not frames:
-        errors += [f"radar {x}" for x in errs[:3]]
+        ex.errors += [f"radar {x}" for x in errs[:3]]
     steering = None
     try:
         steering = openmeteo.fetch_steering(s, cfg.lat, cfg.lon, now)
     except Exception as e:
-        errors.append(f"700 hPa wind: {e}")
-    nc = nowcast.run(frames, cfg.lat, cfg.lon, cfg.nowcast_max_h, steering)
+        ex.errors.append(f"700 hPa wind: {e}")
+    nc = ex.nowcast = nowcast.run(frames, cfg.lat, cfg.lon, cfg.nowcast_max_h, steering)
     overlay = None
     if frames:
         sw, ne = nowcast.overlay_png(frames[-1], str(out / "radar.png"))
         overlay = {"img": "radar.png", "v": frames[-1].time.strftime("%H%M"), "bounds": [sw, ne],
                    "lat": cfg.lat, "lon": cfg.lon, "upstream": nowcast.upstream_points(nc, frames[-1], cfg.lat, cfg.lon)}
-        meta_sources.append({"name": "NEXRAD mosaic (IEM N0Q, includes KMUX)",
-                             "url": "https://mesonet.agron.iastate.edu/docs/nexrad_mosaic/",
-                             "detail": f"{len(frames)} frames", "time": frames[-1].time.isoformat()})
-
-    # --- Gauges
-    gs = [gauges.fetch_hads(s, cfg.hads_station, now), gauges.fetch_asos(s, cfg.nws_station, now)]
+        ex.sources.append({"name": "NEXRAD mosaic (IEM N0Q, includes KMUX)",
+                           "url": "https://mesonet.agron.iastate.edu/docs/nexrad_mosaic/",
+                           "detail": f"{len(frames)} frames", "time": frames[-1].time.isoformat()})
+    gs = []
+    if cfg.site:
+        gs = [gauges.fetch_hads(s, cfg.site.hads_station, now), gauges.fetch_asos(s, cfg.site.nws_station, now)]
+    ex.gauges = gs
     for g in gs:
-        meta_sources.append({"name": g.label, "url": g.url, "detail": g.error or "hourly totals",
-                             "time": g.last_obs.isoformat() if g.last_obs else None})
+        ex.sources.append({"name": g.label, "url": g.url, "detail": g.error or "hourly totals",
+                           "time": g.last_obs.isoformat() if g.last_obs else None})
 
-    report = engine.build(cfg, now, nb, ens, ens_parts, det, nc, gs, errors)
-
-    # --- Live card data (same contract as the card app's scenario fixtures)
-    cond = conditions.fetch(s, cfg.lat, cfg.lon, cfg.tz)
-    if cond.error:
-        errors.append(f"temperature/conditions: {cond.error}")
-    meta_sources.append({"name": "Open-Meteo forecast (temperature, sky)", "url": "https://open-meteo.com/en/docs",
-                         "detail": cond.error or "hourly temperature and conditions", "time": now.isoformat()})
-    try:
-        live_card = card.build(report, cond, cfg, now, ens)
+    # --- The forecast itself: the same function any location uses
+    fc = forecast.forecast_at(s, cfg, now, ex)
+    report, nb, ens, det, errors, meta_sources = fc.report, fc.nws, fc.ensemble, fc.deterministic, fc.errors, fc.sources
+    if fc.card is not None:
+        live_card = fc.card
         (out / "live.json").write_text(json.dumps(live_card, indent=1))
         print("card:", live_card["hazard"], "·", len((live_card.get("timeline") or {}).get("intervals", [])), "intervals")
         for d in live_card["_diagnostics"]["rain_periods"]:
@@ -105,15 +75,13 @@ def main(argv=None) -> int:
             share = d["runs_with_break"]
             runs = "" if share is None else f" · {share:.0%} of raining runs have their own dry break"
             print(f"  rain period {d['start_local']}–{d['end_local']}: {d['pattern']}{note}{runs}")
-    except Exception as ex:  # noqa: BLE001
-        errors.append(f"live card: {ex}")
 
     # --- archive + scoring
     arc = archive.Archive(a.data)
     series = [x for x in [nc.series, ens, *det, nb.qpf if nb else None] if x]
     arc.snapshot(now, series, report, cfg.heavy_in, cfg.any_in)
     obs = arc.merge_obs(gs, now)
-    truth = archive.truth(obs, [cfg.hads_station])   # scoring uses the nearby gauge only, never SFO
+    truth = archive.truth(obs, [cfg.site.hads_station] if cfg.site else [])   # scoring uses the nearby gauge only, never SFO
     scores = archive.score(arc.forecasts(now - timedelta(days=30)), truth, cfg.heavy_in, cfg.any_in)
     storm_card = storms.report(truth, arc.forecasts(now - timedelta(days=120)), now, cfg.any_in, cfg.heavy_in)
     (Path(a.data) / "storms.json").write_text(json.dumps(storm_card, default=str, indent=1))

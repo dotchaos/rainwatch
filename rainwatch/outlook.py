@@ -175,7 +175,7 @@ def compute(cfg, now: datetime, hrs: list[datetime], ens, radar_rows: list[dict]
     # --- threshold
     k = int(sum(exceed))
     pk = k / n_runs
-    claims.append({"claim": f"Your {cfg.heavy_in:.2f}\" level",
+    claims.append({"claim": (f"Your {cfg.heavy_in:.2f}\" level" if cfg.site else f"{cfg.heavy_in:.2f}\" in an hour"),
                    "text": chance(pk).capitalize(),
                    "basis": runs_txt(k) + f" have an hour at or above {cfg.heavy_in:.2f}\"",
                    "conf": "Medium" if k == 0 and p90 < cfg.heavy_in / 2 else "Low"})

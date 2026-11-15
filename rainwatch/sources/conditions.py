@@ -16,6 +16,7 @@ class Conditions:
     hourly: dict[datetime, dict] = field(default_factory=dict)   # UTC hour start -> {temp, code, day}
     daily: dict[str, dict] = field(default_factory=dict)         # local date -> {hi, lo, code}
     error: str | None = None
+    tz: str | None = None                                        # the local time zone the daily rows use
 
 
 # WMO weather code -> (card icon, words). Rain words here are only a sky description; rain *amounts*
@@ -61,6 +62,7 @@ def parse(data: dict) -> Conditions:
 
 
 def fetch(s, lat: float, lon: float, tz: str) -> Conditions:
+    """Two calls. `tz` may be "auto": Open-Meteo then resolves the time zone from the coordinates."""
     try:
         hr = s.get(FC, params={"latitude": lat, "longitude": lon, "timezone": "GMT", "forecast_days": 5,
                                "temperature_unit": "fahrenheit", "hourly": "temperature_2m,weather_code,is_day"},
@@ -70,7 +72,9 @@ def fetch(s, lat: float, lon: float, tz: str) -> Conditions:
                                "temperature_unit": "fahrenheit",
                                "daily": "temperature_2m_max,temperature_2m_min,weather_code"}, timeout=30)
         dy.raise_for_status()
-        c = parse({"hourly": hr.json().get("hourly"), "daily": dy.json().get("daily")})
+        dd = dy.json()
+        c = parse({"hourly": hr.json().get("hourly"), "daily": dd.get("daily")})
+        c.tz = dd.get("timezone") or (tz if tz != "auto" else None)
         if not c.hourly:
             c.error = "no hourly temperatures returned"
         return c

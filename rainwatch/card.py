@@ -131,7 +131,20 @@ def _runs(levels: list[int], patterns: list[str] | None = None) -> list[dict]:
     return out
 
 
-def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None) -> dict:
+def provenance_note(used: list[str] | None, has_site: bool) -> str:
+    """Name only the sources this forecast actually used."""
+    if not used:
+        return "Live forecast. Not an official warning."
+    names = used[0] if len(used) == 1 else ", ".join(used[:-1]) + " and " + used[-1]
+    note = f"Live forecast from {names}."
+    if not has_site and "radar" not in used:
+        note += " No radar or local gauge check here."
+    return note + " Not an official warning."
+
+
+def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
+          used: list[str] | None = None) -> dict:
+    """The card contract. `used` names the forecast sources behind it (see forecast.note_sources)."""
     tz = ZoneInfo(cfg.tz)
     rows = report["rows"][:HORIZON]
     t0 = datetime.fromisoformat(rows[0]["t"])
@@ -197,22 +210,22 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None) -> dict:
 
     card = {
         "id": "live", "title": "Live", "season": local0.strftime("%B"),
-        "location": cfg.card_location, "observedAt": now.astimezone(tz).strftime("%A · %-I:%M %p"),
+        "location": cfg.site.card_location if cfg.site else cfg.name, "observedAt": now.astimezone(tz).strftime("%A · %-I:%M %p"),
         "startDay": local0.strftime("%a"), "startHourLocal": local0.hour, "hazard": hazard,
         "current": {"temperatureF": round(temps[0]) if temps[0] is not None else None, "condition": words0,
                     "icon": icon0, "highF": round(td["hi"]) if td else None, "lowF": round(td["lo"]) if td else None},
         "hourly": hourly, "days": day_rows,
         "provenance": {"type": "live", "generated": now.isoformat(),
-                       "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."},
+                       "note": provenance_note(list(used) if used else None, cfg.site is not None)},
     }
     if hazard != "none":
         card["timeline"] = {"title": {"flood": "Rain & flood outlook", "rain": "Rain outlook", "heat": "Heat outlook"}[hazard],
                             "intervals": _runs(heat) if hazard == "heat" else _runs(rain, patterns)}
     if hazard == "flood":
-        card["alert"] = {"actionTitle": f"Driveway · {cfg.card_location}",
+        card["alert"] = {"actionTitle": f"Driveway · {cfg.site.card_location}",
                          "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
                          "context": (f"Rated against levels from 4 past floods near {cfg.flood_site} (2012–2022); their "
-                                     f"relationship to driveway flooding at {cfg.card_location} is not yet validated.")}
+                                     f"relationship to driveway flooding at {cfg.site.card_location} is not yet validated.")}
     elif hazard == "heat" and hmax == 3:
         card["alert"] = {"actionTitle": "Avoid the hottest hours",
                          "action": "Plan outdoor activity for mornings, keep your home cool, and arrange access to "

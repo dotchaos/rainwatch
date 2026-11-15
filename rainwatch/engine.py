@@ -61,7 +61,7 @@ def _range(m: list[float] | None, v: float | None) -> tuple[float, float, float]
 def obs_src(gauges, cfg):
     """The nearby gauge's latest completed hour (never SFO)."""
     for g in gauges:
-        if g.station == cfg.hads_station and g.hourly:
+        if cfg.site and g.station == cfg.site.hads_station and g.hourly:
             t = max(g.hourly)
             yield {"last": g.hourly[t], "label": t.astimezone(ZoneInfo(cfg.tz)).strftime("%-I %p hour")}
 
@@ -181,7 +181,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     radar_rows = [{**r, "motion_conf": nc.motion.confidence} for r in valid if r["primary"] == "radar"] if nc else []
     radar_wet = bool(nc and (nc.dbz_now or 0) >= 20)
     gauge_wet = any(g.hourly and max(g.hourly) >= h0 - timedelta(hours=2) and g.hourly[max(g.hourly)] >= cfg.any_in
-                    for g in gauges if g.station == cfg.hads_station)
+                    for g in gauges if cfg.site and g.station == cfg.site.hads_station)
     raining_now = ("radar echo over you and rain at the Mint gauge" if radar_wet and gauge_wet else
                    "radar echo over you now" if radar_wet else
                    "Mint gauge measured rain in its latest hour" if gauge_wet else "")
@@ -198,8 +198,8 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
         ftxt = f"May feel it at {cfg.heavy_in:.2f}\"; below past flood levels"
     else:
         ftxt = "Below past flood levels"
-    outlook["flood"] = ({"site": cfg.flood_site, "text": ftxt, "evidence": cfg.flood_site_evidence,
-                         "basis": f"Rated against levels drawn from {cfg.flood_levels_basis}; not a calibrated "
+    outlook["flood"] = ({"site": cfg.flood_site, "text": ftxt, "evidence": cfg.site.flood_site_evidence,
+                         "basis": f"Rated against levels drawn from {cfg.site.flood_levels_basis}; not a calibrated "
                                   "probability", "conf": "Low"} if cfg.flood_site else None)
 
     # ---- near term: observed now vs radar extrapolation vs models, kept apart (never blended)
