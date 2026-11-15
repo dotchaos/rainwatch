@@ -18,7 +18,7 @@ CSS = """
 @media(prefers-color-scheme:dark){:root{--bg:#0f1214;--fg:#e8eaed;--mut:#9aa3ad;--line:#2a2f35;--card:#171b1f;--acc:#7fb0ff;--hv:#ffab5c;--vh:#ff6b81}}
 *{box-sizing:border-box}body{margin:0;font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg)}
 main{max-width:760px;margin:0 auto;padding:14px 14px 40px}h1{font-size:19px;margin:4px 0 2px}h2{font-size:15px;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut)}
-.sub{color:var(--mut);font-size:13px}.claims table{width:100%}.claims td{vertical-align:top}.cf{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600}.ch{background:#d8f0dc;color:#1d5a2a}.cm{background:#fbeccb;color:#6b4a06}.cl{background:#f6d9d6;color:#7a1f16}.claims tr.fl td{border-top:2px solid var(--mut)}.bl{background:var(--card);border-left:4px solid var(--acc);padding:12px 14px;border-radius:8px;margin:12px 0;font-size:16px}
+.sub{color:var(--mut);font-size:13px}.claims table{width:100%}.near div{margin:4px 0}.tag{display:inline-block;min-width:140px;font-size:12px;font-weight:700;color:var(--mut)}.warnbox{background:#fbeccb;color:#6b4a06;border-radius:6px;padding:6px 8px;margin:6px 0;font-size:14px}.claims td{vertical-align:top}.cf{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:600}.ch{background:#d8f0dc;color:#1d5a2a}.cm{background:#fbeccb;color:#6b4a06}.cl{background:#f6d9d6;color:#7a1f16}.claims tr.fl td{border-top:2px solid var(--mut)}.bl{background:var(--card);border-left:4px solid var(--acc);padding:12px 14px;border-radius:8px;margin:12px 0;font-size:16px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
 tr.q td{color:var(--mut)}tr.h td{border-bottom:none;padding-bottom:1px}tr.b td{padding-top:0;font-size:12.5px}
 th{color:var(--mut);font-weight:600;font-size:12px}td.n{white-space:nowrap}.Heavy{color:var(--hv);font-weight:600}.Very.heavy,.vh{color:var(--vh);font-weight:700}
@@ -105,6 +105,33 @@ def _storms_html(card, tz, heavy) -> str:
                "far fewer means the confidence words are too generous.</p>" if cv else ""))
 
 
+def _near_html(n) -> str:
+    if not n:
+        return ""
+    flag = f"<div class=warnbox>{e(n['agree'])}</div>" if n.get("agree") else ""
+    return ("<h2>Now and the next 2 hours</h2><div class=near>"
+            f"<div><span class=tag>Observed</span> {e(n['observed'])}</div>"
+            f"<div><span class=tag>Radar extrapolation</span> {e(n['radar'].replace('Radar extrapolation, ', '').replace('Radar extrapolation ', ''))}</div>"
+            f"<div><span class=tag>Models</span> {e(n['models'].replace('Models, same hours: ', 'same hours: '))}</div>"
+            f"{flag}<p class=sub>Observed = measured right now. Radar extrapolation = today's rain moved along its "
+            "track; it cannot see new rain forming. Models = computer forecasts. They are shown side by side, never blended.</p></div>")
+
+
+def _flood_html(r, cfg) -> str:
+    fl = (r.get("outlook") or {}).get("flood")
+    if not fl:
+        return ""
+    return (f"<h2>Flood risk · {e(fl['site'])}</h2>"
+            f"<p><b>{e(fl['text'])}</b> <span class='cf cl'>Confidence: {e(fl['conf'])}</span><br>"
+            f"<span class=sub>{e(fl['basis'])}.</span></p>"
+            "<div class=days id=floodays></div>"
+            f"<p class=sub><b>Why this spot:</b> {e(fl['evidence'])}. This section is specific to {e(fl['site'])}; "
+            "the rain forecast above is the same for anyone nearby.</p>"
+            f"<div class=legend><b>Levels</b> (from {e(cfg.flood_levels_basis)}): <b>Drains falling behind</b> = 2+ hours "
+            "in a row ≥.20\" or ≥.60\" in 3 h · <b>Driveway risk</b> = a surge of +.25\" on an hour already ≥.20\", any "
+            "hour ≥.45\", or ≥.80\" in 3 h. Every past flood had a surge; the 2016 near-miss didn't.</div>")
+
+
 CONF_CLS = {"High": "ch", "Medium": "cm", "Low": "cl"}
 
 
@@ -115,11 +142,6 @@ def _claims_html(r, scores) -> str:
         rows.append(f"<tr><td class=n><b>{e(c['claim'])}</b></td><td>{e(c['text'])}"
                     f"<br><span class=sub>{e(c.get('basis', ''))}</span></td>"
                     f"<td class=n><span class='cf {CONF_CLS.get(c['conf'], '')}'>{e(c['conf'])}</span></td></tr>")
-    fl = ol.get("flood")
-    if fl:
-        rows.append(f"<tr class=fl><td class=n><b>Flooding at 17th &amp; Folsom</b></td><td>{e(fl['text'])}"
-                    f"<br><span class=sub>{e(fl['basis'])}</span></td>"
-                    f"<td class=n><span class='cf cl'>{e(fl['conf'])}</span></td></tr>")
     if not rows:
         return ""
     hh = ((scores or {}).get("rainwatch") or {}).get("0–1 h", {}).get("heavy_hours", 0)
@@ -220,6 +242,7 @@ function draw(){
   document.querySelectorAll('#thrbtns button').forEach(b=>b.onclick=()=>{thr=b.dataset.t;put('rw_thr',thr);draw();});
   const now=new Date(), keys=[0,1,2].map(i=>dayKey(new Date(now.getTime()+i*864e5)));
   const names=['Today','Tomorrow',new Date(now.getTime()+2*864e5).toLocaleDateString('en-US',{timeZone:TZ,weekday:'long'})];
+  const fl=[];
   const html=keys.map((k,i)=>{
     const rs=ROWS.filter(r=>!r.missing&&dayKey(new Date(r.t))===k);
     const p=r=>(r.p&&r.p[thr]!=null)?r.p[thr]:0;
@@ -251,9 +274,11 @@ function draw(){
     const dw=lvlWins('driveway',0.10), fb=lvlWins('behind',0.20);
     const badge=(w,cls,txt)=>w.map(x=>`<div class="lvl ${cls}">${txt} ${span(x.start,x.end)} · ${word(x.max)}</div>`).join('');
     const lv=badge(dw,'dw','Driveway risk')+(dw.length?'':badge(fb,'fb','Drains falling behind'));
-    return `<div class=day><h3>${names[i]}</h3>${lv}${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" total':'No rain'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
+    fl.push(`<div class=day><h3>${names[i]}</h3>${rs.length?(lv||'<div class=none>Below flood levels</div>'):'<div class=none>No data</div>'}</div>`);
+    return `<div class=day><h3>${names[i]}</h3>${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" total':'No rain'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
   }).join('');
   document.getElementById('days').innerHTML=html;
+  const fd=document.getElementById('floodays'); if(fd) fd.innerHTML=fl.join('');
 }
 draw();
 })();
@@ -393,10 +418,11 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
 
 <div class=thr>Heavy = at least <span id=thrbtns></span> in an hour · showing hours where it is at least possible</div>
 <div class=days id=days></div>
-<div class=legend><b>17th &amp; Folsom levels</b> (from the 2012–2022 floods): <b>Drains falling behind</b> = 2+ hours in a row ≥.20" or ≥.60" in 3 h · <b>Driveway risk</b> = a surge of +.25" on an hour already ≥.20", any hour ≥.45", or ≥.80" in 3 h. Every past flood had a surge; the 2016 near-miss didn't.</div>
 
 <div class=bl><b>Bottom Line:</b> {e(r['bottom_line'])}</div>
 {_claims_html(r, scores)}
+{_near_html(r.get('near'))}
+{_flood_html(r, cfg)}
 
 {table}
 <details><summary>All {len(r['rows'])} hours</summary>{_rows_html(r['rows'], r['heavy_in'])}</details>

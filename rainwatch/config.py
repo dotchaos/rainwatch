@@ -21,6 +21,12 @@ class Config:
 
     # Block flood levels (calibrated on 17th & Folsom floods 2012-2022 vs the downtown gauge;
     # see data branch calibration.md). "feel" = John's own threshold.
+    # The flood layer is optional and specific to one place; the rain forecast never depends on it.
+    # Set flood_site = "" in config.toml to run the rain forecast alone (e.g. for another address).
+    flood_site: str = "17th & Folsom"
+    flood_site_evidence: str = ("In the city's 100-year flood zone and a low spot; 311 flood reports nearby in "
+                                "5 of the 7 big storms since 2012")
+    flood_levels_basis: str = "4 past floods, 2012–2022, and the 2016 near-miss"
     feel_in: float = 0.20               # an hour at/above this: drains working hard
     behind_run_in: float = 0.20         # 2 hours in a row at/above this ...
     behind_3h_in: float = 0.60          # ... or this much in 3 hours: drains falling behind

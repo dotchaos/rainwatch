@@ -58,6 +58,14 @@ def _range(m: list[float] | None, v: float | None) -> tuple[float, float, float]
     return None
 
 
+def obs_src(gauges, cfg):
+    """The nearby gauge's latest completed hour (never SFO)."""
+    for g in gauges:
+        if g.station == cfg.hads_station and g.hourly:
+            t = max(g.hourly)
+            yield {"last": g.hourly[t], "label": t.astimezone(ZoneInfo(cfg.tz)).strftime("%-I %p hour")}
+
+
 def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
           det: list[Series], nc, gauges: list, errors: list[str]) -> dict:
     tz = ZoneInfo(cfg.tz)
@@ -101,12 +109,12 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
             p_thr = {k: clip(v) for k, v in p_thr.items()}
         if p_any is None and prim is nws_s:
             p_any = nws_s.prob.get(t)
-        lev = lv.hour_levels(prim, t, cfg) if prim.members else None
+        lev = lv.hour_levels(prim, t, cfg) if prim.members and cfg.flood_site else None
         if lev and prim is radar:
             cap = 0.95 if nc.motion.confidence != "low" else 0.85
             for k in ("feel", "behind", "driveway"):
                 lev[k] = min(lev[k], cap)
-        flags = {d.label: f[0] for d in det if (f := lv.deterministic_flags(d.values, t, cfg))}
+        flags = {d.label: f[0] for d in det if cfg.flood_site and (f := lv.deterministic_flags(d.values, t, cfg))}
         srcs = {}
         for s in [radar, ens, *det, nws_s]:
             if s and t in s.values:
@@ -171,9 +179,12 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     # ---- per-claim outlook
     fmt_t = lambda t: t.astimezone(tz).strftime("%a %-I %p")
     radar_rows = [{**r, "motion_conf": nc.motion.confidence} for r in valid if r["primary"] == "radar"] if nc else []
-    raining_now = bool(nc and (nc.dbz_now or 0) >= 20) or any(
-        g.hourly and max(g.hourly) >= h0 - timedelta(hours=2) and g.hourly[max(g.hourly)] >= cfg.any_in
-        for g in gauges if g.station == cfg.hads_station)
+    radar_wet = bool(nc and (nc.dbz_now or 0) >= 20)
+    gauge_wet = any(g.hourly and max(g.hourly) >= h0 - timedelta(hours=2) and g.hourly[max(g.hourly)] >= cfg.any_in
+                    for g in gauges if g.station == cfg.hads_station)
+    raining_now = ("radar echo over you and rain at the Mint gauge" if radar_wet and gauge_wet else
+                   "radar echo over you now" if radar_wet else
+                   "Mint gauge measured rain in its latest hour" if gauge_wet else "")
     outlook = ol.compute(cfg, now, hrs, ens, radar_rows, raining_now, fmt_t)
     outlook["claims"].append({"claim": "Storm total", "text": f"About {tot_mid:.2f}\" through {end_label}",
                               "basis": f"runs {tot_lo:.2f}–{tot_hi:.2f}\" (10th–90th)"
@@ -187,8 +198,45 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
         ftxt = f"May feel it at {cfg.heavy_in:.2f}\"; below past flood levels"
     else:
         ftxt = "Below past flood levels"
-    outlook["flood"] = {"text": ftxt, "basis": "Rated against the 17th & Folsom levels from 4 past floods; "
-                        "not a calibrated probability", "conf": "Low"}
+    outlook["flood"] = ({"site": cfg.flood_site, "text": ftxt, "evidence": cfg.flood_site_evidence,
+                         "basis": f"Rated against levels drawn from {cfg.flood_levels_basis}; not a calibrated "
+                                  "probability", "conf": "Low"} if cfg.flood_site else None)
+
+    # ---- near term: observed now vs radar extrapolation vs models, kept apart (never blended)
+    near = None
+    if nc:
+        r_rows = [r for r in valid if r["primary"] == "radar"]
+        n_hrs = [datetime.fromisoformat(r["t"]) for r in r_rows]
+        rad_tot = sum(r["mid"] for r in r_rows)
+        rad_pany = max((r["p_any"] or 0 for r in r_rows), default=0)
+        ens_tot = sum(ens.values.get(t, 0) for t in n_hrs) if ens else None
+        hr = next((d for d in det if d.key == "hrrr"), None)
+        hr_tot = sum(hr.values.get(t, 0) for t in n_hrs) if hr and all(t in hr.values for t in n_hrs) else None
+        rad_wet = rad_tot >= 0.02 or rad_pany >= 0.5
+        mods = [x for x in (ens_tot, hr_tot) if x is not None]
+        mod_wet = any(x >= 0.02 for x in mods)
+        if not r_rows:
+            agree = None
+        elif rad_wet != mod_wet:
+            agree = (f"Radar and models disagree for the next 2 hours: radar shows "
+                     f"{'rain' if rad_wet else 'nothing'} coming, models show {'rain' if mod_wet else 'dry'}. "
+                     "Radar sees what is actually out there; models can catch rain forming that radar can't see yet.")
+        elif rad_wet and mods and max(mods) > 0 and (rad_tot / max(max(mods), 0.01) > 3 or max(mods) / max(rad_tot, 0.01) > 3):
+            agree = "Radar and models both show rain but differ by more than 3× in amount."
+        else:
+            agree = ""
+        g0 = next((g for g in obs_src(gauges, cfg)), None)
+        near = {
+            "observed": (f"Radar over you: {nc.dbz_now:.0f} dBZ" if nc.dbz_now is not None and nc.dbz_now >= 15
+                         else "Radar over you: no rain echo") + (f" · Mint gauge {g0['last']:.2f}\" in {g0['label']}"
+                                                                if g0 else ""),
+            "radar": (f"Radar extrapolation, next {len(r_rows)} h: about {rad_tot:.2f}\" · {nc.motion.describe()}"
+                      if r_rows else f"Radar extrapolation unavailable ({nc.status})"),
+            "models": ("Models, same hours: " + " · ".join(
+                ([f"ensemble {ens_tot:.2f}\""] if ens_tot is not None else [])
+                + ([f"HRRR {hr_tot:.2f}\""] if hr_tot is not None else []))) if mods else "Models: no data for these hours",
+            "agree": agree,
+        }
 
     obs = []
     for g in gauges:
@@ -204,7 +252,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     return {
         "generated": now.isoformat(), "location": cfg.name, "lat": cfg.lat, "lon": cfg.lon,
         "heavy_in": cfg.heavy_in, "bottom_line": bottom, "peak": peak,
-        "rows": rows, "wet_rows": wet, "outlook": outlook,
+        "rows": rows, "wet_rows": wet, "outlook": outlook, "near": near,
         "total": {"lo": round(tot_lo, 2), "mid": round(tot_mid, 2), "hi": round(tot_hi, 2),
                   "nws": round(nws_total, 2) if nws_s else None, "confidence": conf,
                   "through": end_label},

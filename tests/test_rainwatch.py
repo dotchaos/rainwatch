@@ -269,7 +269,7 @@ def test_outlook_claims_from_run_spread():
             mem[t].append(v)
     ens = Series("ens", "x", None, values={t: sorted(v)[5] for t, v in mem.items()}, members=mem)
     cfg = Config(lat=LAT, lon=LON)
-    ol = outlook.compute(cfg, NOW, hrs, ens, [], False, lambda t: t.strftime("%a %-I %p"))
+    ol = outlook.compute(cfg, NOW, hrs, ens, [], "", lambda t: t.strftime("%a %-I %p"))
     c = {x["claim"]: x for x in ol["claims"]}
     assert c["Rain at all"]["basis"].startswith("8 of 10")
     assert c["Starts"]["conf"] == "High" and "runs agree" in c["Starts"]["basis"]

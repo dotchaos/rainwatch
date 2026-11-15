@@ -37,7 +37,8 @@ def decide(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
                             f"{report['total']['hi']:.2f}\") through {report['total']['through']}."),
                 "priority": 3, "tags": ["cloud_with_rain"],
             })
-    msgs += block_alerts(report, state, now, cfg)
+    if cfg.flood_site:
+        msgs += block_alerts(report, state, now, cfg)
     seen = set(state.get("nws_seen", []))
     groups: dict[str, list[dict]] = {}          # NWS often issues one event under several ids
     for a in report.get("alerts", []):
@@ -62,7 +63,7 @@ def block_alerts(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
     out = []
     rows = report["rows"]
     for key, prob, horizon, title, prio, tags in (
-        ("driveway", cfg.driveway_alert_prob, 6, "Driveway risk: flash-flood setup at 17th & Folsom", 5, ["rotating_light"]),
+        ("driveway", cfg.driveway_alert_prob, 6, f"Driveway risk: flash-flood setup at {cfg.flood_site}", 5, ["rotating_light"]),
         ("behind", cfg.behind_alert_prob, 24, "Long soaker coming: drains may fall behind", 4, ["droplet"]),
     ):
         first, peak = _first_window(rows, key, prob, now + timedelta(hours=horizon))

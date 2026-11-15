@@ -76,7 +76,7 @@ def _aligned(ens, hrs):
     return np.array([ens.members[t] for t in used]).T, used
 
 
-def compute(cfg, now: datetime, hrs: list[datetime], ens, radar_rows: list[dict], raining_now: bool,
+def compute(cfg, now: datetime, hrs: list[datetime], ens, radar_rows: list[dict], raining_now: str,
             fmt) -> dict:
     """Return the per-claim outlook. `fmt(t)` formats a UTC datetime as a local short time."""
     X, used = _aligned(ens, hrs)
@@ -129,7 +129,7 @@ def compute(cfg, now: datetime, hrs: list[datetime], ens, radar_rows: list[dict]
     q = lambda a, p: float(np.percentile(a, p))
     radar_on = next((r for r in radar_rows if (r.get("p_any") or 0) >= 0.5), None)
     if raining_now:
-        claims.append({"claim": "Starts", "text": "Already raining", "basis": "gauge or radar now", "conf": "High"})
+        claims.append({"claim": "Starts", "text": "Already raining", "basis": raining_now, "conf": "High"})
         out["onset"] = {"t": now.isoformat(), "source": "observed"}
     elif radar_on is not None:
         conf = "Low" if radar_on.get("motion_conf") == "low" else "Medium"
