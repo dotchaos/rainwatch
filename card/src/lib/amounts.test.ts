@@ -38,7 +38,7 @@ describe('rain amounts', () => {
     expect(validateScenario(s)).toEqual([]);
     const i = deriveInsight(s)!;
     expect(i.headline).toBe('Today: Rain jacket, about 1–10 PM');
-    expect(i.detail).toBe('About 0.5" of rain. Dry until then. More rain Wed 1–7 AM, about 0.9". Timing may shift. Still raining at Wed 7 AM, where this outlook ends.');
+    expect(i.detail).toBe('About 0.5" of rain. Dry until then. More rain Wed 1–7 AM, about 0.9". Timing may shift.');
   });
 
   it('rain within a day is left to "Then dry …", not repeated', () => {

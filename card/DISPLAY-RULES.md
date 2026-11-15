@@ -26,7 +26,7 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
 - **One action line:** the gear rung, with its window when it is above Rain jacket ("Rain boots · 6–9 PM"); "Sandbags · 4–9 PM" with the red shield; the heat action.
 - **Flood keeps its small print:** what to do and the local-validation caveat.
 - **Graph callouts:** only Sandbags risk windows on validated local flood days (`sandbagsCallouts`). Other rungs are named only in the headline and action line.
-- **Edge of the outlook:** if rain or heat is forecast in the final hour, the detail ends "Still raining at <end>, where this outlook ends." (`edgeNote`). It says nothing about later hours, and never calls them dry.
+- **Edge of the outlook:** if rain or heat is forecast in the final hour, More information says "Still raining at <end>, where this outlook ends." (`edgeNote`), below the daily rows and not in the hero. It says nothing about later hours, and never calls them dry.
 
 ## Hours and days agree with the graph
 - The Next hours row is consecutive from the current hour (12–72 hours, each with its `hour` offset).

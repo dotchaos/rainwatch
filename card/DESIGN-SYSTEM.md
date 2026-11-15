@@ -12,11 +12,11 @@ Every scenario uses the same four sections, in this order:
 
 ## Next 3 days graph
 - **The rolling 72 hours from now.** The graph is not extended beyond that, and nothing is drawn past hour 72. Blocks are 3 hours, aligned to the local clock (midnight, 3 AM, …); the first and last are clipped to the outlook.
-- **Labels:** day names over each day (TODAY first), but not over a final sliver under 12 hours. AM/PM sits on each half-day with at least 6 hours in view. Midnights are dashed dividers, and the rung lines are solid and light.
+- **Labels:** day names over each day. TODAY is always named; on a stretch under 12 hours it starts at the left edge. A final sliver under 12 hours is not named. AM/PM sits on each half-day with at least 6 hours in view. Midnights are dashed dividers, and the rung lines are solid and light.
 - **Rungs:** No gear / Jacket / Boots / Sandbags (heat: Comfort / Hot / Very hot / Extreme). Fills are unchanged: blues for rain, warm hues for heat, rust/red for the top rung.
-- **Blocks:** a block takes the highest rung of any forecast hour inside it. It is dashed (a light outline) when that rung's timing may shift, and hatched when there is no forecast.
+- **Blocks:** a block takes the highest rung of any forecast hour inside it. On flood days, a block that is only partly Sandbags splits at the hour, so the red starts and ends exactly where the risk window does. It is dashed (a light outline) when that rung's timing may shift, and hatched when there is no forecast.
 - **Callouts:** only on validated local flood days. Each Sandbags risk window gets a filled day-and-hours tag above the graph ("Thu 4–9 PM"), with a solid leader if the timing is more certain and a dashed one if it may shift. The tags name the risk window, never the preparation deadline, which stays in the headline. No other rung, and no heat level, gets a callout.
-- **Edge of the outlook:** when rain or heat is still forecast in the last hour, the text says "Still raining at Sun 9 AM, where this outlook ends." It never says anything about what comes after, and an hour without data never triggers it.
+- **Edge of the outlook:** when rain or heat is still forecast in the last hour, More information (below the daily rows) says "Still raining at Sun 9 AM, where this outlook ends." It is not in the hero. It never says anything about what comes after, and an hour without data never triggers it.
 - A visually hidden list of every interval accompanies the graph.
 
 ## Next hours

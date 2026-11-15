@@ -4,6 +4,10 @@
  * partial days, incomplete horizons and uncertainty.
  */
 import { describe, expect, it } from 'vitest';
+import { createElement } from 'react';
+import { renderToString } from 'react-dom/server';
+import { Timeline } from '../components/Timeline';
+import { WeatherCard } from '../components/WeatherCard';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { PRECIP, resolveIcon } from './icons';
@@ -203,13 +207,41 @@ describe('Sandbags callouts on the graph', () => {
 
 describe('events at the edge of the outlook', () => {
   it('rain or heat in the last hour is said to continue to where the outlook ends, nothing beyond', () => {
-    expect(nowNext(byId('storm'))!.detail.endsWith('Still raining at Sun 9 AM, where this outlook ends.')).toBe(true);
-    expect(nowNext(byId('heat'))!.detail.endsWith('Still hot at Sun 9 AM, where this outlook ends.')).toBe(true);
+    expect(edgeNote(byId('storm'))).toBe('Still raining at Sun 9 AM, where this outlook ends.');
+    expect(edgeNote(byId('heat'))).toBe('Still hot at Sun 9 AM, where this outlook ends.');
     expect(edgeNote(byId('rain'))).toBeNull();                       // its last rain ends at 6 AM Sunday
+  });
+  it('it sits in More information, not in the hero or the advice (v0.12.3)', () => {
+    for (const s of scenarios) {
+      expect(nowNext(s)?.detail ?? '', s.id).not.toContain('where this outlook ends');
+      expect(deriveInsight(s)?.detail ?? '', s.id).not.toContain('where this outlook ends');
+    }
+    const html = renderToString(createElement(WeatherCard, { scenario: byId('storm') }));
+    const more = html.slice(html.indexOf('More information'));
+    expect(more).toContain('Still raining at Sun 9 AM, where this outlook ends.');
   });
   it('a final hour without data is not called rain, heat or dry', () => {
     const s = byId('storm'); s.unknownHours = [{ startHour: 60, endHour: 72 }];
     s.timeline!.intervals = s.timeline!.intervals.filter(p => p.endHour <= 60);
     expect(edgeNote(s)).toBeNull();
+  });
+});
+
+describe('graph refinements (v0.12.3)', () => {
+  it('Sandbags is drawn to the hour: its blocks cover exactly the Sandbags hours', () => {
+    const top = chartBlocks(byId('storm')).filter(b => b.level === 3);
+    const hours = top.flatMap(b => Array.from({ length: b.end - b.start }, (_, i) => b.start + i));
+    expect(hours).toEqual([...Array.from({ length: 5 }, (_, i) => 7 + i), ...Array.from({ length: 8 }, (_, i) => 23 + i)]);  // 4–9 PM, Fri 8 AM–4 PM
+    const split = chartBlocks(byId('storm')).filter(b => b.start === 6 || b.start === 7);
+    expect(split.map(b => [b.start, b.end, b.level])).toEqual([[6, 7, 2], [7, 9, 3]]);        // the 3–6 PM block splits at 4 PM
+  });
+  it('other rungs and heat keep 3-hour blocks', () => {
+    for (const id of ['rain', 'rain-soon', 'heat']) expect(chartBlocks(byId(id)).every(b => b.end - b.start === 3 || b.start === 0 || b.end === 72), id).toBe(true);
+  });
+  it('today is always named on the graph, even when only a few hours remain', () => {
+    for (const h of [14, 20, 23]) {
+      const s = byId('rain-soon'); s.startHourLocal = h;
+      expect(renderToString(createElement(Timeline, { scenario: s })), `start ${h}:00`).toContain('>TODAY<');
+    }
   });
 });

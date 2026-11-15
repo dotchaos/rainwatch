@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.12.3: graph refinements
+- **TODAY always named:** at 2 PM, today's stretch no longer sits unlabelled.
+- **Sandbags to the hour:** on flood days, a block that is only partly Sandbags splits at the hour. The storm's 4 PM start no longer fills the 3–6 PM block red.
+- **End-of-outlook line:** moved from the hero detail to More information, below the daily rows.
+
 ## v0.12.2: rolling graph, Sandbags callouts
 - **Graph:** the rolling 72 hours from now, in clock-aligned 3-hour blocks, with day names, AM/PM half-days and midnight dividers. Nothing is drawn past hour 72.
 - **Sandbags callouts:** filled tags return on validated flood days only ("Thu 4–9 PM", "Fri 8 AM–4 PM"). They show the risk windows, not "before 2 PM".

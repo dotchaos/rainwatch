@@ -190,7 +190,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       const notes = ['Breaks possible.'];
       const later = laterRain(s, last.end); if (later) notes.push(later);
       if (!plan.sure) notes.push(MAY_SHIFT);
-      const cov = coverageNote(s); if (cov) notes.push(cov); const edge = edgeNote(s); if (edge) notes.push(edge);
+      const cov = coverageNote(s); if (cov) notes.push(cov);
       return { headline: `${jacket} ${partsPhrase(s, first.start, last.end)}`, detail: notes.join(' ') };
     }
     if (plan) {
@@ -209,7 +209,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       if (later) notes.push(later);                      // the next rain matters more than the next dry spell
       else if (more < 72) { const dry = nextDry(s, last.end); if (dry) notes.push(`Then dry ${dry}.`); }
       if (!plan.sure) notes.push(MAY_SHIFT);
-      const cov = coverageNote(s); if (cov) notes.push(cov); const edge = edgeNote(s); if (edge) notes.push(edge);
+      const cov = coverageNote(s); if (cov) notes.push(cov);
       return { headline: head, detail: notes.join(' ') };
     }
     const day = cap(relDay(s, aw.startHour));
@@ -226,7 +226,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
     else if (later) notes.push(later);
     else if (dry) notes.push(`Then dry ${dry}.`);
     if (!aw.sure) notes.push(MAY_SHIFT);
-    const cov = coverageNote(s); if (cov) notes.push(cov); const edge = edgeNote(s); if (edge) notes.push(edge);
+    const cov = coverageNote(s); if (cov) notes.push(cov);
     return { headline, detail: notes.join(' ') };
   }
   if (s.hazard === 'heat') {
@@ -248,7 +248,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
 }
 
 /** When rain (or heat) is still forecast in the outlook's last hour: say where the outlook ends, and nothing
- *  about what comes after it. Unknown hours never count. */
+ *  about what comes after it. Unknown hours never count. Shown in More information, not the hero (v0.12.3). */
 export function edgeNote(s: Scenario): string | null {
   if ((s.hazard !== 'rain' && s.hazard !== 'flood' && s.hazard !== 'heat') || sevAt(s, 71) === 0 || isUnknown(s, 71)) return null;
   return `Still ${s.hazard === 'heat' ? 'hot' : 'raining'} at ${timeAt(s, 72)}, where this outlook ends.`;
@@ -333,14 +333,14 @@ export function nowNext(s: Scenario): NowNext | null {
   if (al && s.alert) {
     const w = criticalWindows(s)[0];
     if (s.hazard === 'flood') return {
-      headline: dropPeriod(al.headline), detail: [al.summary, edgeNote(s)].filter(Boolean).join(' '),
+      headline: dropPeriod(al.headline), detail: al.summary,
       action: { icon: 'shield', text: `Sandbags · ${windowShort(s, w.startHour, w.endHour)}`, risk: true },
       note: [s.alert.action, s.alert.context].filter(Boolean).join(' '),
     };
     const d = relDay(s, w.startHour), at = `${w.sure ? '' : 'about '}${span(s, w.startHour, w.endHour)}`;
     return {                                                     // extreme heat: the event and its first window
       headline: `Dangerous heat ${d === 'today' ? `from ${at}` : `${d}, ${at}`}`,
-      detail: [al.summary, edgeNote(s)].filter(Boolean).join(' '),
+      detail: al.summary,
       // the outdoor window is the actionable advice, so it becomes the action line (not one more sentence)
       action: { icon: 'sun', text: ins ? ins.headline.replace(': Before', ': before') : s.alert.actionTitle, risk: false },
     };
@@ -375,17 +375,30 @@ export interface ChartBlock { start: number; end: number; level: number; shiftin
  */
 export function chartBlocks(s: Scenario): ChartBlock[] {
   const out: ChartBlock[] = [];
-  for (let a = -(s.startHourLocal % 3); a < 72; a += 3) {
-    const start = Math.max(a, 0), end = Math.min(a + 3, 72);
+  const at = (h: number) => s.timeline?.intervals.find(q => q.startHour <= h && h < q.endHour);
+  /** One piece of the graph over hours a..b: its highest rung, dashed when that rung may shift. */
+  const piece = (a: number, b: number): ChartBlock => {
     let level = 0, shifting = false, unknown = false;
-    for (let h = start; h < end; h++) {
+    for (let h = a; h < b; h++) {
       if (isUnknown(s, h)) { unknown = true; continue; }
-      const p = s.timeline?.intervals.find(q => q.startHour <= h && h < q.endHour);
+      const p = at(h);
       if (!p || p.severity === 0) continue;
       if (p.severity > level) { level = p.severity; shifting = p.confidence !== 'higher'; }
       else if (p.severity === level && p.confidence !== 'higher') shifting = true;
     }
-    out.push({ start, end, level, shifting, unknown: unknown && level === 0 });
+    return { start: a, end: b, level, shifting, unknown: unknown && level === 0 };
+  };
+  for (let a = -(s.startHourLocal % 3); a < 72; a += 3) {
+    const start = Math.max(a, 0), end = Math.min(a + 3, 72), block = piece(start, end);
+    // Sandbags is a risk window, so on flood days its edges are drawn at the hour, not rounded to the block
+    if (s.hazard === 'flood' && block.level === 3) {
+      let h = start;
+      while (h < end) {
+        const top = (at(h)?.severity ?? 0) === 3 && !isUnknown(s, h);
+        let k = h; while (k < end && ((at(k)?.severity ?? 0) === 3 && !isUnknown(s, k)) === top) k++;
+        out.push(piece(h, k)); h = k;
+      }
+    } else out.push(block);
   }
   return out;
 }

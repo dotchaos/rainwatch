@@ -4,7 +4,7 @@ import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts } 
 
 /**
  * Next 3 days: the compact action graph over the rolling 72 hours from now (v0.12.2).
- * 3-hour blocks aligned to the local clock; day names over each day (a final sliver under 12 hours is not named),
+ * 3-hour blocks aligned to the local clock; day names over each day (today always; another final sliver under 12 hours is not named),
  * AM/PM centred on each half-day, dashed midnight dividers. Severity sets block height and colour (unchanged
  * palette); dashed outline = timing may shift; hatched = no forecast. Nothing is drawn past hour 72.
  * Flood days only: each Sandbags risk window gets a callout with its day and hours (the risk window itself,
@@ -12,6 +12,8 @@ import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts } 
  */
 const x0 = 92, plotW = 268, base = 132, step = 28, gap = 1.4;
 const x = (h: number) => x0 + (h / 72) * plotW;
+/** Day-name position: centred over the day; today is always named, starting at its left edge when its stretch is short. */
+const dayLabelX = (a: number, b: number, today: boolean) => today && b - a < 12 ? x(a) + 2 : x((a + b) / 2);
 const SHORT_RAIN = ['No gear', 'Jacket', 'Boots', 'Sandbags'], SHORT_HEAT = ['Comfort', 'Hot', 'Very hot', 'Extreme'];
 
 export function Timeline({ scenario: s }: { scenario: Scenario }) {
@@ -36,7 +38,7 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
         </g>;
       })}
       <g transform={`translate(0 ${top})`}>
-        {days.map((d, i) => d.end - d.start >= 12 && <text key={d.start} x={x((d.start + d.end) / 2)} y={12} textAnchor="middle" className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
+        {days.map((d, i) => (i === 0 || d.end - d.start >= 12) && <text key={d.start} x={dayLabelX(d.start, d.end, i === 0)} y={12} textAnchor={i === 0 && d.end - d.start < 12 ? 'start' : 'middle'} className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
         {labels.map((l, i) => { const y = base - i * step; return <g key={l}><text x={x0 - 8} y={y + 3} textAnchor="end" className="chart-label">{l}</text><line x1={x0} x2={x(72)} y1={y} y2={y} className={i === 0 ? 'chart-base' : 'chart-grid'} /></g>; })}
         {days.slice(1).map(d => <line key={d.start} x1={x(d.start)} x2={x(d.start)} y1={22} y2={base} className="chart-midnight" />)}
         {chartBlocks(s).map(b => {

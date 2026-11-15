@@ -1,7 +1,7 @@
 import { MapPin, ShieldAlert, Footprints, Sun } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
-import { hourLabel, nowNext, rainAmount } from '../lib/derive';
+import { edgeNote, hourLabel, nowNext, rainAmount } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline } from './Timeline';
 
@@ -55,6 +55,7 @@ function MoreInformation({ s, detailsHref }: { s: Scenario; detailsHref?: string
       <div><strong>{d.label}</strong><span className="day-desc">{d.description}{dayAmount(d) && ` · ${dayAmount(d)}`}</span></div>
       <span className="day-temps">{deg(d.highF)} / {deg(d.lowF)}</span>
     </div>)}</div>
+    {showTimeline(s) && edgeNote(s) && <p className="edge-note">{edgeNote(s)}</p>}
     <footer>{detailsHref && <a className="more-link" href={detailsHref}>Radar, models, hour-by-hour amounts and accuracy →</a>}
       <span>{s.provenance.type === 'live' ? s.provenance.note : 'Illustrative scenario only · Not a live forecast or official warning.'}</span></footer>
   </section>;
