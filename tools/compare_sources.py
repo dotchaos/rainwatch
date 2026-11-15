@@ -69,16 +69,18 @@ def main():
     print(f"NWS grid updated {nws_issued}. Ensemble: {len(parts)} models, "
           f"{max(len(v) for v in ens.members.values())} runs. Amounts in inches.\n")
     print("## By local day\n")
-    print("| Day | Rainwatch (sum of hourly medians) | Runs' daily total p10 / p50 / p90 | Runs' mean | "
+    print("| Day | Rainwatch published: median (p10–p90) | Old method: sum of hourly medians | Runs' daily total p10 / p50 / p90 | Runs' mean | "
           "Any hour ≥0.20\" (share of runs) | Highest single-hour chance ≥0.20\" | NWS QPF | NWS peak PoP |")
-    print("|---|---|---|---|---|---|---|---|")
+    print("|---|---|---|---|---|---|---|---|---|")
     for k in range(DAYS):
         d = today + timedelta(days=k)
         start = datetime.combine(d, datetime.min.time(), tz).astimezone(UTC)
         hrs = [start + timedelta(hours=i) for i in range(24)]
         hrs_fut = [t for t in hrs if t >= now.replace(minute=0, second=0, microsecond=0)]
         rw = [rows[t] for t in hrs_fut if t in rows]
-        rw_sum = sum(r["mid"] for r in rw) if rw else None
+        rw_sum = sum(r["mid"] for r in rw) if rw else None                 # the old method, kept for contrast
+        pub = next((x for x in fc.report.get("days", []) if x["date"] == d.isoformat()), None)
+        pub_t = pub and pub["total"]
         mem = [ens.members[t] for t in hrs_fut if t in ens.members]
         n = min((len(m) for m in mem), default=0)
         tot = np.array([sum(m[i] for m in mem) for i in range(n)]) if n else np.array([])
@@ -87,6 +89,7 @@ def main():
         q = sum(qpf.get(t, 0) for t in hrs_fut) if any(t in qpf for t in hrs_fut) else None
         pp = max((pop.get(t, 0) for t in hrs_fut), default=None)
         row = {"day": d.isoformat(), "hours_covered_rainwatch": len(rw), "hours_counted": len(hrs_fut),
+               "rainwatch_published": pub_t, "rainwatch_published_complete": pub and pub["complete"],
                "rainwatch_sum_of_medians": rw_sum,
                "runs_p10": float(np.percentile(tot, 10)) if n else None,
                "runs_p50": float(np.median(tot)) if n else None,
@@ -98,6 +101,7 @@ def main():
         pc = lambda x: "—" if x is None else f"{x:.0%}"
         cov = "" if len(rw) == len(hrs_fut) else f" ({len(rw)} of {len(hrs_fut)} h)"
         print(f"| {d:%a %-m/%-d}{'' if len(hrs_fut) == 24 else f' from {hrs_fut[0].astimezone(tz):%-I %p}'} | "
+              f"{'—' if not pub_t else f(pub_t['p50']) + ' (' + f(pub_t['p10']) + '–' + f(pub_t['p90']) + ')' + ('' if pub['complete'] else ', partial')} | "
               f"{f(rw_sum)}{cov} | {f(row['runs_p10'])} / {f(row['runs_p50'])} / {f(row['runs_p90'])} | {f(row['runs_mean'])} | "
               f"{pc(anyheavy)} | {pc(hour_max)} | {f(q)} | {'—' if pp is None else f'{pp:.0f}%'} |")
 

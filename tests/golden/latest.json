@@ -2784,8 +2784,103 @@
   "hi": 0.79,
   "nws": 0.83,
   "confidence": "High",
-  "through": "Tue 12 PM"
+  "through": "Tue 12 PM",
+  "method": "runs"
  },
+ "days": [
+  {
+   "date": "2026-11-14",
+   "label": "Sat",
+   "from": "2026-11-14T19:00:00+00:00",
+   "to": "2026-11-15T08:00:00+00:00",
+   "complete": true,
+   "total": {
+    "p10": 0.586,
+    "p50": 0.786,
+    "p90": 0.786,
+    "mean": 0.706,
+    "runs": 30,
+    "radar_part": 0.186,
+    "radar_hours": 2,
+    "models": [
+     "ecmwf_ifs025",
+     "gfs_seamless",
+     "icon_seamless"
+    ]
+   },
+   "nws": 0.73,
+   "p_heavy_hour": 0.6
+  },
+  {
+   "date": "2026-11-15",
+   "label": "Sun",
+   "from": "2026-11-15T08:00:00+00:00",
+   "to": "2026-11-16T08:00:00+00:00",
+   "complete": true,
+   "total": {
+    "p10": 0.0,
+    "p50": 0.0,
+    "p90": 0.0,
+    "mean": 0.0,
+    "runs": 30,
+    "radar_part": 0.0,
+    "radar_hours": 0,
+    "models": [
+     "ecmwf_ifs025",
+     "gfs_seamless",
+     "icon_seamless"
+    ]
+   },
+   "nws": 0.1,
+   "p_heavy_hour": 0.0
+  },
+  {
+   "date": "2026-11-16",
+   "label": "Mon",
+   "from": "2026-11-16T08:00:00+00:00",
+   "to": "2026-11-17T08:00:00+00:00",
+   "complete": true,
+   "total": {
+    "p10": 0.0,
+    "p50": 0.0,
+    "p90": 0.0,
+    "mean": 0.0,
+    "runs": 30,
+    "radar_part": 0.0,
+    "radar_hours": 0,
+    "models": [
+     "ecmwf_ifs025",
+     "gfs_seamless",
+     "icon_seamless"
+    ]
+   },
+   "nws": null,
+   "p_heavy_hour": 0.0
+  },
+  {
+   "date": "2026-11-17",
+   "label": "Tue",
+   "from": "2026-11-17T08:00:00+00:00",
+   "to": "2026-11-17T20:00:00+00:00",
+   "complete": false,
+   "total": {
+    "p10": 0.0,
+    "p50": 0.0,
+    "p90": 0.0,
+    "mean": 0.0,
+    "runs": 30,
+    "radar_part": 0.0,
+    "radar_hours": 0,
+    "models": [
+     "ecmwf_ifs025",
+     "gfs_seamless",
+     "icon_seamless"
+    ]
+   },
+   "nws": null,
+   "p_heavy_hour": 0.0
+  }
+ ],
  "radar": {
   "status": "moving toward E at 40 km/h (25 mph), high confidence",
   "dbz_now": null,

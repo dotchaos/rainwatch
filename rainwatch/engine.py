@@ -14,6 +14,8 @@ from zoneinfo import ZoneInfo
 
 import numpy as np
 
+from . import totals as tl
+
 from . import levels as lv
 from . import outlook as ol
 from .model import Series, hour_floor, hours
@@ -59,6 +61,33 @@ def _range(m: list[float] | None, v: float | None) -> tuple[float, float, float]
 
 
 MIN_HOURS = 73          # the card draws 72 hours from the current hour
+
+
+def daily_totals(cfg, tz, now, hrs, rows, parts, radar, nws_s) -> list[dict]:
+    """Rain per local day, from now: each run's day total first, then median and 10th–90th percentile.
+    `complete` is False when the forecast stops before the day ends or has missing hours in it."""
+    by_t = {datetime.fromisoformat(r["t"]): r for r in rows}
+    last = hrs[-1] + timedelta(hours=1)
+    out = []
+    d = now.astimezone(tz).date()
+    while True:
+        start = max(datetime.combine(d, datetime.min.time(), tz).astimezone(hrs[0].tzinfo), hrs[0])
+        end = datetime.combine(d + timedelta(days=1), datetime.min.time(), tz).astimezone(hrs[0].tzinfo)
+        if start >= last:
+            break
+        span = [t for t in hrs if start <= t < end]
+        known = [t for t in span if not by_t[t].get("missing")]
+        w = tl.window(parts, radar, known) if known else None
+        nws_day = (round(sum(v for t, v in nws_s.values.items() if start <= t < min(end, last)), 2)
+                   if nws_s and any(start <= t < min(end, last) for t in nws_s.values) else None)
+        out.append({"date": d.isoformat(), "label": d.strftime("%a"),
+                    "from": start.isoformat(), "to": min(end, last).isoformat(),
+                    "complete": end <= last and len(known) == len(span),
+                    "total": w, "nws": nws_day,
+                    "p_heavy_hour": tl.share_with_heavy_hour(parts, [t for t in known if not (radar and t in radar.members)],
+                                                             cfg.heavy_in)})
+        d += timedelta(days=1)
+    return out
 
 
 def obs_src(gauges, cfg):
@@ -138,17 +167,13 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     valid = [r for r in rows if not r.get("missing")]
     wet = [r for r in valid if (r["p_any"] or 0) >= 0.2 or r["hi"] >= 0.02 or (r["p_heavy"] or 0) >= 0.05]
 
-    # ---- totals: per-sample sums, radar hours + ensemble hours (no cross-source averaging)
-    radar_hrs = [t for t in hrs if radar and t in radar.members]
-    radar_part = sum(float(np.median(radar.members[t])) for t in radar_hrs) if radar_hrs else 0.0
-    ens_hrs = [t for t in hrs if t not in radar_hrs and ens and t in ens.members]
-    lens = {len(ens.members[t]) for t in ens_hrs} if ens_hrs else set()
-    if len(lens) == 1:
-        sums = np.sum([ens.members[t] for t in ens_hrs], axis=0) + radar_part
-        tot_lo, tot_mid, tot_hi = (float(np.percentile(sums, q)) for q in (10, 50, 90))
-    else:
-        mid = radar_part + sum(r["mid"] for r in valid if r["primary"] != "radar")
-        tot_lo = tot_mid = tot_hi = mid
+    # ---- totals: whole runs first, then the distribution (rainwatch/totals.py)
+    storm = tl.window(ens_parts, radar, [datetime.fromisoformat(r["t"]) for r in valid])
+    if storm:
+        tot_lo, tot_mid, tot_hi = storm["p10"], storm["p50"], storm["p90"]
+    else:   # no model has every hour: fall back to the hourly table, and say so
+        tot_lo = tot_mid = tot_hi = sum(r["mid"] for r in valid)
+    days = daily_totals(cfg, tz, now, hrs, rows, ens_parts, radar, nws_s)
     nws_total = sum(v for t, v in (nws_s.values.items() if nws_s else []) if h0 <= t < hrs[-1] + timedelta(hours=1))
 
     spread = (tot_hi - tot_lo) / max(tot_mid, 0.05)
@@ -260,7 +285,8 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
         "rows": rows, "wet_rows": wet, "outlook": outlook, "near": near,
         "total": {"lo": round(tot_lo, 2), "mid": round(tot_mid, 2), "hi": round(tot_hi, 2),
                   "nws": round(nws_total, 2) if nws_s else None, "confidence": conf,
-                  "through": end_label},
+                  "through": end_label, "method": "runs" if storm else "hourly medians"},
+        "days": days,
         "radar": {
             "status": nc.status if nc else "unavailable",
             "dbz_now": nc.dbz_now if nc else None,

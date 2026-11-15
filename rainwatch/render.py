@@ -228,7 +228,7 @@ def _score_html(scores):
 DAYS_JS = """
 <script>
 (function(){
-const ROWS=__ROWS__, TZ=__TZ__, DEF=__DEF__, SHOW=0.2;
+const ROWS=__ROWS__, DAYS=__DAYS__, TZ=__TZ__, DEF=__DEF__, SHOW=0.2;
 const get=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
 const put=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 const opts=['0.10','0.20','0.30','0.50'];
@@ -237,6 +237,11 @@ const dayKey=d=>d.toLocaleDateString('en-CA',{timeZone:TZ});
 const hp=d=>{const h=+d.toLocaleString('en-US',{timeZone:TZ,hour:'numeric',hourCycle:'h23'});return [h%12||12,h<12?'a':'p'];};
 const word=p=>p<0.05?'very unlikely':p<0.2?'unlikely':p<0.5?'possible':p<0.8?'likely':'very likely';
 const span=(a,b)=>{const [h1,s1]=hp(a),[h2,s2]=hp(b);return s1===s2?`${h1}–${h2}${s2}`:`${h1}${s1}–${h2}${s2}`;};
+// Day totals come from whole model runs (median and 10th–90th percentile of each run's own day total).
+const f2=v=>v.toFixed(2);
+const dayTot=D=>{if(!D||!D.total)return 'Total unavailable';const t=D.total;
+  const txt=t.p90<0.005?'No rain':`~${f2(t.p50)}" total (${f2(t.p10)}–${f2(t.p90)}")`;
+  return txt+(D.complete?'':' · forecast incomplete');};
 function draw(){
   document.getElementById('thrbtns').innerHTML=opts.map(o=>`<button data-t="${o}" class="${o===thr?'on':''}">${o.replace(/^0/,'')}"</button>`).join(' ');
   document.querySelectorAll('#thrbtns button').forEach(b=>b.onclick=()=>{thr=b.dataset.t;put('rw_thr',thr);draw();});
@@ -251,7 +256,7 @@ function draw(){
       if(p(r)>=SHOW){ if(cur&&t-cur.end<1){cur.end=new Date(t.getTime()+36e5);cur.max=Math.max(cur.max,p(r));cur.amt=Math.max(cur.amt,r.mid);}
         else{cur={start:t,end:new Date(t.getTime()+36e5),max:p(r),amt:r.mid};wins.push(cur);} }
       else cur=null;});
-    const mx=rs.reduce((a,r)=>Math.max(a,p(r)),0), tot=rs.reduce((a,r)=>a+(r.mid||0),0);
+    const mx=rs.reduce((a,r)=>Math.max(a,p(r)),0), D=DAYS[k], tot=D&&D.total?D.total.p50:0;
     const radarNow=rs.some(r=>r.primary==='radar');
     let body;
     if(!rs.length) body='<div class=none>No data</div>';
@@ -275,7 +280,7 @@ function draw(){
     const badge=(w,cls,txt)=>w.map(x=>`<div class="lvl ${cls}">${txt} ${span(x.start,x.end)} · ${word(x.max)}</div>`).join('');
     const lv=badge(dw,'dw','Driveway risk')+(dw.length?'':badge(fb,'fb','Drains falling behind'));
     fl.push(`<div class=day><h3>${names[i]}</h3>${rs.length?(lv||'<div class=none>Below flood levels</div>'):'<div class=none>No data</div>'}</div>`);
-    return `<div class=day><h3>${names[i]}</h3>${body}<div class=dtot>${tot>=0.005?'~'+tot.toFixed(2)+'" total':'No rain'}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
+    return `<div class=day><h3>${names[i]}</h3>${body}<div class=dtot>${dayTot(D)}${i===0&&rs.length?' (rest of day)':''}</div>${i===2?'<div class=lc>lower confidence</div>':''}</div>`;
   }).join('');
   document.getElementById('days').innerHTML=html;
   const fd=document.getElementById('floodays'); if(fd) fd.innerHTML=fl.join('');
@@ -340,7 +345,9 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
     repo = cfg.repo
     rerun_js = RERUN_JS.replace("__GEN__", json.dumps(report["generated"])).replace("__REPO__", json.dumps(repo))
     slim = [{k: r.get(k) for k in ("t", "missing", "p", "p_any", "mid", "primary", "levels")} for r in report["rows"]]
-    days_js = (DAYS_JS.replace("__ROWS__", json.dumps(slim)).replace("__TZ__", json.dumps(cfg.tz))
+    days = {d["date"]: {k: d[k] for k in ("total", "complete")} for d in report.get("days", [])}
+    days_js = (DAYS_JS.replace("__ROWS__", json.dumps(slim)).replace("__DAYS__", json.dumps(days))
+               .replace("__TZ__", json.dumps(cfg.tz))
                .replace("__DEF__", json.dumps(f"{cfg.heavy_in:.2f}")))
     r = report
     tot = r["total"]
