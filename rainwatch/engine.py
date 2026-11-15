@@ -58,6 +58,9 @@ def _range(m: list[float] | None, v: float | None) -> tuple[float, float, float]
     return None
 
 
+MIN_HOURS = 73          # the card draws 72 hours from the current hour
+
+
 def obs_src(gauges, cfg):
     """The nearby gauge's latest completed hour (never SFO)."""
     for g in gauges:
@@ -73,7 +76,8 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     # cover at least the configured horizon and through the end of the third local day
     local_mid = now.astimezone(tz).replace(hour=0, minute=0, second=0, microsecond=0)
     end3 = (local_mid + timedelta(days=3)).astimezone(h0.tzinfo)
-    n_hours = max(cfg.horizon_hours, int((end3 - h0).total_seconds() // 3600))
+    # never shorter than the card's 72-hour chart (plus the current hour), whatever config says
+    n_hours = max(cfg.horizon_hours, MIN_HOURS, int((end3 - h0).total_seconds() // 3600))
     hrs = hours(h0, n_hours)
     radar = nc.series if nc else None
     nws_s = nws.qpf if nws else None

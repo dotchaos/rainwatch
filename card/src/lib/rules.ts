@@ -23,6 +23,10 @@ export function validateScenario(s: Scenario): string[] {
   }
   if (s.timeline?.intervals.some(p => p.pattern && p.pattern !== 'steady' && p.pattern !== 'intermittent')) errors.push('Interval pattern must be steady or intermittent');
   if (s.hazard === 'rain' && s.timeline?.intervals.some(p => p.severity === 3)) errors.push('Rain-only scenario cannot reach Sandbags: that rung needs a separate local flood assessment');
+  for (const u of s.unknownHours ?? []) {
+    if (u.startHour < 0 || u.endHour > 72 || u.endHour <= u.startHour) errors.push('Invalid unknown-hours span');
+    if (s.timeline?.intervals.some(p => p.startHour < u.endHour && u.startHour < p.endHour)) errors.push('An interval overlaps hours with no forecast');
+  }
   if (s.provenance.type !== 'illustrative' && s.provenance.type !== 'live') errors.push('Provenance must say illustrative or live');
   if (s.provenance.type === 'live' && !s.provenance.generated) errors.push('A live card must say when it was generated');
   return errors;
@@ -82,4 +86,8 @@ export function tempScale(days: { lowF: number | null; highF: number | null }[])
   const lo = (lows.length ? Math.min(...lows) : 0) - 2, hi = (highs.length ? Math.max(...highs) : 100) + 2;
   return (f: number) => ((f - lo) / (hi - lo)) * 100;
 }
+/** True when the forecast has nothing for hour h (beyond the data, or a gap in it). */
+export const isUnknown = (s: Scenario, h: number) => (s.unknownHours ?? []).some(u => u.startHour <= h && h < u.endHour);
+/** First hour with no forecast, or 72 when the whole chart is covered. */
+export const knownUntil = (s: Scenario) => Math.min(72, ...(s.unknownHours ?? []).map(u => u.startHour));
 export function validInterval(p: Interval) { return p.startHour >= 0 && p.endHour <= 72 && p.startHour < p.endHour; }

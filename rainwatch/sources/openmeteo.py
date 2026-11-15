@@ -51,7 +51,8 @@ def fetch_ensembles(s, lat, lon, models: list[str]) -> tuple[list[Series], list[
     out, errs = [], []
     for m in models:
         try:
-            out.append(parse_ensemble(get_json(s, ENS, **_params(lat, lon, m)), m))
+            # 5 GMT days: today's remainder plus a full 72 hours ahead at any time of day
+            out.append(parse_ensemble(get_json(s, ENS, **_params(lat, lon, m, days=5)), m))
         except Exception as e:
             errs.append(f"ensemble {m}: {e}")
     return out, errs

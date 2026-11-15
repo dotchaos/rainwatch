@@ -4,7 +4,7 @@
  * they never type a time, a window, a "hottest period" or an "outdoor window" by hand.
  */
 import type { Scenario } from '../types';
-import { clockAt, clockText, daysAt, levelLabels, windowLabel } from './rules';
+import { clockAt, clockText, daysAt, isUnknown, knownUntil, levelLabels, timeAt, windowLabel } from './rules';
 
 /** Hours of warning before the first top-rung window ("prepare before"). Provisional design constant. */
 export const PREPARE_LEAD_H = 2;
@@ -163,39 +163,43 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
   if (s.hazard === 'rain' || s.hazard === 'flood') {
     if (s.hazard === 'flood') return null;      // the alert carries the message on flood days
     const aw = actionWindow(s);
-    if (!aw) return { headline: 'Dry for the next 3 days', detail: 'No rain worth a jacket in the forecast.' };
+    if (!aw) return knownUntil(s) < 72 ? partialDry(s) : { headline: 'Dry for the next 3 days', detail: 'No rain worth a jacket in the forecast.' };
     const plan = jacketPlan(s);
+    if (plan && plan.kind === 'intermittent') {
+      const jacket = levelLabels(s)[1], first = plan.events[0], last = plan.events[plan.events.length - 1];
+      const notes = ['Breaks possible.'];
+      if (!plan.sure) notes.push(MAY_SHIFT);
+      const cov = coverageNote(s); if (cov) notes.push(cov);
+      return { headline: `${jacket} ${partsPhrase(s, first.start, last.end)}`, detail: notes.join(' ') };
+    }
     if (plan) {
       const jacket = levelLabels(s)[1], first = plan.events[0], last = plan.events[plan.events.length - 1];
       const notes: string[] = [];
-      let more = last.end; while (more < 72 && sevAt(s, more) === 0) more++;
-      if (plan.kind === 'intermittent') {
-        notes.push('Breaks possible.');
-        if (!plan.sure) notes.push(MAY_SHIFT);
-        return { headline: `${jacket} ${partsPhrase(s, first.start, last.end)}`, detail: notes.join(' ') };
-      }
+      const more = dryUntil(s, last.end);
       const times = plan.events.length === 1
         ? when(s, first.start, first.end, plan.sure)
         : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => e.start === 0 ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
       const head = `${first.start === 0 ? 'Now' : cap(relDay(s, first.start))}: ${jacket}, ${times}`;
       if (plan.kind === 'separate') notes.push('Dry in between.');
-      if (first.start > 0) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+      if (first.start > 0 && knownBefore(s, first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
       else if (more >= 72) notes.push('Dry after that.');
       if (more < 72) { const dry = nextDry(s, last.end); if (dry) notes.push(`Then dry ${dry}.`); }
       if (!plan.sure) notes.push(MAY_SHIFT);
+      const cov = coverageNote(s); if (cov) notes.push(cov);
       return { headline: head, detail: notes.join(' ') };
     }
     const day = cap(relDay(s, aw.startHour));
     const headline = `${aw.startHour === 0 ? 'Now' : day}: ${aw.action}, ${when(s, aw.startHour, aw.endHour, aw.sure)}`;
     const notes: string[] = [];
-    let more = aw.eventEnd; while (more < 72 && sevAt(s, more) === 0) more++;
-    if (aw.eventStart > 0) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+    const more = dryUntil(s, aw.eventEnd);
+    if (aw.eventStart > 0 && knownBefore(s, aw.eventStart)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
     if (aw.rung > 1 && (aw.eventStart < aw.startHour || aw.eventEnd > aw.endHour))
       notes.push(`${levelLabels(s)[1]} ${when(s, aw.eventStart, aw.eventEnd, aw.sure)}.`);
     const dry = more >= 72 ? null : nextDry(s, aw.eventEnd);
     if (more >= 72 && aw.eventStart === 0) notes.push('Dry after that.');
     else if (dry) notes.push(`Then dry ${dry}.`);
     if (!aw.sure) notes.push(MAY_SHIFT);
+    const cov = coverageNote(s); if (cov) notes.push(cov);
     return { headline, detail: notes.join(' ') };
   }
   if (s.hazard === 'heat') {
@@ -212,19 +216,38 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       ? { headline: `Best outdoor window: Before ${clock(s, ends[0])}`, detail: `On ${joinAnd(dayNames)}, mornings are the safer choice.` }
       : { headline: 'Best outdoor window: mornings', detail: joinAnd(ends.map((h, i) => `${dayNames[i]} before ${clock(s, h)}`)) + '.' };
   }
+  if (s.hazard === 'none' && knownUntil(s) < 72) return partialDry(s);
   return s.insight ?? null;
+}
+
+/** First hour at or after `from` that is rain or has no forecast (72 if dry and known to the end). */
+function dryUntil(s: Scenario, from: number) {
+  let h = from; while (h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h)) h++;
+  return h;
+}
+const knownBefore = (s: Scenario, h: number) => { for (let k = 0; k < h; k++) if (isUnknown(s, k)) return false; return true; };
+/** "Forecast only covers through Tue 11 PM." (the last hour with data) when the chart is not fully covered. */
+export function coverageNote(s: Scenario): string | null {
+  const k = knownUntil(s);
+  return k >= 72 ? null : k === 0 ? 'No rain forecast available right now.' : `Forecast only covers through ${timeAt(s, k - 1)}.`;
+}
+/** Calm or rain-free start with a gap: dry only as far as the data goes, never "the next 3 days". */
+function partialDry(s: Scenario) {
+  const k = knownUntil(s);
+  return k === 0 ? { headline: 'Rain forecast unavailable', detail: 'Check back shortly.' }
+    : { headline: `Dry through ${timeAt(s, k - 1)}`, detail: 'No forecast after that yet.' };
 }
 
 /** The next daylight dry stretch of DRY_MIN_H+ hours at or after hour `from`, as "2–7 PM" / "tomorrow 7 AM–12 PM". */
 function nextDry(s: Scenario, from: number): string | null {
   let a = -1;
   for (let h = from; h <= 72; h++) {
-    const ok = h < 72 && sevAt(s, h) === 0 && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END
+    const ok = h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h) && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END
       && (a < 0 || dayIndexAt(s, h) === dayIndexAt(s, a));
     if (ok && a < 0) a = h;
     if (!ok && a >= 0) {
       if (h - a >= DRY_MIN_H) return (dayIndexAt(s, a) === dayIndexAt(s, from) ? '' : `${relDay(s, a)} `) + span(s, a, h);
-      a = (h < 72 && sevAt(s, h) === 0 && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END) ? h : -1;
+      a = (h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h) && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END) ? h : -1;
     }
   }
   return null;
@@ -248,7 +271,7 @@ export function deriveDaysSummary(s: Scenario): string {
     const i = s.days.reduce((b, d, k) => (d.highF ?? -999) > (s.days[b].highF ?? -999) ? k : b, 0);
     return i === 0 ? 'Hottest today' : `Heat peaks ${s.days[i].label.toLowerCase() === 'tomorrow' ? 'tomorrow' : s.days[i].label}`;
   }
-  if ((s.hazard === 'rain' || s.hazard === 'flood') && s.timeline) {
+  if ((s.hazard === 'rain' || s.hazard === 'flood') && s.timeline && knownUntil(s) >= 72) {
     const ranges = daysAt(s.startDay, s.startHourLocal).slice(0, 3);
     const worst = ranges.map(d => { let m = 0; for (let h = d.start; h < d.end; h++) m = Math.max(m, sevAt(s, h)); return m; });
     const top = Math.max(...worst);

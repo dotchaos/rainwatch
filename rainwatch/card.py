@@ -50,9 +50,9 @@ def heat_level(temp: float | None) -> int:
 
 
 def hour_class(row: dict | None) -> str:
-    """'wet', 'dry' (forecast dry) or 'uncertain'."""
+    """'wet', 'dry' (forecast dry), 'uncertain', or 'unknown' (no forecast for this hour at all)."""
     if not row or row.get("missing"):
-        return "uncertain"
+        return "unknown"
     pa = row.get("p_any") or 0
     if pa >= RAIN_ANY_P:
         return "wet"
@@ -84,6 +84,8 @@ def group_rain(rain: list[int], classes: list[str], hours: list, ens, any_in: fl
         if b - a <= 1:
             continue
         gap, run, meaningful = classes[a + 1:b], 0, False
+        if "unknown" in gap:                    # no data in between: neither a dry break nor rain
+            continue
         for c in gap:
             run = run + 1 if c == "dry" else 0
             meaningful = meaningful or run >= MIN_BREAK_H
@@ -115,6 +117,24 @@ def group_rain(rain: list[int], classes: list[str], hours: list, ens, any_in: fl
                 pattern[k] = "intermittent"
         diags.append({"start": a, "end": h, "bridged": bridged, "runs_with_break": share, "pattern": pattern[a]})
     return rain, pattern, diags
+
+
+def clock_word(t) -> str:
+    """'noon', 'midnight' or '4 PM', like the card's clockText."""
+    return "noon" if t.hour == 12 else "midnight" if t.hour == 0 else t.strftime("%-I %p")
+
+
+def unknown_spans(classes: list[str]) -> list[dict]:
+    """Stretches with no rain forecast at all, as card hour offsets. Never shown as dry."""
+    out = []
+    for h, c in enumerate(classes):
+        if c != "unknown":
+            continue
+        if out and out[-1]["endHour"] == h:
+            out[-1]["endHour"] = h + 1
+        else:
+            out.append({"startHour": h, "endHour": h + 1})
+    return out
 
 
 def _runs(levels: list[int], patterns: list[str] | None = None) -> list[dict]:
@@ -165,6 +185,9 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
     else:
         hazard = "none"
 
+    unknown = unknown_spans(classes)
+    known_until = unknown[0]["startHour"] if unknown else HORIZON      # forecast is complete up to here
+
     def sky(i: int) -> tuple[str, str]:
         """Icon and words for hour offset i: rain words follow the rain pipeline, never the sky model."""
         if rain[i]:
@@ -173,6 +196,8 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         if not c:
             return "cloud", "Conditions unavailable"
         icon, words = describe(c["code"], c["day"])
+        if classes[i] == "unknown":
+            return icon, words                # no rain forecast for this hour: the sky model is all there is
         if icon in ("cloud-rain", "cloud-rain-wind", "cloud-drizzle", "cloud-lightning"):
             return "cloud", "Cloudy"          # sky model says rain but the rain pipeline does not: say cloudy
         return icon, words
@@ -186,11 +211,14 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         dr = max((rain[i] for i in idx), default=0)
         dh = max((heat[i] for i in idx), default=0)
         dd = cond.daily.get(d.isoformat()) or {}
+        gap = any(classes[i] == "unknown" for i in idx)
         if dr:
             icon, words = RAIN_WORDS[dr]
             words = {1: "Rain at times", 2: "Heavy rain at times", 3: "Intense rain"}[dr]
         elif dh:
             icon, words = "sun", HEAT_WORDS[dh]
+        elif gap:
+            icon, words = "cloud", "Rain forecast incomplete"
         else:
             icon, words = describe(dd.get("code", 3), True)
             if icon in ("cloud-rain", "cloud-rain-wind", "cloud-drizzle", "cloud-lightning"):
@@ -215,6 +243,7 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         "current": {"temperatureF": round(temps[0]) if temps[0] is not None else None, "condition": words0,
                     "icon": icon0, "highF": round(td["hi"]) if td else None, "lowF": round(td["lo"]) if td else None},
         "hourly": hourly, "days": day_rows,
+        **({"unknownHours": unknown} if unknown else {}),
         "provenance": {"type": "live", "generated": now.isoformat(),
                        "note": provenance_note(list(used) if used else None, cfg.site is not None)},
     }
@@ -235,6 +264,11 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         anyp = max((r.get("p_any") or 0) for r in rows if not r.get("missing"))
         card["insight"] = {"headline": "Dry for the next 3 days" if anyp < 0.2 else "Only a slight chance of showers",
                            "detail": f"Highs {min(his)}–{max(his)}°." if his else ""}
+        if unknown:   # never promise three dry days on partial data
+            until = (t0 + timedelta(hours=max(known_until - 1, 0))).astimezone(tz)   # last hour with data
+            card["insight"] = {"headline": f"Dry through {until:%a} {clock_word(until)}" if anyp < 0.2
+                               else f"Only a slight chance of showers through {until:%a} {clock_word(until)}",
+                               "detail": "No forecast after that yet."}
     card["_diagnostics"] = {"rain_periods": [{**d, "start_local": hours[d["start"]].astimezone(tz).strftime("%a %-I %p"),
                                               "end_local": hours[min(d["end"], HORIZON - 1)].astimezone(tz).strftime("%a %-I %p")}
                                              for d in rain_diag]}

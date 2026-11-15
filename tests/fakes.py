@@ -48,13 +48,13 @@ def nws_grid(now: datetime):
     }}
 
 
-def om_ensemble(now: datetime, members=10, heavy_hour=3):
+def om_ensemble(now: datetime, members=10, heavy_hour=3, hours=110):
     h0 = now.replace(minute=0, second=0, microsecond=0)
-    times = [int((h0 + timedelta(hours=i + 1)).timestamp()) for i in range(72)]  # value at T = hour before T
+    times = [int((h0 + timedelta(hours=i + 1)).timestamp()) for i in range(hours)]  # value at T = hour before T
     hourly = {"time": times}
     for m in range(members):
         vals = []
-        for i in range(72):
+        for i in range(hours):
             if i == heavy_hour:
                 vals.append(0.30 if m < 6 else 0.10)
             elif 1 <= i <= 8:

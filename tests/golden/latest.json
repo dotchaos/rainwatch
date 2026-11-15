@@ -2321,7 +2321,7 @@
     "feel": 0.0,
     "behind": 0.0,
     "driveway": 0.0,
-    "window_h": 2
+    "window_h": 3
    },
    "model_flags": {}
   },
@@ -2350,14 +2350,38 @@
     "feel": 0.0,
     "behind": 0.0,
     "driveway": 0.0,
-    "window_h": 1
+    "window_h": 3
    },
    "model_flags": {}
   },
   {
    "t": "2026-11-17T19:00:00+00:00",
    "label": "Tue 11 AM\u201312 PM",
-   "missing": true
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
   }
  ],
  "wet_rows": [
@@ -2679,7 +2703,7 @@
   "claims": [
    {
     "claim": "Rain at all",
-    "text": "Very likely through Tue 11 AM",
+    "text": "Very likely through Tue 12 PM",
     "basis": "30 of 30 model runs show measurable rain",
     "conf": "High"
    },

@@ -29,6 +29,7 @@
 - **Action windows in plain language (v0.5):** the insight/alert states the action rung and its hours, derived from the chart's intervals; the chart labels the same hours. Uncertain timing is hedged in words, never sharpened.
 
 - **Dry breaks (v0.8):** only forecast-dry hours (≥80% of runs dry, no measurable typical amount; 2+ in a row) split rain; uncertain hours are bridged as intermittent; on-and-off measured from runs (≥50% of raining runs with their own 2+ h break). Thresholds provisional.
+- **Missing data is unknown, never dry (v0.9):** the live forecast always covers the full 72-hour chart (engine floor of 73 hours; 5 days of ensemble data); any hour it can't cover is marked `unknownHours`, hatched on the chart, excluded from every dry or rain claim, and the card says how far the forecast reaches. Prompted by the Nov 15, 2026 horizon bug.
 
 ## Open questions
 - When to promote live intervals from dashed to solid (needs calibration from the storm report card).

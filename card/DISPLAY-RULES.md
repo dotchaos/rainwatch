@@ -19,6 +19,15 @@ The canonical scenario datasets are in `scenarios/*.json`; the typed contract is
 - The `Sandbags` level and driveway action require independent property-specific flood risk assessment. The upstream 17th & Folsom indicator has not been validated against driveway flooding at 18th & Shotwell.
 - Prototype fixtures include illustrative warnings solely for UI testing. Do not display these as actionable real-world advice.
 
+## Missing data
+**Missing forecast data is unknown, never dry.** An hour with no rain forecast (past the end of the model data, or a gap in it) is listed in `unknownHours` and:
+- the chart hatches it, with a "No forecast data" legend entry; no interval may be drawn over it;
+- it is never a dry break, a dry stretch, part of a rain event, or bridged into rain;
+- no statement may call it dry: "Dry after that", "Dry before and after", "Dry for the next 3 days" and the 3-day "easing" subtitle require the whole 72 hours to be forecast;
+- the insight says how far ahead the forecast reaches ("Forecast only covers through Tue 11 PM."); a calm card says "Dry through Tue 11 PM" with "No forecast after that yet.";
+- a day row with missing rain hours and no forecast rain reads "Rain forecast incomplete".
+The producer must fill the full 72 hours whenever data exists; `unknownHours` is a safeguard, not a display mode.
+
 ## Dry breaks
 Preserve meaningful dry breaks between precipitation events. Do not merge intermittent showers into a continuous rain interval unless the forecast supports that interpretation. Chart intervals and action recommendations must derive from the same underlying forecast data.
 

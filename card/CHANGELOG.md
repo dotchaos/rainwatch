@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.9: missing data is unknown, never dry
+**Problem.** A leftover `horizon_hours = 36` in rainwatch's config.toml stopped the live forecast at Tuesday midnight, while the card draws 72 hours. The last hours read as "No gear", and the insight said "Dry before and after" while NWS and the models showed a larger storm Tuesday night and Wednesday.
+**Change.** Producer: override removed; the engine never makes fewer than 73 hours; ensembles fetch 5 days. Hours with no forecast are their own class (never bridged, never dry) and are listed in a new contract field, `unknownHours`. Card: the chart hatches them with a "No forecast data" legend entry; dry statements, dry stretches, events and the 3-day summary stop at them; the insight adds "Forecast only covers through …"; a calm card says "Dry through …". The rules reject intervals drawn over unknown hours. Rule added to DISPLAY-RULES.md.
+**Effect on the four scenarios.** None: fixtures have no unknown hours (tested). New tests truncate each kind of card and check that nothing claims the missing hours are dry.
+
 ## v0.8: keep real dry breaks, never invent them
 **Problem.** Sunday showed one Rain-jacket interval, 1–10 PM. Hours were split only by "at least half the runs show rain", so a dip below 50% could fake a break, and ten hours above 50% hid whether any single run actually rains steadily.
 **Change.** Producer: hours are rain / forecast dry / uncertain; only 2+ forecast-dry hours split rain; uncertain gaps are bridged and marked intermittent; steady vs on-and-off is measured from the runs themselves (`pattern` on intervals). Card: `rainEvents` and `jacketPlan` drive both the bars' labels and the insight (continuous, separate periods, or "on and off" with parts of day when timing is uncertain). Rule added to DISPLAY-RULES.md.

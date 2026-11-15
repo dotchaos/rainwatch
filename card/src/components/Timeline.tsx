@@ -1,5 +1,6 @@
 import type { Scenario } from '../types';
 import { daysAt, intervalColor, layoutLabels, levelLabels, timeAt, windowLabel } from '../lib/rules';
+import { coverageNote } from '../lib/derive';
 import { labelledWindows } from '../lib/derive';
 const x0=108, plotWidth=244, base=148, step=30;
 const x=(h:number)=>x0+(h/72)*plotWidth;
@@ -13,12 +14,19 @@ export function Timeline({scenario:s}:{scenario:Scenario}) {
   const windows=all.filter(w=>w.rung===3), quiet=all.filter(w=>w.rung<3);
   const placed=layoutLabels(windows,x0,366-2);
   const twoRows=placed.some(p=>p.row===1), top=twoRows?22:0;
+  const gap=(s.unknownHours??[]).length>0, extra=gap?16:0;   // a third legend line for "No forecast data"
   return <section className="timeline-section" aria-label={s.timeline.title}>
     <div className="section-heading"><strong>Next 72 hours</strong><span>{s.timeline.title}</span></div>
-    <svg viewBox={`0 ${-top} 366 ${197+top}`} role="img" aria-label={`${s.timeline.title}. Solid fill indicates severity; dashed outlines indicate uncertain timing. Labelled windows: ${all.map(w=>w.label).join('; ')||'none'}.`}>
+    <svg viewBox={`0 ${-top} 366 ${197+top+extra}`} role="img" aria-label={`${s.timeline.title}. ${coverageNote(s)??''} Solid fill indicates severity; dashed outlines indicate uncertain timing. Labelled windows: ${all.map(w=>w.label).join('; ')||'none'}.`}>
       {days.filter(d=>d.end-d.start>=12).map(d=><text key={d.start} x={x((d.start+d.end)/2)} y={13-top} textAnchor="middle" className="chart-day">{d.label.toUpperCase()}</text>)}
       {labels.map((l,i)=>{const y=base-i*step;return <g key={l}><text x="98" y={y+3} textAnchor="end" className="chart-label">{l}</text><line x1={x0} x2={x(72)} y1={y} y2={y} className={i===0?'chart-base':'chart-grid'}/></g>})}
       {days.slice(1).map(d=><line key={d.start} x1={x(d.start)} x2={x(d.start)} y1="19" y2={base} className="chart-midnight"/>)}
+      {/* No forecast for these hours: hatched and labelled, never drawn as dry */}
+      <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4"/></pattern></defs>
+      {(s.unknownHours??[]).map(u=><g key={`u${u.startHour}`} className="chart-unknown">
+        <rect x={x(u.startHour)} y={base-3*step-6} width={x(u.endHour)-x(u.startHour)} height={3*step+6} fill="url(#nodata)"/>
+        {x(u.endHour)-x(u.startHour)>=34&&<text x={(x(u.startHour)+x(u.endHour))/2} y={base-1.5*step} textAnchor="middle" className="chart-nodata">No data</text>}
+      </g>)}
       {s.timeline.intervals.filter(p=>p.severity>0).map((p,i)=><g key={i}>
         <rect x={x(p.startHour)} y={base-p.severity*step} width={x(p.endHour)-x(p.startHour)} height={p.severity*step} fill={intervalColor(s,p.severity)}/>
         {p.confidence!=='higher'&&<rect x={x(p.startHour)} y={base-p.severity*step} width={x(p.endHour)-x(p.startHour)} height={p.severity*step} fill="none" stroke="currentColor" strokeOpacity=".65" strokeWidth=".9" strokeDasharray="2 2"/>}
@@ -36,6 +44,7 @@ export function Timeline({scenario:s}:{scenario:Scenario}) {
       <text x={x(72)} y="166" textAnchor="end" className="chart-time">{timeAt(s,72)}</text>
       <rect x="109" y="180" width="15" height="7" fill={intervalColor(s,2)}/><text x="130" y="187" className="chart-legend">Timing more certain</text>
       <rect x="238" y="180" width="15" height="7" fill={intervalColor(s,2)} stroke="currentColor" strokeDasharray="2 2"/><text x="259" y="187" className="chart-legend">Timing may shift</text>
+      {gap&&<><rect x="109" y="196" width="15" height="7" fill="url(#nodata)" stroke="currentColor" strokeOpacity=".3"/><text x="130" y="203" className="chart-legend">No forecast data</text></>}
     </svg>
     <ul className="sr-only">{s.timeline.intervals.filter(p=>p.severity>0).map((p,i)=><li key={i}>{`${windowLabel(s,p)}: ${labels[p.severity]}, timing ${p.confidence==='higher'?'more certain':'may shift'}`}</li>)}</ul>
   </section>;

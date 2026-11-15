@@ -21,6 +21,11 @@ export interface Scenario {
   /** Calm-day note only; rain and heat insights are derived from the forecast. */
   insight?: Insight; alert?: Alert;
   timeline?: { title: string; intervals: Interval[] };
+  /**
+   * Stretches (hour offsets, end exclusive) with no rain forecast at all, e.g. past the end of the model data.
+   * Unknown is never dry: the chart shows "No data", and no statement may call these hours dry.
+   */
+  unknownHours?: { startHour: number; endHour: number }[];
   /** 'illustrative' for fixtures; 'live' only for the card built from the real forecast (rainwatch/card.py). */
   provenance: { type: 'illustrative' | 'live'; note: string; generated?: string };
 }
