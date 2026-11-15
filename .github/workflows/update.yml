@@ -56,6 +56,28 @@ jobs:
           RAINWATCH_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         run: python -m rainwatch --out site --data data
 
+      # The card app (one adaptive UI, 4 scenario fixtures as its regression suite) reads site/card/live.json.
+      # A broken card build never blocks publishing the main page.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: card/package-lock.json
+      - name: Card app (tests against the 4 scenarios, build to site/card)
+        id: card
+        continue-on-error: true
+        working-directory: card
+        run: |
+          npm ci --no-audit --no-fund
+          npx vitest run src/lib/rules.test.ts
+          npm run build
+          mkdir -p ../site/card && cp -r dist/. ../site/card/
+      - name: Check the live card against the same rules as the fixtures
+        id: cardcheck
+        continue-on-error: true
+        working-directory: card
+        run: LIVE_JSON=../site/card/live.json npx vitest run src/lib/live.test.ts
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
@@ -89,4 +111,10 @@ jobs:
         if: steps.deploy.outcome == 'failure' && steps.deploy2.outcome != 'success'
         run: |
           echo "::error::Page was not published (both attempts failed); archive was still saved."
+          exit 1
+
+      - name: Flag the run if the live card failed
+        if: steps.card.outcome == 'failure' || steps.cardcheck.outcome == 'failure'
+        run: |
+          echo "::error::Live card build or contract check failed (main page was still published)."
           exit 1

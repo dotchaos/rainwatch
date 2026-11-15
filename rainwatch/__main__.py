@@ -10,11 +10,11 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from . import alerts, archive, engine, nowcast, render, render2, storms
+from . import alerts, archive, card, engine, nowcast, render, render2, storms
 from .config import Config
 from .model import UTC
 from .net import session
-from .sources import gauges, nws, openmeteo, radar
+from .sources import conditions, gauges, nws, openmeteo, radar
 
 
 def afd_excerpt(text: str) -> str:
@@ -89,6 +89,20 @@ def main(argv=None) -> int:
                              "time": g.last_obs.isoformat() if g.last_obs else None})
 
     report = engine.build(cfg, now, nb, ens, ens_parts, det, nc, gs, errors)
+
+    # --- Live card data (same contract as the card app's scenario fixtures)
+    cond = conditions.fetch(s, cfg.lat, cfg.lon, cfg.tz)
+    if cond.error:
+        errors.append(f"temperature/conditions: {cond.error}")
+    meta_sources.append({"name": "Open-Meteo forecast (temperature, sky)", "url": "https://open-meteo.com/en/docs",
+                         "detail": cond.error or "hourly temperature and conditions", "time": now.isoformat()})
+    try:
+        live_card = card.build(report, cond, cfg, now)
+        (out / "card").mkdir(exist_ok=True)
+        (out / "card" / "live.json").write_text(json.dumps(live_card, indent=1))
+        print("card:", live_card["hazard"], "·", len((live_card.get("timeline") or {}).get("intervals", [])), "intervals")
+    except Exception as ex:  # noqa: BLE001
+        errors.append(f"live card: {ex}")
 
     # --- archive + scoring
     arc = archive.Archive(a.data)

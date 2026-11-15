@@ -14,7 +14,7 @@ class Config:
     lat: float = 37.761
     lon: float = -122.415
     tz: str = "America/Los_Angeles"
-    horizon_hours: int = 36
+    horizon_hours: int = 73         # 72-hour card timeline (plus the current hour)
 
     heavy_in: float = 0.20          # the threshold that matters: inches in one hour
     any_in: float = 0.01            # "measurable rain"
@@ -23,6 +23,7 @@ class Config:
     # see data branch calibration.md). "feel" = John's own threshold.
     # The flood layer is optional and specific to one place; the rain forecast never depends on it.
     # Set flood_site = "" in config.toml to run the rain forecast alone (e.g. for another address).
+    card_location: str = "18th & Shotwell"   # where the card says the forecast is for
     flood_site: str = "17th & Folsom"
     flood_site_evidence: str = ("In the city's 100-year flood zone and a low spot; 311 flood reports nearby in "
                                 "5 of the 7 big storms since 2012")

@@ -1,0 +1,169 @@
+{
+  "location": "18th & Shotwell",
+  "observedAt": "Thursday · 9 AM",
+  "startDay": "Thu",
+  "startHourLocal": 9,
+  "provenance": {
+    "type": "illustrative",
+    "note": "Hypothetical weather, not official guidance"
+  },
+  "id": "heat",
+  "title": "A Northern California heatwave",
+  "season": "September",
+  "hazard": "heat",
+  "current": {
+    "temperatureF": 87,
+    "condition": "Sunny and hot",
+    "icon": "sun",
+    "highF": 96,
+    "lowF": 68
+  },
+  "hourly": [
+    {
+      "label": "Now",
+      "temperatureF": 87,
+      "icon": "sun"
+    },
+    {
+      "label": "11 AM",
+      "temperatureF": 90,
+      "icon": "sun"
+    },
+    {
+      "label": "1 PM",
+      "temperatureF": 93,
+      "icon": "sun"
+    },
+    {
+      "label": "3 PM",
+      "temperatureF": 96,
+      "icon": "sun"
+    },
+    {
+      "label": "5 PM",
+      "temperatureF": 94,
+      "icon": "sun"
+    },
+    {
+      "label": "7 PM",
+      "temperatureF": 85,
+      "icon": "sunset"
+    }
+  ],
+  "days": [
+    {
+      "label": "Today",
+      "icon": "sun",
+      "description": "Hot",
+      "lowF": 68,
+      "highF": 96
+    },
+    {
+      "label": "Tomorrow",
+      "icon": "sun",
+      "description": "Very hot",
+      "lowF": 72,
+      "highF": 101
+    },
+    {
+      "label": "Saturday",
+      "icon": "sun",
+      "description": "Extreme heat",
+      "lowF": 75,
+      "highF": 104
+    }
+  ],
+  "alert": {
+    "actionTitle": "Avoid the hottest hours",
+    "action": "Plan outdoor activity for mornings, keep your home cool, and arrange access to air conditioning if needed."
+  },
+  "timeline": {
+    "title": "Heat outlook",
+    "intervals": [
+      {
+        "startHour": 0,
+        "endHour": 2,
+        "severity": 1,
+        "confidence": "higher"
+      },
+      {
+        "startHour": 2,
+        "endHour": 9,
+        "severity": 2,
+        "confidence": "higher"
+      },
+      {
+        "startHour": 9,
+        "endHour": 12,
+        "severity": 1,
+        "confidence": "higher"
+      },
+      {
+        "startHour": 22,
+        "endHour": 25,
+        "severity": 1,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 25,
+        "endHour": 28,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 28,
+        "endHour": 33,
+        "severity": 3,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 33,
+        "endHour": 36,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 36,
+        "endHour": 39,
+        "severity": 1,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 46,
+        "endHour": 49,
+        "severity": 1,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 49,
+        "endHour": 51,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 51,
+        "endHour": 58,
+        "severity": 3,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 58,
+        "endHour": 61,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 61,
+        "endHour": 64,
+        "severity": 1,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 71,
+        "endHour": 72,
+        "severity": 1,
+        "confidence": "shifting"
+      }
+    ]
+  }
+}

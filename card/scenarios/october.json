@@ -1,0 +1,80 @@
+{
+  "location": "18th & Shotwell",
+  "observedAt": "Thursday \u00b7 9 AM",
+  "startDay": "Thu",
+  "startHourLocal": 9,
+  "provenance": {
+    "type": "illustrative",
+    "note": "Hypothetical weather, not official guidance"
+  },
+  "id": "october",
+  "title": "A beautiful October day",
+  "season": "October",
+  "hazard": "none",
+  "current": {
+    "temperatureF": 68,
+    "condition": "Sunny and pleasant",
+    "icon": "sun",
+    "highF": 72,
+    "lowF": 54
+  },
+  "hourly": [
+    {
+      "label": "Now",
+      "temperatureF": 68,
+      "icon": "sun"
+    },
+    {
+      "label": "11 AM",
+      "temperatureF": 70,
+      "icon": "sun"
+    },
+    {
+      "label": "1 PM",
+      "temperatureF": 72,
+      "icon": "sun"
+    },
+    {
+      "label": "3 PM",
+      "temperatureF": 71,
+      "icon": "sun"
+    },
+    {
+      "label": "5 PM",
+      "temperatureF": 67,
+      "icon": "cloud-sun"
+    },
+    {
+      "label": "7 PM",
+      "temperatureF": 61,
+      "icon": "moon"
+    }
+  ],
+  "days": [
+    {
+      "label": "Today",
+      "icon": "sun",
+      "description": "Sunny",
+      "lowF": 54,
+      "highF": 72
+    },
+    {
+      "label": "Tomorrow",
+      "icon": "cloud-sun",
+      "description": "Partly cloudy",
+      "lowF": 55,
+      "highF": 70
+    },
+    {
+      "label": "Saturday",
+      "icon": "sun",
+      "description": "Sunny",
+      "lowF": 53,
+      "highF": 74
+    }
+  ],
+  "insight": {
+    "headline": "Great weather for getting outside",
+    "detail": "Dry skies and comfortable temperatures through the afternoon."
+  }
+}

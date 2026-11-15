@@ -306,3 +306,61 @@ def test_preview_layout_builds():
     cfg.flood_site = ""
     rep2, *_ = _full_report(cfg, FakeSession(NOW))
     assert "Local flood risk" not in render2.page(rep2, cfg, {"sources": []}, {}, None)
+
+
+def _cond_for(rep, temp=60.0, code=3):
+    from rainwatch.sources.conditions import Conditions
+    from zoneinfo import ZoneInfo
+    c = Conditions()
+    t0 = datetime.fromisoformat(rep["rows"][0]["t"])
+    for i in range(80):
+        c.hourly[t0 + timedelta(hours=i)] = {"temp": temp, "code": code, "day": True}
+    d0 = t0.astimezone(ZoneInfo("America/Los_Angeles")).date()
+    for k in range(4):
+        c.daily[(d0 + timedelta(days=k)).isoformat()] = {"hi": temp + 5, "lo": temp - 8, "code": code}
+    return c
+
+
+def test_live_card_contract_and_levels():
+    from rainwatch import card
+    cfg = Config(lat=LAT, lon=LON)
+    rep, *_ = _full_report(cfg, FakeSession(NOW))
+    assert len(rep["rows"]) >= 73
+    c = card.build(rep, _cond_for(rep), cfg, NOW)
+    assert len(c["hourly"]) == 6 and len(c["days"]) == 3 and c["provenance"]["type"] == "live"
+    iv = c["timeline"]["intervals"]
+    assert all(p["confidence"] == "unknown" for p in iv)                    # nothing claims calibrated timing
+    assert all(0 <= p["startHour"] < p["endHour"] <= 72 for p in iv)
+    for p in iv:                                                            # rungs follow the rules exactly
+        r = rep["rows"][p["startHour"]]
+        assert card.rain_level(r, cfg) == p["severity"]
+    if c["hazard"] == "flood":
+        assert c["alert"]["context"] and "not yet validated" in c["alert"]["context"]
+    # rain words follow the rain pipeline: a wet hour never shows a dry sky icon
+    for i, h in zip((0, 2, 4, 6, 8, 10), c["hourly"]):
+        if card.rain_level(rep["rows"][i], cfg):
+            assert h["icon"].startswith("cloud-rain")
+    for k in ("level", "headline", "summary"):                              # no hand-made timing text
+        assert k not in (c.get("alert") or {})
+
+
+def test_live_card_without_flood_site_never_reaches_sandbags():
+    from rainwatch import card
+    cfg = Config(lat=LAT, lon=LON)
+    cfg.flood_site = ""
+    rep, *_ = _full_report(cfg, FakeSession(NOW))
+    c = card.build(rep, _cond_for(rep), cfg, NOW)
+    assert c["hazard"] in ("rain", "none", "heat")
+    assert all(p["severity"] < 3 for p in (c.get("timeline") or {}).get("intervals", []))
+
+
+def test_live_card_heat_levels_and_calm():
+    from rainwatch import card
+    assert [card.heat_level(t) for t in (79, 80, 90, 100, None)] == [0, 1, 2, 3, 0]
+    cfg = Config(lat=LAT, lon=LON)
+    rep, *_ = _full_report(cfg, FakeSession(NOW))
+    dry = {**rep, "rows": [{**r, "p_any": 0.0, "p_heavy": 0.0, "levels": {}} for r in rep["rows"]]}
+    calm = card.build(dry, _cond_for(dry, temp=65, code=0), cfg, NOW)
+    assert calm["hazard"] == "none" and "timeline" not in calm and calm["insight"]["headline"] == "Dry for the next 3 days"
+    hot = card.build(dry, _cond_for(dry, temp=101, code=0), cfg, NOW)
+    assert hot["hazard"] == "heat" and hot["alert"]["actionTitle"] == "Avoid the hottest hours"

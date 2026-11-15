@@ -1,0 +1,158 @@
+{
+  "location": "18th & Shotwell",
+  "observedAt": "Thursday · 9 AM",
+  "startDay": "Thu",
+  "startHourLocal": 9,
+  "provenance": {
+    "type": "illustrative",
+    "note": "Hypothetical weather, not official guidance"
+  },
+  "id": "storm",
+  "title": "An extreme January storm",
+  "season": "January",
+  "hazard": "flood",
+  "current": {
+    "temperatureF": 51,
+    "condition": "Heavy rain and wind",
+    "icon": "cloud-rain-wind",
+    "highF": 54,
+    "lowF": 45
+  },
+  "hourly": [
+    {
+      "label": "Now",
+      "temperatureF": 51,
+      "icon": "cloud-rain-wind"
+    },
+    {
+      "label": "11 AM",
+      "temperatureF": 52,
+      "icon": "cloud-rain"
+    },
+    {
+      "label": "1 PM",
+      "temperatureF": 53,
+      "icon": "cloud-rain-wind"
+    },
+    {
+      "label": "3 PM",
+      "temperatureF": 53,
+      "icon": "cloud-rain-wind"
+    },
+    {
+      "label": "5 PM",
+      "temperatureF": 50,
+      "icon": "cloud-lightning"
+    },
+    {
+      "label": "7 PM",
+      "temperatureF": 48,
+      "icon": "cloud-rain-wind"
+    }
+  ],
+  "days": [
+    {
+      "label": "Today",
+      "icon": "cloud-lightning",
+      "description": "Heavy rain, wind",
+      "lowF": 47,
+      "highF": 54
+    },
+    {
+      "label": "Tomorrow",
+      "icon": "cloud-rain-wind",
+      "description": "Intense rain",
+      "lowF": 45,
+      "highF": 52
+    },
+    {
+      "label": "Saturday",
+      "icon": "cloud-drizzle",
+      "description": "Showers easing",
+      "lowF": 46,
+      "highF": 55
+    }
+  ],
+  "alert": {
+    "actionTitle": "Driveway · 18th & Shotwell",
+    "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
+    "context": "Potential upstream pooling near 17th & Folsom is a local indicator; its relationship to driveway flooding is not yet validated."
+  },
+  "timeline": {
+    "title": "Rain & flood outlook",
+    "intervals": [
+      {
+        "startHour": 0,
+        "endHour": 5,
+        "severity": 1,
+        "confidence": "higher"
+      },
+      {
+        "startHour": 5,
+        "endHour": 7,
+        "severity": 2,
+        "confidence": "higher"
+      },
+      {
+        "startHour": 7,
+        "endHour": 12,
+        "severity": 3,
+        "confidence": "higher"
+      },
+      {
+        "startHour": 12,
+        "endHour": 20,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 20,
+        "endHour": 23,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 23,
+        "endHour": 31,
+        "severity": 3,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 31,
+        "endHour": 36,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 36,
+        "endHour": 45,
+        "severity": 1,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 45,
+        "endHour": 50,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 50,
+        "endHour": 57,
+        "severity": 1,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 57,
+        "endHour": 62,
+        "severity": 2,
+        "confidence": "shifting"
+      },
+      {
+        "startHour": 62,
+        "endHour": 72,
+        "severity": 1,
+        "confidence": "shifting"
+      }
+    ]
+  }
+}
