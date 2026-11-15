@@ -164,7 +164,9 @@ def compute(cfg, now: datetime, hrs: list[datetime], ens, radar_rows: list[dict]
     ratio = (p90 - p10) / max(p50, 0.05)
     conf = "Medium" if ratio < 1.0 else "Low"
     claims.append({"claim": "Peak strength", "text": f"About {p50:.2f}\"/hr",
-                   "basis": f"runs {p10:.2f}–{p90:.2f}\"/hr · models smooth short bursts, so real peaks can run higher",
+                   "basis": f"each run's own wettest hour: {p10:.2f}–{p90:.2f}\"/hr (higher than the hourly table, which "
+                            "blends runs that peak at different times) · models smooth short bursts, so real peaks "
+                            "can run higher",
                    "conf": conf})
     out["peak_rate"] = {"p10": round(p10, 3), "p50": round(p50, 3), "p90": round(p90, 3)}
     a = np.array(ev_tot)

@@ -1,6 +1,8 @@
 """Static, mobile-first HTML page (plus latest.json) for GitHub Pages."""
 from __future__ import annotations
 
+from .outlook import chance
+
 import json
 from datetime import datetime
 from html import escape as e
@@ -43,8 +45,7 @@ button.rr:disabled{opacity:.6;cursor:default}#rrmsg{font-size:13px;margin:4px 0 
 def _p(p):
     if p is None:
         return "—"
-    w = "High" if p >= 0.6 else "Medium" if p >= 0.3 else "Low" if p >= 0.05 else "Very low"
-    return f"{w} (~{round(p * 100)}%)"
+    return chance(p).capitalize()
 
 
 def _local(iso: str | None, tz, fmt="%a %-I:%M %p") -> str:
@@ -149,7 +150,7 @@ def _rows_html(rows, heavy):
                 desc = "dry" if tot < 0.01 and pany < 0.2 else f"mostly dry · ~{tot:.2f}\" total"
                 out.append(f"<tr class=q><td class=n>{e(_span_label(grp[0], grp[-1]))}</td>"
                            f"<td class=n>Very low</td><td class=sub>{desc}"
-                           f"{'' if pany < 0.2 else f' · up to {round(pany * 100)}% chance of any rain'}</td></tr>")
+                           f"{'' if pany < 0.2 else f' · a few runs show light rain'}</td></tr>")
                 i = j + 1
                 continue
         rng = f"{r['lo']:.2f}\"–{r['hi']:.2f}\"" if r["hi"] != r["lo"] else f"{r['mid']:.2f}\""
