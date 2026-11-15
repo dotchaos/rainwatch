@@ -149,7 +149,7 @@ def _rows_html(rows, heavy):
                 pany = max((x["p_any"] or 0) for x in grp)
                 desc = "dry" if tot < 0.01 and pany < 0.2 else f"mostly dry · ~{tot:.2f}\" total"
                 out.append(f"<tr class=q><td class=n>{e(_span_label(grp[0], grp[-1]))}</td>"
-                           f"<td class=n>Very low</td><td class=sub>{desc}"
+                           f"<td class=n>Very unlikely</td><td class=sub>{desc}"
                            f"{'' if pany < 0.2 else f' · a few runs show light rain'}</td></tr>")
                 i = j + 1
                 continue
