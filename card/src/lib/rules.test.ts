@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { daysAt, layoutLabels, showTimeline, tempScale, timeAt, validateScenario, windowLabel } from './rules';
-import { actionWindow, criticalWindows, deriveAlert, deriveDaysSummary, deriveInsight, hourlySpan, jacketPlan, labelledWindows, rainEvents } from './derive';
+import { actionWindow, criticalWindows, deriveAlert, deriveDaysSummary, deriveInsight, jacketPlan, labelledWindows, rainEvents } from './derive';
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
 
 describe('canonical scenarios', () => {
@@ -125,12 +125,6 @@ describe('shared layout rules', () => {
     expect(windowLabel(st, { startHour: 14, endHour: 15 })).toBe('Thu 11 PM–midnight');
     expect(windowLabel(st, { startHour: 22, endHour: 27 })).toBe('Fri 7 AM–noon');
     expect(timeAt(st, 15)).toBe('Fri midnight');
-  });
-  it('the hourly strip is labelled by when it actually falls', () => {
-    const at = (h: number) => { const s = byId('rain'); s.startHourLocal = h; return hourlySpan(s); };
-    expect([at(9), at(14), at(19), at(22), at(3)]).toEqual(['Today', 'Today and tonight', 'Overnight', 'Overnight', 'This morning']);
-    expect(at(17)).toBe('Overnight');   // 5 PM–3 AM
-    expect(at(16)).toBe('Today and tonight');
   });
   it('axis ends name real times', () => { const s = byId('rain'); expect([timeAt(s, 0), timeAt(s, 72)]).toEqual(['Thu 9 AM', 'Sun 9 AM']); });
   it('critical-window labels never overlap', () => {

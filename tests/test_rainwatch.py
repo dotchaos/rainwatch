@@ -327,7 +327,8 @@ def test_live_card_contract_and_levels():
     rep, *_ = _full_report(cfg, FakeSession(NOW))
     assert len(rep["rows"]) >= 73
     c = card.build(rep, _cond_for(rep), cfg, NOW)
-    assert len(c["hourly"]) == 6 and len(c["days"]) == 3 and c["provenance"]["type"] == "live"
+    assert len(c["hourly"]) == card.HOURLY_N and len(c["days"]) == 3 and c["provenance"]["type"] == "live"
+    assert [h["hour"] for h in c["hourly"]] == list(range(card.HOURLY_N))   # consecutive, none skipped
     iv = c["timeline"]["intervals"]
     assert all(p["confidence"] == "unknown" for p in iv)                    # nothing claims calibrated timing
     assert all(0 <= p["startHour"] < p["endHour"] <= 72 for p in iv)
@@ -336,10 +337,12 @@ def test_live_card_contract_and_levels():
         assert card.rain_level(r, cfg) == p["severity"]
     if c["hazard"] == "flood":
         assert c["alert"]["context"] and "not yet validated" in c["alert"]["context"]
-    # rain words follow the rain pipeline: a wet hour never shows a dry sky icon
-    for i, h in zip((0, 2, 4, 6, 8, 10), c["hourly"]):
-        if card.rain_level(rep["rows"][i], cfg):
-            assert h["icon"].startswith("cloud-rain")
+    # wet or dry follows the rain pipeline: an hour shows precipitation exactly when the chart has gear there
+    from rainwatch.sources.conditions import PRECIP_ICONS
+    gear = {h for p in (c.get("timeline") or {}).get("intervals", []) if p["severity"] > 0
+            for h in range(p["startHour"], p["endHour"])} if c["hazard"] in ("rain", "flood") else set()
+    for h in c["hourly"]:
+        assert (h["icon"] in PRECIP_ICONS) == (h["hour"] in gear), h
     for k in ("level", "headline", "summary"):                              # no hand-made timing text
         assert k not in (c.get("alert") or {})
 
@@ -371,13 +374,14 @@ def test_live_card_heat_levels_and_calm():
     assert hot["hazard"] == "heat" and hot["alert"]["actionTitle"] == "Avoid the hottest hours"
 
 
-def test_live_card_hourly_labels_use_noon_and_midnight():
+def test_live_card_hourly_row_is_consecutive_and_never_dry_without_data():
     from rainwatch import card
     cfg = Config(lat=LAT, lon=LON)
     rep, *_ = _full_report(cfg, FakeSession(NOW))
-    labels = [h["label"] for h in card.build(rep, _cond_for(rep), cfg, NOW)["hourly"]]
-    assert "12 PM" not in labels and "12 AM" not in labels
-    assert labels[0] == "Now"
+    rows = [r if i < 10 else {"t": r["t"], "label": r["label"], "missing": True} for i, r in enumerate(rep["rows"])]
+    c = card.build({**rep, "rows": rows}, _cond_for(rep), cfg, NOW)
+    assert [h["hour"] for h in c["hourly"]] == list(range(card.HOURLY_N))   # labels are derived by the card
+    assert all(h["icon"] == "unknown" for h in c["hourly"][10:])              # no data: never a sun or moon
 
 
 def test_rain_grouping_keeps_forecast_dry_breaks_and_never_invents_them():

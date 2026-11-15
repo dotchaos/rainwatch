@@ -1,4 +1,12 @@
-import { Sun, CloudSun, Cloud, CloudRain, CloudDrizzle, CloudLightning, CloudRainWind, Moon, Sunset } from 'lucide-react';
-import type { IconName } from '../types';
-const icons = { sun:Sun, 'cloud-sun':CloudSun, cloud:Cloud, 'cloud-rain':CloudRain, 'cloud-drizzle':CloudDrizzle, 'cloud-lightning':CloudLightning, 'cloud-rain-wind':CloudRainWind, moon:Moon, sunset:Sunset };
-export function WeatherIcon({name,size=22}:{name:IconName;size?:number}) { const Component=icons[name]; return <Component size={size} strokeWidth={1.7} aria-hidden="true"/>; }
+import { createElement } from 'react';
+import { GLYPHS, ICON_WORDS, ROLE_COLOR, resolveIcon } from '../lib/icons';
+
+/** Renders a condition from the icon library (src/lib/icons.ts; spec in WEATHER-ICONS.md). */
+export function WeatherIcon({ name, size = 22, label }: { name: string; size?: number; label?: boolean }) {
+  const icon = resolveIcon(name);
+  return <svg className={`wx wx-${icon}`} width={size} height={size} viewBox="0 0 24 24" fill="none" strokeWidth={1.7}
+    strokeLinecap="round" strokeLinejoin="round" role={label ? 'img' : undefined} aria-label={label ? ICON_WORDS[icon] : undefined}
+    aria-hidden={label ? undefined : true}>
+    {GLYPHS[icon].map(([tag, attrs, role], i) => createElement(tag, { key: i, ...attrs, stroke: ROLE_COLOR[role] }))}
+  </svg>;
+}

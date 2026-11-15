@@ -1,4 +1,5 @@
 import type { Scenario, Interval } from '../types';
+import { PRECIP, resolveIcon } from './icons';
 export const showTimeline = (s: Scenario) => s.hazard !== 'none' && Boolean(s.timeline);
 export const levelLabels = (s: Scenario) => s.hazard === 'heat'
   ? ['Comfortable', 'Hot', 'Very hot', 'Extreme']
@@ -8,7 +9,23 @@ export const intervalColor = (s: Scenario, level: number) => s.hazard === 'heat'
   : ['transparent', '#8cb9cc', '#568cac', '#ba6547'][level];
 export function validateScenario(s: Scenario): string[] {
   const errors: string[] = [];
-  if (s.hourly.length !== 6) errors.push('Exactly six hourly snapshots required');
+  // Next hours: consecutive hours from the current one, none skipped, agreeing with the graph
+  if (s.hourly.length < 12 || s.hourly.length > 72) errors.push('Next hours needs 12–72 consecutive hours');
+  s.hourly.forEach((h, i) => { if (h.hour !== i) errors.push(`Next hours must be consecutive from the current hour (item ${i} is hour ${h.hour})`); });
+  const gearAt = (h: number) => (s.hazard === 'rain' || s.hazard === 'flood') && Boolean(s.timeline?.intervals.some(p => p.severity > 0 && p.startHour <= h && h < p.endHour));
+  for (const h of s.hourly) {
+    const at = h.hour ?? 0, icon = resolveIcon(h.icon);
+    if (isUnknown(s, at)) { if (icon !== 'unknown') errors.push(`Hour ${at} has no forecast but shows "${icon}"`); continue; }
+    if (PRECIP.has(icon) !== gearAt(at)) errors.push(`Hour ${at} icon "${icon}" disagrees with the graph`);
+  }
+  // Daily rows: a day with gear shows precipitation; a fully forecast day without gear does not
+  daysAt(s.startDay, s.startHourLocal).slice(0, 3).forEach((d, k) => {
+    const row = s.days[k]; if (!row) return;
+    let wet = false, gap = false; for (let h = d.start; h < d.end; h++) { wet ||= gearAt(h); gap ||= isUnknown(s, h); }
+    const icon = resolveIcon(row.icon);
+    if (wet && !PRECIP.has(icon)) errors.push(`${row.label} has rain on the graph but its row shows "${icon}"`);
+    if (!wet && !gap && PRECIP.has(icon)) errors.push(`${row.label} shows "${icon}" but the graph has no rain that day`);
+  });
   if (s.days.length !== 3) errors.push('Exactly three daily outlook rows required');
   if (s.hazard === 'none' && s.timeline) errors.push('Calm scenario must not show a timeline');
   const reachesTop = Boolean(s.timeline?.intervals.some(p => p.severity === 3));

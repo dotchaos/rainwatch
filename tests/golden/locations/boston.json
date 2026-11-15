@@ -10,47 +10,137 @@
  "current": {
   "temperatureF": 55,
   "condition": "Cloudy",
-  "icon": "cloud",
+  "icon": "overcast",
   "highF": 64,
   "lowF": 52
  },
  "hourly": [
   {
-   "label": "Now",
+   "hour": 0,
    "temperatureF": 55,
-   "icon": "cloud"
+   "icon": "overcast"
   },
   {
-   "label": "4 PM",
+   "hour": 1,
+   "temperatureF": 57,
+   "icon": "rain"
+  },
+  {
+   "hour": 2,
    "temperatureF": 58,
-   "icon": "cloud-rain"
+   "icon": "rain"
   },
   {
-   "label": "6 PM",
+   "hour": 3,
+   "temperatureF": 59,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 4,
    "temperatureF": 60,
-   "icon": "cloud-rain"
+   "icon": "rain"
   },
   {
-   "label": "8 PM",
+   "hour": 5,
    "temperatureF": 61,
-   "icon": "cloud-rain"
+   "icon": "rain"
   },
   {
-   "label": "10 PM",
+   "hour": 6,
+   "temperatureF": 61,
+   "icon": "rain"
+  },
+  {
+   "hour": 7,
+   "temperatureF": 61,
+   "icon": "rain"
+  },
+  {
+   "hour": 8,
    "temperatureF": 60,
-   "icon": "cloud-rain"
+   "icon": "rain"
   },
   {
-   "label": "Midnight",
+   "hour": 9,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 10,
    "temperatureF": 58,
-   "icon": "cloud"
+   "icon": "overcast"
+  },
+  {
+   "hour": 11,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 12,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 13,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 14,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 15,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 16,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 17,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 18,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 19,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 20,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 21,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 22,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 23,
+   "temperatureF": 53,
+   "icon": "overcast"
   }
  ],
  "days": [
   {
    "label": "Today",
    "description": "Heavy rain at times",
-   "icon": "cloud-rain-wind",
+   "icon": "heavy-rain",
    "lowF": 52,
    "highF": 64,
    "rainIn": 0.65
@@ -58,7 +148,7 @@
   {
    "label": "Tomorrow",
    "description": "Cloudy",
-   "icon": "cloud",
+   "icon": "overcast",
    "lowF": 50,
    "highF": 61,
    "rainIn": 0.0
@@ -66,7 +156,7 @@
   {
    "label": "Monday",
    "description": "Partly cloudy",
-   "icon": "cloud-sun",
+   "icon": "partly-day",
    "lowF": 53,
    "highF": 66,
    "rainIn": 0.0

@@ -1,6 +1,6 @@
 {
   "location": "18th & Shotwell",
-  "observedAt": "Thursday · 9 AM",
+  "observedAt": "Thursday \u00b7 9 AM",
   "startDay": "Thu",
   "startHourLocal": 9,
   "provenance": {
@@ -8,67 +8,157 @@
     "note": "Hypothetical weather, not official guidance"
   },
   "id": "rain",
-  "title": "A rainy January day",
+  "title": "Intermittent rain",
   "season": "January",
   "hazard": "rain",
   "current": {
     "temperatureF": 54,
     "condition": "Showers on and off",
-    "icon": "cloud-drizzle",
+    "icon": "drizzle",
     "highF": 58,
     "lowF": 47
   },
   "hourly": [
     {
-      "label": "Now",
+      "hour": 0,
       "temperatureF": 54,
-      "icon": "cloud-drizzle"
+      "icon": "drizzle"
     },
     {
-      "label": "11 AM",
+      "hour": 1,
+      "temperatureF": 54,
+      "icon": "rain"
+    },
+    {
+      "hour": 2,
       "temperatureF": 55,
-      "icon": "cloud-rain"
+      "icon": "heavy-rain"
     },
     {
-      "label": "1 PM",
+      "hour": 3,
       "temperatureF": 56,
-      "icon": "cloud-rain"
+      "icon": "heavy-rain"
     },
     {
-      "label": "3 PM",
+      "hour": 4,
+      "temperatureF": 56,
+      "icon": "rain"
+    },
+    {
+      "hour": 5,
+      "temperatureF": 56,
+      "icon": "overcast"
+    },
+    {
+      "hour": 6,
       "temperatureF": 57,
-      "icon": "cloud"
+      "icon": "overcast"
     },
     {
-      "label": "5 PM",
+      "hour": 7,
+      "temperatureF": 56,
+      "icon": "overcast"
+    },
+    {
+      "hour": 8,
       "temperatureF": 55,
-      "icon": "cloud"
+      "icon": "overcast"
     },
     {
-      "label": "7 PM",
+      "hour": 9,
+      "temperatureF": 53,
+      "icon": "overcast"
+    },
+    {
+      "hour": 10,
       "temperatureF": 51,
-      "icon": "cloud-drizzle"
+      "icon": "drizzle"
+    },
+    {
+      "hour": 11,
+      "temperatureF": 51,
+      "icon": "rain"
+    },
+    {
+      "hour": 12,
+      "temperatureF": 51,
+      "icon": "overcast"
+    },
+    {
+      "hour": 13,
+      "temperatureF": 50,
+      "icon": "overcast"
+    },
+    {
+      "hour": 14,
+      "temperatureF": 50,
+      "icon": "overcast"
+    },
+    {
+      "hour": 15,
+      "temperatureF": 49,
+      "icon": "overcast"
+    },
+    {
+      "hour": 16,
+      "temperatureF": 48,
+      "icon": "overcast"
+    },
+    {
+      "hour": 17,
+      "temperatureF": 48,
+      "icon": "overcast"
+    },
+    {
+      "hour": 18,
+      "temperatureF": 47,
+      "icon": "overcast"
+    },
+    {
+      "hour": 19,
+      "temperatureF": 46,
+      "icon": "overcast"
+    },
+    {
+      "hour": 20,
+      "temperatureF": 46,
+      "icon": "rain"
+    },
+    {
+      "hour": 21,
+      "temperatureF": 46,
+      "icon": "rain"
+    },
+    {
+      "hour": 22,
+      "temperatureF": 46,
+      "icon": "rain"
+    },
+    {
+      "hour": 23,
+      "temperatureF": 47,
+      "icon": "rain"
     }
   ],
   "days": [
     {
       "label": "Today",
-      "icon": "cloud-rain",
+      "icon": "rain",
       "description": "Scattered showers",
       "lowF": 47,
       "highF": 58
     },
     {
       "label": "Tomorrow",
-      "icon": "cloud-drizzle",
+      "icon": "drizzle",
       "description": "Light rain",
       "lowF": 46,
       "highF": 56
     },
     {
       "label": "Saturday",
-      "icon": "cloud-sun",
-      "description": "Breaks of sun",
+      "icon": "showers-day",
+      "description": "Showers, breaks of sun",
       "lowF": 45,
       "highF": 59
     }

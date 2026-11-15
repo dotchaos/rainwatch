@@ -19,6 +19,22 @@ The canonical scenario datasets are in `scenarios/*.json`; the typed contract is
 - The `Sandbags` level and driveway action require independent property-specific flood risk assessment. The upstream 17th & Folsom indicator has not been validated against driveway flooding at 18th & Shotwell.
 - Prototype fixtures include illustrative warnings solely for UI testing. Do not display these as actionable real-world advice.
 
+## Now & next (integrated design, v0.12)
+Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
+- **Headline names the event and its window.** Rain: "Rain from about 1–10 PM", "Rain until 2 PM", "Two rounds of rain today". Flood: "Protect your driveway before 2 PM". Extreme heat: "Dangerous heat tomorrow, about 1–6 PM". On a calm day the headline is the insight ("Great weather for getting outside").
+- **The detail keeps the insight's notes** (amount, dry spells, later rain, timing may shift, coverage), minus the sentence that restates the gear window.
+- **One action line:** the gear rung, with its window when it is above Rain jacket ("Rain boots · 6–9 PM"); "Sandbags · 4–9 PM" with the red shield; the heat action.
+- **Flood keeps its small print:** what to do and the local-validation caveat.
+- **Graph callouts:** only Sandbags risk windows on validated local flood days (`sandbagsCallouts`). Other rungs are named only in the headline and action line.
+- **Edge of the outlook:** if rain or heat is forecast in the final hour, the detail ends "Still raining at <end>, where this outlook ends." (`edgeNote`). It says nothing about later hours, and never calls them dry.
+
+## Hours and days agree with the graph
+- The Next hours row is consecutive from the current hour (12–72 hours, each with its `hour` offset).
+- An hour shows a precipitation icon exactly when the graph has gear there. Rain jacket hours show `rain` (or drizzle); Rain boots and Sandbags hours show `heavy-rain` (or a thunderstorm). A dry hour never shows precipitation, whatever the sky model says.
+- A daily row shows precipitation when its day has gear on the graph, and a fully forecast day without gear never does.
+- "Now" in the hourly row matches the hero's condition.
+- The rules check all of this for fixtures and the live card alike.
+
 ## Rain amounts
 **Amounts are the median of the model runs' own totals, never a sum of hourly medians.** Each run's total over the window is computed first (rainwatch/totals.py), then the median.
 - Shown in tenths of an inch with "about"/"~"; under 0.05" no number; 0.05–0.1" reads "under 0.1"" ("<0.1"").
@@ -29,7 +45,7 @@ The canonical scenario datasets are in `scenarios/*.json`; the typed contract is
 
 ## Missing data
 **Missing forecast data is unknown, never dry.** An hour with no rain forecast (past the end of the model data, or a gap in it) is listed in `unknownHours` and:
-- the chart hatches it, with a "No forecast data" legend entry; no interval may be drawn over it;
+- the graph hatches any 3-hour block with no forecast; no interval may be drawn over it;
 - it is never a dry break, a dry stretch, part of a rain event, or bridged into rain;
 - no statement may call it dry: "Dry after that", "Dry before and after", "Dry for the next 3 days" and the 3-day "easing" subtitle require the whole 72 hours to be forecast;
 - the insight says how far ahead the forecast reaches ("Forecast only covers through Tue 11 PM."); a calm card says "Dry through Tue 11 PM" with "No forecast after that yet.";

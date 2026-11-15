@@ -1,14 +1,17 @@
 export type Severity = 0 | 1 | 2 | 3;
 export type Hazard = 'none' | 'rain' | 'flood' | 'heat';
 export type Confidence = 'higher' | 'shifting' | 'unknown';
-export type IconName = 'sun'|'cloud-sun'|'cloud'|'cloud-rain'|'cloud-drizzle'|'cloud-lightning'|'cloud-rain-wind'|'moon'|'sunset';
+import type { IconName } from './lib/icons';
+export type { IconName };
 /**
  * Hours with no interval are forecast dry. Hours the forecast is unsure about are never left as gaps: the
  * producer bridges them into the surrounding rain and marks that stretch `pattern: 'intermittent'`.
  * `intermittent` also marks rain the model runs show coming and going rather than steady.
  */
 export interface Interval { startHour: number; endHour: number; severity: Severity; confidence: Confidence; pattern?: 'steady' | 'intermittent'; }
-export interface Hourly { label: string; temperatureF: number | null; icon: IconName; }
+/** One hour of the Next hours row. `hour` is the offset from the card's start (0 = the current, partial hour);
+ *  the card derives the label from it. `label` is accepted from older producers and ignored. */
+export interface Hourly { hour?: number; label?: string; temperatureF: number | null; icon: IconName; }
 export interface Day {
   label: string; description: string; lowF: number | null; highF: number | null; icon: IconName;
   /** Median of the model runs' own totals for the day (today: the rest of it), inches. Absent if unknown or partial. */

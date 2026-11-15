@@ -31,8 +31,15 @@
 - **Dry breaks (v0.8):** only forecast-dry hours (≥80% of runs dry, no measurable typical amount; 2+ in a row) split rain; uncertain hours are bridged as intermittent; on-and-off measured from runs (≥50% of raining runs with their own 2+ h break). Thresholds provisional.
 - **Missing data is unknown, never dry (v0.9):** the live forecast always covers the full 72-hour chart (engine floor of 73 hours; 5 days of ensemble data); any hour it can't cover is marked `unknownHours`, hatched on the chart, excluded from every dry or rain claim, and the card says how far the forecast reaches. Prompted by the Nov 15, 2026 horizon bug.
 - **Rain amounts on the card (v0.10):** day rows and the insight show whole-run median totals in tenths ("~0.5""); later rain more than a day away is named with its amount. The 10th–90th range stays on the details page. Prompted by the Nov 15, 2026 comparison: Rainwatch matched NWS and WU on totals but showed none.
+- **Integrated hierarchy and icon library (v0.11):** the card follows the approved integrated design: Now & next → Next 3 days (graph) → Next hours → More information (daily rows, totals, details, sources). The six 2-hourly snapshots become consecutive scrolling hours under the heading "Next hours". This replaces the derived headings ("Today and tonight", "Overnight"), and each midnight is marked with the day instead. Weather icons come from one library (WEATHER-ICONS.md) with golden sun, neutral clouds and blue precipitation, kept separate from severity colours.
+- **Integrated design (v0.12):** the card follows the approved integrated design screenshots (Nov 15, 2026). Now & next has an event headline, a detail line and one action line, with the alert built in. The graph shows three calendar days of 3-hour blocks with AM/PM labels and no window tags or legend. Daily rows are two lines with no icons or temperature bars. The lab uses chips. Replaced: the separate alert block and grey insight box, the continuous 72-hour bars with window tags and legend, and the daily temperature bars and icons.
+- **Graph horizon, hour labels, callouts (v0.12.2):** the graph covers the rolling 72 hours from now and is never extended beyond them. Events still under way at the edge are described in the text ("where this outlook ends"), never implied dry. The hourly row says Noon and Midnight, and the graph keeps AM/PM half-days. Sandbags risk-window callouts return on the graph for validated local flood days only; other rungs get none.
 
 ## Open questions
+- **Nonblocking refinements (logged Nov 15, 2026 at v0.12.2 sign-off):**
+  1. Move the end-of-outlook line ("Still raining at …, where this outlook ends.") from the hero detail into More information.
+  2. Draw Sandbags block boundaries at the hour instead of the current 3-hour approximation (e.g. a 4 PM start currently fills the 3–6 PM block).
+
 - When to promote live intervals from dashed to solid (needs calibration from the storm report card).
 - Whether the live card replaces the current rainwatch page.
 - Preparation lead time for "Protect your driveway before …" (2 h placeholder).

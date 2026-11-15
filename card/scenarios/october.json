@@ -8,66 +8,156 @@
     "note": "Hypothetical weather, not official guidance"
   },
   "id": "october",
-  "title": "A beautiful October day",
+  "title": "Calm October",
   "season": "October",
   "hazard": "none",
   "current": {
     "temperatureF": 68,
     "condition": "Sunny and pleasant",
-    "icon": "sun",
+    "icon": "clear-day",
     "highF": 72,
     "lowF": 54
   },
   "hourly": [
     {
-      "label": "Now",
+      "hour": 0,
       "temperatureF": 68,
-      "icon": "sun"
+      "icon": "clear-day"
     },
     {
-      "label": "11 AM",
+      "hour": 1,
+      "temperatureF": 69,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 2,
       "temperatureF": 70,
-      "icon": "sun"
+      "icon": "clear-day"
     },
     {
-      "label": "1 PM",
-      "temperatureF": 72,
-      "icon": "sun"
-    },
-    {
-      "label": "3 PM",
+      "hour": 3,
       "temperatureF": 71,
-      "icon": "sun"
+      "icon": "clear-day"
     },
     {
-      "label": "5 PM",
+      "hour": 4,
+      "temperatureF": 72,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 5,
+      "temperatureF": 72,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 6,
+      "temperatureF": 71,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 7,
+      "temperatureF": 69,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 8,
       "temperatureF": 67,
-      "icon": "cloud-sun"
+      "icon": "partly-day"
     },
     {
-      "label": "7 PM",
+      "hour": 9,
+      "temperatureF": 64,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 10,
       "temperatureF": 61,
-      "icon": "moon"
+      "icon": "clear-night"
+    },
+    {
+      "hour": 11,
+      "temperatureF": 61,
+      "icon": "clear-night"
+    },
+    {
+      "hour": 12,
+      "temperatureF": 60,
+      "icon": "clear-night"
+    },
+    {
+      "hour": 13,
+      "temperatureF": 60,
+      "icon": "clear-night"
+    },
+    {
+      "hour": 14,
+      "temperatureF": 59,
+      "icon": "clear-night"
+    },
+    {
+      "hour": 15,
+      "temperatureF": 59,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 16,
+      "temperatureF": 59,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 17,
+      "temperatureF": 57,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 18,
+      "temperatureF": 56,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 19,
+      "temperatureF": 56,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 20,
+      "temperatureF": 55,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 21,
+      "temperatureF": 55,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 22,
+      "temperatureF": 55,
+      "icon": "partly-day"
+    },
+    {
+      "hour": 23,
+      "temperatureF": 57,
+      "icon": "partly-day"
     }
   ],
   "days": [
     {
       "label": "Today",
-      "icon": "sun",
+      "icon": "clear-day",
       "description": "Sunny",
       "lowF": 54,
       "highF": 72
     },
     {
       "label": "Tomorrow",
-      "icon": "cloud-sun",
+      "icon": "partly-day",
       "description": "Partly cloudy",
       "lowF": 55,
       "highF": 70
     },
     {
       "label": "Saturday",
-      "icon": "sun",
+      "icon": "clear-day",
       "description": "Sunny",
       "lowF": 53,
       "highF": 74

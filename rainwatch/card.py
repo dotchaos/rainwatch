@@ -14,12 +14,20 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-from .sources.conditions import Conditions, describe
+from .sources.conditions import PRECIP_ICONS, Conditions, describe, precip_type
 
 HORIZON = 72
 RAIN_ANY_P, RAIN_BOOTS_P, SANDBAGS_P = 0.5, 0.20, 0.10
 HEAT_F = (80, 90, 100)
-RAIN_WORDS = {1: ("cloud-rain", "Rain"), 2: ("cloud-rain-wind", "Heavy rain"), 3: ("cloud-rain-wind", "Intense rain")}
+RAIN_WORDS = {1: ("rain", "Rain"), 2: ("heavy-rain", "Heavy rain"), 3: ("heavy-rain", "Intense rain")}
+TYPE_WORDS = {"snow": "Snow", "freezing-rain": "Freezing rain", "hail": "Hail"}
+HOURLY_N = 24    # the Next hours row: consecutive hours from the current one
+
+
+def wet_icon(level: int, code: int | None) -> tuple[str, str]:
+    """A forecast wet hour: the rain pipeline decides *that* it is wet; the sky model only its type."""
+    t = precip_type(code)
+    return (t, TYPE_WORDS[t]) if t else RAIN_WORDS[level]
 HEAT_WORDS = {1: "Hot", 2: "Very hot", 3: "Extreme heat"}
 # Dry breaks (accepted Nov 15 2026): only a *forecast-dry* stretch splits rain. An hour is forecast dry when at
 # least 80% of runs are dry and the typical amount is below measurable; in-between hours are "uncertain" and never
@@ -190,17 +198,18 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
     known_until = unknown[0]["startHour"] if unknown else HORIZON      # forecast is complete up to here
 
     def sky(i: int) -> tuple[str, str]:
-        """Icon and words for hour offset i: rain words follow the rain pipeline, never the sky model."""
-        if rain[i]:
-            return RAIN_WORDS[rain[i]]
+        """Icon and words for hour offset i. Wet or dry follows the rain pipeline, never the sky model;
+        the sky model supplies cloud cover, day/night and the precipitation type."""
         c = cond.hourly.get(hours[i])
-        if not c:
-            return "cloud", "Conditions unavailable"
-        icon, words = describe(c["code"], c["day"])
+        if rain[i]:
+            return wet_icon(rain[i], c["code"] if c else None)
         if classes[i] == "unknown":
-            return icon, words                # no rain forecast for this hour: the sky model is all there is
-        if icon in ("cloud-rain", "cloud-rain-wind", "cloud-drizzle", "cloud-lightning"):
-            return "cloud", "Cloudy"          # sky model says rain but the rain pipeline does not: say cloudy
+            return "unknown", "No rain forecast"   # never a dry-looking sun or moon for an hour with no data
+        if not c:
+            return "overcast", "Conditions unavailable"
+        icon, words = describe(c["code"], c["day"])
+        if icon in PRECIP_ICONS:
+            return "overcast", "Cloudy"       # sky model says precipitation but the rain pipeline does not: say cloudy
         return icon, words
 
     # Day totals: each run's own day total, then the median (engine daily_totals). Partial days get none.
@@ -218,16 +227,17 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         dd = cond.daily.get(d.isoformat()) or {}
         gap = any(classes[i] == "unknown" for i in idx)
         if dr:
-            icon, words = RAIN_WORDS[dr]
-            words = {1: "Rain at times", 2: "Heavy rain at times", 3: "Intense rain"}[dr]
+            icon, _ = wet_icon(dr, dd.get("code"))
+            t = precip_type(dd.get("code"))
+            words = f"{TYPE_WORDS[t]} at times" if t else {1: "Rain at times", 2: "Heavy rain at times", 3: "Intense rain"}[dr]
         elif dh:
-            icon, words = "sun", HEAT_WORDS[dh]
+            icon, words = "heat", HEAT_WORDS[dh]
         elif gap:
-            icon, words = "cloud", "Rain forecast incomplete"
+            icon, words = "unknown", "Rain forecast incomplete"
         else:
             icon, words = describe(dd.get("code", 3), True)
-            if icon in ("cloud-rain", "cloud-rain-wind", "cloud-drizzle", "cloud-lightning"):
-                icon, words = "cloud", "Cloudy"
+            if icon in PRECIP_ICONS:
+                icon, words = "overcast", "Cloudy"
         row = {"label": labels[k], "description": words, "icon": icon,
                "lowF": round(dd["lo"]) if dd else None, "highF": round(dd["hi"]) if dd else None}
         tot = day_totals.get(d.isoformat())
@@ -235,13 +245,12 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
             row["rainIn"] = tot
         day_rows.append(row)
 
+    # Next hours: every hour from the current one, none skipped. `hour` is the offset from the card's start
+    # (hour 0 is the current, partial hour); the card derives labels from it.
     hourly = []
-    for k, i in enumerate((0, 2, 4, 6, 8, 10)):
+    for i in range(HOURLY_N):
         icon, _ = sky(i)
-        lt = hours[i].astimezone(tz)
-        lbl = "Now" if k == 0 else "Noon" if lt.hour == 12 else "Midnight" if lt.hour == 0 else lt.strftime("%-I %p")
-        hourly.append({"label": lbl,
-                       "temperatureF": round(temps[i]) if temps[i] is not None else None, "icon": icon})
+        hourly.append({"hour": i, "temperatureF": round(temps[i]) if temps[i] is not None else None, "icon": icon})
     icon0, words0 = sky(0)
     td = cond.daily.get(today.isoformat()) or {}
 

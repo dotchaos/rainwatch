@@ -38,7 +38,7 @@ function relDay(s: Scenario, h: number) {
 }
 const clock = (s: Scenario, h: number) => clockText(clockAt(s.startDay, s.startHourLocal, h));
 const span = (s: Scenario, a: number, b: number) => windowLabel(s, { startHour: a, endHour: b }).replace(/^\w+ /, '');
-const cap = (t: string) => t[0].toUpperCase() + t.slice(1);
+export const cap = (t: string) => t[0].toUpperCase() + t.slice(1);
 const joinAnd = (xs: string[]) => xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`;
 
 /**
@@ -190,7 +190,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       const notes = ['Breaks possible.'];
       const later = laterRain(s, last.end); if (later) notes.push(later);
       if (!plan.sure) notes.push(MAY_SHIFT);
-      const cov = coverageNote(s); if (cov) notes.push(cov);
+      const cov = coverageNote(s); if (cov) notes.push(cov); const edge = edgeNote(s); if (edge) notes.push(edge);
       return { headline: `${jacket} ${partsPhrase(s, first.start, last.end)}`, detail: notes.join(' ') };
     }
     if (plan) {
@@ -209,7 +209,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       if (later) notes.push(later);                      // the next rain matters more than the next dry spell
       else if (more < 72) { const dry = nextDry(s, last.end); if (dry) notes.push(`Then dry ${dry}.`); }
       if (!plan.sure) notes.push(MAY_SHIFT);
-      const cov = coverageNote(s); if (cov) notes.push(cov);
+      const cov = coverageNote(s); if (cov) notes.push(cov); const edge = edgeNote(s); if (edge) notes.push(edge);
       return { headline: head, detail: notes.join(' ') };
     }
     const day = cap(relDay(s, aw.startHour));
@@ -226,7 +226,7 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
     else if (later) notes.push(later);
     else if (dry) notes.push(`Then dry ${dry}.`);
     if (!aw.sure) notes.push(MAY_SHIFT);
-    const cov = coverageNote(s); if (cov) notes.push(cov);
+    const cov = coverageNote(s); if (cov) notes.push(cov); const edge = edgeNote(s); if (edge) notes.push(edge);
     return { headline, detail: notes.join(' ') };
   }
   if (s.hazard === 'heat') {
@@ -245,6 +245,13 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
   }
   if (s.hazard === 'none' && knownUntil(s) < 72) return partialDry(s);
   return s.insight ?? null;
+}
+
+/** When rain (or heat) is still forecast in the outlook's last hour: say where the outlook ends, and nothing
+ *  about what comes after it. Unknown hours never count. */
+export function edgeNote(s: Scenario): string | null {
+  if ((s.hazard !== 'rain' && s.hazard !== 'flood' && s.hazard !== 'heat') || sevAt(s, 71) === 0 || isUnknown(s, 71)) return null;
+  return `Still ${s.hazard === 'heat' ? 'hot' : 'raining'} at ${timeAt(s, 72)}, where this outlook ends.`;
 }
 
 /** First hour at or after `from` that is rain or has no forecast (72 if dry and known to the end). */
@@ -273,23 +280,19 @@ function nextDry(s: Scenario, from: number): string | null {
       && (a < 0 || dayIndexAt(s, h) === dayIndexAt(s, a));
     if (ok && a < 0) a = h;
     if (!ok && a >= 0) {
-      if (h - a >= DRY_MIN_H) return (dayIndexAt(s, a) === dayIndexAt(s, from) ? '' : `${relDay(s, a)} `) + span(s, a, h);
+      // name the day unless the dry stretch is on the same day as the last rain hour (rain ending at midnight ends the day before)
+      if (h - a >= DRY_MIN_H) return (dayIndexAt(s, a) === dayIndexAt(s, Math.max(0, from - 1)) ? '' : `${relDay(s, a)} `) + span(s, a, h);
       a = (h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h) && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END) ? h : -1;
     }
   }
   return null;
 }
 
-/**
- * When the six snapshots (2 h apart, starting now, so a 10-hour span) actually fall: "Today",
- * "Today and tonight", "Overnight" or "This morning". Never "Today" for a strip that runs through the night.
- */
-export function hourlySpan(s: Scenario): string {
-  const a = s.startHourLocal, b = a + 2 * (s.hourly.length - 1);        // local hours of first and last snapshot
-  if (a >= 5 && b <= 20) return 'Today';
-  if (a >= 5 && a < 17) return 'Today and tonight';
-  if (a >= 17 || a < 2) return 'Overnight';
-  return 'This morning';
+/** Label for an hour of the Next hours row: "Now" for the current (partial) hour, then "1 PM", "Noon", "Midnight".
+ *  `day` is set at each midnight so the row can mark where a new day starts. */
+export function hourLabel(s: Scenario, at: number): { text: string; day: string | null } {
+  const c = clockAt(s.startDay, s.startHourLocal, at);
+  return { text: at === 0 ? 'Now' : cap(clockText(c)), day: at > 0 && c.hour === 12 && c.meridiem === 'AM' ? c.day : null };
 }
 
 /** Subtitle for the 3-day list, from the daily rows and timeline (empty when there is no clear story). */
@@ -306,4 +309,99 @@ export function deriveDaysSummary(s: Scenario): string {
     if (top >= 2 && worst[2] < top) return cap(`worst ${joinAnd(names.filter((_, k) => worst[k] === top))}, easing ${names[2]}`);
   }
   return '';
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Integrated design (v0.12): Now & next, and the calendar-day block graph. Both are built only from the derivations
+// above, so the hero, the graph and the advice can never disagree.
+
+export interface NowNext {
+  headline: string;
+  detail: string;
+  /** One actionable line: gear with its window, Sandbags with its window, or the heat action. */
+  action?: { icon: 'boots' | 'shield' | 'sun'; text: string; risk: boolean };
+  /** Required small print (flood: what to do and the local-validation caveat). */
+  note?: string;
+}
+const dropPeriod = (t: string) => t.replace(/\.$/, '');
+/** "6–9 PM" today; "Fri 8 AM–4 PM" on another day. */
+const windowShort = (s: Scenario, a: number, b: number) => dayIndexAt(s, a) === 0 ? span(s, a, b) : windowLabel(s, { startHour: a, endHour: b });
+const NUMBER_WORDS = ['', 'One', 'Two', 'Three', 'Four'];
+
+export function nowNext(s: Scenario): NowNext | null {
+  const ins = deriveInsight(s), al = deriveAlert(s);
+  if (al && s.alert) {
+    const w = criticalWindows(s)[0];
+    if (s.hazard === 'flood') return {
+      headline: dropPeriod(al.headline), detail: [al.summary, edgeNote(s)].filter(Boolean).join(' '),
+      action: { icon: 'shield', text: `Sandbags · ${windowShort(s, w.startHour, w.endHour)}`, risk: true },
+      note: [s.alert.action, s.alert.context].filter(Boolean).join(' '),
+    };
+    const d = relDay(s, w.startHour), at = `${w.sure ? '' : 'about '}${span(s, w.startHour, w.endHour)}`;
+    return {                                                     // extreme heat: the event and its first window
+      headline: `Dangerous heat ${d === 'today' ? `from ${at}` : `${d}, ${at}`}`,
+      detail: [al.summary, edgeNote(s)].filter(Boolean).join(' '),
+      // the outdoor window is the actionable advice, so it becomes the action line (not one more sentence)
+      action: { icon: 'sun', text: ins ? ins.headline.replace(': Before', ': before') : s.alert.actionTitle, risk: false },
+    };
+  }
+  if (s.hazard !== 'rain') return ins;                           // calm and ordinary heat: the insight as is
+  const aw = actionWindow(s);
+  if (!aw || !ins) return ins;
+  const plan = jacketPlan(s);
+  // the detail keeps every note except the one that restates the gear window (the headline and action carry it)
+  const notes = ins.detail.split(/(?<=\.)\s+/).filter(n => n && !n.startsWith(levelLabels(s)[1]) && !n.startsWith(levelLabels(s)[2]));
+  let headline: string;
+  if (plan?.kind === 'separate' && plan.events.length <= 4) {
+    headline = `${NUMBER_WORDS[plan.events.length]} rounds of rain ${relDay(s, plan.events[0].start)}`;
+    notes.unshift(`Rain ${joinAnd(plan.events.map(e => when(s, e.start, e.end, e.sure)))}.`.replace(' and ', ', then '));
+  } else if (plan?.kind === 'intermittent') {
+    headline = `Rain on and off ${partsPhrase(s, plan.events[0].start, plan.events[plan.events.length - 1].end)}`;
+  } else {
+    const a = aw.eventStart, b = aw.eventEnd, d = relDay(s, a);
+    headline = a === 0 ? `Rain ${when(s, 0, b, aw.sure)}`
+      : `Rain ${d === 'today' ? '' : `${d} `}from ${aw.sure ? '' : 'about '}${span(s, a, b)}`;
+  }
+  const gear = aw.rung >= 2 ? `${aw.action} · ${windowShort(s, aw.startHour, aw.endHour)}` : aw.action;
+  return { headline, detail: notes.join(' '), action: { icon: 'boots', text: gear, risk: false } };
+}
+
+export interface ChartBlock { start: number; end: number; level: number; shifting: boolean; unknown: boolean }
+/**
+ * The graph's discrete blocks over the rolling 72 hours from now, in 3-hour blocks aligned to the local clock
+ * (midnight, 3 AM, 6 AM …); the first and last blocks are clipped to the outlook. A block takes the highest rung
+ * of any forecast hour in it, dashed when that rung's timing may shift; a block with no forecast at all is
+ * unknown (hatched), never dry. Nothing is drawn past hour 72.
+ */
+export function chartBlocks(s: Scenario): ChartBlock[] {
+  const out: ChartBlock[] = [];
+  for (let a = -(s.startHourLocal % 3); a < 72; a += 3) {
+    const start = Math.max(a, 0), end = Math.min(a + 3, 72);
+    let level = 0, shifting = false, unknown = false;
+    for (let h = start; h < end; h++) {
+      if (isUnknown(s, h)) { unknown = true; continue; }
+      const p = s.timeline?.intervals.find(q => q.startHour <= h && h < q.endHour);
+      if (!p || p.severity === 0) continue;
+      if (p.severity > level) { level = p.severity; shifting = p.confidence !== 'higher'; }
+      else if (p.severity === level && p.confidence !== 'higher') shifting = true;
+    }
+    out.push({ start, end, level, shifting, unknown: unknown && level === 0 });
+  }
+  return out;
+}
+
+/** Graph callouts: Sandbags risk windows on validated local flood days only (never other rungs, never heat).
+ *  Each names the risk window itself ("Thu 4–9 PM"), not the time to prepare by. */
+export function sandbagsCallouts(s: Scenario) {
+  return s.hazard === 'flood' && s.alert ? criticalWindows(s) : [];
+}
+
+/** Half-day labels for the rolling axis: AM or PM centred on each half-day with at least 6 hours in view. */
+export function halfDayLabels(s: Scenario) {
+  const out: { at: number; text: 'AM' | 'PM' }[] = [];
+  for (let a = -s.startHourLocal; a < 72; a += 12) {
+    const lo = Math.max(a, 0), hi = Math.min(a + 12, 72);
+    if (hi - lo >= 6) out.push({ at: (lo + hi) / 2, text: ((a + s.startHourLocal) / 12) % 2 === 0 ? 'AM' : 'PM' });
+  }
+  return out;
 }

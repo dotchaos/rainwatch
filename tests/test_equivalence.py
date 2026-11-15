@@ -86,7 +86,7 @@ def test_other_locations_get_a_general_card(name):
     assert c is not None, fc.errors
     assert fc.cfg.tz == tz
     assert c["location"] == name
-    assert len(c["hourly"]) == 6 and len(c["days"]) == 3 and c["current"]["temperatureF"] is not None
+    assert len(c["hourly"]) == 24 and len(c["days"]) == 3 and c["current"]["temperatureF"] is not None
     assert "alert" not in c and c["hazard"] != "flood"
     assert all(p["severity"] < 3 for p in (c.get("timeline") or {}).get("intervals", []))
     note = c["provenance"]["note"]

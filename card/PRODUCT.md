@@ -5,7 +5,7 @@ A hyperlocal general-weather app that adapts its information hierarchy to condit
 ## Principles
 1. Calm weather requires no hazard chart or preparedness language.
 2. A useful next action takes priority over temperature when a credible risk exists.
-3. Present six upcoming snapshots and three daily outlooks in every scenario.
+3. Present consecutive upcoming hours (Next hours) and three daily outlooks in every scenario.
 4. Show a compact 72-hour timeline only when precipitation or heat makes it useful.
 5. Keep severity distinct from timing confidence.
 6. Never equate intense rainfall automatically with driveway flooding. The flood-risk rung requires separate, validated local assessment.
@@ -14,6 +14,7 @@ A hyperlocal general-weather app that adapts its information hierarchy to condit
 ## Canonical scenarios
 - `october.json`: calm, sunny October; no chart or alert.
 - `rain.json`: intermittent January rain; 72-hour rain chart and a dry-window insight.
+- `rain-soon.json`: rain starting soon, Tuesday from 2 PM: a partial first day, rain ending at midnight, uncertain edges, and rain amounts.
 - `storm.json`: hypothetical January storm; action-first driveway flood warning, two labeled critical periods.
 - `heat.json`: hypothetical September heatwave; action-first heat warning and 72-hour heat outlook.
 

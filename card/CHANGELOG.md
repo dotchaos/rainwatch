@@ -1,5 +1,44 @@
 # Changelog
 
+## v0.12.2: rolling graph, Sandbags callouts
+- **Graph:** the rolling 72 hours from now, in clock-aligned 3-hour blocks, with day names, AM/PM half-days and midnight dividers. Nothing is drawn past hour 72.
+- **Sandbags callouts:** filled tags return on validated flood days only ("Thu 4–9 PM", "Fri 8 AM–4 PM"). They show the risk windows, not "before 2 PM".
+- **Edge note:** "Still raining at …, where this outlook ends." when rain or heat reaches the last hour.
+- **Hourly labels:** Noon and Midnight, as before.
+
+## v0.12.1: hierarchy refinements (review notes)
+- The headline leads: the current temperature drops from 46 to 32 px and the condition from 17 to 15 px.
+- Heat: the outdoor window becomes the action line ("Best outdoor window: before 10 AM") instead of an extra sentence.
+- The uncertainty outlines are lighter, so dashed timing doesn't compete with severity.
+
+## v0.12: integrated design
+**Change.** The card now matches the approved integrated design.
+- **Now & next:** a compact condition row, an event headline, a detail line and one action line. This replaces the alert block and the grey insight box. The flood caveat is kept as small print.
+- **Next 3 days:** three calendar days of 3-hour blocks with AM/PM labels and short rung names, with no window tags or legend. Colors, the dashed uncertainty outline and the no-data hatching are unchanged.
+- **Next hours:** labelled "Local time".
+- **More information:** two-line daily rows with amounts and high / low.
+- **Header:** the month and local time.
+- **Lab:** chips.
+- **New derivations:** `nowNext` and `chartBlocks`, both built from the existing ones.
+
+**Effect on the scenarios.** All five validate. Headlines now name the event: "Rain until 2 PM", "Rain from 4 PM–midnight", "Protect your driveway before 2 PM", "Dangerous heat tomorrow, about 1–6 PM".
+
+## v0.11: integrated hierarchy, Next hours, icon library
+**Change.**
+- **Order:** Now & next (alert or hero, then advice) → Next 3 days (graph) → Next hours → More information (daily rows with totals, details link, sources). The components are reused: `Alert`, `Hero`, `Timeline` and `Days` are unchanged inside.
+- **Next hours:** consecutive hours (24 from the engine) in a sideways-scrolling row with the next hour peeking in. Labels are derived (Now, 1 PM, Noon, Midnight), each midnight is marked with the day, and hours with no data always show the no-data icon.
+- **Icon library:** `src/lib/icons.ts` covers clear, partly cloudy, overcast, fog, haze, wind, drizzle, rain, heavy rain, showers, thunderstorms, snow, sleet, hail, freezing rain, heat and unknown, with day/night variants. Each part of an icon is coloured by its role. The engine now emits these names: fog, snow and partly-cloudy nights were mis-mapped before, and wet hours take snow, hail or freezing rain from the sky model.
+- **Fifth fixture:** "Rain starting soon".
+- **New rules:** hours and days must agree with the graph.
+
+**Defects found and fixed.**
+- The Intermittent rain fixture's Saturday row read "Breaks of sun" while its graph showed rain that day.
+- The storm fixture's hero said "Heavy rain and wind" during a Rain jacket hour.
+- After rain ending at midnight, "Then dry 7 AM–7 PM" lacked "tomorrow".
+- Day-row rain amounts were cut off at phone width.
+
+**Effect on the scenarios.** All five validate; the wording of the other four is unchanged apart from the fixes above.
+
 ## v0.10: rain amounts
 **Problem.** On Nov 15, 2026 Rainwatch expected about the same Sunday rain as NWS and WU (0.5–0.7") but the card showed no amount, and Wednesday's larger rain (~0.9" by morning) was only a bar at the chart's edge.
 **Change.** Contract: `Day.rainIn` and `rainTotals` (one per rain stretch on the chart), both medians of whole-run totals from the producer. Card: day rows read "Rain at times · ~0.5""; the insight adds "About 0.5" of rain." and, when the next rain is more than a day away, "More rain Wed 1–9 AM, about 0.9"." instead of "Then dry …". Rules reject a total that doesn't match a rain stretch. Rule added to DISPLAY-RULES.md.

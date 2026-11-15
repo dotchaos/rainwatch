@@ -19,28 +19,55 @@ class Conditions:
     tz: str | None = None                                        # the local time zone the daily rows use
 
 
-# WMO weather code -> (card icon, words). Rain words here are only a sky description; rain *amounts*
-# on the card always come from the rain pipeline.
+# WMO weather code -> (card icon, words). Icon names: card/src/lib/icons.ts and card/WEATHER-ICONS.md.
+# Precipitation words here only describe the sky; whether an hour is wet, and how much, always comes from
+# the rain pipeline (card.py). The *type* of precipitation (snow, sleet, hail, freezing) comes from here.
+PRECIP_ICONS = {"drizzle", "rain", "heavy-rain", "showers-day", "showers-night", "thunderstorm",
+                "snow", "sleet", "hail", "freezing-rain"}
+
+
 def describe(code: int, is_day: bool = True) -> tuple[str, str]:
+    dn = "day" if is_day else "night"
     if code == 0:
-        return ("sun" if is_day else "moon"), ("Sunny" if is_day else "Clear")
+        return f"clear-{dn}", ("Sunny" if is_day else "Clear")
     if code in (1, 2):
-        return ("cloud-sun" if is_day else "moon"), "Partly cloudy"
+        return f"partly-{dn}", ("Mostly sunny" if code == 1 and is_day else "Mostly clear" if code == 1 else "Partly cloudy")
     if code == 3:
-        return "cloud", "Cloudy"
+        return "overcast", "Cloudy"
     if code in (45, 48):
-        return "cloud", "Fog"
-    if 51 <= code <= 57:
-        return "cloud-drizzle", "Drizzle"
-    if code in (61, 63, 80, 81):
-        return "cloud-rain", "Rain" if code in (61, 63) else "Showers"
-    if code in (65, 66, 67, 82):
-        return "cloud-rain-wind", "Heavy rain"
-    if 71 <= code <= 77 or code in (85, 86):
-        return "cloud-drizzle", "Snow"
-    if code >= 95:
-        return "cloud-lightning", "Thunderstorms"
-    return "cloud", "Cloudy"
+        return "fog", "Fog"
+    if code in (51, 53, 55):
+        return "drizzle", "Drizzle"
+    if code in (56, 57, 66, 67):
+        return "freezing-rain", "Freezing rain"
+    if code in (61, 63):
+        return "rain", "Rain"
+    if code == 65:
+        return "heavy-rain", "Heavy rain"
+    if code in (80, 81):
+        return f"showers-{dn}", "Showers"
+    if code == 82:
+        return "heavy-rain", "Heavy showers"
+    if code in (71, 73, 75, 77, 85, 86):
+        return "snow", "Snow"
+    if code == 95:
+        return "thunderstorm", "Thunderstorms"
+    if code in (96, 99):
+        return "hail", "Thunderstorms with hail"
+    return "overcast", "Cloudy"
+
+
+def precip_type(code: int | None) -> str | None:
+    """Snow, sleet, hail or freezing rain when the sky model says so; None means ordinary rain."""
+    if code is None:
+        return None
+    if code in (71, 73, 75, 77, 85, 86):
+        return "snow"
+    if code in (56, 57, 66, 67):
+        return "freezing-rain"
+    if code in (96, 99):
+        return "hail"
+    return None
 
 
 def parse(data: dict) -> Conditions:

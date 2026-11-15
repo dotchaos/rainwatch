@@ -1,51 +1,57 @@
 import type { Scenario } from '../types';
-import { daysAt, intervalColor, layoutLabels, levelLabels, timeAt, windowLabel } from '../lib/rules';
-import { coverageNote } from '../lib/derive';
-import { labelledWindows } from '../lib/derive';
-const x0=108, plotWidth=244, base=148, step=30;
-const x=(h:number)=>x0+(h/72)*plotWidth;
-export function Timeline({scenario:s}:{scenario:Scenario}) {
-  if(!s.timeline) return null;
-  const labels=levelLabels(s), days=daysAt(s.startDay,s.startHourLocal);
-  // Critical-window labels are derived from the hours (never hand-typed) and laid out without overlap.
-  // Top-rung windows (Sandbags / Extreme) are alerts: filled tags above the chart. Ordinary action windows get a
-  // small plain time label sitting right on top of their bar, so routine rain never looks like an alert.
-  const all=labelledWindows(s).map(w=>{const label=w.label;return {...w,label,center:x((w.startHour+w.endHour)/2),width:Math.min(130,Math.max(70,label.length*5.6+14))};});
-  const windows=all.filter(w=>w.rung===3), quiet=all.filter(w=>w.rung<3);
-  const placed=layoutLabels(windows,x0,366-2);
-  const twoRows=placed.some(p=>p.row===1), top=twoRows?22:0;
-  const gap=(s.unknownHours??[]).length>0, extra=gap?16:0;   // a third legend line for "No forecast data"
-  return <section className="timeline-section" aria-label={s.timeline.title}>
-    <div className="section-heading"><strong>Next 72 hours</strong><span>{s.timeline.title}</span></div>
-    <svg viewBox={`0 ${-top} 366 ${197+top+extra}`} role="img" aria-label={`${s.timeline.title}. ${coverageNote(s)??''} Solid fill indicates severity; dashed outlines indicate uncertain timing. Labelled windows: ${all.map(w=>w.label).join('; ')||'none'}.`}>
-      {days.filter(d=>d.end-d.start>=12).map(d=><text key={d.start} x={x((d.start+d.end)/2)} y={13-top} textAnchor="middle" className="chart-day">{d.label.toUpperCase()}</text>)}
-      {labels.map((l,i)=>{const y=base-i*step;return <g key={l}><text x="98" y={y+3} textAnchor="end" className="chart-label">{l}</text><line x1={x0} x2={x(72)} y1={y} y2={y} className={i===0?'chart-base':'chart-grid'}/></g>})}
-      {days.slice(1).map(d=><line key={d.start} x1={x(d.start)} x2={x(d.start)} y1="19" y2={base} className="chart-midnight"/>)}
-      {/* No forecast for these hours: hatched and labelled, never drawn as dry */}
-      <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4"/></pattern></defs>
-      {(s.unknownHours??[]).map(u=><g key={`u${u.startHour}`} className="chart-unknown">
-        <rect x={x(u.startHour)} y={base-3*step-6} width={x(u.endHour)-x(u.startHour)} height={3*step+6} fill="url(#nodata)"/>
-        {x(u.endHour)-x(u.startHour)>=34&&<text x={(x(u.startHour)+x(u.endHour))/2} y={base-1.5*step} textAnchor="middle" className="chart-nodata">No data</text>}
-      </g>)}
-      {s.timeline.intervals.filter(p=>p.severity>0).map((p,i)=><g key={i}>
-        <rect x={x(p.startHour)} y={base-p.severity*step} width={x(p.endHour)-x(p.startHour)} height={p.severity*step} fill={intervalColor(s,p.severity)}/>
-        {p.confidence!=='higher'&&<rect x={x(p.startHour)} y={base-p.severity*step} width={x(p.endHour)-x(p.startHour)} height={p.severity*step} fill="none" stroke="currentColor" strokeOpacity=".65" strokeWidth=".9" strokeDasharray="2 2"/>}
-      </g>)}
-      {quiet.map(w=>{
-        const t=w.label.replace(/^\w+ /,''), half=t.length*2.6+2, cx=Math.max(x0+half,Math.min(x(72)-half,w.center));
-        return <text key={w.label} x={cx} y={base-w.rung*step-4} textAnchor="middle" className="chart-quiet">{t}</text>;
+import { daysAt, intervalColor, layoutLabels, levelLabels, windowLabel } from '../lib/rules';
+import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts } from '../lib/derive';
+
+/**
+ * Next 3 days: the compact action graph over the rolling 72 hours from now (v0.12.2).
+ * 3-hour blocks aligned to the local clock; day names over each day (a final sliver under 12 hours is not named),
+ * AM/PM centred on each half-day, dashed midnight dividers. Severity sets block height and colour (unchanged
+ * palette); dashed outline = timing may shift; hatched = no forecast. Nothing is drawn past hour 72.
+ * Flood days only: each Sandbags risk window gets a callout with its day and hours (the risk window itself,
+ * never the preparation deadline). Other rungs carry no callouts.
+ */
+const x0 = 92, plotW = 268, base = 132, step = 28, gap = 1.4;
+const x = (h: number) => x0 + (h / 72) * plotW;
+const SHORT_RAIN = ['No gear', 'Jacket', 'Boots', 'Sandbags'], SHORT_HEAT = ['Comfort', 'Hot', 'Very hot', 'Extreme'];
+
+export function Timeline({ scenario: s }: { scenario: Scenario }) {
+  if (!s.timeline) return null;
+  const heat = s.hazard === 'heat', labels = heat ? SHORT_HEAT : SHORT_RAIN, full = levelLabels(s);
+  const days = daysAt(s.startDay, s.startHourLocal);
+  const callouts = sandbagsCallouts(s).map(w => ({ ...w, center: x((w.startHour + w.endHour) / 2), width: Math.min(130, Math.max(70, w.label.length * 5.6 + 14)) }));
+  const placed = layoutLabels(callouts, x0, x(72));
+  const rows = placed.some(p => p.row === 1) ? 2 : callouts.length ? 1 : 0, top = rows * 24;
+  const cov = coverageNote(s), edge = edgeNote(s);
+  return <section className="timeline-section" aria-label={heat ? 'Heat outlook' : 'Action outlook'}>
+    <div className="section-heading"><strong>Next 3 days</strong><span>{heat ? 'Heat outlook' : 'Action outlook'}</span></div>
+    <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
+      aria-label={`${heat ? 'Heat' : 'Action'} outlook for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing may shift.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
+      <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern></defs>
+      {callouts.map((c, i) => {
+        const { left, row } = placed[i], ty = (rows - 1 - row) * 24, color = intervalColor(s, 3);
+        return <g key={c.label}>
+          <line x1={c.center} x2={c.center} y1={ty + 20} y2={top + base - 3 * step} stroke={color} strokeWidth="1.5" strokeDasharray={c.sure ? undefined : '2 2'} />
+          <rect x={left} y={ty} width={c.width} height="20" rx="4" fill={color} />
+          <text x={left + c.width / 2} y={ty + 13.5} className="chart-window" textAnchor="middle">{c.label}</text>
+        </g>;
       })}
-      {windows.map((w,i)=>{
-        const {left,row}=placed[i], labelY=24-(row?22:0);
-        const sure=w.sure;
-        return <g key={w.label}><line x1={w.center} x2={w.center} y1={labelY+20} y2={base-w.rung*step} stroke={intervalColor(s,w.rung)} strokeWidth="1.5" strokeDasharray={sure?undefined:'2 2'}/><rect x={left} y={labelY} width={w.width} height="20" rx="4" fill={intervalColor(s,w.rung)}/><text x={left+w.width/2} y={labelY+13.5} className="chart-window" textAnchor="middle" style={w.rung===1?{fill:'#1f3a48'}:undefined}>{w.label}</text></g>
-      })}
-      <text x={x0} y="166" className="chart-time">{timeAt(s,0)}</text>
-      <text x={x(72)} y="166" textAnchor="end" className="chart-time">{timeAt(s,72)}</text>
-      <rect x="109" y="180" width="15" height="7" fill={intervalColor(s,2)}/><text x="130" y="187" className="chart-legend">Timing more certain</text>
-      <rect x="238" y="180" width="15" height="7" fill={intervalColor(s,2)} stroke="currentColor" strokeDasharray="2 2"/><text x="259" y="187" className="chart-legend">Timing may shift</text>
-      {gap&&<><rect x="109" y="196" width="15" height="7" fill="url(#nodata)" stroke="currentColor" strokeOpacity=".3"/><text x="130" y="203" className="chart-legend">No forecast data</text></>}
+      <g transform={`translate(0 ${top})`}>
+        {days.map((d, i) => d.end - d.start >= 12 && <text key={d.start} x={x((d.start + d.end) / 2)} y={12} textAnchor="middle" className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
+        {labels.map((l, i) => { const y = base - i * step; return <g key={l}><text x={x0 - 8} y={y + 3} textAnchor="end" className="chart-label">{l}</text><line x1={x0} x2={x(72)} y1={y} y2={y} className={i === 0 ? 'chart-base' : 'chart-grid'} /></g>; })}
+        {days.slice(1).map(d => <line key={d.start} x1={x(d.start)} x2={x(d.start)} y1={22} y2={base} className="chart-midnight" />)}
+        {chartBlocks(s).map(b => {
+          const bx = x(b.start) + gap / 2, w = x(b.end) - x(b.start) - gap;
+          if (b.unknown) return <rect key={b.start} x={bx} y={base - 3 * step} width={w} height={3 * step} fill="url(#nodata)" />;
+          if (!b.level) return null;
+          const y = base - b.level * step, h = b.level * step;
+          return <g key={b.start}>
+            <rect x={bx} y={y} width={w} height={h} rx="1.5" fill={intervalColor(s, b.level)} />
+            {b.shifting && <rect x={bx + .4} y={y + .4} width={w - .8} height={h - .4} rx="1.5" fill="none" stroke="currentColor" strokeOpacity=".42" strokeWidth=".8" strokeDasharray="2 1.8" />}
+          </g>;
+        })}
+        {halfDayLabels(s).map(l => <text key={l.at} x={x(l.at)} y={base + 18} textAnchor="middle" className="chart-time">{l.text}</text>)}
+      </g>
     </svg>
-    <ul className="sr-only">{s.timeline.intervals.filter(p=>p.severity>0).map((p,i)=><li key={i}>{`${windowLabel(s,p)}: ${labels[p.severity]}, timing ${p.confidence==='higher'?'more certain':'may shift'}`}</li>)}</ul>
+    <ul className="sr-only">{s.timeline.intervals.filter(p => p.severity > 0).map((p, i) => <li key={i}>{`${windowLabel(s, p)}: ${full[p.severity]}, timing ${p.confidence === 'higher' ? 'more certain' : 'may shift'}`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;
 }
