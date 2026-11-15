@@ -16,7 +16,7 @@
 - Heat labels: Comfortable / Hot / Very hot / Extreme.
 - Severity controls **bar height and fill color**. Top rung changes to rust/red.
 - Timing confidence controls **outline treatment**: higher confidence = plain fill; shifting/unknown = dashed outline over the same full-strength fill.
-- Critical level-3 windows get direct day-and-time labels; other bars do not. Labels never overlap: `layoutLabels` keeps each label near its bar and pushes neighbours apart within the plot; only if one row cannot hold them all does it use a second row, and the chart grows by one row height.
+- Critical level-3 windows (Sandbags / Extreme) get filled day-and-time tags above the chart. The next ordinary action window (Rain jacket / Rain boots) gets a small plain time label sitting directly on its bar, with no fill and no leader, so routine rain never reads as an alert. Other bars are unlabelled. Labels never overlap: `layoutLabels` keeps each label near its bar and pushes neighbours apart within the plot; only if one row cannot hold them all does it use a second row, and the chart grows by one row height.
 - A visually hidden list of every interval (time, level, timing confidence) accompanies the chart for screen readers.
 - Day labels remain quiet. A final day sliver smaller than 12h is not separately labeled.
 - `Sandbags` represents a local consequence, not a universal rainfall threshold. It cannot be inferred solely from rain intensity.

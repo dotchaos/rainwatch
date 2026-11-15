@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.7: quieter label for ordinary rain
+- The next Rain jacket / Rain boots window is labelled with small plain text directly above its bar ("noon–10 PM"), instead of a filled tag above the Sandbags line. Filled tags stay only for Sandbags and Extreme windows.
+- Effect: live card and rain scenario show the quiet label; storm and heat unchanged; October has no chart.
+
 ## v0.6: clock words
 - "noon" and "midnight" replace 12 PM / 12 AM in every derived time (shared `clockText`); windows ending at midnight read "Thu 11 PM–midnight", not "Fri 12 AM".
 - The hourly strip's heading replaces "The next few hours" and says when the snapshots fall ("Overnight" for 8 PM–6 AM, "Today" for a morning start); the separate tag is gone.
