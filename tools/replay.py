@@ -30,7 +30,7 @@ MODELS = [("HRRR", ["ncep_hrrr_conus", "gfs_hrrr"]), ("NBM", ["ncep_nbm_conus"])
 LEADS = (1, 2)
 MIN_STORM = 0.25      # inches: storms worth scoring
 CFG = Config()
-S = session()
+S = session("rainwatch storm replay (github.com/dotchaos/rainwatch)")
 
 
 def out(*a):
