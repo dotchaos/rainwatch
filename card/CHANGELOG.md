@@ -1,6 +1,7 @@
 # Changelog
 
 ## v0.4: live forecast
+- Fix found on the first live card (Sat Nov 14, 7 PM): the dry-stretch rule ignored dry spells that cross midnight and said "No dry stretch" for a forecast dry until Sunday noon. Now: when it is dry now, the card says "Dry until …"; when raining, it finds the next daylight (7 AM–7 PM) dry stretch of 2+ hours, split at night and midnight. Tests reproduce the live case.
 - Default view renders the live forecast (`live.json`, built by `rainwatch/card.py` every 15 min); `?lab` keeps the four scenarios. Shows "Updated N min ago", flags the card as late after 45 minutes, and links to the detailed page.
 - Types: provenance `'live'` with `generated`; temperatures may be `null` (shown as "—").
 - Validation accepts `live` provenance (requires `generated`); fixtures are asserted illustrative by test.

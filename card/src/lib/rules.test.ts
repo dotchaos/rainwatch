@@ -38,6 +38,20 @@ describe('every timing statement is derived from the forecast', () => {
   it('rain: dry stretch comes from the gaps in the forecast', () => {
     expect(deriveInsight(byId('rain'))).toEqual({ headline: 'Next dry stretch: Today, 2–7 PM', detail: 'A good window for errands or a walk.' });
   });
+  it('rain, dry right now: says how long it stays dry (Nov 14 live case)', () => {
+    const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 19;
+    s.timeline!.intervals = [{ startHour: 17, endHour: 27, severity: 1, confidence: 'unknown' }];
+    expect(deriveInsight(s)).toEqual({ headline: 'Dry until tomorrow 12 PM', detail: 'Rain arrives after that; timing may shift.' });
+  });
+  it('rain, raining now: a dry spell across midnight still yields the next daylight stretch', () => {
+    const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 19;
+    s.timeline!.intervals = [{ startHour: 0, endHour: 3, severity: 1, confidence: 'unknown' }, { startHour: 17, endHour: 27, severity: 1, confidence: 'unknown' }];
+    expect(deriveInsight(s)?.headline).toBe('Next dry stretch: Tomorrow, 7 AM–12 PM');
+  });
+  it('rain, no rain at all ahead: dry for 3 days', () => {
+    const s = byId('rain'); s.timeline!.intervals = s.timeline!.intervals.filter(p => p.startHour >= 72);
+    expect(deriveInsight(s)?.headline).toBe('Dry for the next 3 days');
+  });
   it('calm: the fixture note is shown as written', () => expect(deriveInsight(byId('october'))?.headline).toBe('Great weather for getting outside'));
   it('moving the forecast moves the words', () => {
     const s = byId('storm');

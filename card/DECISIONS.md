@@ -30,7 +30,7 @@
 - When to promote live intervals from dashed to solid (needs calibration from the storm report card).
 - Whether the live card replaces the current rainwatch page.
 - Preparation lead time for "Protect your driveway before …" (2 h placeholder).
-- Derivation thresholds: dry stretch ≥2 h in daylight (6 AM–9 PM); outdoor window ends at the first Very hot hour.
+- Derivation thresholds: dry stretch ≥2 h in daylight (7 AM–7 PM), "Dry until …" when dry now; outdoor window ends at the first Very hot hour.
 - Calibrated confidence thresholds for solid vs dashed intervals.
 - Validated local hydrology/driveway risk model and alert provenance.
 - Whether an action ladder is the best encoding for both rainfall and property consequences.

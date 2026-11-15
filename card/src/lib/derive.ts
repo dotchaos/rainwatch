@@ -10,7 +10,7 @@ import { clockAt, daysAt, windowLabel } from './rules';
 export const PREPARE_LEAD_H = 2;
 /** Minimum length of a dry stretch worth pointing out, and the daytime it must fall in (local hours). */
 export const DRY_MIN_H = 2;
-const DAY_START = 6, DAY_END = 21;
+const DAY_START = 7, DAY_END = 19;   // daylight for errands and walks (7 AM–7 PM)
 
 export const sevAt = (s: Scenario, h: number) =>
   s.timeline?.intervals.find(p => p.startHour <= h && h < p.endHour)?.severity ?? 0;
@@ -74,17 +74,23 @@ export function deriveAlert(s: Scenario): DerivedAlert | null {
 export function deriveInsight(s: Scenario): { headline: string; detail: string } | null {
   if (s.hazard === 'rain' || s.hazard === 'flood') {
     if (s.hazard === 'flood') return null;      // the alert carries the message on flood days
-    let h = 0;
-    while (h < 72) {
-      if (sevAt(s, h) !== 0) { h++; continue; }
-      let e = h; while (e < 72 && sevAt(s, e) === 0) e++;
-      // keep the daytime part of the dry run
-      let a = h, b = e;
-      while (a < b && (localHour(s, a) < DAY_START || localHour(s, a) >= DAY_END)) a++;
-      while (b > a && (localHour(s, b - 1) < DAY_START || localHour(s, b - 1) >= DAY_END)) b--;
-      if (b - a >= DRY_MIN_H && dayIndexAt(s, a) === dayIndexAt(s, b - 1))
-        return { headline: `Next dry stretch: ${cap(relDay(s, a))}, ${span(s, a, b)}`, detail: 'A good window for errands or a walk.' };
-      h = e;
+    // Dry right now: say how long it stays dry.
+    if (sevAt(s, 0) === 0) {
+      let r = 0; while (r < 72 && sevAt(s, r) === 0) r++;
+      if (r >= 72) return { headline: 'Dry for the next 3 days', detail: 'No rain worth a jacket in the forecast.' };
+      return { headline: `Dry until ${clockAt(s.startDay, s.startHourLocal, r).day === clockAt(s.startDay, s.startHourLocal, 0).day ? clock(s, r) : `${relDay(s, r) === 'tomorrow' ? 'tomorrow' : clockAt(s.startDay, s.startHourLocal, r).day} ${clock(s, r)}`}`,
+               detail: 'Rain arrives after that; timing may shift.' };
+    }
+    // Raining now: the next daylight stretch of DRY_MIN_H+ dry hours, split at night and at midnight.
+    let a = -1;
+    for (let h = 0; h <= 72; h++) {
+      const ok = h < 72 && sevAt(s, h) === 0 && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END
+        && (a < 0 || dayIndexAt(s, h) === dayIndexAt(s, a));
+      if (ok && a < 0) a = h;
+      if (!ok && a >= 0) {
+        if (h - a >= DRY_MIN_H) return { headline: `Next dry stretch: ${cap(relDay(s, a))}, ${span(s, a, h)}`, detail: 'A good window for errands or a walk.' };
+        a = (h < 72 && sevAt(s, h) === 0 && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END) ? h : -1;
+      }
     }
     return { headline: 'No dry stretch of 2+ hours in daylight', detail: 'Rain comes and goes through the next 3 days.' };
   }

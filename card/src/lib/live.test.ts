@@ -6,7 +6,7 @@ import { validateScenario } from './rules';
 import { deriveAlert, deriveInsight, criticalWindows } from './derive';
 const path = process.env.LIVE_JSON;
 describe.runIf(Boolean(path && existsSync(path)))('live forecast card', () => {
-  const card = JSON.parse(readFileSync(path!, 'utf8')) as Scenario;
+  const card = (path && existsSync(path) ? JSON.parse(readFileSync(path, 'utf8')) : {}) as Scenario;
   it('passes the same rules as the fixtures', () => expect(validateScenario(card)).toEqual([]));
   it('is labelled live, with a generation time', () => { expect(card.provenance.type).toBe('live'); expect(card.provenance.generated).toBeTruthy(); });
   it('derives without errors', () => { criticalWindows(card); deriveAlert(card); deriveInsight(card); });
