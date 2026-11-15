@@ -71,6 +71,27 @@ def om_det(now: datetime, val=0.22, hour=3):
     return {"hourly": {"time": times, "precipitation": [val if i == hour else 0.02 for i in range(48)]}}
 
 
+TZ_BY_POINT = {(37.761, -122.415): "America/Los_Angeles"}
+
+
+def om_conditions(now: datetime, params: dict):
+    """Open-Meteo forecast for temperature and sky; `timezone=auto` resolves from a small table."""
+    from zoneinfo import ZoneInfo
+    tz = params.get("timezone", "GMT")
+    if tz == "auto":
+        tz = TZ_BY_POINT.get((params["latitude"], params["longitude"]), "America/New_York")
+    if "daily" in params:
+        d0 = now.astimezone(ZoneInfo(tz)).date()
+        days = [(d0 + timedelta(days=k)).isoformat() for k in range(5)]
+        return {"timezone": tz, "daily": {"time": days, "temperature_2m_max": [64.0, 61.0, 66.0, 68.0, 63.0],
+                                          "temperature_2m_min": [52.0, 50.0, 53.0, 54.0, 51.0],
+                                          "weather_code": [61, 3, 2, 0, 3]}}
+    h0 = now.replace(minute=0, second=0, microsecond=0, tzinfo=None)
+    ts = [(h0 + timedelta(hours=i)).isoformat(timespec="minutes") for i in range(120)]
+    return {"timezone": tz, "hourly": {"time": ts, "temperature_2m": [55.0 + 6 * math.sin(i / 24 * 2 * math.pi) for i in range(120)],
+                                       "weather_code": [3] * 120, "is_day": [int(14 <= (h0.hour + i) % 24 or (h0.hour + i) % 24 < 2) for i in range(120)]}}
+
+
 class Resp:
     def __init__(self, data=None, status=200, text=None, content=b""):
         self._d, self.status_code, self.text, self.content = data, status, text or "", content
@@ -117,6 +138,8 @@ class FakeSession:
             h0 = n.replace(minute=0, second=0, microsecond=0)
             ts = [int((h0 + timedelta(hours=i - 2)).timestamp()) for i in range(26)]
             return Resp({"hourly": {"time": ts, "wind_speed_700hPa": [45.0] * 26, "wind_direction_700hPa": [270.0] * 26}})
+        if "api.open-meteo.com" in url and ("daily" in params or "temperature_2m" in params.get("hourly", "")):
+            return Resp(om_conditions(n, params))
         if "api.open-meteo.com" in url:
             if params["models"] == "gfs_hrrr":
                 return Resp(status=400)

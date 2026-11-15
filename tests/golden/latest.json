@@ -1,0 +1,2819 @@
+{
+ "generated": "2026-11-14T19:07:00+00:00",
+ "location": "Mission District, SF",
+ "lat": 37.761,
+ "lon": -122.415,
+ "heavy_in": 0.2,
+ "bottom_line": "Heaviest hour most likely Sat 2 PM\u20133 PM \u2014 likely to reach 0.20\" that hour (heavy, ~0.30\"/hr); about 0.79\" total through Tue 12 PM.",
+ "peak": {
+  "t": "2026-11-14T22:00:00+00:00",
+  "label": "Sat 2 PM\u20133 PM",
+  "primary": "ens",
+  "p_heavy": 0.6,
+  "p_any": 1.0,
+  "p": {
+   "0.10": 1.0,
+   "0.20": 0.6,
+   "0.30": 0.6,
+   "0.50": 0.0
+  },
+  "lo": 0.1,
+  "mid": 0.3,
+  "hi": 0.3,
+  "tier": "Heavy",
+  "basis": "Ensemble 18/30 members \u22650.20\"; HRRR 0.22\"; NBM 0.22\"; ECMWF 0.22\"",
+  "sources": {
+   "ens": 0.3,
+   "hrrr": 0.22,
+   "nbm": 0.22,
+   "ecmwf": 0.22,
+   "nws": 0.039,
+   "nws_pop": 0.8
+  },
+  "gust_mph": 31,
+  "levels": {
+   "feel": 0.6,
+   "behind": 0.0,
+   "driveway": 0.0,
+   "window_h": 3
+  },
+  "model_flags": {
+   "HRRR": "feel",
+   "NBM": "feel",
+   "ECMWF": "feel"
+  }
+ },
+ "rows": [
+  {
+   "t": "2026-11-14T19:00:00+00:00",
+   "label": "Sat now\u201312 PM",
+   "primary": "radar",
+   "p_heavy": 0.03537414965986395,
+   "p_any": 0.49795918367346936,
+   "p": {
+    "0.10": 0.174,
+    "0.20": 0.035,
+    "0.30": 0.02,
+    "0.50": 0.02
+   },
+   "lo": 0.0,
+   "mid": 0.01,
+   "hi": 0.06,
+   "tier": "Light",
+   "basis": "Radar: 13\u201326 dBZ upstream, moving toward E at 40 km/h (25 mph)",
+   "sources": {
+    "radar": 0.01,
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.035,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 2
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-14T20:00:00+00:00",
+   "label": "Sat 12 PM\u20131 PM",
+   "primary": "radar",
+   "p_heavy": 0.3986394557823129,
+   "p_any": 0.95,
+   "p": {
+    "0.10": 0.818,
+    "0.20": 0.399,
+    "0.30": 0.056,
+    "0.50": 0.02
+   },
+   "lo": 0.12,
+   "mid": 0.18,
+   "hi": 0.23,
+   "tier": "Moderate",
+   "basis": "Radar: 13\u201343 dBZ upstream, moving toward E at 40 km/h (25 mph)",
+   "sources": {
+    "radar": 0.176,
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.399,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 1
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-14T21:00:00+00:00",
+   "label": "Sat 1 PM\u20132 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-14T22:00:00+00:00",
+   "label": "Sat 2 PM\u20133 PM",
+   "primary": "ens",
+   "p_heavy": 0.6,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 1.0,
+    "0.20": 0.6,
+    "0.30": 0.6,
+    "0.50": 0.0
+   },
+   "lo": 0.1,
+   "mid": 0.3,
+   "hi": 0.3,
+   "tier": "Heavy",
+   "basis": "Ensemble 18/30 members \u22650.20\"; HRRR 0.22\"; NBM 0.22\"; ECMWF 0.22\"",
+   "sources": {
+    "ens": 0.3,
+    "hrrr": 0.22,
+    "nbm": 0.22,
+    "ecmwf": 0.22,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.6,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {
+    "HRRR": "feel",
+    "NBM": "feel",
+    "ECMWF": "feel"
+   }
+  },
+  {
+   "t": "2026-11-14T23:00:00+00:00",
+   "label": "Sat 3 PM\u20134 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T00:00:00+00:00",
+   "label": "Sat 4 PM\u20135 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T01:00:00+00:00",
+   "label": "Sat 5 PM\u20136 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T02:00:00+00:00",
+   "label": "Sat 6 PM\u20137 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T03:00:00+00:00",
+   "label": "Sat 7 PM\u20138 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T04:00:00+00:00",
+   "label": "Sat 8 PM\u20139 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T05:00:00+00:00",
+   "label": "Sat 9 PM\u201310 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T06:00:00+00:00",
+   "label": "Sat 10 PM\u201311 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T07:00:00+00:00",
+   "label": "Sat 11 PM\u201312 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.02,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T08:00:00+00:00",
+   "label": "Sun 12 AM\u20131 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.02,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T09:00:00+00:00",
+   "label": "Sun 1 AM\u20132 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.02,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T10:00:00+00:00",
+   "label": "Sun 2 AM\u20133 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.02,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T11:00:00+00:00",
+   "label": "Sun 3 AM\u20134 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.02,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T12:00:00+00:00",
+   "label": "Sun 4 AM\u20135 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.02,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T13:00:00+00:00",
+   "label": "Sun 5 AM\u20136 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T14:00:00+00:00",
+   "label": "Sun 6 AM\u20137 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T15:00:00+00:00",
+   "label": "Sun 7 AM\u20138 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T16:00:00+00:00",
+   "label": "Sun 8 AM\u20139 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T17:00:00+00:00",
+   "label": "Sun 9 AM\u201310 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T18:00:00+00:00",
+   "label": "Sun 10 AM\u201311 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T19:00:00+00:00",
+   "label": "Sun 11 AM\u201312 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T20:00:00+00:00",
+   "label": "Sun 12 PM\u20131 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T21:00:00+00:00",
+   "label": "Sun 1 PM\u20132 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T22:00:00+00:00",
+   "label": "Sun 2 PM\u20133 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T23:00:00+00:00",
+   "label": "Sun 3 PM\u20134 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T00:00:00+00:00",
+   "label": "Sun 4 PM\u20135 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T01:00:00+00:00",
+   "label": "Sun 5 PM\u20136 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T02:00:00+00:00",
+   "label": "Sun 6 PM\u20137 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T03:00:00+00:00",
+   "label": "Sun 7 PM\u20138 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T04:00:00+00:00",
+   "label": "Sun 8 PM\u20139 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T05:00:00+00:00",
+   "label": "Sun 9 PM\u201310 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T06:00:00+00:00",
+   "label": "Sun 10 PM\u201311 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.0,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T07:00:00+00:00",
+   "label": "Sun 11 PM\u201312 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T08:00:00+00:00",
+   "label": "Mon 12 AM\u20131 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T09:00:00+00:00",
+   "label": "Mon 1 AM\u20132 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T10:00:00+00:00",
+   "label": "Mon 2 AM\u20133 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T11:00:00+00:00",
+   "label": "Mon 3 AM\u20134 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T12:00:00+00:00",
+   "label": "Mon 4 AM\u20135 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T13:00:00+00:00",
+   "label": "Mon 5 AM\u20136 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T14:00:00+00:00",
+   "label": "Mon 6 AM\u20137 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T15:00:00+00:00",
+   "label": "Mon 7 AM\u20138 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T16:00:00+00:00",
+   "label": "Mon 8 AM\u20139 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T17:00:00+00:00",
+   "label": "Mon 9 AM\u201310 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T18:00:00+00:00",
+   "label": "Mon 10 AM\u201311 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T19:00:00+00:00",
+   "label": "Mon 11 AM\u201312 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T20:00:00+00:00",
+   "label": "Mon 12 PM\u20131 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T21:00:00+00:00",
+   "label": "Mon 1 PM\u20132 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T22:00:00+00:00",
+   "label": "Mon 2 PM\u20133 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-16T23:00:00+00:00",
+   "label": "Mon 3 PM\u20134 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T00:00:00+00:00",
+   "label": "Mon 4 PM\u20135 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T01:00:00+00:00",
+   "label": "Mon 5 PM\u20136 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T02:00:00+00:00",
+   "label": "Mon 6 PM\u20137 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T03:00:00+00:00",
+   "label": "Mon 7 PM\u20138 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T04:00:00+00:00",
+   "label": "Mon 8 PM\u20139 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T05:00:00+00:00",
+   "label": "Mon 9 PM\u201310 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T06:00:00+00:00",
+   "label": "Mon 10 PM\u201311 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T07:00:00+00:00",
+   "label": "Mon 11 PM\u201312 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T08:00:00+00:00",
+   "label": "Tue 12 AM\u20131 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T09:00:00+00:00",
+   "label": "Tue 1 AM\u20132 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T10:00:00+00:00",
+   "label": "Tue 2 AM\u20133 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T11:00:00+00:00",
+   "label": "Tue 3 AM\u20134 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T12:00:00+00:00",
+   "label": "Tue 4 AM\u20135 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T13:00:00+00:00",
+   "label": "Tue 5 AM\u20136 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T14:00:00+00:00",
+   "label": "Tue 6 AM\u20137 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T15:00:00+00:00",
+   "label": "Tue 7 AM\u20138 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T16:00:00+00:00",
+   "label": "Tue 8 AM\u20139 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T17:00:00+00:00",
+   "label": "Tue 9 AM\u201310 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 2
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T18:00:00+00:00",
+   "label": "Tue 10 AM\u201311 AM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 0.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.0,
+   "mid": 0.0,
+   "hi": 0.0,
+   "tier": "Dry",
+   "basis": "Ensemble 0/30 members \u22650.20\"",
+   "sources": {
+    "ens": 0.0
+   },
+   "gust_mph": null,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 1
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-17T19:00:00+00:00",
+   "label": "Tue 11 AM\u201312 PM",
+   "missing": true
+  }
+ ],
+ "wet_rows": [
+  {
+   "t": "2026-11-14T19:00:00+00:00",
+   "label": "Sat now\u201312 PM",
+   "primary": "radar",
+   "p_heavy": 0.03537414965986395,
+   "p_any": 0.49795918367346936,
+   "p": {
+    "0.10": 0.174,
+    "0.20": 0.035,
+    "0.30": 0.02,
+    "0.50": 0.02
+   },
+   "lo": 0.0,
+   "mid": 0.01,
+   "hi": 0.06,
+   "tier": "Light",
+   "basis": "Radar: 13\u201326 dBZ upstream, moving toward E at 40 km/h (25 mph)",
+   "sources": {
+    "radar": 0.01,
+    "ens": 0.0,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.035,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 2
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-14T20:00:00+00:00",
+   "label": "Sat 12 PM\u20131 PM",
+   "primary": "radar",
+   "p_heavy": 0.3986394557823129,
+   "p_any": 0.95,
+   "p": {
+    "0.10": 0.818,
+    "0.20": 0.399,
+    "0.30": 0.056,
+    "0.50": 0.02
+   },
+   "lo": 0.12,
+   "mid": 0.18,
+   "hi": 0.23,
+   "tier": "Moderate",
+   "basis": "Radar: 13\u201343 dBZ upstream, moving toward E at 40 km/h (25 mph)",
+   "sources": {
+    "radar": 0.176,
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.399,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 1
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-14T21:00:00+00:00",
+   "label": "Sat 1 PM\u20132 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-14T22:00:00+00:00",
+   "label": "Sat 2 PM\u20133 PM",
+   "primary": "ens",
+   "p_heavy": 0.6,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 1.0,
+    "0.20": 0.6,
+    "0.30": 0.6,
+    "0.50": 0.0
+   },
+   "lo": 0.1,
+   "mid": 0.3,
+   "hi": 0.3,
+   "tier": "Heavy",
+   "basis": "Ensemble 18/30 members \u22650.20\"; HRRR 0.22\"; NBM 0.22\"; ECMWF 0.22\"",
+   "sources": {
+    "ens": 0.3,
+    "hrrr": 0.22,
+    "nbm": 0.22,
+    "ecmwf": 0.22,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.6,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {
+    "HRRR": "feel",
+    "NBM": "feel",
+    "ECMWF": "feel"
+   }
+  },
+  {
+   "t": "2026-11-14T23:00:00+00:00",
+   "label": "Sat 3 PM\u20134 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T00:00:00+00:00",
+   "label": "Sat 4 PM\u20135 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.039,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T01:00:00+00:00",
+   "label": "Sat 5 PM\u20136 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T02:00:00+00:00",
+   "label": "Sat 6 PM\u20137 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  },
+  {
+   "t": "2026-11-15T03:00:00+00:00",
+   "label": "Sat 7 PM\u20138 PM",
+   "primary": "ens",
+   "p_heavy": 0.0,
+   "p_any": 1.0,
+   "p": {
+    "0.10": 0.0,
+    "0.20": 0.0,
+    "0.30": 0.0,
+    "0.50": 0.0
+   },
+   "lo": 0.05,
+   "mid": 0.05,
+   "hi": 0.05,
+   "tier": "Light",
+   "basis": "Ensemble 0/30 members \u22650.20\"; HRRR 0.02\"; NBM 0.02\"; ECMWF 0.02\"",
+   "sources": {
+    "ens": 0.05,
+    "hrrr": 0.02,
+    "nbm": 0.02,
+    "ecmwf": 0.02,
+    "nws": 0.079,
+    "nws_pop": 0.8
+   },
+   "gust_mph": 31,
+   "levels": {
+    "feel": 0.0,
+    "behind": 0.0,
+    "driveway": 0.0,
+    "window_h": 3
+   },
+   "model_flags": {}
+  }
+ ],
+ "outlook": {
+  "runs": 30,
+  "claims": [
+   {
+    "claim": "Rain at all",
+    "text": "Very likely through Tue 11 AM",
+    "basis": "30 of 30 model runs show measurable rain",
+    "conf": "High"
+   },
+   {
+    "claim": "Starts",
+    "text": "Already raining",
+    "basis": "Mint gauge measured rain in its latest hour",
+    "conf": "High"
+   },
+   {
+    "claim": "Heaviest hour",
+    "text": "About Sat 2 PM",
+    "basis": "runs agree on Sat 2 PM \u00b7 some models report 3-hour blocks",
+    "conf": "Medium"
+   },
+   {
+    "claim": "Peak strength",
+    "text": "About 0.30\"/hr",
+    "basis": "each run's own wettest hour: 0.10\u20130.30\"/hr (higher than the hourly table, which blends runs that peak at different times) \u00b7 models smooth short bursts, so real peaks can run higher",
+    "conf": "Medium"
+   },
+   {
+    "claim": "Your 0.20\" level",
+    "text": "Likely",
+    "basis": "18 of 30 model runs have an hour at or above 0.20\"",
+    "conf": "Low"
+   },
+   {
+    "claim": "Storm total",
+    "text": "About 0.79\" through Tue 12 PM",
+    "basis": "runs 0.59\u20130.79\" (10th\u201390th) \u00b7 NWS 0.83\"",
+    "conf": "High"
+   }
+  ],
+  "p_rain": 1.0,
+  "n_rain": 30,
+  "onset": {
+   "t": "2026-11-14T19:07:00+00:00",
+   "source": "observed"
+  },
+  "peak": {
+   "t": "2026-11-14T22:00:00+00:00",
+   "lo": "2026-11-14T22:00:00+00:00",
+   "hi": "2026-11-14T22:00:00+00:00"
+  },
+  "peak_rate": {
+   "p10": 0.1,
+   "p50": 0.3,
+   "p90": 0.3
+  },
+  "event_total": {
+   "p10": 0.45,
+   "p50": 0.65,
+   "p90": 0.65
+  },
+  "threshold": {
+   "k": 18,
+   "p": 0.6
+  },
+  "flood": {
+   "site": "17th & Folsom",
+   "text": "May feel it at 0.20\"; below past flood levels",
+   "evidence": "In the city's 100-year flood zone and a low spot; 311 flood reports nearby in 5 of the 7 big storms since 2012",
+   "basis": "Rated against levels drawn from 4 past floods, 2012\u20132022, and the 2016 near-miss; not a calibrated probability",
+   "conf": "Low"
+  }
+ },
+ "near": {
+  "observed": "Radar over you: no rain echo \u00b7 Mint gauge 0.12\" in 10 AM hour",
+  "radar": "Radar extrapolation, next 2 h: about 0.19\" \u00b7 moving toward E at 40 km/h (25 mph), high confidence",
+  "models": "Models, same hours: ensemble 0.05\" \u00b7 HRRR 0.04\"",
+  "agree": "Radar and models both show rain but differ by more than 3\u00d7 in amount.",
+  "quiet": false
+ },
+ "total": {
+  "lo": 0.59,
+  "mid": 0.79,
+  "hi": 0.79,
+  "nws": 0.83,
+  "confidence": "High",
+  "through": "Tue 12 PM"
+ },
+ "radar": {
+  "status": "moving toward E at 40 km/h (25 mph), high confidence",
+  "dbz_now": null,
+  "frames": [
+   "2026-11-14T18:47:00+00:00",
+   "2026-11-14T18:52:00+00:00",
+   "2026-11-14T18:57:00+00:00",
+   "2026-11-14T19:02:00+00:00",
+   "2026-11-14T19:07:00+00:00"
+  ],
+  "motion": "moving toward E at 40 km/h (25 mph), high confidence"
+ },
+ "gauges": [
+  {
+   "station": "SFOC1",
+   "label": "SFOC1 gauge (US Mint, ~1 mi from you)",
+   "url": "https://mesonet.agron.iastate.edu/sites/site.php?station=SFOC1&network=CA_DCP",
+   "error": "",
+   "last_hour": 0.12,
+   "last_hour_label": "Sat 10 AM\u201311 AM",
+   "since_midnight": 0.24,
+   "last_24h": 0.24
+  },
+  {
+   "station": "KSFO",
+   "label": "KSFO airport (reference only, not your neighborhood)",
+   "url": "https://www.weather.gov/wrh/timeseries?site=KSFO",
+   "error": "",
+   "last_hour": 0.13,
+   "last_hour_label": "Sat 10 AM\u201311 AM",
+   "since_midnight": 0.13,
+   "last_24h": 0.13
+  }
+ ],
+ "alerts": [
+  {
+   "id": "urn:1",
+   "event": "Flood Advisory",
+   "headline": "Flood Advisory until 6 PM",
+   "severity": null,
+   "onset": null,
+   "ends": null,
+   "expires": "2026-11-14T23:07:00+00:00",
+   "senderName": null
+  }
+ ],
+ "errors": [],
+ "scores": {
+  "_storms": {
+   "storms": [],
+   "range_coverage": {},
+   "archive_start": "2026-11-14T19:07:00+00:00"
+  }
+ }
+}

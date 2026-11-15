@@ -1,0 +1,123 @@
+{
+ "id": "live",
+ "title": "Live",
+ "season": "November",
+ "location": "18th & Shotwell",
+ "observedAt": "Saturday \u00b7 11:07 AM",
+ "startDay": "Sat",
+ "startHourLocal": 11,
+ "hazard": "rain",
+ "current": {
+  "temperatureF": 55,
+  "condition": "Cloudy",
+  "icon": "cloud",
+  "highF": 64,
+  "lowF": 52
+ },
+ "hourly": [
+  {
+   "label": "Now",
+   "temperatureF": 55,
+   "icon": "cloud"
+  },
+  {
+   "label": "1 PM",
+   "temperatureF": 58,
+   "icon": "cloud-rain"
+  },
+  {
+   "label": "3 PM",
+   "temperatureF": 60,
+   "icon": "cloud-rain"
+  },
+  {
+   "label": "5 PM",
+   "temperatureF": 61,
+   "icon": "cloud-rain"
+  },
+  {
+   "label": "7 PM",
+   "temperatureF": 60,
+   "icon": "cloud-rain"
+  },
+  {
+   "label": "9 PM",
+   "temperatureF": 58,
+   "icon": "cloud"
+  }
+ ],
+ "days": [
+  {
+   "label": "Today",
+   "description": "Heavy rain at times",
+   "icon": "cloud-rain-wind",
+   "lowF": 52,
+   "highF": 64
+  },
+  {
+   "label": "Tomorrow",
+   "description": "Cloudy",
+   "icon": "cloud",
+   "lowF": 50,
+   "highF": 61
+  },
+  {
+   "label": "Monday",
+   "description": "Partly cloudy",
+   "icon": "cloud-sun",
+   "lowF": 53,
+   "highF": 66
+  }
+ ],
+ "provenance": {
+  "type": "live",
+  "generated": "2026-11-14T19:07:00+00:00",
+  "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
+ },
+ "timeline": {
+  "title": "Rain outlook",
+  "intervals": [
+   {
+    "startHour": 1,
+    "endHour": 2,
+    "severity": 2,
+    "confidence": "unknown",
+    "pattern": "steady"
+   },
+   {
+    "startHour": 2,
+    "endHour": 3,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "steady"
+   },
+   {
+    "startHour": 3,
+    "endHour": 4,
+    "severity": 2,
+    "confidence": "unknown",
+    "pattern": "steady"
+   },
+   {
+    "startHour": 4,
+    "endHour": 9,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "steady"
+   }
+  ]
+ },
+ "_diagnostics": {
+  "rain_periods": [
+   {
+    "start": 1,
+    "end": 9,
+    "bridged": false,
+    "runs_with_break": 0.0,
+    "pattern": "steady",
+    "start_local": "Sat 12 PM",
+    "end_local": "Sat 8 PM"
+   }
+  ]
+ }
+}
