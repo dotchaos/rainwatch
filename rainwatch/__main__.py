@@ -10,7 +10,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from . import alerts, archive, engine, nowcast, render, storms
+from . import alerts, archive, engine, nowcast, render, render2, storms
 from .config import Config
 from .model import UTC
 from .net import session
@@ -107,6 +107,12 @@ def main(argv=None) -> int:
         meta["afd"] = {"excerpt": afd_excerpt(nb.afd_text), "office": nb.office,
                        "time": nb.afd_time.isoformat() if nb.afd_time else None, "url": nb.afd_url}
     (out / "index.html").write_text(render.page(report, cfg, meta, scores, overlay))
+    try:   # preview of the new layout; never allowed to break the main page
+        (out / "preview").mkdir(exist_ok=True)
+        ov2 = {**overlay, "img": "../" + overlay["img"]} if overlay else None
+        (out / "preview" / "index.html").write_text(render2.page(report, cfg, meta, scores, ov2))
+    except Exception as ex:  # noqa: BLE001
+        print("WARN preview failed:", ex, file=sys.stderr)
     (out / "latest.json").write_text(json.dumps({**report, "scores": scores}, default=str, indent=1))
 
     # --- alerts

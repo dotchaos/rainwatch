@@ -236,6 +236,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
                 ([f"ensemble {ens_tot:.2f}\""] if ens_tot is not None else [])
                 + ([f"HRRR {hr_tot:.2f}\""] if hr_tot is not None else []))) if mods else "Models: no data for these hours",
             "agree": agree,
+            "quiet": (not rad_wet and not mod_wet and not agree and not (nc.dbz_now is not None and nc.dbz_now >= 15)),
         }
 
     obs = []

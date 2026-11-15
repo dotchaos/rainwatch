@@ -295,3 +295,14 @@ def test_storm_detect_and_score():
     lead6 = next(r for r in rep["storms"][0]["leads"] if r["lead_h"] == 6)
     assert lead6["onset_err_h"] == 1.0 and lead6["peak_err_h"] == 0.0 and lead6["threshold"] == "hit"
     assert next(r for r in rep["storms"][0]["leads"] if r["lead_h"] == 24)["status"] == "no forecast saved"
+
+
+def test_preview_layout_builds():
+    from rainwatch import render2
+    cfg = Config(lat=LAT, lon=LON)
+    rep, *_ = _full_report(cfg, FakeSession(NOW))
+    h = render2.page(rep, cfg, {"sources": []}, {}, None)
+    assert h.count("id=days") == 1 and "class=strip" in h and "Local flood risk" in h and "Confidence by claim" in h
+    cfg.flood_site = ""
+    rep2, *_ = _full_report(cfg, FakeSession(NOW))
+    assert "Local flood risk" not in render2.page(rep2, cfg, {"sources": []}, {}, None)
