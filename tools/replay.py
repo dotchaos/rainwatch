@@ -3,7 +3,7 @@
 Truth: hourly rain at the Mint gauge (SFOC1, IEM HADS archive), never SFO.
 Forecasts: Open-Meteo Previous Runs API (from January 2024), which keeps each model's forecast at
 fixed lead offsets: previous_day1 = issued about 1 day earlier, previous_day2 = about 2 days earlier.
-Only deterministic models are archived there (no ensemble members), so this scores the model
+HRRR is not scored (its 1-day archive matched GFS exactly). Only deterministic models are archived there (no ensemble members), so this scores the model
 guidance the page shows beside its ensemble, not the page's own ranges. Rainfall only.
 
     python tools/replay.py > replay.md      (also writes replay.json)
@@ -25,7 +25,9 @@ from rainwatch import storms as stm  # noqa: E402
 
 UTC, PT = timezone.utc, ZoneInfo("America/Los_Angeles")
 API = "https://previous-runs-api.open-meteo.com/v1/forecast"
-MODELS = [("HRRR", ["ncep_hrrr_conus"]), ("NBM", ["ncep_nbm_conus"]),
+# HRRR is left out: its 1-day-ahead archive came back identical to GFS for all 57 storms (HRRR
+# rarely reaches a full day ahead), so it would be GFS scored twice under another name.
+MODELS = [("NBM", ["ncep_nbm_conus"]),
           ("ECMWF", ["ecmwf_ifs025"]), ("GFS", ["gfs_seamless"]), ("ICON", ["icon_seamless"])]
 LEADS = (1, 2)
 MIN_STORM = 0.25      # inches: storms worth scoring
