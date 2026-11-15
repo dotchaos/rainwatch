@@ -26,6 +26,8 @@
 - **Live heat levels:** Hot ≥80°F, Very hot ≥90°F, Extreme ≥100°F (simple start; NWS HeatRisk later).
 - **Rain words follow the rain pipeline:** icons and descriptions never show rain the rain forecast doesn't, and vice versa. Missing temperatures show "—", never an invented value.
 
+- **Action windows in plain language (v0.5):** the insight/alert states the action rung and its hours, derived from the chart's intervals; the chart labels the same hours. Uncertain timing is hedged in words, never sharpened.
+
 ## Open questions
 - When to promote live intervals from dashed to solid (needs calibration from the storm report card).
 - Whether the live card replaces the current rainwatch page.

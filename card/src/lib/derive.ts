@@ -4,7 +4,7 @@
  * they never type a time, a window, a "hottest period" or an "outdoor window" by hand.
  */
 import type { Scenario } from '../types';
-import { clockAt, daysAt, windowLabel } from './rules';
+import { clockAt, daysAt, levelLabels, windowLabel } from './rules';
 
 /** Hours of warning before the first top-rung window ("prepare before"). Provisional design constant. */
 export const PREPARE_LEAD_H = 2;
@@ -41,6 +41,45 @@ const span = (s: Scenario, a: number, b: number) => windowLabel(s, { startHour: 
 const cap = (t: string) => t[0].toUpperCase() + t.slice(1);
 const joinAnd = (xs: string[]) => xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`;
 
+/**
+ * The next action window, from the same intervals the chart draws: the next rain event (contiguous rain hours
+ * from now), its highest rung, and the hours of that rung's first run. `sure` only if every hour is 'higher'.
+ */
+export function actionWindow(s: Scenario) {
+  const iv = s.timeline?.intervals ?? [];
+  let a = 0; while (a < 72 && sevAt(s, a) === 0) a++;
+  if (a >= 72) return null;
+  let b = a; while (b < 72 && sevAt(s, b) > 0) b++;                       // the event: a..b
+  let rung = 0; for (let h = a; h < b; h++) rung = Math.max(rung, sevAt(s, h));
+  let ra = a; while (sevAt(s, ra) !== rung) ra++;
+  let rb = ra; while (rb < b && sevAt(s, rb) === rung) rb++;               // first run of the top rung: ra..rb
+  const sure = iv.filter(p => p.endHour > ra && p.startHour < rb).every(p => p.confidence === 'higher');
+  return { rung, action: levelLabels(s)[rung], startHour: ra, endHour: rb, eventStart: a, eventEnd: b, sure,
+           label: windowLabel(s, { startHour: ra, endHour: rb }) };
+}
+
+/** Plain-language "when" for hours a..b: "now until 2 PM", "11 AM–1 PM"; prefixed "about" when timing may shift. */
+function when(s: Scenario, a: number, b: number, sure: boolean) {
+  if (a === 0) return sure ? `until ${clock(s, b)}` : `until about ${clock(s, b)}`;
+  return sure ? span(s, a, b) : `about ${span(s, a, b)}`;
+}
+
+/** "Thu 4–9 PM and Fri 8 AM–4 PM", hedged once ("around …") when all are uncertain, per window when mixed. */
+function windowList(ws: { label: string; sure: boolean }[]) {
+  if (ws.every(w => !w.sure)) return `around ${joinAnd(ws.map(w => w.label))}`;
+  return joinAnd(ws.map(w => w.sure ? w.label : `about ${w.label}`));
+}
+
+/** Labelled chart windows: top-rung windows when there are any, otherwise the next action window. */
+export function labelledWindows(s: Scenario) {
+  const crit = criticalWindows(s);
+  if (crit.length || s.hazard !== 'rain') return crit.map(w => ({ ...w, rung: 3 }));
+  const w = actionWindow(s);
+  return w ? [{ startHour: w.startHour, endHour: w.endHour, sure: w.sure, label: w.label, rung: w.rung }] : [];
+}
+
+const MAY_SHIFT = 'Timing may shift.';
+
 export interface DerivedAlert { level: string; headline: string; summary: string; }
 
 /** The action-first alert, or null when the forecast never reaches the top rung. */
@@ -53,18 +92,21 @@ export function deriveAlert(s: Scenario): DerivedAlert | null {
     return {
       level: 'SANDBAGS · DRIVEWAY FLOOD RISK',
       headline: `Protect your driveway before ${when}.`,
-      summary: `${word(wins.length)} period${wins.length > 1 ? 's' : ''} of intense rain could overwhelm local drainage.`,
+      summary: `${word(wins.length)} period${wins.length > 1 ? 's' : ''} of intense rain could overwhelm local drainage. `
+        + `Sandbags: ${windowList(wins)}.`
+        + (wins.every(w => w.sure) ? '' : ` ${MAY_SHIFT}`),
     };
   }
   if (s.hazard === 'heat') {
     const days = [...new Set(wins.map(w => clockAt(s.startDay, s.startHourLocal, w.startHour).day))];
     const num = (v: number | null): v is number => v !== null;
     const maxHigh = Math.max(...s.days.map(d => d.highF).filter(num)), maxLow = Math.max(...s.days.map(d => d.lowF).filter(num));
-    const hottest = joinAnd(wins.map(w => w.label));
+    const hottest = windowList(wins);
     return {
       level: `EXTREME HEAT · ${days.map(d => fullDay[d].toUpperCase()).join(' & ')}`,
       headline: `Plan to stay cool. ${maxHigh >= 100 ? '100°+' : `${maxHigh}°`} ahead.`,
-      summary: `Hottest ${hottest}.` + (maxLow >= 70 ? ` Lows near ${maxLow}° may offer little relief overnight.` : ''),
+      summary: `Hottest ${hottest}.` + (wins.every(w => w.sure) ? '' : ` ${MAY_SHIFT}`)
+        + (maxLow >= 70 ? ` Lows near ${maxLow}° may offer little relief overnight.` : ''),
     };
   }
   return null;
@@ -74,25 +116,20 @@ export function deriveAlert(s: Scenario): DerivedAlert | null {
 export function deriveInsight(s: Scenario): { headline: string; detail: string } | null {
   if (s.hazard === 'rain' || s.hazard === 'flood') {
     if (s.hazard === 'flood') return null;      // the alert carries the message on flood days
-    // Dry right now: say how long it stays dry.
-    if (sevAt(s, 0) === 0) {
-      let r = 0; while (r < 72 && sevAt(s, r) === 0) r++;
-      if (r >= 72) return { headline: 'Dry for the next 3 days', detail: 'No rain worth a jacket in the forecast.' };
-      return { headline: `Dry until ${clockAt(s.startDay, s.startHourLocal, r).day === clockAt(s.startDay, s.startHourLocal, 0).day ? clock(s, r) : `${relDay(s, r) === 'tomorrow' ? 'tomorrow' : clockAt(s.startDay, s.startHourLocal, r).day} ${clock(s, r)}`}`,
-               detail: 'Rain arrives after that; timing may shift.' };
-    }
-    // Raining now: the next daylight stretch of DRY_MIN_H+ dry hours, split at night and at midnight.
-    let a = -1;
-    for (let h = 0; h <= 72; h++) {
-      const ok = h < 72 && sevAt(s, h) === 0 && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END
-        && (a < 0 || dayIndexAt(s, h) === dayIndexAt(s, a));
-      if (ok && a < 0) a = h;
-      if (!ok && a >= 0) {
-        if (h - a >= DRY_MIN_H) return { headline: `Next dry stretch: ${cap(relDay(s, a))}, ${span(s, a, h)}`, detail: 'A good window for errands or a walk.' };
-        a = (h < 72 && sevAt(s, h) === 0 && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END) ? h : -1;
-      }
-    }
-    return { headline: 'No dry stretch of 2+ hours in daylight', detail: 'Rain comes and goes through the next 3 days.' };
+    const aw = actionWindow(s);
+    if (!aw) return { headline: 'Dry for the next 3 days', detail: 'No rain worth a jacket in the forecast.' };
+    const day = cap(relDay(s, aw.startHour));
+    const headline = `${aw.startHour === 0 ? 'Now' : day}: ${aw.action}, ${when(s, aw.startHour, aw.endHour, aw.sure)}`;
+    const notes: string[] = [];
+    let more = aw.eventEnd; while (more < 72 && sevAt(s, more) === 0) more++;
+    if (aw.eventStart > 0) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+    if (aw.rung > 1 && (aw.eventStart < aw.startHour || aw.eventEnd > aw.endHour))
+      notes.push(`${levelLabels(s)[1]} ${when(s, aw.eventStart, aw.eventEnd, aw.sure)}.`);
+    const dry = more >= 72 ? null : nextDry(s, aw.eventEnd);
+    if (more >= 72 && aw.eventStart === 0) notes.push('Dry after that.');
+    else if (dry) notes.push(`Then dry ${dry}.`);
+    if (!aw.sure) notes.push(MAY_SHIFT);
+    return { headline, detail: notes.join(' ') };
   }
   if (s.hazard === 'heat') {
     const dayNames: string[] = [], ends: number[] = [];
@@ -109,6 +146,21 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       : { headline: 'Best outdoor window: mornings', detail: joinAnd(ends.map((h, i) => `${dayNames[i]} before ${clock(s, h)}`)) + '.' };
   }
   return s.insight ?? null;
+}
+
+/** The next daylight dry stretch of DRY_MIN_H+ hours at or after hour `from`, as "2–7 PM" / "tomorrow 7 AM–12 PM". */
+function nextDry(s: Scenario, from: number): string | null {
+  let a = -1;
+  for (let h = from; h <= 72; h++) {
+    const ok = h < 72 && sevAt(s, h) === 0 && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END
+      && (a < 0 || dayIndexAt(s, h) === dayIndexAt(s, a));
+    if (ok && a < 0) a = h;
+    if (!ok && a >= 0) {
+      if (h - a >= DRY_MIN_H) return (dayIndexAt(s, a) === dayIndexAt(s, from) ? '' : `${relDay(s, a)} `) + span(s, a, h);
+      a = (h < 72 && sevAt(s, h) === 0 && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END) ? h : -1;
+    }
+  }
+  return null;
 }
 
 /** Subtitle for the 3-day list, from the daily rows and timeline (empty when there is no clear story). */

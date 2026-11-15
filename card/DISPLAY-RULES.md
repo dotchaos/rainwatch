@@ -19,11 +19,19 @@ The canonical scenario datasets are in `scenarios/*.json`; the typed contract is
 - The `Sandbags` level and driveway action require independent property-specific flood risk assessment. The upstream 17th & Folsom indicator has not been validated against driveway flooding at 18th & Shotwell.
 - Prototype fixtures include illustrative warnings solely for UI testing. Do not display these as actionable real-world advice.
 
+## Action windows
+Whenever a forecast interval triggers an action rung, display the action and its time window in plain language. Derive both from the same forecast data used by the chart. Never invent a time window or imply greater timing precision than the forecast supports.
+
+How the card applies it (`actionWindow`, `labelledWindows` in `src/lib/derive.ts`):
+- Rain: the insight card leads with the next rain event's highest rung and the hours of that rung, e.g. "Tomorrow: Rain jacket, about 12–10 PM"; the same hours are labelled on the chart in that rung's colour. Supporting line: the wider Rain-jacket span if the top rung is shorter, the dry time before/after, and "Timing may shift." when uncertain.
+- Flood and heat: the alert summary names the top-rung windows ("Sandbags: …", "Hottest …"), which the chart already labels.
+- Uncertain timing (`shifting`/`unknown`): times are hedged in words ("about 12–10 PM", "until about 10 PM", "around Fri 1–6 PM and Sat 12–7 PM") plus "Timing may shift."; the chart keeps the dashed outline and dashed leader. Times are never rounded finer than the forecast hours.
+
 ## Derived statements (src/lib/derive.ts)
 Fixtures never type a time or a period. From the forecast the card derives:
 - **Critical windows**: contiguous top-rung hours, labelled with day and time; dashed leader unless every hour is `higher`.
 - **Alert**: shown only if a critical window exists. Flood: "SANDBAGS · DRIVEWAY FLOOD RISK", "Protect your driveway before {first window − 2 h}", count of intense-rain periods. Heat: "EXTREME HEAT · {days}", "Plan to stay cool. {100°+ or max high} ahead.", "Hottest {windows}", and a warm-nights line when a daily low is 70° or more.
-- **Insight**: rain = first daylight dry gap of 2 h or more; heat = mornings until the first Very hot hour on each Extreme day; flood = none (the alert speaks); calm = the fixture's note.
+- **Insight**: rain = the next action window (see Action windows), with dry time as the supporting line; heat = mornings until the first Very hot hour on each Extreme day; flood = none (the alert speaks); calm = the fixture's note.
 - **3-day subtitle**: heat = day with the highest high; rain/flood = worst days by top severity, "easing" when the last day is lower; otherwise empty.
 - Validation rejects a hand-written insight on a rain/heat day and overlapping intervals.
 

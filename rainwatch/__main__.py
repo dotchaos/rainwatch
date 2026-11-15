@@ -10,7 +10,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from . import alerts, archive, card, engine, nowcast, render, render2, storms
+from . import alerts, archive, card, engine, nowcast, render, storms
 from .config import Config
 from .model import UTC
 from .net import session
@@ -98,8 +98,7 @@ def main(argv=None) -> int:
                          "detail": cond.error or "hourly temperature and conditions", "time": now.isoformat()})
     try:
         live_card = card.build(report, cond, cfg, now)
-        (out / "card").mkdir(exist_ok=True)
-        (out / "card" / "live.json").write_text(json.dumps(live_card, indent=1))
+        (out / "live.json").write_text(json.dumps(live_card, indent=1))
         print("card:", live_card["hazard"], "·", len((live_card.get("timeline") or {}).get("intervals", [])), "intervals")
     except Exception as ex:  # noqa: BLE001
         errors.append(f"live card: {ex}")
@@ -120,13 +119,18 @@ def main(argv=None) -> int:
     if nb and nb.afd_text and not nb.afd_text.startswith("(AFD unavailable"):
         meta["afd"] = {"excerpt": afd_excerpt(nb.afd_text), "office": nb.office,
                        "time": nb.afd_time.isoformat() if nb.afd_time else None, "url": nb.afd_url}
-    (out / "index.html").write_text(render.page(report, cfg, meta, scores, overlay))
-    try:   # preview of the new layout; never allowed to break the main page
-        (out / "preview").mkdir(exist_ok=True)
-        ov2 = {**overlay, "img": "../" + overlay["img"]} if overlay else None
-        (out / "preview" / "index.html").write_text(render2.page(report, cfg, meta, scores, ov2))
-    except Exception as ex:  # noqa: BLE001
-        print("WARN preview failed:", ex, file=sys.stderr)
+    # The card (built by the workflow from card/) is the front page; this detailed page lives at /details/.
+    (out / "details").mkdir(exist_ok=True)
+    ov_d = {**overlay, "img": "../" + overlay["img"]} if overlay else None
+    (out / "details" / "index.html").write_text(render.page(report, cfg, meta, scores, ov_d))
+    # Fallback front page: the workflow replaces it with the card; if the card build fails, people land on details.
+    (out / "index.html").write_text('<!doctype html><meta charset=utf-8><meta http-equiv="refresh" content="0; url=details/">'
+                                    '<a href="details/">Rain forecast details</a>')
+    # Old addresses keep working: /card/ and /preview/ forward to the front page.
+    for old in ("card", "preview"):
+        (out / old).mkdir(exist_ok=True)
+        (out / old / "index.html").write_text('<!doctype html><meta charset=utf-8><meta http-equiv="refresh" content="0; url=../">'
+                                              '<link rel=canonical href="../"><a href="../">Rain · 18th &amp; Shotwell</a>')
     (out / "latest.json").write_text(json.dumps({**report, "scores": scores}, default=str, indent=1))
 
     # --- alerts

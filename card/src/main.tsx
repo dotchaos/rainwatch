@@ -12,10 +12,10 @@ function Live(){
  const [card,setCard]=useState<Scenario|null>(null),[err,setErr]=useState<string|null>(null),[,tick]=useState(0);
  const load=()=>fetch(`live.json?t=${Date.now()}`).then(r=>{if(!r.ok)throw new Error(`HTTP ${r.status}`);return r.json()}).then((c:Scenario)=>{setCard(c);setErr(null)}).catch(e=>setErr(String(e)));
  useEffect(()=>{load();const a=setInterval(load,5*60000),b=setInterval(()=>tick(x=>x+1),30000);return()=>{clearInterval(a);clearInterval(b)}},[]);
- if(err&&!card)return <main className="live"><p className="validation">Live forecast unavailable ({err}). <a href="../">Open the detailed page</a>.</p></main>;
+ if(err&&!card)return <main className="live"><p className="validation">Live forecast unavailable ({err}). <a href="details/">Open the detailed page</a>.</p></main>;
  if(!card)return <main className="live"><p className="muted">Loading the forecast…</p></main>;
  const errors=validateScenario(card), gen=card.provenance.generated??'', stale=gen&&(Date.now()-new Date(gen).getTime())>45*60000;
- return <main className="live"><div className={`live-bar${stale?' stale':''}`}><span>Updated {gen?ago(gen):'—'}{stale?' · late':''}</span><span><a href="../">Details</a> · <a href="?lab">Scenario lab</a></span></div><WeatherCard scenario={card}/>{errors.length>0&&<div className="validation">Forecast data problem: {errors.join(', ')}</div>}</main>;
+ return <main className="live"><div className={`live-bar${stale?' stale':''}`}><span>Updated {gen?ago(gen):'—'}{stale?' · late':''}</span><span><a href="details/">Details</a> · <a href="?lab">Scenario lab</a></span></div><WeatherCard scenario={card}/>{errors.length>0&&<div className="validation">Forecast data problem: {errors.join(', ')}</div>}</main>;
 }
 const lab=new URLSearchParams(location.search).has('lab');
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{lab?<Lab/>:<Live/>}</React.StrictMode>);

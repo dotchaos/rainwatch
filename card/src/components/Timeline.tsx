@@ -1,13 +1,13 @@
 import type { Scenario } from '../types';
 import { daysAt, intervalColor, layoutLabels, levelLabels, timeAt, windowLabel } from '../lib/rules';
-import { criticalWindows } from '../lib/derive';
+import { labelledWindows } from '../lib/derive';
 const x0=108, plotWidth=244, base=148, step=30;
 const x=(h:number)=>x0+(h/72)*plotWidth;
 export function Timeline({scenario:s}:{scenario:Scenario}) {
   if(!s.timeline) return null;
   const labels=levelLabels(s), days=daysAt(s.startDay,s.startHourLocal);
   // Critical-window labels are derived from the hours (never hand-typed) and laid out without overlap.
-  const windows=criticalWindows(s).map(w=>{const label=w.label;return {...w,label,center:x((w.startHour+w.endHour)/2),width:Math.min(130,Math.max(70,label.length*5.6+14))};});
+  const windows=labelledWindows(s).map(w=>{const label=w.label;return {...w,label,center:x((w.startHour+w.endHour)/2),width:Math.min(130,Math.max(70,label.length*5.6+14))};});
   const placed=layoutLabels(windows,x0,366-2);
   const twoRows=placed.some(p=>p.row===1), top=twoRows?22:0;
   return <section className="timeline-section" aria-label={s.timeline.title}>
@@ -23,7 +23,7 @@ export function Timeline({scenario:s}:{scenario:Scenario}) {
       {windows.map((w,i)=>{
         const {left,row}=placed[i], labelY=24-(row?22:0);
         const sure=w.sure;
-        return <g key={w.label}><line x1={w.center} x2={w.center} y1={labelY+20} y2={base-3*step} stroke={intervalColor(s,3)} strokeWidth="1.5" strokeDasharray={sure?undefined:'2 2'}/><rect x={left} y={labelY} width={w.width} height="20" rx="4" fill={intervalColor(s,3)}/><text x={left+w.width/2} y={labelY+13.5} className="chart-window" textAnchor="middle">{w.label}</text></g>
+        return <g key={w.label}><line x1={w.center} x2={w.center} y1={labelY+20} y2={base-w.rung*step} stroke={intervalColor(s,w.rung)} strokeWidth="1.5" strokeDasharray={sure?undefined:'2 2'}/><rect x={left} y={labelY} width={w.width} height="20" rx="4" fill={intervalColor(s,w.rung)}/><text x={left+w.width/2} y={labelY+13.5} className="chart-window" textAnchor="middle" style={w.rung===1?{fill:'#1f3a48'}:undefined}>{w.label}</text></g>
       })}
       <text x={x0} y="166" className="chart-time">{timeAt(s,0)}</text>
       <text x={x(72)} y="166" textAnchor="end" className="chart-time">{timeAt(s,72)}</text>

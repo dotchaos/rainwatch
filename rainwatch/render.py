@@ -305,7 +305,7 @@ document.getElementById('rrtok').href='https://github.com/settings/personal-acce
 async function poll(start){
   for(let i=0;i<24;i++){await new Promise(r=>setTimeout(r,10000));
     msg.textContent='Updating… '+Math.round((Date.now()-start)/1000)+' s (usually about 2 min)';
-    try{const j=await (await fetch('latest.json?t='+Date.now(),{cache:'no-store'})).json();
+    try{const j=await (await fetch('../latest.json?t='+Date.now(),{cache:'no-store'})).json();
       if(new Date(j.generated)>GEN){msg.textContent='Done, loading the new forecast…';
         location.replace(location.pathname+'?t='+Date.now());return;}}catch(e){}}
   msg.textContent='Still running. It will show up on the next refresh.';btn.disabled=false;}
@@ -320,7 +320,7 @@ async function rerun(tok){
   }catch(e){msg.textContent='Could not reach GitHub: '+e.message;}
   btn.disabled=false;}
 async function refresh(){btn.disabled=true;msg.textContent='Checking for a newer forecast…';
-  try{const j=await (await fetch('latest.json?t='+Date.now(),{cache:'no-store'})).json();
+  try{const j=await (await fetch('../latest.json?t='+Date.now(),{cache:'no-store'})).json();
     if(new Date(j.generated)>GEN){location.replace(location.pathname+'?t='+Date.now());return;}
     msg.innerHTML='This is the newest forecast. It updates itself every 15 minutes. <a href="#" id=rrlink>Set up rerun on this device</a>';
     document.getElementById('rrlink').onclick=ev=>{ev.preventDefault();setup.style.display='block';};
@@ -413,6 +413,7 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
 <input id=rrkey type=password autocomplete=off placeholder="github_pat_...">
 <button class=rr id=rrsave>Save &amp; rerun</button> &nbsp;or&nbsp; <a href="https://github.com/{e(repo)}/actions/workflows/update.yml">rerun on GitHub instead</a>
 </div>
+<div class=sub><a href="../">← Simple view</a></div>
 <h1>Precision Rain Forecast — {e(cfg.name)}</h1>
 <div class=sub>Next 3 days · updates itself every 15 min</div>
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.5: say what to wear and when
+**Problem.** The chart showed which rain gear was needed but made people work out when.
+**Change (shared, no redesign).** New `actionWindow` / `labelledWindows` (derive.ts) read the same intervals the chart draws. The rain insight now leads with gear and time ("Today: Rain boots, 11 AM–1 PM"; "Tomorrow: Rain jacket, about 12–10 PM"), and the chart labels that interval with its hours in the rung's colour. Flood and heat summaries name their top-rung windows. Uncertain timing is hedged in words and keeps the dashed treatment. Rule added to DISPLAY-RULES.md.
+**Effect on the four scenarios.**
+- October: unchanged (no rain, no chart).
+- Rain: insight "Today: Rain boots, 11 AM–1 PM" / "Rain jacket until 2 PM. Then dry 2–7 PM."; chart label "Thu 11 AM–1 PM" (was "Next dry stretch: Today, 2–7 PM", which now sits in the supporting line).
+- Storm: summary adds "Sandbags: Thu 4–9 PM and about Fri 8 AM–4 PM. Timing may shift."; chart unchanged.
+- Heat: summary "Hottest around Fri 1–6 PM and Sat 12–7 PM. Timing may shift. …"; chart and outdoor window unchanged.
+
 ## v0.4: live forecast
 - Fix found on the first live card (Sat Nov 14, 7 PM): the dry-stretch rule ignored dry spells that cross midnight and said "No dry stretch" for a forecast dry until Sunday noon. Now: when it is dry now, the card says "Dry until …"; when raining, it finds the next daylight (7 AM–7 PM) dry stretch of 2+ hours, split at night and midnight. Tests reproduce the live case.
 - Default view renders the live forecast (`live.json`, built by `rainwatch/card.py` every 15 min); `?lab` keeps the four scenarios. Shows "Updated N min ago", flags the card as late after 45 minutes, and links to the detailed page.
