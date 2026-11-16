@@ -32,7 +32,9 @@ const POTENTIAL_FILL = '#ede9e6', POTENTIAL_DASH = '3 2';
 export type GraphStyle = 'columns' | 'silhouette';
 /** Silhouette (v0.21): four equal bands; each level's plateau sits at its band's centre. Tone by band, flat fills:
  *  the dry band's pale grey, then the established jacket and rain-gear blues, Sandbags only when recommended. */
-const bandTop = (i: number) => base - (i + 1) * step, plateau = (i: number) => base - (i + 0.5) * step;
+// every level fills its band to the top (Nov 16 review): the plateau for a level is its band's top edge; labels stay
+// centred in their bands (labelY)
+const bandTop = (i: number) => base - (i + 1) * step, plateau = bandTop, labelY = (i: number) => base - (i + 0.5) * step;
 // refinement (Nov 16): rounder corners (still clamped to half a plateau and half a step, so every vertical edge stays
 // on its hour); a slightly deeper jacket tone and firmer top edge so one-hour bursts read; a lighter dry baseline
 const f2 = (n: number) => Math.round(n * 100) / 100;
@@ -142,7 +144,7 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
   return <>
     <defs>{segs.map((g, k) => <clipPath key={k} id={`sil-${s.id}-${k}`}><path d={segmentPath(g, x, plateau, base, CORNER)} /></clipPath>)}</defs>
     {labels.map((l0, i) => { const l = i === 3 && !sandbagsShown ? 'Flood potential' : l0;
-      return <text key={l} x={x0 - 8} y={plateau(i) + 3.5} textAnchor="end" className="chart-label">{l}</text>; })}
+      return <text key={l} x={x0 - 8} y={labelY(i) + 3.5} textAnchor="end" className="chart-label">{l}</text>; })}
     {segs.map((g, k) => <g key={k} clipPath={`url(#sil-${s.id}-${k})`} className="chart-silhouette">
       {fills.map((c, i) => <rect key={i} x={x(g[0].start)} y={bandTop(i)} width={x(g[g.length - 1].end) - x(g[0].start)} height={step} fill={c} />)}
     </g>)}
@@ -152,7 +154,7 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
     {/* stands on the shape (Nov 16 review): the field ends exactly at the plateau below it, never overlapping the blue,
         and has no dashed floor of its own (the shape's top edge is its floor), so nothing doubles or bleeds */}
     {pots.map(p => {
-      const a = x(p.startHour) + .6, b = x(p.endHour) - .6, top = bandTop(3) + 3;
+      const a = x(p.startHour) + .6, b = x(p.endHour) - .6, top = bandTop(3) + .6;   // fills its band too
       const floor = Math.min(...silhouetteRuns(s).filter(r => !r.unknown && r.end > p.startHour && r.start < p.endHour).map(r => plateau(r.level)));
       const r = Math.min(4, (b - a) / 2);
       return <g key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(a)} data-w={f2(b - a)} data-top={f2(top)} data-floor={f2(floor)}>

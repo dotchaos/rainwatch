@@ -67,8 +67,9 @@ describe('flood overlay', () => {
     const x = (h: number) => 106 + (h / 72) * 254;
     expect(g[0]).toBeCloseTo(x(w.startHour) + .6, 1);
     expect(g[0] + g[1]).toBeCloseTo(x(w.endHour) - .6, 1);
-    expect(g[3]).toBe(132 - 2.5 * 28);                              // the floor is the Rain gear plateau itself
-    expect(g[2]).toBeGreaterThanOrEqual(20);                         // the top stays in the Flood potential row
+    expect(g[3]).toBe(132 - 3 * 28);                                // the floor is the Rain gear plateau: the top of its band
+    expect(g[2]).toBeGreaterThanOrEqual(20);                         // and it fills the Flood potential row, no higher
+    expect(g[2]).toBeLessThan(21);
     const outline = html.slice(html.indexOf('class="chart-potential"')).match(/<path d="([^"]+)" fill="none"/)![1];
     expect(outline.trim().endsWith('Z')).toBe(false);                // open at the bottom: no dashed floor on the blue
     expect(html).toContain('Potential flooding, not yet a sandbag recommendation: Wed 4–8 AM.');
@@ -86,5 +87,15 @@ describe('lab only', () => {
     const h = renderToString(createElement(WeatherCard, { scenario: byId('storm-ahead') }));
     expect(h).not.toContain('chart-silhouette');
     expect(renderToString(createElement(WeatherCard, { scenario: byId('heat'), graph: 'silhouette' }))).not.toContain('chart-silhouette');   // heat stays columns
+  });
+});
+
+describe('bands fill (Nov 16 review)', () => {
+  it('a level fills its band to the top: plateaus sit on band edges, labels at band centres', () => {
+    const html = renderToString(createElement(WeatherCard, { scenario: byId('storm-ahead'), graph: 'silhouette' }));
+    const tops = [...html.matchAll(/class="chart-sil-edge" x1="[\d.]+" x2="[\d.]+" y1="([\d.]+)"/g)].map(m => Number(m[1]));
+    expect(new Set(tops)).toEqual(new Set([132 - 2 * 28, 132 - 3 * 28]));     // Umbrella or jacket and Rain gear band tops
+    const labels = [...html.matchAll(/<text x="[\d.]+" y="([\d.]+)" text-anchor="end" class="chart-label">/g)].map(m => Number(m[1]));
+    expect(labels).toEqual([0, 1, 2, 3].map(i => 132 - (i + 0.5) * 28 + 3.5));
   });
 });
