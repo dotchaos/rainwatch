@@ -237,12 +237,12 @@ def card_scores(cards: list[dict], truth: dict[str, float], site) -> dict:
     return out
 
 
-def leadtime(data: str | Path, truth: dict[str, float], cfg, now: datetime, days: int = 60) -> dict:
+def leadtime(data: str | Path, truth: dict[str, float], cfg, now: datetime, days: int = 60, alignment: str = "legacy") -> dict:
     root = Path(data)
     since = now - timedelta(days=days)
     fcs = read_jsonl(root / "forecasts", since) if (root / "forecasts").exists() else []
     cards = read_jsonl(root / "cards", since) if (root / "cards").exists() else []
-    rep = {"generated": now.isoformat(), "truth": "SFOC1 (US Mint) only", "window_days": days,
+    rep = {"generated": now.isoformat(), "truth": "SFOC1 (US Mint) only" + ("; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24)" if alignment == "raw" else ""), "window_days": days,
            "heavy_in": cfg.heavy_in, "heavy_rule_prob": HEAVY_P, "min_bin": MIN_BIN,
            "sources": forecast_scores(fcs, truth, cfg.heavy_in, cfg.any_in),
            "card": card_scores(cards, truth, cfg.site) if cfg.site else {}, "card_records": len(cards)}

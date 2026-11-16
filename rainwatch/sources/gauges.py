@@ -26,6 +26,9 @@ class Gauge:
     hourly: dict[datetime, float] = field(default_factory=dict)
     last_obs: datetime | None = None
     error: str = ""
+    # v0.24, verification only: the readings exactly as the source sent them (see parse_hads_raw). The forecast
+    # engine never reads this; it keeps using `hourly`.
+    raw: dict | None = None
 
     def total(self, since: datetime) -> float | None:
         v = [x for t, x in self.hourly.items() if t >= since]
@@ -102,6 +105,42 @@ def parse_hads_csv(text: str) -> dict[datetime, float]:
     return out
 
 
+def parse_hads_raw(text: str) -> dict | None:
+    """The readings as sent, for verification (v0.24). SHEF semantics, from the column code:
+      PC...  precipitation accumulator, instantaneous reading (e.g. PCIRGZZ: accumulator, instantaneous, observed,
+             via GOES): a running total at `utc_valid`; the rain between two readings fell somewhere in between;
+      PPH..  precipitation increment over the hour ending at `utc_valid`.
+    Returns {"code", "kind": "accumulator" | "hour_increment", "readings": {utc_valid ISO: value}}; None without data."""
+    rows = list(csv.DictReader(io.StringIO(text)))
+    if not rows:
+        return None
+    cols = rows[0].keys()
+    inc = [c for c in cols if c.upper().startswith("PPH")]
+    acc = [c for c in cols if c.upper().startswith("PC")]
+    code = inc[0] if inc else acc[0] if acc else None
+    if code is None:
+        return None
+    out = {}
+    for r in rows:
+        try:
+            v = float(r[code])
+        except (TypeError, ValueError):
+            continue
+        if v <= -9000:
+            continue
+        t = datetime.fromisoformat(r["utc_valid"].replace(" ", "T")).replace(tzinfo=UTC)
+        out[t.isoformat()] = v
+    return {"code": code, "kind": "hour_increment" if inc else "accumulator", "readings": out}
+
+
+def fetch_hads_raw(s, station: str, since: datetime, until: datetime) -> dict | None:
+    """Raw readings over a past window (verification backfill, v0.24)."""
+    r = s.get(HADS, params={"stations": station, "sts": since.astimezone(UTC).strftime("%Y-%m-%dT%H:%MZ"),
+                            "ets": until.astimezone(UTC).strftime("%Y-%m-%dT%H:%MZ")}, timeout=60)
+    r.raise_for_status()
+    return parse_hads_raw(r.text)
+
+
 def fetch_hads(s, station: str, now: datetime) -> Gauge:
     g = Gauge(station, f"{station} gauge (US Mint, ~1 mi from you)" if station == "SFOC1" else f"{station} gauge", f"https://mesonet.agron.iastate.edu/sites/site.php?station={station}&network=CA_DCP")
     try:
@@ -111,6 +150,7 @@ def fetch_hads(s, station: str, now: datetime) -> Gauge:
                                 "ets": ets.strftime("%Y-%m-%dT%H:%MZ")}, timeout=30)
         r.raise_for_status()
         g.hourly = parse_hads_csv(r.text)
+        g.raw = parse_hads_raw(r.text)
         if g.hourly:
             g.last_obs = max(g.hourly) + timedelta(hours=1)
         elif not r.text.strip():

@@ -177,6 +177,81 @@ class Archive:
         return obs
 
 
+    # ---------- raw gauge readings (verification, v0.24) ----------
+    def merge_raw(self, gauges, now: datetime) -> dict:
+        """data/obs_raw.json: every gauge reading exactly as the source sent it ({station: {code, kind, readings}}),
+        so verification hours can be rebuilt from first principles. The forecast never reads it."""
+        raw = self._read("obs_raw.json", {})
+        for g in gauges:
+            if not getattr(g, "raw", None):
+                continue
+            st = raw.setdefault(g.station, {"code": g.raw["code"], "kind": g.raw["kind"], "readings": {}})
+            st["code"], st["kind"] = g.raw["code"], g.raw["kind"]
+            st["readings"].update(g.raw["readings"])
+            st["readings"] = dict(sorted(st["readings"].items()))
+        self._write("obs_raw.json", raw)
+        return raw
+
+    def backfill_raw(self, station: str, fetch, since: datetime, now: datetime) -> bool:
+        """Once: the station's raw readings back to `since` (the oldest saved forecast), from the source's own archive,
+        so past scorecards can be recomputed on the corrected hours. `fetch(station, since, until)` -> raw dict."""
+        st = self.state()
+        if st.get(f"raw_backfill_{station}"):
+            return False
+        r = fetch(station, since, now)
+        if not r:
+            return False
+        raw = self._read("obs_raw.json", {})
+        cur = raw.setdefault(station, {"code": r["code"], "kind": r["kind"], "readings": {}})
+        cur["readings"] = dict(sorted({**r["readings"], **cur["readings"]}.items()))
+        self._write("obs_raw.json", raw)
+        st[f"raw_backfill_{station}"] = now.astimezone(UTC).isoformat()
+        self.save_state(st)
+        return True
+
+    # ---------- other forecast signals (v0.24) ----------
+    def signals(self, now: datetime, nws_b, cond, horizon_h: int = 48) -> bool:
+        """data/signals/YYYY-MM.jsonl, once per clock hour: the NWS hourly chance of precipitation and the sky model's
+        hourly weather code and icon, which the forecast does not use as rain. Each source keeps its identity, its
+        issue time (NWS updateTime; the sky model's blend has none, recorded as null) and whether it was missing."""
+        hour_key = now.astimezone(UTC).strftime("%Y-%m-%dT%H")
+        st = self.state()
+        if st.get("last_signals") == hour_key:
+            return False
+        lo, hi = now - timedelta(hours=1), now + timedelta(hours=horizon_h)
+        keep = lambda t: lo <= t < hi   # noqa: E731
+        q = getattr(nws_b, "qpf", None) if nws_b else None
+        nws_rec = ({"source": f"NWS gridpoint {getattr(nws_b, 'office', '')}", "issued": q.issued.isoformat() if q.issued else None,
+                    "missing": not q.prob, "pop": {t.isoformat(): round(p, 2) for t, p in sorted(q.prob.items()) if keep(t)}}
+                   if q is not None else {"source": "NWS gridpoint", "issued": None, "missing": True, "pop": {}})
+        from .sources.conditions import describe
+        sky_h = {}
+        for t, c in sorted((cond.hourly or {}).items()) if cond else []:
+            if keep(t) and c and c.get("code") is not None:
+                icon, words = describe(c["code"], c.get("day", True))
+                sky_h[t.isoformat()] = {"code": c["code"], "icon": icon, "words": words}
+        sky_rec = {"source": "Open-Meteo best_match (sky model)", "issued": None, "missing": not sky_h,
+                   **({"error": cond.error} if cond and cond.error else {}), "hours": sky_h}
+        (self.root / "signals").mkdir(exist_ok=True)
+        with open(self.root / "signals" / f"{now.astimezone(UTC):%Y-%m}.jsonl", "a") as f:
+            f.write(json.dumps({"fetched": now.astimezone(UTC).isoformat(), "nws": nws_rec, "sky": sky_rec}) + "\n")
+        st["last_signals"] = hour_key
+        self.save_state(st)
+        return True
+
+
+def verification_truth(raw: dict, order: list[str]) -> tuple[dict[str, float], dict[str, dict]]:
+    """One verification value per hour from raw readings (rainwatch/verify.py): the first station in `order` with it."""
+    from . import verify
+    out: dict[str, float] = {}
+    meta: dict[str, dict] = {}
+    for stn in reversed(order):
+        t, m = verify.hourly(raw.get(stn))
+        out.update(t)
+        meta.update({k: {**v, "station": stn} for k, v in m.items()})
+    return out, meta
+
+
 def truth(obs: dict, order: list[str]) -> dict[str, float]:
     """One observed value per hour: first station in `order` that reported it."""
     out: dict[str, float] = {}
