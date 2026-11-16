@@ -35,6 +35,7 @@ export type GraphStyle = 'columns' | 'silhouette';
 const bandTop = (i: number) => base - (i + 1) * step, plateau = (i: number) => base - (i + 0.5) * step;
 // refinement (Nov 16): rounder corners (still clamped to half a plateau and half a step, so every vertical edge stays
 // on its hour); a slightly deeper jacket tone and firmer top edge so one-hour bursts read; a lighter dry baseline
+const f2 = (n: number) => Math.round(n * 100) / 100;
 const CORNER = 4.5, EDGE = '#3f7395', EDGE_OPACITY = .85, SIL_DRY = '#eef3f5', SIL_JACKET = '#7fafc6';
 
 export function Timeline({ scenario: s, potential, graph = 'columns' }: { scenario: Scenario; potential?: PotentialStyle; graph?: GraphStyle }) {
@@ -148,10 +149,18 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
     {runs.filter(r => r.unknown).map(r => <rect key={`u-${r.start}`} x={x(r.start)} y={base - 3 * step} width={x(r.end) - x(r.start)} height={3 * step} fill="url(#nodata)" />)}
     {runs.filter(r => !r.unknown && r.level > 0).map(r => <line key={`e-${r.start}`} className="chart-sil-edge" x1={x(r.start)} x2={x(r.end)}
       y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1.1" strokeOpacity={EDGE_OPACITY} strokeDasharray={r.sure ? undefined : '2.5 2'} />)}
-    {/* confined to the Flood potential band: it never reaches into the Rain gear band below (Nov 16 review) */}
-    {pots.map(p => <rect key={`pot-${p.startHour}`} className="chart-potential" x={x(p.startHour) + .6} y={bandTop(3) + 3}
-      width={x(p.endHour) - x(p.startHour) - 1.2} height={bandTop(2) - bandTop(3) - 4.5} rx="4"
-      fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />)}
+    {/* stands on the shape (Nov 16 review): the field ends exactly at the plateau below it, never overlapping the blue,
+        and has no dashed floor of its own (the shape's top edge is its floor), so nothing doubles or bleeds */}
+    {pots.map(p => {
+      const a = x(p.startHour) + .6, b = x(p.endHour) - .6, top = bandTop(3) + 3;
+      const floor = Math.min(...silhouetteRuns(s).filter(r => !r.unknown && r.end > p.startHour && r.start < p.endHour).map(r => plateau(r.level)));
+      const r = Math.min(4, (b - a) / 2);
+      return <g key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(a)} data-w={f2(b - a)} data-top={f2(top)} data-floor={f2(floor)}>
+        <path d={`M${a} ${floor} L${a} ${top + r} Q${a} ${top} ${a + r} ${top} L${b - r} ${top} Q${b} ${top} ${b} ${top + r} L${b} ${floor} Z`} fill={POTENTIAL_FILL} />
+        <path d={`M${a} ${floor} L${a} ${top + r} Q${a} ${top} ${a + r} ${top} L${b - r} ${top} Q${b} ${top} ${b} ${top + r} L${b} ${floor}`}
+          fill="none" stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />
+      </g>;
+    })}
     <line x1={x0} x2={x(72)} y1={base} y2={base} className="chart-base" />
   </>;
 }

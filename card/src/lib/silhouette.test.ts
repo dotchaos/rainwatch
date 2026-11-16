@@ -60,17 +60,17 @@ describe('missing data', () => {
 });
 
 describe('flood overlay', () => {
-  it('spans exactly the potential-flooding window, hour for hour, standing on the shape', () => {
+  it('spans exactly the potential-flooding window and stands on the shape: no gap, no overlap, no doubled edge', () => {
     const s = byId('storm-ahead'), [w] = floodPotentials(s).filter(p => p.on);
     const html = renderToString(createElement(WeatherCard, { scenario: s, potential: 'outline', graph: 'silhouette' }));
-    const m = html.match(/class="chart-potential" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/)!;
-    // vertically inside the Flood potential band (132 - 4*28 = 20 to 132 - 3*28 = 48): never into Rain gear
-    expect(Number(m[2])).toBeGreaterThanOrEqual(20);
-    expect(Number(m[2]) + Number(m[4])).toBeLessThanOrEqual(48);
-    m.splice(2, 1);
+    const g = html.match(/class="chart-potential" data-x="([\d.]+)" data-w="([\d.]+)" data-top="([\d.]+)" data-floor="([\d.]+)"/)!.slice(1).map(Number);
     const x = (h: number) => 106 + (h / 72) * 254;
-    expect(Number(m[1])).toBeCloseTo(x(w.startHour) + .6, 5);
-    expect(Number(m[1]) + Number(m[2])).toBeCloseTo(x(w.endHour) - .6, 5);
+    expect(g[0]).toBeCloseTo(x(w.startHour) + .6, 1);
+    expect(g[0] + g[1]).toBeCloseTo(x(w.endHour) - .6, 1);
+    expect(g[3]).toBe(132 - 2.5 * 28);                              // the floor is the Rain gear plateau itself
+    expect(g[2]).toBeGreaterThanOrEqual(20);                         // the top stays in the Flood potential row
+    const outline = html.slice(html.indexOf('class="chart-potential"')).match(/<path d="([^"]+)" fill="none"/)![1];
+    expect(outline.trim().endsWith('Z')).toBe(false);                // open at the bottom: no dashed floor on the blue
     expect(html).toContain('Potential flooding, not yet a sandbag recommendation: Wed 4–8 AM.');
     expect(html).toContain('Potential flooding · Not yet a sandbag recommendation');
   });
