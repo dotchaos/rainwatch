@@ -76,3 +76,4 @@
 - **Upcoming weather voice (Nov 15 2026):** awareness → anticipation → action as an event nears and its consequence grows (DISPLAY-RULES). Only awareness is built ("Keep an eye on Wednesday"); the other modes wait for testing on real weather. Not a generalized copy-generation system.
 - **One amount story (Nov 15 2026, in review):** event and day amounts stay distinct; one rounding policy; event totals over each event's catchment; strip matched per local day. No change to the intensity scale or wet hours.
 - **Rain wording by evidence (Nov 15 2026, in review):** within the hour is now; "on and off" only when breaks are supported (runs or radar/gauge), "at times" for light rain, "Rain" for moderate or heavier; no "intermittent". Observations change words, never the forecast.
+- **The card keeps time (Nov 15 2026, in review):** aged on the device by whole hours since its first hour (max 6, never across local midnight); past hours cleared, forecast unchanged.

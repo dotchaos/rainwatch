@@ -11,7 +11,7 @@ export function validateScenario(s: Scenario): string[] {
   const errors: string[] = [];
   // Next hours: consecutive hours from the current one, none skipped, agreeing with the graph
   if (s.hourly.length < 12 || s.hourly.length > 72) errors.push('Next hours needs 12–72 consecutive hours');
-  s.hourly.forEach((h, i) => { if (h.hour !== i) errors.push(`Next hours must be consecutive from the current hour (item ${i} is hour ${h.hour})`); });
+  s.hourly.forEach((h, i) => { if (h.hour !== (s.nowOffset ?? 0) + i) errors.push(`Next hours must be consecutive from the current hour (item ${i} is hour ${h.hour})`); });
   const gearAt = (h: number) => (s.hazard === 'rain' || s.hazard === 'flood') && Boolean(s.timeline?.intervals.some(p => p.severity > 0 && p.startHour <= h && h < p.endHour));
   for (const h of s.hourly) {
     const at = h.hour ?? 0, icon = resolveIcon(h.icon);
@@ -28,7 +28,9 @@ export function validateScenario(s: Scenario): string[] {
     let wet = false, gap = false; for (let h = d.start; h < d.end; h++) { wet ||= wetAt(h); gap ||= isUnknown(s, h); }
     const icon = resolveIcon(row.icon);
     if (wet && !PRECIP.has(icon)) errors.push(`${row.label} has rain on the graph but its row shows "${icon}"`);
-    if (!wet && !gap && PRECIP.has(icon)) errors.push(`${row.label} shows "${icon}" but the graph has no rain that day`);
+    // on an aging card today's row still describes the whole day, including rain in hours now past (v0.18)
+    const agedToday = k === 0 && (s.nowOffset ?? 0) > 0;
+    if (!wet && !gap && PRECIP.has(icon) && !agedToday) errors.push(`${row.label} shows "${icon}" but the graph has no rain that day`);
   });
   if (s.days.length !== (s.rainHours ? 5 : 3)) errors.push(s.rainHours ? 'Five-day rows need exactly five daily rows' : 'Exactly three daily outlook rows required');
   if (s.rainHours) {

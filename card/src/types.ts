@@ -53,6 +53,8 @@ export interface Scenario {
    * rain in its last two completed hours. null when that source can't say.
    */
   observedNow?: { rainingNow: boolean | null; recentRain: boolean | null };
+  /** Set on the device only (ageCard): hours the card has aged since its first hour. Never in live.json. */
+  nowOffset?: number;
   /** 'illustrative' for fixtures; 'live' only for the card built from the real forecast (rainwatch/card.py). */
   provenance: { type: 'illustrative' | 'live'; note: string; generated?: string };
 }

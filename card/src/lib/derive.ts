@@ -4,6 +4,7 @@
  * they never type a time, a window, a "hottest period" or an "outdoor window" by hand.
  */
 import type { Scenario } from '../types';
+import { ICON_WORDS, resolveIcon } from './icons';
 import { clockAt, clockText, daysAt, isUnknown, knownUntil, levelLabels, timeAt, windowLabel } from './rules';
 
 /** Hours of warning before the first top-rung window ("prepare before"). Provisional design constant. */
@@ -107,12 +108,14 @@ export const openEnd = (s: Scenario, b: number) => b >= 72 || isUnknown(s, b);
 /** Rain starting within this many hours counts as happening now: "Rain until about 11 PM", never "from about 8–11 PM"
  *  read at 8, and never "Dry until then" (v0.17). */
 export const NOW_H = 1;
-export const isNow = (h: number) => h <= NOW_H;
+/** The current hour as an offset from the card's start: 0 when fresh, more as the card ages between updates (ageCard). */
+export const nowAt = (s: Scenario) => s.nowOffset ?? 0;
+export const isNowAt = (s: Scenario, h: number) => h <= nowAt(s) + NOW_H;
 /** Plain-language "when" for hours a..b: "now until 2 PM", "11 AM–1 PM"; prefixed "about" when timing may shift.
  *  Open-ended rain gives only its start: "from about 5 PM", or "now". */
 function when(s: Scenario, a: number, b: number, sure: boolean) {
-  if (openEnd(s, b)) return isNow(a) ? 'now' : `from ${sure ? '' : 'about '}${clock(s, a)}`;
-  if (isNow(a)) return sure ? `until ${clock(s, b)}` : `until about ${clock(s, b)}`;
+  if (openEnd(s, b)) return isNowAt(s, a) ? 'now' : `from ${sure ? '' : 'about '}${clock(s, a)}`;
+  if (isNowAt(s, a)) return sure ? `until ${clock(s, b)}` : `until about ${clock(s, b)}`;
   return sure ? span(s, a, b) : `about ${span(s, a, b)}`;
 }
 
@@ -142,11 +145,12 @@ export function deriveAlert(s: Scenario): DerivedAlert | null {
   const wins = criticalWindows(s);
   if (!wins.length || !s.alert) return null;
   if (s.hazard === 'flood') {
-    const by = Math.max(0, wins[0].startHour - PREPARE_LEAD_H);
+    const by = Math.max(nowAt(s), wins[0].startHour - PREPARE_LEAD_H);
     const when = dayIndexAt(s, by) === 0 ? clock(s, by) : `${clockAt(s.startDay, s.startHourLocal, by).day} ${clock(s, by)}`;
     return {
       level: 'SANDBAGS · DRIVEWAY FLOOD RISK',
-      headline: `Protect your driveway before ${when}.`,
+      // once the time to prepare has come (or the risk window has started), "before <a time already here>" is wrong
+      headline: by <= nowAt(s) ? 'Protect your driveway now.' : `Protect your driveway before ${when}.`,
       summary: `${word(wins.length)} period${wins.length > 1 ? 's' : ''} of intense rain could overwhelm local drainage. `
         + `Sandbags: ${windowList(wins)}.`
         + (wins.every(w => w.sure) ? '' : ` ${MAY_SHIFT}`),
@@ -218,11 +222,11 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       const more = dryUntil(s, last.end);
       const times = plan.events.length === 1
         ? when(s, first.start, first.end, plan.sure)
-        : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => openEnd(s, e.end) ? (isNow(e.start) ? 'now' : `from ${clock(s, e.start)}`)
-          : isNow(e.start) ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
-      const head = `${isNow(first.start) ? 'Now' : cap(relDay(s, first.start))}: ${jacket}, ${times}`;
+        : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => openEnd(s, e.end) ? (isNowAt(s, e.start) ? 'now' : `from ${clock(s, e.start)}`)
+          : isNowAt(s, e.start) ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
+      const head = `${isNowAt(s, first.start) ? 'Now' : cap(relDay(s, first.start))}: ${jacket}, ${times}`;
       if (plan.kind === 'separate') notes.push('Dry in between.');
-      if (!isNow(first.start) && knownBefore(s, first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+      if (!isNowAt(s, first.start) && knownBefore(s, first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
       else if (more >= 72) notes.push('Dry after that.');
       const later = laterRain(s, last.end);
       if (later) notes.push(later);                      // the next rain matters more than the next dry spell
@@ -232,16 +236,16 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       return { headline: head, detail: notes.join(' ') };
     }
     const day = cap(relDay(s, aw.startHour));
-    const headline = `${isNow(aw.startHour) ? 'Now' : day}: ${aw.action}, ${when(s, aw.startHour, aw.endHour, aw.sure)}`;
+    const headline = `${isNowAt(s, aw.startHour) ? 'Now' : day}: ${aw.action}, ${when(s, aw.startHour, aw.endHour, aw.sure)}`;
     const notes: string[] = [];
     { const amt = amountNote(s, aw.eventStart, aw.eventEnd); if (amt) notes.push(amt); }
     const more = dryUntil(s, aw.eventEnd);
-    if (!isNow(aw.eventStart) && knownBefore(s, aw.eventStart)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+    if (!isNowAt(s, aw.eventStart) && knownBefore(s, aw.eventStart)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
     if (aw.rung > 1 && (aw.eventStart < aw.startHour || aw.eventEnd > aw.endHour))
       notes.push(`${levelLabels(s)[1]} ${when(s, aw.eventStart, aw.eventEnd, aw.sure)}.`);
     const later = laterRain(s, aw.eventEnd);
     const dry = more >= 72 || later ? null : nextDry(s, aw.eventEnd);
-    if (more >= 72 && isNow(aw.eventStart)) notes.push('Dry after that.');
+    if (more >= 72 && isNowAt(s, aw.eventStart)) notes.push('Dry after that.');
     else if (later) notes.push(later);
     else if (dry) notes.push(`Then dry ${dry}.`);
     if (!aw.sure) notes.push(MAY_SHIFT);
@@ -311,7 +315,7 @@ function nextDry(s: Scenario, from: number): string | null {
  *  `day` is set at each midnight so the row can mark where a new day starts. */
 export function hourLabel(s: Scenario, at: number): { text: string; day: string | null } {
   const c = clockAt(s.startDay, s.startHourLocal, at);
-  return { text: at === 0 ? 'Now' : cap(clockText(c)), day: at > 0 && c.hour === 12 && c.meridiem === 'AM' ? c.day : null };
+  return { text: at === nowAt(s) ? 'Now' : cap(clockText(c)), day: at > nowAt(s) && c.hour === 12 && c.meridiem === 'AM' ? c.day : null };
 }
 
 /** Subtitle for the 3-day list, from the daily rows and timeline (empty when there is no clear story). */
@@ -378,13 +382,13 @@ export function nowNext(s: Scenario): NowNext | null {
     const multi = plan?.kind === 'intermittent';
     const a = multi ? plan!.events[0].start : aw.eventStart, b = multi ? plan!.events[plan!.events.length - 1].end : aw.eventEnd;
     const d = relDay(s, a), word = rainWord(s, a, b), sure = multi ? plan!.sure : aw.sure;
-    headline = !isNow(a) && dayIndexAt(s, a) !== dayIndexAt(s, Math.max(a, b - 1)) && !openEnd(s, b)
+    headline = !isNowAt(s, a) && dayIndexAt(s, a) !== dayIndexAt(s, Math.max(a, b - 1)) && !openEnd(s, b)
       ? `${word} ${partsPhrase(s, a, b)}`                                   // spans days: parts of the day, not clock times
-      : openEnd(s, b) ? (isNow(a) ? `${word} now` : `${word} ${d === 'today' ? '' : `${d} `}from ${sure ? '' : 'about '}${clock(s, a)}`)
-      : isNow(a) ? `${word} ${when(s, a, b, sure)}`
+      : openEnd(s, b) ? (isNowAt(s, a) ? `${word} now` : `${word} ${d === 'today' ? '' : `${d} `}from ${sure ? '' : 'about '}${clock(s, a)}`)
+      : isNowAt(s, a) ? `${word} ${when(s, a, b, sure)}`
       : `${word} ${d === 'today' ? '' : `${d} `}from ${sure ? '' : 'about '}${span(s, a, b)}`;
     // the forecast has rain now but the radar sees none over the point: say so (words only, the forecast stands)
-    if (isNow(a) && s.observedNow?.rainingNow === false) notes.unshift('Dry right now.');
+    if (isNowAt(s, a) && s.observedNow?.rainingNow === false) notes.unshift('Dry right now.');
   }
   // rain still falling when the data stops: say so in place of the bare coverage line
   if (isUnknown(s, aw.eventEnd)) {
@@ -417,7 +421,7 @@ export function nowNext(s: Scenario): NowNext | null {
  */
 export function rainWord(s: Scenario, a: number, b: number): string {
   const iv = (s.timeline?.intervals ?? []).filter(p => p.severity > 0 && p.startHour < b && a < p.endHour);
-  const observedBreak = isNow(a) && s.observedNow?.rainingNow === false && s.observedNow?.recentRain === true;
+  const observedBreak = isNowAt(s, a) && s.observedNow?.rainingNow === false && s.observedNow?.recentRain === true;
   if (iv.some(p => p.pattern === 'intermittent') || observedBreak) return 'Rain on and off';
   if (s.rainHours) { let top = 0; for (let h = a; h < b; h++) top = Math.max(top, intensityAt(s, h)); if (top <= 1) return 'Rain at times'; }
   return 'Rain';
@@ -446,7 +450,9 @@ export function chartBlocks(s: Scenario): ChartBlock[] {
     return { start: a, end: b, level, shifting, unknown: unknown && level === 0 };
   };
   for (let a = -(s.startHourLocal % 3); a < 72; a += 3) {
-    const start = Math.max(a, 0), end = Math.min(a + 3, 72), block = piece(start, end);
+    const start = Math.max(a, nowAt(s)), end = Math.min(a + 3, 72);
+    if (end <= start) continue;                               // already past (an aging card)
+    const block = piece(start, end);
     // Sandbags is a risk window, so on flood days its edges are drawn at the hour, not rounded to the block
     if (s.hazard === 'flood' && block.level === 3) {
       let h = start;
@@ -510,8 +516,9 @@ function stripSegs(s: Scenario, d: ReturnType<typeof stripDays>[number]): StripS
   const out: StripSeg[] = [];
   for (let L = 0; L < 24; L++) {
     const h = d.start + L - d.localStart;
-    const i = h < 0 ? 0 : intensityAt(s, h);
-    const kind: StripKind = h < 0 ? 'past' : isUnknown(s, h) ? 'unknown' : i ? 'rain' : 'dry';
+    const past = h < nowAt(s);                              // before now: the card's start, or later as it ages
+    const i = past ? 0 : intensityAt(s, h);
+    const kind: StripKind = past ? 'past' : isUnknown(s, h) ? 'unknown' : i ? 'rain' : 'dry';
     const last = out[out.length - 1];
     if (last && last.kind === kind && (last.intensity ?? 0) === i) last.to = L + 1;
     else out.push(kind === 'rain' ? { from: L, to: L + 1, kind, intensity: i as 1 | 2 | 3 } : { from: L, to: L + 1, kind });
@@ -538,7 +545,7 @@ export function fiveDays(s: Scenario): FiveDayRow[] | null {
     const from = k > 0 && intensityAt(s, d.start - 1) > 0 && intensityAt(s, d.start) > 0;
     return {
       label: row?.label ?? d.name, description: (row?.description ?? '') + (into ? ' · continues overnight' : ''),
-      highF: row?.highF ?? null, lowF: row?.lowF ?? null, segs, now: k === 0 ? s.startHourLocal : null,
+      highF: row?.highF ?? null, lowF: row?.lowF ?? null, segs, now: k === 0 ? s.startHourLocal + nowAt(s) : null,
       continuesFromPrev: from, continuesIntoNext: into, total: dayTotal(segs, row?.rainIn),
     };
   });
@@ -678,4 +685,39 @@ export function upcomingEvent(s: Scenario): Upcoming | null {
   if (then) parts.push(then);
   const sentence = cap(parts.map((x, i) => i ? x.charAt(0).toLowerCase() + x.slice(1) : x).join(', ')) + '.';
   return { startHour: ev.start, day, dayIndex: k, heading, sentence, reason, icon: s.days[k]?.icon ?? 'rain', mode: 'day' };
+}
+
+/* ---------- Clock-aware card (v0.18) ---------- */
+
+/** Most hours a card is aged on the device. Past this the "Late" bar says the forecast is old. */
+export const AGE_MAX_H = 6;
+
+/**
+ * The card as of now on this device, `elapsedH` whole hours after its first hour. Forecast data never moves or
+ * changes: hours already past are cleared (no rain, no gear claimed for them), "now" moves forward, and an event's
+ * total is dropped once part of it has fallen (it would count rain that is no longer coming). Never across local
+ * midnight (the day rows would need relabelling); the next update, at most 15 minutes away, brings a new card.
+ */
+export function ageCard(s: Scenario, elapsedH: number): Scenario {
+  const k = Math.max(0, Math.min(Math.floor(elapsedH), AGE_MAX_H, 23 - s.startHourLocal, s.hourly.length - 12));
+  if (!k) return s;
+  const c = structuredClone(s) as Scenario;
+  c.nowOffset = k;
+  const clip = <T extends { startHour: number; endHour: number }>(xs: T[]) =>
+    xs.filter(x => x.endHour > k).map(x => ({ ...x, startHour: Math.max(x.startHour, k) }));
+  if (c.timeline) c.timeline = { ...c.timeline, intervals: clip(c.timeline.intervals) };
+  if (c.rainHours) c.rainHours = clip(c.rainHours);
+  if (c.unknownHours) c.unknownHours = clip(c.unknownHours);
+  if (c.rainTotals) c.rainTotals = c.rainTotals.filter(x => x.startHour >= k);
+  c.hourly = c.hourly.filter((h, i) => (h.hour ?? i) >= k);
+  const nowHour = c.hourly[0];
+  if (nowHour) c.current = { ...c.current, temperatureF: nowHour.temperatureF, icon: nowHour.icon, condition: ICON_WORDS[resolveIcon(nowHour.icon)] ?? c.current.condition };
+  return c;
+}
+
+/** Whole hours since the card's first hour began, from its generation time and this device's clock. */
+export function elapsedHours(s: Scenario, nowMs: number): number {
+  if (!s.provenance.generated) return 0;
+  const g = new Date(s.provenance.generated).getTime(), hour0 = Math.floor(g / 3.6e6) * 3.6e6;
+  return Math.max(0, Math.floor((nowMs - hour0) / 3.6e6));
 }

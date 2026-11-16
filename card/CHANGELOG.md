@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.18 (review branch clock-aware, not deployed): the card keeps time
+- The card ages on the device between updates: "Now", the headline, current conditions, the hourly row and today's strip follow the phone's clock; past hours are cleared; the forecast itself never changes. Partly-fallen events lose their total. Flood alert says "now" once the time to prepare arrives.
+- The page reloads when it comes back into view. Lab: `?lab&age=N` previews a card N hours old.
+
 ## v0.17 (review branch wording-labels, not deployed): wording by evidence, renamed sections
 - **Hero:** rain within the hour reads as now; "Rain on and off" / "Rain at times" / "Rain" by evidence; on-and-off rain gets an end time and amount; "Timing is approximate"; "Dry right now" when the radar sees no rain during forecast rain.
 - **Engine:** `now_obs` in the report and `observedNow` on the card (radar echo over the point when the frame is fresh; the gauge's last two hours). Words only.

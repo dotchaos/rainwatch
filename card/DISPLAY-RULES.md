@@ -61,7 +61,14 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
 - The whole module links to its event's day in the five-day forecast (scroll, focus, brief highlight; instant under reduced motion). Without five-day rows it is not a link.
 - No new rainfall threshold: comparisons are relative to the primary event. Official warnings aren't in the card contract yet, so they aren't considered.
 
-## Rain wording by evidence (v0.17, in review)
+## The card keeps time (v0.18, in review)
+- Between updates the card ages on the device: "now" is the current hour by the phone's clock, not the hour the forecast was built. Hours already past are cleared (no rain or gear claimed for them), the hourly row starts at the real current hour, current conditions come from that hour, and today's strip moves its now-mark.
+- The forecast never moves or changes: every hour still ahead keeps exactly its forecast.
+- An event already partly over loses its total (it would count rain that has fallen). Today's row still describes the whole day.
+- Flood alert: "Protect your driveway before 2 PM" becomes "Protect your driveway now" once 2 PM arrives.
+- Limits: never across local midnight (the day rows would need relabelling), and at most 6 hours (past that the page's "Late" bar applies). The page reloads every 5 minutes and when it comes back into view.
+
+## Rain wording by evidence (v0.17)
 - **Within the hour is now.** Rain starting within the next hour reads as current: "Rain until about 11 PM", never "Rain from about 8–11 PM" (read at 8) and never "Dry until then".
 - **Name rain by what the data supports.**
   - "Rain on and off": breaks are supported, either because the model runs show their own dry breaks, or because the radar sees no rain over the point right after the gauge measured some.
