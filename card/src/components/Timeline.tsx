@@ -21,9 +21,9 @@ const SHORT_RAIN = ['No gear', 'Jacket', 'Boots', 'Sandbags'], SHORT_HEAT = ['Co
  *  from the Boots rung up to the Sandbags rung over the window. 'range': a dotted line at the Sandbags rung with end
  *  ticks down to Boots, like a range bar. Neither is filled, so neither reads as a forecast level. */
 export type PotentialStyle = 'outline' | 'range';
-/** A solid, opaque light tint of the Sandbags colour (#ba6547 at about 18% on white): not transparency, which the
- *  design system keeps from signalling uncertainty. */
-const POTENTIAL_FILL = '#f3e3dd';
+/** State 2 of John's three-state spec (Nov 16 2026), taken from the mockup: a solid warm-grey field with a dashed
+ *  border in the Sandbags colour (3 on, 2 off). Opaque, never transparency. */
+const POTENTIAL_FILL = '#ede9e6', POTENTIAL_DASH = '3 2';
 
 export function Timeline({ scenario: s, potential }: { scenario: Scenario; potential?: PotentialStyle }) {
   if (!s.timeline) return null;
@@ -71,7 +71,7 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
           return potential === 'outline'
             ? <g key={`pot-${p.startHour}`} className="chart-potential">{blocks.map(k => {
                 const ka = x(k.start) + gap / 2, kb = x(k.end) - gap / 2;
-                return <rect key={k.start} x={ka + .5} y={yS + .5} width={kb - ka - 1} height={yB - yS - 1} rx="1.5" fill={POTENTIAL_FILL} stroke={c} strokeWidth="1" strokeDasharray="2.4 1.8" />;
+                return <rect key={k.start} x={ka + .5} y={yS + .5} width={kb - ka - 1} height={yB - yS - 1} rx="1.5" fill={POTENTIAL_FILL} stroke={c} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />;
               })}</g>
             : <g key={`pot-${p.startHour}`} className="chart-potential" stroke={c} strokeWidth="1.4" strokeLinecap="round">
                 <line x1={a} x2={b} y1={yS} y2={yS} strokeDasharray="1.5 2.6" />
@@ -82,7 +82,7 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
       </g>
     </svg>
     {pots.length > 0 && <p className="chart-potential-key"><svg width="22" height="10" aria-hidden>{potential === 'outline'
-      ? <rect x="1" y="1" width="20" height="8" rx="1.5" fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1" strokeDasharray="2.4 1.8" />
+      ? <rect x="1" y="1" width="20" height="8" rx="1.5" fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />
       : <g stroke={intervalColor(s, 3)} strokeWidth="1.4" strokeLinecap="round"><line x1="1" x2="21" y1="1.5" y2="1.5" strokeDasharray="1.5 2.6" /><line x1="1" x2="1" y1="1.5" y2="9" /><line x1="21" x2="21" y1="1.5" y2="9" /></g>}</svg>Potential flooding · Not yet a sandbag recommendation</p>}
     <ul className="sr-only">{srItems(s, full)}{pots.map(p => <li key={`pot-${p.startHour}`}>{`${p.label}: potential flooding, not yet a sandbag recommendation`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;
