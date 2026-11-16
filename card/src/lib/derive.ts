@@ -781,6 +781,42 @@ function roughWhen(s: Scenario, h: number, head = false): string {
   return part === 'early' ? `early ${day}` : `${day} ${part}`;
 }
 
+/* ---------- Flood potential (v0.19 exploration, lab only) ---------- */
+
+/**
+ * The state between "nothing" and Sandbags: an emerging flood concern, not a recommendation. Proposed trigger, all
+ * three on the storm's peak window (none is a single heavy hour, and runs are never counted as independent votes):
+ *   agreement   at least POTENTIAL_SYSTEMS model systems each put 10% of their own runs at the flood level;
+ *   sustained   at least POTENTIAL_HOURS hours of the window have 10% of all runs at the flood level;
+ *   size        the typical run (half of all runs) reaches the drains-falling-behind level: the expected storm, not
+ *               only its wet tail, is near local flood levels.
+ * Never in a storm that already has action voice (Sandbags proper), never without the evidence fields, and never
+ * escalated by the clock: only stronger evidence (official product, validated level) turns it into Sandbags.
+ */
+export const POTENTIAL_SYSTEMS = 2, POTENTIAL_HOURS = 2, FLOOD_FLOOR = 0.1;
+export interface FloodPotential {
+  startHour: number; endHour: number; label: string;
+  checks: { agreement: { systems: number; of: number; ok: boolean }; sustained: { hours: number; ok: boolean };
+            size: { pBehind: number; ok: boolean } };
+  on: boolean;
+}
+export function floodPotentials(s: Scenario): FloodPotential[] {
+  const ev = s.evidence;
+  if (s.hazard !== 'flood' || !ev?.pFlood || !ev.floodSystems || !ev.pBehind) return [];
+  return storms(s).filter(st => stormVoice(s, st) !== 'action').flatMap(st => st.peaks.map(p => {
+    let sys = 0, hrs = 0, beh = 0;
+    for (let h = p.startHour; h < p.endHour; h++) {
+      sys = Math.max(sys, ev.floodSystems![h] ?? 0);
+      if ((ev.pFlood![h] ?? 0) >= FLOOD_FLOOR) hrs++;
+      beh = Math.max(beh, ev.pBehind![h] ?? 0);
+    }
+    const checks = { agreement: { systems: sys, of: ev.systems ?? 0, ok: sys >= POTENTIAL_SYSTEMS },
+                     sustained: { hours: hrs, ok: hrs >= POTENTIAL_HOURS }, size: { pBehind: beh, ok: beh >= LIKELY_P } };
+    return { startHour: p.startHour, endHour: p.endHour, label: p.label, checks,
+             on: checks.agreement.ok && checks.sustained.ok && checks.size.ok };
+  }));
+}
+
 /** "in the morning", "in the afternoon" …: a part of the day without the day (the headline already names it). */
 function roughPart(s: Scenario, h: number): string {
   const L = localHour(s, h);

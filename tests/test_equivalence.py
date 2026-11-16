@@ -47,7 +47,7 @@ def test_batch_output_unchanged(batch, name):
 def _general(card: dict) -> dict:
     out = {k: v for k, v in card.items() if k not in SITE_ONLY}
     if "evidence" in out:   # the flood-level odds exist only with a flood site (v0.19); the rest must match
-        out["evidence"] = {k: v for k, v in out["evidence"].items() if k != "pFlood"}
+        out["evidence"] = {k: v for k, v in out["evidence"].items() if k not in ("pFlood", "pBehind", "floodSystems", "systems")}
     return out
 
 

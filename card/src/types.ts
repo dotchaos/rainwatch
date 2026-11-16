@@ -34,6 +34,12 @@ export interface Evidence {
   pFlood?: (number | null)[];
   /** Whether the local flood levels are validated at this address. Until they are, model odds never order action. */
   floodValidated: boolean;
+  /** Share of model runs at the drains-falling-behind level (v0.19 exploration). Only with a flood site. */
+  pBehind?: (number | null)[];
+  /** How many model systems (ECMWF, GFS, ICON ensembles …) put at least 10% of their own runs at the flood level. */
+  floodSystems?: (number | null)[];
+  /** How many model systems there are. */
+  systems?: number;
   /** Official NWS flood products in force (Flood Watch, Flash Flood Warning …), as hour offsets, end exclusive. */
   official?: { event: string; startHour: number; endHour: number }[];
 }

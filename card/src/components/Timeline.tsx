@@ -1,6 +1,6 @@
 import type { Scenario } from '../types';
 import { daysAt, intervalColor, layoutLabels, levelLabels, windowLabel } from '../lib/rules';
-import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts, shownRungs, storms } from '../lib/derive';
+import { chartBlocks, coverageNote, edgeNote, floodPotentials, halfDayLabels, sandbagsCallouts, shownRungs, storms } from '../lib/derive';
 
 /**
  * 3-day gear forecast: the compact graph of rain gear over the rolling 72 hours from now (v0.12.2; heading v0.15).
@@ -17,7 +17,12 @@ const x = (h: number) => x0 + (h / 72) * plotW;
 const dayLabelX = (a: number, b: number, today: boolean) => today && b - a < 12 ? x(a) + 2 : x((a + b) / 2);
 const SHORT_RAIN = ['No gear', 'Jacket', 'Boots', 'Sandbags'], SHORT_HEAT = ['Comfort', 'Hot', 'Very hot', 'Extreme'];
 
-export function Timeline({ scenario: s }: { scenario: Scenario }) {
+/** Lab-only drawings of the flood-potential state (v0.19 exploration). 'outline': a dotted box in the Sandbags hue
+ *  from the Boots rung up to the Sandbags rung over the window. 'range': a dotted line at the Sandbags rung with end
+ *  ticks down to Boots, like a range bar. Neither is filled, so neither reads as a forecast level. */
+export type PotentialStyle = 'outline' | 'range';
+
+export function Timeline({ scenario: s, potential }: { scenario: Scenario; potential?: PotentialStyle }) {
   if (!s.timeline) return null;
   const heat = s.hazard === 'heat', labels = heat ? SHORT_HEAT : SHORT_RAIN, full = levelLabels(s);
   const days = daysAt(s.startDay, s.startHourLocal);
@@ -25,11 +30,12 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
   const placed = layoutLabels(callouts, x0, x(72));
   const rows = placed.some(p => p.row === 1) ? 2 : callouts.length ? 1 : 0, top = rows * 24;
   const cov = coverageNote(s), edge = edgeNote(s);
+  const pots = potential ? floodPotentials(s).filter(p => p.on) : [];
   const title = heat ? 'Next 3 days' : '3-day gear forecast';
   return <section className="timeline-section" aria-label={title}>
     <div className="section-heading"><strong>{title}</strong></div>
     <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
-      aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
+      aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${pots.length ? ` Flood potential, not a recommendation: ${pots.map(p => p.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
       <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern></defs>
       {callouts.map((c, i) => {
         const { left, row } = placed[i], ty = (rows - 1 - row) * 24, color = intervalColor(s, 3);
@@ -53,10 +59,22 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
             {b.shifting && <rect x={bx + .4} y={y + .4} width={w - .8} height={h - .4} rx="1.5" fill="none" stroke="currentColor" strokeOpacity=".42" strokeWidth=".8" strokeDasharray="2 1.8" />}
           </g>;
         })}
+        {pots.map(p => {
+          const a = x(p.startHour) + gap / 2, b = x(p.endHour) - gap / 2, yS = base - 3 * step, yB = base - 2 * step, c = intervalColor(s, 3);
+          return potential === 'outline'
+            ? <rect key={`pot-${p.startHour}`} className="chart-potential" x={a} y={yS} width={b - a} height={yB - yS} rx="1.5" fill="none" stroke={c} strokeWidth="1.3" strokeDasharray="1.5 2.2" strokeLinecap="round" />
+            : <g key={`pot-${p.startHour}`} className="chart-potential" stroke={c} strokeWidth="1.4" strokeLinecap="round">
+                <line x1={a} x2={b} y1={yS} y2={yS} strokeDasharray="1.5 2.6" />
+                <line x1={a} x2={a} y1={yS} y2={yB} /><line x1={b} x2={b} y1={yS} y2={yB} />
+              </g>;
+        })}
         {halfDayLabels(s).map(l => <text key={l.at} x={x(l.at)} y={base + 18} textAnchor="middle" className="chart-time">{l.text}</text>)}
       </g>
     </svg>
-    <ul className="sr-only">{srItems(s, full)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
+    {pots.length > 0 && <p className="chart-potential-key"><svg width="22" height="10" aria-hidden>{potential === 'outline'
+      ? <rect x="1" y="1" width="20" height="8" rx="1.5" fill="none" stroke={intervalColor(s, 3)} strokeWidth="1.3" strokeDasharray="1.5 2.2" strokeLinecap="round" />
+      : <g stroke={intervalColor(s, 3)} strokeWidth="1.4" strokeLinecap="round"><line x1="1" x2="21" y1="1.5" y2="1.5" strokeDasharray="1.5 2.6" /><line x1="1" x2="1" y1="1.5" y2="9" /><line x1="21" x2="21" y1="1.5" y2="9" /></g>}</svg>Flood potential · not a recommendation yet</p>}
+    <ul className="sr-only">{srItems(s, full)}{pots.map(p => <li key={`pot-${p.startHour}`}>{`${p.label}: flood potential, not a recommendation`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;
 }
 

@@ -324,7 +324,10 @@ def provenance_note(used: list[str] | None, has_site: bool) -> str:
 FLOOD_PRODUCTS = ("Flash Flood Warning", "Flood Warning", "Flash Flood Watch", "Flood Watch", "Flood Advisory")
 
 
-def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, cfg) -> dict:
+FLOOD_FLOOR = 0.10   # a model system "sees" the flood level in an hour when this share of its own runs reach it
+
+
+def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, cfg, parts=None) -> dict:
     """What the card needs to judge how strongly to speak (v0.19), per hour of the graph: the share of model runs
     with a heavy hour (p_heavy) and, with a flood site, the share reaching the driveway level; whether those levels
     are validated at the address; and official flood products in force, as hour offsets. null: no forecast."""
@@ -338,6 +341,22 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
           "floodValidated": bool(cfg.site and getattr(cfg.site, "flood_validated", False))}
     if cfg.flood_site:
         ev["pFlood"] = per(lambda r: (r.get("levels") or {}).get("driveway"))
+        # v0.19 exploration (flood potential): the share of runs at the drains-falling-behind level, and how many
+        # model systems (not runs: one system's members are correlated) put FLOOD_FLOOR of their runs at the flood level
+        ev["pBehind"] = per(lambda r: (r.get("levels") or {}).get("behind"))
+        if parts:
+            from . import levels as lv_mod
+            sysn = []
+            for i, t in enumerate(hours):
+                if ev["pFlood"][i] is None:
+                    sysn.append(None)
+                    continue
+                n = 0
+                for p in parts:
+                    lv = lv_mod.hour_levels(p, t, cfg) if t in p.members else None
+                    n += bool(lv and lv["driveway"] >= FLOOD_FLOOR)
+                sysn.append(n)
+            ev["floodSystems"], ev["systems"] = sysn, len(parts)
     t0, off = hours[0], []
     for a in report.get("alerts") or []:
         if a.get("event") not in FLOOD_PRODUCTS:
@@ -512,7 +531,7 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         if spans:
             card["rainTotals"] = spans
     if hazard in ("rain", "flood"):
-        card["evidence"] = evidence(rows, hours, by_t, report, cfg)
+        card["evidence"] = evidence(rows, hours, by_t, report, cfg, parts)
     if hazard == "flood":
         card["alert"] = {"actionTitle": f"Driveway · {cfg.site.card_location}",
                          "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
