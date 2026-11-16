@@ -38,7 +38,9 @@ const bandTop = (i: number) => base - (i + 1) * step, plateau = bandTop, labelY 
 // refinement (Nov 16): rounder corners (still clamped to half a plateau and half a step, so every vertical edge stays
 // on its hour); a slightly deeper jacket tone and firmer top edge so one-hour bursts read; a lighter dry baseline
 const f2 = (n: number) => Math.round(n * 100) / 100;
-const CORNER = 4.5, EDGE = '#3f7395', EDGE_OPACITY = .85, SIL_DRY = '#eef3f5', SIL_JACKET = '#7fafc6';
+// softer shoulders and a quieter baseline (Nov 16 review): radius 9, clamped as before to half a step and half a
+// plateau, so a one-hour burst gets a rounded top but keeps its exact hour edges
+const CORNER = 9, EDGE = '#3f7395', EDGE_OPACITY = .85, SIL_DRY = '#f3f6f8', SIL_JACKET = '#7fafc6';
 
 export function Timeline({ scenario: s, potential, graph = 'columns' }: { scenario: Scenario; potential?: PotentialStyle; graph?: GraphStyle }) {
   if (!s.timeline) return null;
@@ -156,7 +158,7 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
     {pots.map(p => {
       const a = x(p.startHour) + .6, b = x(p.endHour) - .6, top = bandTop(3) + .6;   // fills its band too
       const floor = Math.min(...silhouetteRuns(s).filter(r => !r.unknown && r.end > p.startHour && r.start < p.endHour).map(r => plateau(r.level)));
-      const r = Math.min(4, (b - a) / 2);
+      const r = Math.min(CORNER, (b - a) / 2);
       return <g key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(a)} data-w={f2(b - a)} data-top={f2(top)} data-floor={f2(floor)}>
         <path d={`M${a} ${floor} L${a} ${top + r} Q${a} ${top} ${a + r} ${top} L${b - r} ${top} Q${b} ${top} ${b} ${top + r} L${b} ${floor} Z`} fill={POTENTIAL_FILL} />
         <path d={`M${a} ${floor} L${a} ${top + r} Q${a} ${top} ${a + r} ${top} L${b - r} ${top} Q${b} ${top} ${b} ${top + r} L${b} ${floor}`}
