@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.15 (review branch headings-nav, not deployed): headings and Wednesday navigation
+- **Headings:** the graph is "3-day gear forecast" (heat cards: "Next 3 days"); "Action outlook" and the duplicate "Next 3 days" label are gone. The daily rows are just "Next 5 days".
+- **Upcoming module:** "Keep an eye on Wednesday" / "Around 1.1" of rain, beginning early and continuing overnight." The whole module links to its day's row in the five-day forecast, which scrolls into view, takes focus and briefly highlights; keyboard-reachable, instant with no animation under reduced motion. Day and destination come from the selected event.
+
 ## v0.14 (review branch two-horizon-hero, not deployed): upcoming event in the hero
 - **Now & next:** an upcoming-event module beneath the primary forecast when a later event is materially more consequential (higher gear rung, at least twice the rain, or heavier rain), with its start supported by data. Hidden on all five canonical scenarios and the incomplete one.
 - **Review changes:** the amount leads ("Wednesday · Around 1.1" of rain" / "Beginning early, continuing overnight."), and is omitted when the event runs past the forecast data. Next hours: the half-visible hour at the card edge fades instead of being cut mid-label.

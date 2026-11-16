@@ -580,6 +580,8 @@ function eventAmount(s: Scenario, ev: RainEvent, all: RainEvent[]): number | nul
 const START_WORDS = Array.from({ length: 24 }, (_, h) => h < 5 ? 'early' : h < 12 ? 'in the morning' : h < 17 ? 'in the afternoon' : h < 21 ? 'in the evening' : 'late');
 export interface Upcoming {
   startHour: number; day: string; heading: string; sentence: string; reason: string; icon: Scenario['days'][number]['icon'];
+  /** the event's day in the five-day rows (0 = today): the module's link target */
+  dayIndex: number;
   /** 'awareness': "Keep an eye on Wednesday" (two or more days out, no different gear); 'day': "Tomorrow · Around 0.4" of rain" */
   mode: 'awareness' | 'day';
 }
@@ -633,8 +635,11 @@ export function upcomingEvent(s: Scenario): Upcoming | null {
   // that needs no different gear. Invites attention; the facts follow. Anticipation and action modes: not built yet.
   if (k >= 2 && reason !== 'higher action') {
     // short enough for one line on a phone: the heading already says it is rain (Nov 15 2026)
-    const lead = total ? `Around ${amt!.toFixed(1)}" expected` : `Rain beginning ${START_WORDS[localHour(s, ev.start)]}`;
-    return { startHour: ev.start, day, heading: `Keep an eye on ${day}`, sentence: [lead, then].filter(Boolean).join(', ') + '.',
+    // "Around 1.1" of rain, beginning early and continuing overnight." (Nov 15 2026)
+    const begin = `beginning ${START_WORDS[localHour(s, ev.start)]}`;
+    const lead = total ? `${total}, ${begin}` : `Rain ${begin}`;
+    const sentence = (overnight ? `${lead} and continuing overnight` : !ev.endKnown ? `${lead}, still falling where the forecast ends` : lead) + '.';
+    return { startHour: ev.start, day, dayIndex: k, heading: `Keep an eye on ${day}`, sentence,
              reason, icon: s.days[k]?.icon ?? 'rain', mode: 'awareness' };
   }
   const heading = total ?? (reason === 'higher action' ? levelLabels(s)[ev.rung!] : 'Rain');
@@ -642,5 +647,5 @@ export function upcomingEvent(s: Scenario): Upcoming | null {
   if (reason === 'higher action' && total) parts.unshift(levelLabels(s)[ev.rung!]);
   if (then) parts.push(then);
   const sentence = cap(parts.map((x, i) => i ? x.charAt(0).toLowerCase() + x.slice(1) : x).join(', ')) + '.';
-  return { startHour: ev.start, day, heading, sentence, reason, icon: s.days[k]?.icon ?? 'rain', mode: 'day' };
+  return { startHour: ev.start, day, dayIndex: k, heading, sentence, reason, icon: s.days[k]?.icon ?? 'rain', mode: 'day' };
 }

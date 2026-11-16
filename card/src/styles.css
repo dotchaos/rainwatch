@@ -72,3 +72,12 @@
 
 /* Next hours: the half-visible hour at the card edge fades instead of being cut mid-label (v0.14). */
 .hours-scroll{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent)}
+
+/* Upcoming module as a link (v0.15): same look, the whole module tappable; a quiet chevron says it goes somewhere. */
+.upcoming-link{display:block;color:inherit;text-decoration:none;border-radius:6px;cursor:pointer}
+.upcoming-link:focus-visible{outline:2px solid #2f6f95;outline-offset:3px}
+.upcoming-go{margin-left:auto;color:#9aa6ad;flex-shrink:0}
+.five-row:focus{outline:none}
+.five-row-flash{animation:five-flash 2.2s ease-out}
+@keyframes five-flash{0%,35%{background:#e6f0f8}100%{background:transparent}}
+@media (prefers-reduced-motion: reduce){.five-row-flash{animation:none;background:#e6f0f8}}

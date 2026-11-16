@@ -20,18 +20,18 @@ describe('show/hide across the seven scenarios', () => {
     const s = byId('upcoming'), u = upcomingEvent(s)!;
     expect(validateScenario(s)).toEqual([]);
     // awareness mode: several days out, no different gear (DISPLAY-RULES, voice and urgency)
-    expect([u.mode, u.heading, u.sentence]).toEqual(['awareness', 'Keep an eye on Wednesday', 'Around 1.1" expected, continuing overnight.']);
+    expect([u.mode, u.heading, u.sentence]).toEqual(['awareness', 'Keep an eye on Wednesday', 'Around 1.1" of rain, beginning early and continuing overnight.']);
     const n = nowNext(s)!;
     expect(n.headline).toBe('Rain until about 11 PM');                // the primary headline is unchanged
     expect(n.detail).not.toContain('More rain');                       // not said twice
     const h = html(s);
-    expect(h.indexOf('class="upcoming"')).toBeGreaterThan(h.indexOf('class="headline"'));
-    expect(h.indexOf('class="upcoming"')).toBeLessThan(h.indexOf('timeline-section'));   // inside Now & next
+    expect(h.indexOf('class="upcoming')).toBeGreaterThan(h.indexOf('class="headline"'));
+    expect(h.indexOf('class="upcoming')).toBeLessThan(h.indexOf('timeline-section'));   // inside Now & next
   });
 
   it.each(['october', 'rain', 'rain-soon', 'storm', 'heat', 'incomplete'])('%s: hidden', id => {
     expect(upcomingEvent(byId(id))).toBeNull();
-    expect(html(byId(id))).not.toContain('class="upcoming"');
+    expect(html(byId(id))).not.toContain('class="upcoming');
   });
 
   it('rain starting soon: the event the headline is about is never repeated', () => {
@@ -70,7 +70,7 @@ describe('selection rules', () => {
     s.rainHours = [{ startHour: 93, endHour: 97, intensity: 2 }];
     s.days[4] = { ...s.days[4], rainIn: 0.3 };
     const u = upcomingEvent(s)!;
-    expect([u.heading, u.sentence]).toEqual(['Keep an eye on Monday', 'Around 0.3" expected.']);
+    expect([u.heading, u.sentence]).toEqual(['Keep an eye on Monday', 'Around 0.3" of rain, beginning in the morning.']);
   });
 
   it('extreme storm: events holding a Sandbags window the alert lists are never repeated', () => {
@@ -163,6 +163,44 @@ describe('voice and urgency (awareness mode only, v0.14)', () => {
 
   it('the facts follow the invitation: awareness always carries an amount or a start', () => {
     const u = upcomingEvent(byId('upcoming'))!;
-    expect(u.sentence).toMatch(/\d\.\d" expected|beginning/);
+    expect(u.sentence).toMatch(/\d\.\d" of rain|beginning/);
+  });
+});
+
+describe('headings and navigation (v0.15)', () => {
+  it('the graph is the "3-day gear forecast"; heat cards say "Next 3 days"; no "outlook" headings', () => {
+    for (const s of scenarios) {
+      const h = html(s);
+      if (!h.includes('timeline-section')) { expect(s.hazard).toBe('none'); continue; }
+      const head = h.slice(h.indexOf('timeline-section'), h.indexOf('</div>', h.indexOf('timeline-section')));
+      expect(head, s.id).toContain(s.hazard === 'heat' ? '<strong>Next 3 days</strong>' : '<strong>3-day gear forecast</strong>');
+      expect(head).not.toMatch(/Action outlook|Heat outlook|<span>/);   // no right-hand label
+    }
+  });
+
+  it('the daily forecast is just "Next 5 days"', () => {
+    for (const s of scenarios) {
+      const h = html(s);
+      expect(h).toContain('<div class="five-head"><strong>Next 5 days</strong></div>');
+      expect(h).not.toContain('Rain · High / Low');
+    }
+  });
+
+  it('the module links to its own day\'s row, generated from the selected event', () => {
+    const h = html(byId('upcoming')), u = upcomingEvent(byId('upcoming'))!;
+    expect(u.dayIndex).toBe(3);
+    expect(h).toMatch(/<a class="upcoming upcoming-link" href="#five-day-3" aria-label="Keep an eye on Wednesday\. .*Show Wednesday in the five-day forecast\."/);
+    expect(h).toMatch(/<li class="five-row" id="five-day-3" tabindex="-1"><div class="five-top"><strong>Wednesday<\/strong>/);
+    const s = byId('october');
+    s.rainHours = [{ startHour: 93, endHour: 97, intensity: 2 }];
+    s.days[4] = { ...s.days[4], rainIn: 0.3 };
+    expect(html(s)).toMatch(/href="#five-day-4" aria-label="Keep an eye on Monday\./);
+  });
+
+  it('without five-day rows there is nowhere to go: the module is not a link', () => {
+    const s = byId('upcoming');
+    delete s.rainHours; s.days = s.days.slice(0, 3);
+    const h = html(s);
+    expect(h).not.toContain('upcoming-link');
   });
 });

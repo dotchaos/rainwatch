@@ -3,7 +3,8 @@ import { daysAt, intervalColor, layoutLabels, levelLabels, windowLabel } from '.
 import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts } from '../lib/derive';
 
 /**
- * Next 3 days: the compact action graph over the rolling 72 hours from now (v0.12.2).
+ * 3-day gear forecast: the compact graph of rain gear over the rolling 72 hours from now (v0.12.2; heading v0.15).
+ * Heat cards title it "Next 3 days": its rungs are heat levels, not gear.
  * 3-hour blocks aligned to the local clock; day names over each day (today always; another final sliver under 12 hours is not named),
  * AM/PM centred on each half-day, dashed midnight dividers. Severity sets block height and colour (unchanged
  * palette); dashed outline = timing may shift; hatched = no forecast. Nothing is drawn past hour 72.
@@ -24,10 +25,11 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
   const placed = layoutLabels(callouts, x0, x(72));
   const rows = placed.some(p => p.row === 1) ? 2 : callouts.length ? 1 : 0, top = rows * 24;
   const cov = coverageNote(s), edge = edgeNote(s);
-  return <section className="timeline-section" aria-label={heat ? 'Heat outlook' : 'Action outlook'}>
-    <div className="section-heading"><strong>Next 3 days</strong><span>{heat ? 'Heat outlook' : 'Action outlook'}</span></div>
+  const title = heat ? 'Next 3 days' : '3-day gear forecast';
+  return <section className="timeline-section" aria-label={title}>
+    <div className="section-heading"><strong>{title}</strong></div>
     <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
-      aria-label={`${heat ? 'Heat' : 'Action'} outlook for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing may shift.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
+      aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing may shift.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
       <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern></defs>
       {callouts.map((c, i) => {
         const { left, row } = placed[i], ty = (rows - 1 - row) * 24, color = intervalColor(s, 3);

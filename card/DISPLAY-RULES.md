@@ -53,6 +53,7 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
   - Either rain reason needs an amount worth a number in tenths (the existing amounts rule), taken from a complete day with no other rain that day.
 - Never on heat cards. Never for an event holding a Sandbags window the flood alert already lists. Never from an incomplete day's amount, and never for an event whose start borders missing data. No end time, ever. "Continuing overnight" only when the next day's first hours are forecast wet; "still falling where the forecast ends" when the data stops.
 - When shown, the hero detail drops its "More rain …" line for the same event.
+- The whole module links to its event's day in the five-day forecast (scroll, focus, brief highlight; instant under reduced motion). Without five-day rows it is not a link.
 - No new rainfall threshold: comparisons are relative to the primary event. Official warnings aren't in the card contract yet, so they aren't considered.
 
 ## Upcoming weather: voice and urgency (accepted Nov 15 2026)
@@ -79,7 +80,7 @@ These are communication modes, not rigid time buckets: a serious hazard several 
 "Keep an eye on Wednesday" is an invitation to pay attention, not an instruction to keep checking the app: Rainwatch does the monitoring; the reader simply knows what's coming.
 
 Example, Wednesday rain:
-- Several days out: **Keep an eye on Wednesday** / Around 1.1" expected, continuing overnight.
+- Several days out: **Keep an eye on Wednesday** / Around 1.1" of rain, beginning early and continuing overnight.
 - The day before: **Wednesday's looking wet** / Around 1.1" expected, beginning early and continuing overnight.
 - During the event: **Rain through tonight** / Around 1.1" expected across the event, only if its end is supported by forecast data.
 

@@ -1,4 +1,4 @@
-import { MapPin, ShieldAlert, Footprints, Sun } from 'lucide-react';
+import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
 import { edgeNote, fiveDays, hourLabel, nowNext, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
@@ -7,7 +7,7 @@ import { Timeline } from './Timeline';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
- * 1 Now & next · 2 Next 3 days (graph, when useful) · 3 Next hours · 4 More information.
+ * 1 Now & next · 2 3-day gear forecast (graph, when useful) · 3 Next hours · 4 More information (Next 5 days).
  * Every word and window comes from src/lib/derive.ts; components never hard-code scenario wording.
  */
 const deg = (v: number | null) => v === null ? '—' : `${v}°`;
@@ -19,6 +19,33 @@ function Header({ s }: { s: Scenario }) {
   return <header className="location"><span><MapPin size={17} /><strong>{s.location}</strong></span><small className="updated">Updated {time}</small></header>;
 }
 
+/** Scroll to a five-day row and briefly highlight it; instant and without animation for reduced motion.
+ *  Focus moves to the row so keyboard and screen-reader users land there too. */
+function goToRow(id: string) {
+  const row = document.getElementById(id);
+  if (!row) return;
+  const reduce = typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  row.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  row.focus({ preventScroll: true });
+  row.classList.remove('five-row-flash'); void row.offsetWidth; row.classList.add('five-row-flash');
+  window.setTimeout(() => row.classList.remove('five-row-flash'), 2200);
+}
+
+/** The upcoming-event module: the whole module links to its day's row in the five-day forecast (when there is one). */
+function Upcoming({ up, target }: { up: NonNullable<ReturnType<typeof upcomingEvent>>; target: string | null }) {
+  const label = up.mode === 'awareness' ? `${up.heading}. ${up.sentence}` : `Coming up: ${up.day}, ${up.heading}. ${up.sentence}`;
+  const body = <>
+    <div className="upcoming-head"><WeatherIcon name={up.icon} size={20} />{up.mode === 'awareness'
+      ? <strong>{up.heading}</strong> : <><strong>{up.day}</strong><span>· {up.heading}</span></>}
+      {target && <ChevronRight className="upcoming-go" size={16} aria-hidden />}</div>
+    <p>{up.sentence}</p>
+  </>;
+  return target
+    ? <a className="upcoming upcoming-link" href={`#${target}`} aria-label={`${label} Show ${up.day} in the five-day forecast.`}
+        onClick={e => { e.preventDefault(); goToRow(target); }}>{body}</a>
+    : <div className="upcoming" aria-label={label}>{body}</div>;
+}
+
 /** 1. Now & next: current conditions, then the headline, its detail and one actionable line. */
 function NowAndNext({ s }: { s: Scenario }) {
   const n = nowNext(s), Icon = n?.action ? ACTION_ICON[n.action.icon] : null, up = upcomingEvent(s);
@@ -27,11 +54,7 @@ function NowAndNext({ s }: { s: Scenario }) {
     {n && <><h2 className="headline">{n.headline}</h2>{n.detail && <p className="headline-detail">{n.detail}</p>}
       {n.action && Icon && <div className={`action-line${n.action.risk ? ' risk' : ''}`}><Icon size={19} />{n.action.text}</div>}
       {n.note && <p className="action-note">{n.note}</p>}</>}
-    {up && <div className="upcoming" aria-label={up.mode === 'awareness' ? `${up.heading}. ${up.sentence}` : `Coming up: ${up.day}, ${up.heading}. ${up.sentence}`}>
-      <div className="upcoming-head"><WeatherIcon name={up.icon} size={20} />{up.mode === 'awareness'
-        ? <strong>{up.heading}</strong> : <><strong>{up.day}</strong><span>· {up.heading}</span></>}</div>
-      <p>{up.sentence}</p>
-    </div>}
+    {up && <Upcoming up={up} target={fiveDays(s) ? `five-day-${up.dayIndex}` : null} />}
   </section>;
 }
 
@@ -73,9 +96,9 @@ function Strip({ r }: { r: FiveDayRow }) {
 function FiveDays({ s, rows }: { s: Scenario; rows: FiveDayRow[] }) {
   const gap = rows.some(r => r.segs.some(g => g.kind === 'unknown')), wet = rows.some(r => r.segs.some(g => g.kind === 'rain')), note = stripCoverageNote(s);
   return <div className="five-days">
-    <div className="five-head"><strong>Next 5 days</strong><span>Rain · High / Low</span></div>
+    <div className="five-head"><strong>Next 5 days</strong></div>
     <div className="strip-axis" aria-hidden>{AXIS.map(([L, t]) => <span key={L} data-at={L} style={{ left: pct(L) }}>{t}</span>)}</div>
-    <ol className="five-rows">{rows.map(r => <li className="five-row" key={r.label}>
+    <ol className="five-rows">{rows.map((r, k) => <li className="five-row" key={r.label} id={`five-day-${k}`} tabIndex={-1}>
       <div className="five-top"><strong>{r.label}</strong><span className={`total total-${r.total.kind}`}>{r.total.text}</span></div>
       <div className="five-sub"><span className="five-desc">{r.description}</span><span className="five-temps">{deg(r.highF)} / {deg(r.lowF)}</span></div>
       <Strip r={r} />
