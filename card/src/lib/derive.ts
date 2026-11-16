@@ -632,7 +632,8 @@ export function upcomingEvent(s: Scenario): Upcoming | null {
   // Awareness mode (DISPLAY-RULES "Upcoming weather: voice and urgency"): a meaningful event two or more days away
   // that needs no different gear. Invites attention; the facts follow. Anticipation and action modes: not built yet.
   if (k >= 2 && reason !== 'higher action') {
-    const lead = total ? `${total} expected` : `Rain beginning ${START_WORDS[localHour(s, ev.start)]}`;
+    // short enough for one line on a phone: the heading already says it is rain (Nov 15 2026)
+    const lead = total ? `Around ${amt!.toFixed(1)}" expected` : `Rain beginning ${START_WORDS[localHour(s, ev.start)]}`;
     return { startHour: ev.start, day, heading: `Keep an eye on ${day}`, sentence: [lead, then].filter(Boolean).join(', ') + '.',
              reason, icon: s.days[k]?.icon ?? 'rain', mode: 'awareness' };
   }

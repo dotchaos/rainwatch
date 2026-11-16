@@ -20,7 +20,7 @@ describe('show/hide across the seven scenarios', () => {
     const s = byId('upcoming'), u = upcomingEvent(s)!;
     expect(validateScenario(s)).toEqual([]);
     // awareness mode: several days out, no different gear (DISPLAY-RULES, voice and urgency)
-    expect([u.mode, u.heading, u.sentence]).toEqual(['awareness', 'Keep an eye on Wednesday', 'Around 1.1" of rain expected, continuing overnight.']);
+    expect([u.mode, u.heading, u.sentence]).toEqual(['awareness', 'Keep an eye on Wednesday', 'Around 1.1" expected, continuing overnight.']);
     const n = nowNext(s)!;
     expect(n.headline).toBe('Rain until about 11 PM');                // the primary headline is unchanged
     expect(n.detail).not.toContain('More rain');                       // not said twice
@@ -70,7 +70,7 @@ describe('selection rules', () => {
     s.rainHours = [{ startHour: 93, endHour: 97, intensity: 2 }];
     s.days[4] = { ...s.days[4], rainIn: 0.3 };
     const u = upcomingEvent(s)!;
-    expect([u.heading, u.sentence]).toEqual(['Keep an eye on Monday', 'Around 0.3" of rain expected.']);
+    expect([u.heading, u.sentence]).toEqual(['Keep an eye on Monday', 'Around 0.3" expected.']);
   });
 
   it('extreme storm: events holding a Sandbags window the alert lists are never repeated', () => {
@@ -163,6 +163,6 @@ describe('voice and urgency (awareness mode only, v0.14)', () => {
 
   it('the facts follow the invitation: awareness always carries an amount or a start', () => {
     const u = upcomingEvent(byId('upcoming'))!;
-    expect(u.sentence).toMatch(/\d\.\d" of rain expected|beginning/);
+    expect(u.sentence).toMatch(/\d\.\d" expected|beginning/);
   });
 });

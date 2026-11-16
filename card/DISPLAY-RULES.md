@@ -79,7 +79,7 @@ These are communication modes, not rigid time buckets: a serious hazard several 
 "Keep an eye on Wednesday" is an invitation to pay attention, not an instruction to keep checking the app: Rainwatch does the monitoring; the reader simply knows what's coming.
 
 Example, Wednesday rain:
-- Several days out: **Keep an eye on Wednesday** / Around 1.1" of rain expected, continuing overnight.
+- Several days out: **Keep an eye on Wednesday** / Around 1.1" expected, continuing overnight.
 - The day before: **Wednesday's looking wet** / Around 1.1" expected, beginning early and continuing overnight.
 - During the event: **Rain through tonight** / Around 1.1" expected across the event, only if its end is supported by forecast data.
 
