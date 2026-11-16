@@ -62,3 +62,14 @@ Point 18th & Shotwell 37.761, -122.415. Gauge SFOC1 (SAN FRANCISCO DOWNTOWN) at 
 **ncep_hrrr_conus**: 05h code 3 pr 0.0 sh 0.0; 06h code 61 pr 2.2 sh 0.0; 07h code 63 pr 2.9 sh 0.0; 08h code 3 pr 0.0 sh 0.0; 09h code 3 pr 0.0 sh 0.0; 10h code 3 pr 0.0 sh 0.0; 11h code 3 pr 0.0 sh 0.0; 12h code 3 pr 0.0 sh 0.0
 **ncep_nbm_conus**: 05h code 3 pr 0.0 sh 0.0; 06h code 3 pr 0.0 sh 0.0; 07h code 53 pr 0.8 sh 0.0; 08h code 61 pr 1.3 sh 0.0; 09h code 2 pr 0.0 sh 0.0; 10h code 51 pr 0.3 sh 0.0; 11h code 1 pr 0.0 sh 0.0; 12h code 53 pr 0.5 sh 0.0
 **best_match**: 05h code 3 pr 0.0 sh 0.0; 06h code 61 pr 2.2 sh 0.0; 07h code 63 pr 2.9 sh 0.0; 08h code 3 pr 0.0 sh 0.0; 09h code 3 pr 0.0 sh 0.0; 10h code 3 pr 0.0 sh 0.0; 11h code 3 pr 0.0 sh 0.0; 12h code 3 pr 0.0 sh 0.0
+
+## Gauge raw reports (UTC)
+
+```
+station,utc_valid,PCIRGZZ,TAIRGDZ,TAIRGFZ,TAIRGZZ,XRIRGZZ
+SFOC1,2026-11-16 16:43:00,2.24,54.53,52.57,54.53,89.0
+SFOC1,2026-11-16 17:43:00,2.24,57.94,53.24,57.6,73.0
+SFOC1,2026-11-16 18:43:00,2.24,59.13,54.53,59.13,64.0
+SFOC1,2026-11-16 19:43:00,2.32,60.52,54.24,54.4,79.0
+SFOC1,2026-11-16 20:43:00,2.32,60.52,54.24,57.44,66.0
+```
