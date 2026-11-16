@@ -3,12 +3,12 @@
  "title": "Live",
  "season": "November",
  "location": "18th & Shotwell",
- "observedAt": "Sunday \u00b7 4:24 PM",
+ "observedAt": "Sunday \u00b7 4:34 PM",
  "startDay": "Sun",
  "startHourLocal": 16,
  "hazard": "rain",
  "current": {
-  "temperatureF": 55,
+  "temperatureF": 58,
   "condition": "Rain",
   "icon": "rain",
   "highF": 59,
@@ -17,72 +17,72 @@
  "hourly": [
   {
    "hour": 0,
-   "temperatureF": 55,
+   "temperatureF": 58,
    "icon": "rain"
   },
   {
    "hour": 1,
-   "temperatureF": 55,
+   "temperatureF": 57,
    "icon": "rain"
   },
   {
    "hour": 2,
-   "temperatureF": 53,
+   "temperatureF": 56,
    "icon": "rain"
   },
   {
    "hour": 3,
-   "temperatureF": 53,
+   "temperatureF": 55,
    "icon": "rain"
   },
   {
    "hour": 4,
-   "temperatureF": 54,
+   "temperatureF": 56,
    "icon": "rain"
   },
   {
    "hour": 5,
-   "temperatureF": 54,
+   "temperatureF": 56,
    "icon": "rain"
   },
   {
    "hour": 6,
-   "temperatureF": 53,
+   "temperatureF": 55,
    "icon": "rain"
   },
   {
    "hour": 7,
-   "temperatureF": 53,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 8,
-   "temperatureF": 53,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 9,
-   "temperatureF": 53,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 10,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 11,
-   "temperatureF": 52,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 12,
-   "temperatureF": 52,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 13,
-   "temperatureF": 53,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
@@ -92,17 +92,17 @@
   },
   {
    "hour": 15,
-   "temperatureF": 53,
+   "temperatureF": 51,
    "icon": "overcast"
   },
   {
    "hour": 16,
-   "temperatureF": 54,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 17,
-   "temperatureF": 53,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
@@ -143,7 +143,7 @@
    "icon": "rain",
    "lowF": 53,
    "highF": 59,
-   "rainIn": 0.35
+   "rainIn": 0.3
   },
   {
    "label": "Tomorrow",
@@ -191,18 +191,23 @@
   },
   {
    "startHour": 60,
-   "endHour": 63,
+   "endHour": 61,
+   "intensity": 3
+  },
+  {
+   "startHour": 61,
+   "endHour": 65,
    "intensity": 2
   },
   {
-   "startHour": 63,
+   "startHour": 65,
    "endHour": 90,
    "intensity": 1
   }
  ],
  "provenance": {
   "type": "live",
-  "generated": "2026-11-16T00:24:41.512636+00:00",
+  "generated": "2026-11-16T00:34:03.033416+00:00",
   "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
  },
  "timeline": {
@@ -228,7 +233,7 @@
   {
    "startHour": 0,
    "endHour": 7,
-   "medianIn": 0.34
+   "medianIn": 0.28
   },
   {
    "startHour": 57,
