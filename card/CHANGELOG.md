@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.18.1: hourly row fix (iOS)
+- The v0.17 hourly row grouped hours by day and sized them in container units; on iOS (WebKit) the groups mis-measured and hours from 10 PM on overlapped. Back to a flat row with the original percentage widths; day labels are zero-width sticky markers (each covers the last), and without sticky support they just sit above each day's first hour. A test keeps the row flat.
+
 ## v0.18 (review branch clock-aware, not deployed): the card keeps time
 - The card ages on the device between updates: "Now", the headline, current conditions, the hourly row and today's strip follow the phone's clock; past hours are cleared; the forecast itself never changes. Partly-fallen events lose their total. Flood alert says "now" once the time to prepare arrives.
 - The page reloads when it comes back into view. Lab: `?lab&age=N` previews a card N hours old.

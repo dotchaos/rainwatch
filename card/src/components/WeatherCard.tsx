@@ -1,3 +1,4 @@
+import type React from 'react';
 import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
@@ -58,26 +59,21 @@ function NowAndNext({ s }: { s: Scenario }) {
   </section>;
 }
 
-/** 3. Hourly forecast: every hour from the current one, in a row that scrolls sideways. The hours are grouped by day;
- *  each day's label stays pinned at the row's left edge while its hours are in view (v0.17). */
+/** 3. Hourly forecast: every hour from the current one, in a row that scrolls sideways. A flat row with percentage
+ *  widths (as rendered reliably on iOS); each day's label is a zero-width marker before its first hour that pins to
+ *  the row's left edge, the next day's label covering it as it arrives (v0.18.1). Without sticky support the labels
+ *  simply sit above each day's first hour. */
 function Hourly({ s }: { s: Scenario }) {
-  const groups: { day: string; hours: Scenario['hourly'] }[] = [];
+  const items: React.ReactNode[] = [];
   s.hourly.forEach((h, i) => {
-    const at = h.hour ?? i, l = hourLabel(s, at);
-    if (!groups.length || l.day) groups.push({ day: groups.length ? l.day! : 'Today', hours: [] });
-    groups[groups.length - 1].hours.push({ ...h, hour: at });
+    const at = h.hour ?? i, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon;
+    if (i === 0 || l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${at}`}>{i === 0 ? 'Today' : l.day}</em>);
+    items.push(<div className={`hour${l.day && i > 0 ? ' hour-midnight' : ''}`} role="listitem" key={at} aria-label={l.day ? `${l.day} ${l.text}` : undefined}>
+      <span>{l.text}</span><WeatherIcon name={icon} size={24} label /><strong>{deg(h.temperatureF)}</strong>
+    </div>);
   });
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
-    <div className="hours-scroll" role="list" aria-label="Hourly forecast">{groups.map((g, k) =>
-      <div className={`hour-group${k ? ' hour-group-next' : ''}`} role="none" key={g.day}>
-        <em className="hour-day-pin" aria-hidden>{g.day}</em>
-        {g.hours.map(h => {
-          const at = h.hour!, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon;
-          return <div className="hour" role="listitem" key={at} aria-label={l.day ? `${l.day} ${l.text}` : undefined}>
-            <span>{l.text}</span><WeatherIcon name={icon} size={24} label /><strong>{deg(h.temperatureF)}</strong>
-          </div>;
-        })}
-      </div>)}</div></section>;
+    <div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></section>;
 }
 
 /** A day's rain amount, only when it is rain worth a number (see DISPLAY-RULES.md, Rain amounts). */

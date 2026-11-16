@@ -2,6 +2,7 @@
  * Wording by evidence (v0.17): rain within the hour counts as now; "on and off" / "at times" / "Rain" by what the data
  * supports; on-and-off rain gets its end time and amount; "Dry right now" from the radar; renamed sections.
  */
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
@@ -83,7 +84,17 @@ describe('sections', () => {
     const h = renderToString(createElement(WeatherCard, { scenario: byId('upcoming') }));
     expect(h).toContain('<strong>Hourly forecast</strong>');
     expect(h).not.toContain('Next hours');
-    const pins = [...h.matchAll(/class="hour-day-pin" aria-hidden="true">([^<]+)</g)].map(m => m[1]);
+    const pins = [...h.matchAll(/class="hour-pin" aria-hidden="true">([^<]+)</g)].map(m => m[1]);
     expect(pins).toEqual(['Today', 'Mon']);                                // 24 hours from Sun 4 PM
+  });
+
+  it('the hourly row stays flat, with percentage widths (v0.18.1: nested groups sized in container units broke on iOS)', () => {
+    const h = renderToString(createElement(WeatherCard, { scenario: byId('upcoming') }));
+    const row = h.slice(h.indexOf('class="hours-scroll"'), h.indexOf('</section>', h.indexOf('class="hours-scroll"')));
+    expect(row).not.toContain('hour-group');
+    expect(row.match(/role="listitem"/g)).toHaveLength(24);
+    const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+    expect(css).not.toMatch(/cqw|container-type/);
+    expect(css).toMatch(/\.hour\{flex:0 0 calc\(\(100% \+ 0px\) \/ 6\.5\)/);
   });
 });
