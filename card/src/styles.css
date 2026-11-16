@@ -88,3 +88,11 @@
 .hour-pin{position:sticky;left:0;z-index:1;align-self:flex-start;flex:0 0 52px;margin:-16px -52px 0 0;height:13px;
   background:#fff;font-style:normal;font-size:9px;font-weight:700;letter-spacing:.04em;line-height:13px;color:#26343d;
   text-transform:uppercase;padding-left:2px;white-space:nowrap}
+
+/* Lab: ladder options (v0.19 exploration) */
+.ladder-options h3{font-size:13px;margin:22px 0 8px;color:#53636c}
+.ladder-options .weather-card{gap:0}.ladder-options .timeline-section{border-top:0!important;padding-top:0!important}
+.gear-windows{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13px}
+.gear-windows li{display:flex;align-items:center;gap:8px}.gear-windows i{width:12px;height:8px;border-radius:2px;flex-shrink:0}
+.gear-windows span{color:#53636c}
+.ladder-note{font-size:11px;color:#7b8991;margin-top:14px;line-height:1.4}

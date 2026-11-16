@@ -721,3 +721,6 @@ export function elapsedHours(s: Scenario, nowMs: number): number {
   const g = new Date(s.provenance.generated).getTime(), hour0 = Math.floor(g / 3.6e6) * 3.6e6;
   return Math.max(0, Math.floor((nowMs - hour0) / 3.6e6));
 }
+
+/** isUnknown, re-exported for lab components. */
+export const isUnknownAt = (s: Scenario, h: number) => isUnknown(s, h);

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import type { Scenario } from './types';
 import { scenarios } from './data/scenarios';
 import { WeatherCard } from './components/WeatherCard';
+import { LadderOptions } from './components/LadderOptions';
 import { validateScenario } from './lib/rules';
 import { ageCard, elapsedHours } from './lib/derive';
 import './styles.css';
@@ -11,10 +12,12 @@ const CHIP:Record<string,string>={october:'Calm',rain:'Intermittent','rain-soon'
 function Lab(){const [selected,setSelected]=useState(scenarios[0].id);
  // ?lab&age=N previews a card N hours after it was built (v0.18 review aid)
  const age=Number(new URLSearchParams(location.search).get('age'))||0;
+ // ?lab&ladder compares three ways to show gear and flood risk (v0.19 exploration)
+ const ladder=new URLSearchParams(location.search).has('ladder');
  const s=ageCard(scenarios.find(x=>x.id===selected)!,age);const errors=validateScenario(s);
  return <main className="lab-single"><header className="lab-header"><div><div className="eyebrow">SCENARIO LAB · V0.18</div><h1>Weather, when it matters.</h1><p>One adaptive interface. Five canonical scenarios, plus an incomplete forecast and a bigger storm ahead.</p></div></header>
  <div className="chips" role="group" aria-label="Scenario">{scenarios.map(x=><button key={x.id} aria-pressed={x.id===selected} onClick={()=>setSelected(x.id)}>{CHIP[x.id]??x.title}</button>)}</div>
- <div className="scenario" style={{marginTop:16}}><WeatherCard scenario={s}/>{errors.length>0&&<div className="validation">Fixture errors: {errors.join(', ')}</div>}</div>
+ <div className="scenario" style={{marginTop:16}}>{ladder?<LadderOptions scenario={s}/>:<WeatherCard scenario={s}/>}{errors.length>0&&<div className="validation">Fixture errors: {errors.join(', ')}</div>}</div>
  <div className="lab-footer">Design-only fixture data. No live weather, calibrated flood model, or official warnings are connected.</div></main>};
 function ago(iso:string){const m=Math.round((Date.now()-new Date(iso).getTime())/60000);return m<1?'just now':m<60?`${m} min ago`:`${Math.floor(m/60)} h ${m%60} min ago`;}
 function Live(){
