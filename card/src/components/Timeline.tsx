@@ -169,10 +169,16 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
     {/* the top edge stops where each shoulder starts, so no tick sticks out past a rounded corner */}
     {runs.filter(r => !r.unknown && r.level > 0).map(r => { const rc = Math.min(CORNER, (x(r.end) - x(r.start)) / 2) * .9; return <line key={`e-${r.start}`} className="chart-sil-edge" x1={f2(x(r.start) + rc)} x2={f2(x(r.end) - rc)}
       y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1.1" strokeOpacity={EDGE_OPACITY} strokeDasharray={r.sure ? undefined : '2.5 2'} />; })}
-    {pots.map(p => { const o = overlay(p.startHour, p.endHour);
-      return <rect key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(o.a)} data-w={f2(o.b - o.a)} data-top={f2(o.top)} data-floor={f2(o.floor)}
-        x={f2(o.a)} y={f2(o.top)} width={f2(o.b - o.a)} height={f2(o.floor - o.top)} rx={f2(o.r)}
-        fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />; })}
+    {/* potential flooding meets the Rain gear plateau (Nov 16, live review): its pale interior reaches the plateau, its
+        dashed outline runs up the sides and across the top only, so the blue plateau edge is its floor. Separate by its
+        outline and fill, attached by position. Actionable (solid) shapes stay detached: solid warm on solid blue would
+        read as one taller column. */}
+    {pots.map(p => { const o = overlay(p.startHour, p.endHour), floor = bandTop(2), r = Math.min(6, (o.b - o.a) / 2);
+      const sides = `M${f2(o.a)} ${floor} L${f2(o.a)} ${f2(o.top + r)} Q${f2(o.a)} ${f2(o.top)} ${f2(o.a + r)} ${f2(o.top)} L${f2(o.b - r)} ${f2(o.top)} Q${f2(o.b)} ${f2(o.top)} ${f2(o.b)} ${f2(o.top + r)} L${f2(o.b)} ${floor}`;
+      return <g key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(o.a)} data-w={f2(o.b - o.a)} data-top={f2(o.top)} data-floor={f2(floor)}>
+        <path d={`${sides} Z`} fill={POTENTIAL_FILL} />
+        <path d={sides} fill="none" stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />
+      </g>; })}
     {act.map(w => { const o = overlay(w.startHour, w.endHour);
       return <rect key={`act-${w.startHour}`} className="chart-actionable" data-x={f2(o.a)} data-w={f2(o.b - o.a)} data-top={f2(o.top)} data-floor={f2(o.floor)}
         x={f2(o.a)} y={f2(o.top)} width={f2(o.b - o.a)} height={f2(o.floor - o.top)} rx={f2(o.r)} fill={intervalColor(s, 3)} />; })}
