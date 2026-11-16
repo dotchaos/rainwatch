@@ -14,6 +14,7 @@ from . import alerts, archive, forecast, nowcast, render, shading, storms
 from .config import Config
 from .model import UTC
 from .net import session
+from .sources import openmeteo
 from .sources import gauges, nws, openmeteo, radar
 
 
@@ -88,6 +89,13 @@ def main(argv=None) -> int:
         arc.flood(now, fc.card)
     except Exception as e:  # noqa: BLE001
         print(f"flood record: {e}")
+    try:    # HRRR archive (v0.23): each run once, with its own run time, for lead-time scoring; never blocks the update
+        for d in det:     # the run Open-Meteo is serving (one extra call, scheduled job only)
+            if d.key == "hrrr" and d.issued is None:
+                d.issued = openmeteo.run_time(s, cfg.deterministic_models["HRRR"][0])
+        arc.hrrr(now, det)
+    except Exception as e:  # noqa: BLE001
+        print(f"hrrr record: {e}")
     obs = arc.merge_obs(gs, now)
     truth = archive.truth(obs, [cfg.site.hads_station] if cfg.site else [])   # scoring uses the nearby gauge only, never SFO
     scores = archive.score(arc.forecasts(now - timedelta(days=30)), truth, cfg.heavy_in, cfg.any_in)

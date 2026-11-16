@@ -63,6 +63,19 @@ def fetch_ensembles(s, lat, lon, models: list[str]) -> tuple[list[Series], list[
     return out, errs
 
 
+META = "https://api.open-meteo.com/data/{model}/static/meta.json"
+
+
+def run_time(s, model: str) -> datetime | None:
+    """The model run (initialisation time) Open-Meteo is serving for `model`, from its metadata; None if unknown.
+    Archive only (v0.23): it dates the saved forecasts; nothing in the forecast uses it."""
+    try:
+        t = get_json(s, META.format(model=model)).get("last_run_initialisation_time")
+        return datetime.fromtimestamp(int(t), UTC) if t else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def fetch_deterministic(s, lat, lon, models: dict[str, list[str]]) -> tuple[list[Series], list[str]]:
     out, errs = [], []
     for label, candidates in models.items():

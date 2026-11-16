@@ -102,6 +102,27 @@ class Archive:
         self.save_state(st)
         return True
 
+    def hrrr(self, now: datetime, series: list[Series]) -> bool:
+        """data/hrrr/YYYY-MM.jsonl (v0.23): every HRRR run once, as Open-Meteo served it for this point: the run's own
+        initialisation time, when it was fetched, and its hourly precipitation (inches, hour-start keys) for every hour
+        it covers, past the forecast's 12-hour snapshot window. Lets HRRR be scored by lead time against the gauge.
+        Without a known run time it is saved once per clock hour, marked run=None."""
+        h = next((x for x in series if x.key == "hrrr" and x.values), None)
+        if h is None:
+            return False
+        key = h.issued.isoformat() if h.issued else now.astimezone(UTC).strftime("fetched-%Y-%m-%dT%H")
+        st = self.state()
+        if st.get("last_hrrr") == key:
+            return False
+        rec = {"run": h.issued.isoformat() if h.issued else None, "fetched": now.astimezone(UTC).isoformat(),
+               "values": {t.isoformat(): round(v, 3) for t, v in sorted(h.values.items()) if t >= now - timedelta(hours=1)}}
+        (self.root / "hrrr").mkdir(exist_ok=True)
+        with open(self.root / "hrrr" / f"{now.astimezone(UTC):%Y-%m}.jsonl", "a") as f:
+            f.write(json.dumps(rec) + "\n")
+        st["last_hrrr"] = key
+        self.save_state(st)
+        return True
+
     def flood(self, now: datetime, card: dict | None, force: bool = False) -> bool:
         """data/flood/YYYY-MM.jsonl (v0.19 exploration): once per clock hour, the raw flood evidence on the card
         (per-hour shares of runs at the flood and drains-falling-behind levels, model systems agreeing, and each
