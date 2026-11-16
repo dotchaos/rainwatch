@@ -315,6 +315,43 @@ def provenance_note(used: list[str] | None, has_site: bool) -> str:
     return note + " Not an official warning."
 
 
+# Official NWS flood products (v0.19). Only these, never the model frequencies, can justify action voice while the
+# local flood levels are unvalidated.
+FLOOD_PRODUCTS = ("Flash Flood Warning", "Flood Warning", "Flash Flood Watch", "Flood Watch", "Flood Advisory")
+
+
+def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, cfg) -> dict:
+    """What the card needs to judge how strongly to speak (v0.19), per hour of the graph: the share of model runs
+    with a heavy hour (p_heavy) and, with a flood site, the share reaching the driveway level; whether those levels
+    are validated at the address; and official flood products in force, as hour offsets. null: no forecast."""
+    def per(f):
+        out = []
+        for t in hours:
+            r = by_t.get(t.isoformat())
+            out.append(None if not r or r.get("missing") else round(f(r) or 0, 2))
+        return out
+    ev = {"pHeavy": per(lambda r: r.get("p_heavy")),
+          "floodValidated": bool(cfg.site and getattr(cfg.site, "flood_validated", False))}
+    if cfg.flood_site:
+        ev["pFlood"] = per(lambda r: (r.get("levels") or {}).get("driveway"))
+    t0, off = hours[0], []
+    for a in report.get("alerts") or []:
+        if a.get("event") not in FLOOD_PRODUCTS:
+            continue
+        try:
+            s = datetime.fromisoformat(a.get("onset") or t0.isoformat())
+            e = datetime.fromisoformat(a.get("ends") or a.get("expires"))
+        except (TypeError, ValueError):
+            continue
+        sh = max(0, int((s - t0).total_seconds() // 3600))
+        eh = min(HORIZON, int(-(-(e - t0).total_seconds() // 3600)))
+        if eh > sh:
+            off.append({"event": a["event"], "startHour": sh, "endHour": eh})
+    if off:
+        ev["official"] = off
+    return ev
+
+
 def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
           used: list[str] | None = None, total_of=None, parts=None) -> dict:
     """The card contract. `used` names the forecast sources behind it (see forecast.note_sources).
@@ -464,9 +501,12 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
                 spans.append({"startHour": a, "endHour": b, "medianIn": round(w["p50"], 2)})
         if spans:
             card["rainTotals"] = spans
+    if hazard in ("rain", "flood"):
+        card["evidence"] = evidence(rows, hours, by_t, report, cfg)
     if hazard == "flood":
         card["alert"] = {"actionTitle": f"Driveway · {cfg.site.card_location}",
                          "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
+                         "prepare": "Consider checking flood barriers and moving vulnerable items before the storm.",
                          "context": (f"Rated against levels from 4 past floods near {cfg.flood_site} (2012–2022); their "
                                      f"relationship to driveway flooding at {cfg.site.card_location} is not yet validated.")}
     elif hazard == "heat" and hmax == 3:

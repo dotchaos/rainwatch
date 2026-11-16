@@ -18,7 +18,25 @@ export interface Day {
   rainIn?: number;
 }
 /** Non-timing advice only. Level, headline, summary and all times are derived from the forecast (src/lib/derive.ts). */
-export interface Alert { actionTitle: string; action: string; context?: string; }
+export interface Alert {
+  actionTitle: string; action: string; context?: string;
+  /** Softer, non-timing advice for when the card speaks with awareness rather than action (v0.19). */
+  prepare?: string;
+}
+/**
+ * The evidence behind the card's rain wording (v0.19), per hour of the graph (index = hour offset, null = no forecast).
+ * The card uses it only to decide how strongly to speak, never to change what the forecast is.
+ */
+export interface Evidence {
+  /** Share of model runs with a heavy hour (0.20"+), 0–1. */
+  pHeavy: (number | null)[];
+  /** Share of model runs reaching the local flood (driveway) level, 0–1. Only with a flood site. */
+  pFlood?: (number | null)[];
+  /** Whether the local flood levels are validated at this address. Until they are, model odds never order action. */
+  floodValidated: boolean;
+  /** Official NWS flood products in force (Flood Watch, Flash Flood Warning …), as hour offsets, end exclusive. */
+  official?: { event: string; startHour: number; endHour: number }[];
+}
 export interface Insight { headline: string; detail: string; }
 export interface Scenario {
   id: string; title: string; season: string; location: string; observedAt: string;
@@ -53,6 +71,7 @@ export interface Scenario {
    * rain in its last two completed hours. null when that source can't say.
    */
   observedNow?: { rainingNow: boolean | null; recentRain: boolean | null };
+  evidence?: Evidence;
   /** Set on the device only (ageCard): hours the card has aged since its first hour. Never in live.json. */
   nowOffset?: number;
   /** 'illustrative' for fixtures; 'live' only for the card built from the real forecast (rainwatch/card.py). */

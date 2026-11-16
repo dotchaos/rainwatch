@@ -73,7 +73,7 @@ function Hourly({ s }: { s: Scenario }) {
     </div>);
   });
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
-    <div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></section>;
+    <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div></section>;
 }
 
 /** A day's rain amount, only when it is rain worth a number (see DISPLAY-RULES.md, Rain amounts). */

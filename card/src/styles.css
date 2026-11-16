@@ -71,7 +71,13 @@
 .upcoming p{margin:3px 0 0 26px;font-size:14px;color:#7b8991;line-height:1.4}
 
 /* Next hours: the half-visible hour at the card edge fades instead of being cut mid-label (v0.14). */
-.hours-scroll{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent)}
+/* v0.19: no CSS mask on the scroller. A mask on a scrolling element with a sticky, layered child (the day pins) can
+   paint as a solid black box in WebKit and in page captures (iOS full-page screenshots, PDF). The fade is now a plain
+   white overlay on a non-scrolling wrapper; it ignores taps so the row still scrolls under it. */
+.hours-fade{position:relative}
+.hours-fade::after{content:'';position:absolute;top:0;bottom:0;right:-22px;width:44px;pointer-events:none;
+  background:linear-gradient(to right,rgba(255,255,255,0),#fff)}
+@media(max-width:420px){.hours-fade::after{right:-12px}}
 
 /* Upcoming module as a link (v0.15): same look, the whole module tappable; a quiet chevron says it goes somewhere. */
 .upcoming-link{display:block;color:inherit;text-decoration:none;border-radius:6px;cursor:pointer}

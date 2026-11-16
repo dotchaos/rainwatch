@@ -23,7 +23,7 @@ const wetHour = (s: Scenario, h: number) => PRECIP.has(resolveIcon(s.hourly[h].i
 
 describe('the five scenarios', () => {
   it('are the five the brief names, in order', () => {
-    expect(scenarios.map(s => s.title)).toEqual(['Calm October', 'Intermittent rain', 'Rain starting soon', 'Extreme storm', 'Heatwave', 'Incomplete forecast', 'Bigger storm ahead']);
+    expect(scenarios.map(s => s.title)).toEqual(['Calm October', 'Intermittent rain', 'Rain starting soon', 'Extreme storm', 'Storm ahead', 'Heatwave', 'Incomplete forecast', 'Bigger storm ahead']);
   });
 
   it('each validates: hours consecutive, and hours and days agree with the graph', () => {
@@ -43,7 +43,7 @@ describe('the five scenarios', () => {
     expect(say('october')).toBe('Great weather for getting outside | Dry skies and comfortable temperatures through the afternoon.');
     expect(say('rain')).toBe('Today: Rain boots, 11 AM–1 PM | Rain jacket until 2 PM. Then dry 2–7 PM.');
     expect(say('rain-soon')).toBe('Today: Rain boots, 6–9 PM | About 0.6" of rain. Dry until then. Rain jacket 4 PM–midnight. Then dry tomorrow 7 AM–7 PM.');
-    expect(say('storm')).toBe('Protect your driveway before 2 PM.');
+    expect(say('storm')).toBe('Protect your driveway before noon.');
     expect(say('heat')).toBe('Plan to stay cool. 100°+ ahead. | Best outdoor window: Before 10 AM | On Friday and Saturday, mornings are the safer choice.');
   });
 
@@ -144,7 +144,7 @@ describe('Now & next (integrated design)', () => {
     expect(nn('october')).toEqual({ headline: 'Great weather for getting outside', detail: 'Dry skies and comfortable temperatures through the afternoon.' });
     expect(nn('rain')).toMatchObject({ headline: 'Rain until 2 PM', detail: 'Then dry 2–7 PM.', action: { text: 'Rain boots · 11 AM–1 PM', risk: false } });
     expect(nn('rain-soon')).toMatchObject({ headline: 'Rain from 4 PM–midnight', action: { text: 'Rain boots · 6–9 PM' } });
-    expect(nn('storm')).toMatchObject({ headline: 'Protect your driveway before 2 PM', action: { icon: 'shield', text: 'Sandbags · 4–9 PM', risk: true } });
+    expect(nn('storm')).toMatchObject({ headline: 'Protect your driveway before noon', action: { icon: 'shield', text: 'Sandbags · 4–9 PM', risk: true } });
     expect(nn('heat')).toMatchObject({ headline: 'Dangerous heat tomorrow, about 1–6 PM', action: { icon: 'sun', text: 'Best outdoor window: before 10 AM', risk: false } });
     expect(nn('heat').detail).not.toContain('outdoor window');
   });
@@ -196,7 +196,7 @@ describe('Sandbags callouts on the graph', () => {
     const c = sandbagsCallouts(byId('storm'));
     expect(c.map(w => w.label)).toEqual(['Thu 4–9 PM', 'Fri 8 AM–4 PM']);
     expect(c.map(w => [w.startHour, w.endHour])).toEqual([[7, 12], [23, 31]]);  // exactly the Sandbags intervals
-    expect(nowNext(byId('storm'))!.headline).toBe('Protect your driveway before 2 PM');   // the deadline stays in the headline
+    expect(nowNext(byId('storm'))!.headline).toBe('Protect your driveway before noon');    // the deadline stays in the headline
   });
   it('no callouts for other rungs or for extreme heat', () => {
     for (const id of ['october', 'rain', 'rain-soon', 'heat']) expect(sandbagsCallouts(byId(id)), id).toEqual([]);

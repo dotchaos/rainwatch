@@ -1,6 +1,6 @@
 import type { Scenario } from '../types';
 import { daysAt, intervalColor, layoutLabels, levelLabels, windowLabel } from '../lib/rules';
-import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts } from '../lib/derive';
+import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts, storms } from '../lib/derive';
 
 /**
  * 3-day gear forecast: the compact graph of rain gear over the rolling 72 hours from now (v0.12.2; heading v0.15).
@@ -56,6 +56,20 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
         {halfDayLabels(s).map(l => <text key={l.at} x={x(l.at)} y={base + 18} textAnchor="middle" className="chart-time">{l.text}</text>)}
       </g>
     </svg>
-    <ul className="sr-only">{s.timeline.intervals.filter(p => p.severity > 0).map((p, i) => <li key={i}>{`${windowLabel(s, p)}: ${full[p.severity]}, timing ${p.confidence === 'higher' ? 'more certain' : 'approximate'}`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
+    <ul className="sr-only">{srItems(s, full)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;
+}
+
+/** The graph in words. Rain: one item per storm (v0.19: never the per-hour fragments of a borderline hour), with its
+ *  heavy period and peaks. Heat: one item per interval, as before. */
+function srItems(s: Scenario, full: string[]) {
+  const timing = (sure: boolean) => `timing ${sure ? 'more certain' : 'approximate'}`;
+  if (s.hazard === 'heat') return s.timeline!.intervals.filter(p => p.severity > 0)
+    .map((p, i) => <li key={i}>{`${windowLabel(s, p)}: ${full[p.severity]}, ${timing(p.confidence === 'higher')}`}</li>);
+  return storms(s).map(st => {
+    const parts = [`${windowLabel(s, { startHour: st.start, endHour: st.end })}: ${full[st.rung]} at most`];
+    if (st.heavy) parts.push(`${full[2]} or more ${windowLabel(s, { startHour: st.heavy.start, endHour: st.heavy.end })}`);
+    if (st.peaks.length) parts.push(`${full[3]} ${st.peaks.map(p => p.label).join(' and ')}`);
+    return <li key={st.start}>{`${parts.join('; ')}, ${timing(st.sure)}`}</li>;
+  });
 }
