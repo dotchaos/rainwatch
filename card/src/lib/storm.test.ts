@@ -171,12 +171,12 @@ describe('Going out (v0.20)', () => {
   const axis = (h: string) => [...h.matchAll(/class="chart-label"[^>]*>(.*?)<\/text>/g)].map(m => m[1].replace(/<[^>]+>/g, ''));
   it('the top rung is "Flood potential" unless Sandbags is recommended; the potential boxes sit on it', () => {
     const h = html(ahead(), 'outline');
-    expect(axis(h)).toEqual(['Usual clothes', 'Umbrella orjacket', 'Rain gear', 'Flood potential']);
+    expect(axis(h)).toEqual(['Usual clothes', 'Umbrella or jacket', 'Rain gear', 'Flood potential']);
     expect(h).toContain('class="chart-potential"');
     expect(h).toContain('Potential flooding · Not yet a sandbag recommendation');
   });
   it('the top rung reads "Sandbags" when Sandbags is recommended (official flood product)', () => {
-    expect(axis(html(byId('storm')))).toEqual(['Usual clothes', 'Umbrella orjacket', 'Rain gear', 'Sandbags']);
+    expect(axis(html(byId('storm')))).toEqual(['Usual clothes', 'Umbrella or jacket', 'Rain gear', 'Sandbags']);
   });
   it('dry forecast hours are a pale band; hours without a forecast keep the hatch, never the band', () => {
     const s = byId('incomplete'), h = html(s);

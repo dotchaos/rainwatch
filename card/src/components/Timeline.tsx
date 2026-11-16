@@ -11,7 +11,7 @@ import { chartBlocks, coverageNote, edgeNote, floodPotentials, halfDayLabels, sa
  * Flood days only: each Sandbags risk window gets a callout with its day and hours (the risk window itself,
  * never the preparation deadline). Other rungs carry no callouts.
  */
-const x0 = 92, plotW = 268, base = 132, step = 28, gap = 1.4;
+const x0 = 106, plotW = 254, base = 132, step = 28, gap = 1.4;
 const x = (h: number) => x0 + (h / 72) * plotW;
 /** Day-name position: centred over the day; today is always named, starting at its left edge when its stretch is short. */
 const dayLabelX = (a: number, b: number, today: boolean) => today && b - a < 12 ? x(a) + 2 : x((a + b) / 2);
@@ -57,9 +57,12 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
       })}
       <g transform={`translate(0 ${top})`}>
         {days.map((d, i) => (i === 0 || d.end - d.start >= 12) && <text key={d.start} x={dayLabelX(d.start, d.end, i === 0)} y={12} textAnchor={i === 0 && d.end - d.start < 12 ? 'start' : 'middle'} className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
-        {labels.map((l0, i) => { const l = !heat && i === 3 && !sandbagsShown ? 'Flood potential' : l0; const y = base - i * step, two = l.includes(' or ');
-          return <g key={l}><text x={x0 - 8} y={y + (two ? -2 : 3)} textAnchor="end" className="chart-label">
-            {two ? <><tspan x={x0 - 8}>{l.split(' or ')[0]} or</tspan><tspan x={x0 - 8} dy="11">{l.split(' or ')[1]}</tspan></> : l}</text>
+        {labels.map((l0, i) => { const l = !heat && i === 3 && !sandbagsShown ? 'Flood potential' : l0; const y = base - i * step;
+          // each label sits centred in its own band (v0.20): Usual clothes on the pale dry band; Umbrella or jacket
+          // between the dry band and its line; the others between their line and the one below. Heat: on the lines.
+          const below = i === 1 ? base - DRY_H : y + step;
+          const ly = heat ? y + 3 : i === 0 ? base - DRY_H / 2 + 3.5 : (y + below) / 2 + 3.5;
+          return <g key={l}><text x={x0 - 8} y={ly} textAnchor="end" className="chart-label">{l}</text>
             <line x1={x0} x2={x(72)} y1={y} y2={y} className={i === 0 ? 'chart-base' : 'chart-grid'} /></g>; })}
         {!heat && blocks.map(b => !b.unknown && <rect key={`dry-${b.start}`} x={x(b.start) + gap / 2} y={base - DRY_H} width={x(b.end) - x(b.start) - gap} height={DRY_H} rx="1.5" fill={DRY_FILL} />)}
         {days.slice(1).map(d => <line key={d.start} x1={x(d.start)} x2={x(d.start)} y1={22} y2={base} className="chart-midnight" />)}
