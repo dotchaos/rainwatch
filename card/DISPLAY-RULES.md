@@ -169,3 +169,8 @@ Fixtures never type a time or a period. From the forecast the card derives:
 
 ## Time mapping
 Timeline offsets are hours from `startDay` at `startHourLocal` (local clock time), over a 72-hour horizon. For prototype purposes dates are day-name only; production needs ISO timestamps with timezone and DST-safe transformations.
+
+## Storms and voice (v0.19)
+- **Storm:** one rain event (forecast-dry hours separate storms). Its times, never interchanged: **onset** (rain starts), **heavy period** (Rain boots or higher, gaps of 2 hours or less bridged), **peaks** (Sandbags hours, gaps of 2 hours or less bridged), **time to prepare** (2 hours before the heavy period, not before the onset).
+- **Where each appears:** awareness gives day parts only ("early Wednesday"); anticipation gives onset and heavy period in the detail, the peak in the action line, the time to prepare in the note; action gives the time to prepare in the headline, the peak in the action line. Graph callouts are always the peaks.
+- **Voice:** action = official NWS flood product covering the storm, or validated local flood level in at least half the runs; anticipation = a heavy hour in at least half the runs; awareness = otherwise, or no evidence. Red (risk) only in action.
