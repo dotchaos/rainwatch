@@ -244,6 +244,8 @@
    "total_p90": 0.45,
    "sum_hourly_medians": 0.45,
    "strip_sum": 0.45,
+   "runs_in_wet_hours": 0.45,
+   "outside_wet_hours": 0.0,
    "strip_heavy_hours": 1,
    "strip_moderate_plus_hours": 1,
    "runs_heavy_hours_p50_p75": [
@@ -269,6 +271,8 @@
    "total_p90": 0.2,
    "sum_hourly_medians": 0.2,
    "strip_sum": 0.2,
+   "runs_in_wet_hours": 0.2,
+   "outside_wet_hours": 0.0,
    "strip_heavy_hours": 0,
    "strip_moderate_plus_hours": 0,
    "runs_heavy_hours_p50_p75": [
@@ -294,6 +298,8 @@
    "total_p90": 0.0,
    "sum_hourly_medians": 0,
    "strip_sum": 0,
+   "runs_in_wet_hours": null,
+   "outside_wet_hours": null,
    "strip_heavy_hours": 0,
    "strip_moderate_plus_hours": 0,
    "runs_heavy_hours_p50_p75": [
@@ -319,6 +325,8 @@
    "total_p90": 0.0,
    "sum_hourly_medians": 0,
    "strip_sum": 0,
+   "runs_in_wet_hours": null,
+   "outside_wet_hours": null,
    "strip_heavy_hours": 0,
    "strip_moderate_plus_hours": 0,
    "runs_heavy_hours_p50_p75": [
@@ -344,6 +352,8 @@
    "total_p90": 0.0,
    "sum_hourly_medians": 0,
    "strip_sum": 0,
+   "runs_in_wet_hours": null,
+   "outside_wet_hours": null,
    "strip_heavy_hours": 0,
    "strip_moderate_plus_hours": 0,
    "runs_heavy_hours_p50_p75": [

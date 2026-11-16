@@ -165,15 +165,21 @@ export function deriveAlert(s: Scenario): DerivedAlert | null {
 
 /** The one practical line: next dry stretch (rain), best outdoor window (heat), or the fixture's calm-day note. */
 /** '~0.5"', '<0.1"' or null (nothing worth a number). Tenths: the runs don't support more precision. */
+/**
+ * The one rounding policy for every displayed rain amount (v0.16): tenths, rounded half up (0.15 → 0.2, 0.85 → 0.9)
+ * from the engine's two-decimal values. Under 0.05" nothing; 0.05–0.09" is "under 0.1". toFixed is never used for
+ * amounts: its binary rounding gave 0.15 → 0.1 but 0.25 → 0.3, so equal-looking amounts rounded different ways.
+ */
+export const tenths = (x: number) => (Math.floor(x * 10 + 0.5 + 1e-9) / 10).toFixed(1);
 export function rainAmount(x: number | undefined): string | null {
   if (x === undefined || x < 0.05) return null;
-  return x < 0.1 ? '<0.1"' : `~${x.toFixed(1)}"`;
+  return x < 0.1 ? '<0.1"' : `~${tenths(x)}"`;
 }
 const amountOf = (s: Scenario, a: number, b: number) => s.rainTotals?.find(t => t.startHour === a && t.endHour === b)?.medianIn;
 function amountNote(s: Scenario, a: number, b: number): string | null {
   if (openEnd(s, b)) return null;           // a total that stops where the forecast stops is not the event's total
   const x = amountOf(s, a, b);
-  return x === undefined || x < 0.05 ? null : x < 0.1 ? 'Under 0.1" of rain.' : `About ${x.toFixed(1)}" of rain.`;
+  return x === undefined || x < 0.05 ? null : x < 0.1 ? 'Under 0.1" of rain.' : `About ${tenths(x)}" of rain.`;
 }
 /** The next rain stretch, when it is more than a day after hour `from`, as "More rain Wed 1–9 AM, about 0.9".".
  *  Sooner rain is already implied by "Then dry …", so it is not repeated. */
@@ -182,7 +188,7 @@ function laterRain(s: Scenario, from: number): string | null {
   if (!e || e.start - from < 24) return null;
   if (openEnd(s, e.end)) return `More rain from ${timeAt(s, e.start)}.`;   // no end time and no partial amount
   const x = amountOf(s, e.start, e.end);
-  const amt = x === undefined || x < 0.05 ? '' : x < 0.1 ? ', under 0.1"' : `, about ${x.toFixed(1)}"`;
+  const amt = x === undefined || x < 0.05 ? '' : x < 0.1 ? ', under 0.1"' : `, about ${tenths(x)}"`;
   return `More rain ${windowLabel(s, { startHour: e.start, endHour: e.end })}${amt}.`;
 }
 
@@ -628,7 +634,7 @@ export function upcomingEvent(s: Scenario): Upcoming | null {
   const day = k === 1 ? 'Tomorrow' : fullDay[d.name];
   // the amount leads (information, not interpretation), but only when it is reliable: a complete day, and the
   // event ends inside the forecast; rain still falling where the data stops gets no total (it would be partial)
-  const total = amt !== null && amt >= 0.1 && ev.endKnown ? `Around ${amt.toFixed(1)}" of rain` : null;
+  const total = amt !== null && amt >= 0.1 && ev.endKnown ? `Around ${tenths(amt)}" of rain` : null;
   const overnight = ev.end > d.end && ev.endKnown && !isUnknown(s, d.end);
   const then = overnight ? 'continuing overnight' : !ev.endKnown ? 'still falling where the forecast ends' : null;
   // Awareness mode (DISPLAY-RULES "Upcoming weather: voice and urgency"): a meaningful event two or more days away

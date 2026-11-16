@@ -30,6 +30,31 @@ HOURLY_N = 24    # the Next hours row: consecutive hours from the current one
 # controlled trial (John, Nov 15 2026): the engine decides which hours are wet; how hard each is comes from the
 # probability-matched values of the runs over its wet stretch (rainwatch/shading.py), never lighter than light.
 STRIP_DAYS = 5
+# Rainfall reconciliation (v0.16). Event totals take each event's own share of the runs' rain: its wet hours plus
+# the forecast-dry hours around it, up to halfway to the neighbouring event or the local day boundary, never into
+# missing data. The strip is shaded within each local day (not across a multi-day event), still scaled to the
+# runs' rain in the forecast's wet hours, so the intensity scale itself is unchanged. RECONCILE=False gives v0.15.
+RECONCILE = True
+
+
+def catchment(a: int, b: int, spans: list[tuple[int, int]], hours: list, tz, known: list[bool]) -> tuple[int, int]:
+    """Hours [L, R) whose rain belongs to the event [a, b): out to halfway to the neighbouring events, never past the
+    local day boundaries on either side of the event, never into hours without data."""
+    day = [t.astimezone(tz).date() for t in hours]
+    lo = next(i for i in range(a, -1, -1) if i == 0 or day[i - 1] != day[a])            # start of a's local day
+    hi = next(i for i in range(b, len(hours) + 1) if i == len(hours) or day[i] != day[b - 1])   # end of last day
+    prev = max((e for s, e in spans if e <= a), default=None)
+    nxt = min((s for s, e in spans if s >= b), default=None)
+    if prev is not None:
+        lo = max(lo, prev + (a - prev) // 2)
+    if nxt is not None:
+        hi = min(hi, b + (nxt - b) // 2)
+    L, R = a, b
+    while L > lo and known[L - 1]:
+        L -= 1
+    while R < hi and known[R]:
+        R += 1
+    return L, R
 
 
 def wet_icon(level: int, code: int | None) -> tuple[str, str]:
@@ -194,8 +219,14 @@ def strip(report: dict, cond: Conditions, cfg, t0, tz, graph_rain: list[int], en
         while k < n and wet[k] and classes[k] != "unknown":
             k += 1
         ens_h = [j for j in range(a, k) if row[j].get("primary") == "ens"]
-        M = shading.run_matrix(parts or [], [hours[j] for j in ens_h]) if ens_h else None
-        B = dict(zip(ens_h, shading.matched_to_median(M))) if M is not None else {}
+        # matched within each local day's piece of the stretch, so each day's shading uses that day's rain (v0.16)
+        days = sorted({hours[j].astimezone(tz).date() for j in ens_h})
+        pieces = [[j for j in ens_h if hours[j].astimezone(tz).date() == d] for d in days] if RECONCILE else [ens_h]
+        B = {}
+        for pc in pieces:
+            M = shading.run_matrix(parts or [], [hours[j] for j in pc]) if pc else None
+            if M is not None:
+                B.update(zip(pc, shading.matched_to_median(M)))
         for j in range(a, k):                             # radar and NWS hours keep their own median
             vals[j] = float(B.get(j, row[j].get("mid") or 0.0))
     out = []
@@ -250,6 +281,14 @@ def strip_check(st: dict, days5: list[dict], tz, heavy_in: float, parts=None) ->
         e_wet = [k for k in wet if k in set(ens_idx)]
         e_heavy = sum(st["vals"][k] >= heavy_in for k in e_wet)
         e_mod = sum(st["vals"][k] >= shading.MODERATE_IN for k in e_wet)
+        # per-day reconciliation (v0.16): the strip adds up to the runs' rain in the hours it shades (its own wet hours,
+        # this day); the rest of the day's total is rain the runs put in hours the forecast calls dry (timing spread).
+        wet_e = [k for k in wet if k in set(ens_idx)]
+        Mw = shading.run_matrix(parts or [], [st["hours"][k] for k in wet_e]) if wet_e else None
+        in_wet = round(float(np.median(Mw.sum(axis=1))) + sum((st["rows"][k] or {}).get("mid") or 0 for k in wet if k not in set(ens_idx)), 2) \
+            if Mw is not None else None
+        if in_wet is not None and abs(strip_sum - in_wet) > max(0.05, 0.15 * in_wet):
+            flags.append(f"per day: the strip adds up to {strip_sum:.2f}\" but the runs put {in_wet:.2f}\" in those hours")
         if runs_heavy and e_heavy > runs_heavy[1]:
             flags.append("more heavy hours on the strip than three runs in four have (overstates)")
         if runs_mod and e_mod > runs_mod[1]:
@@ -258,7 +297,8 @@ def strip_check(st: dict, days5: list[dict], tz, heavy_in: float, parts=None) ->
             flags.append("some hours come from NWS 6-hour totals spread evenly (no model runs): intensity is approximate")
         out.append({"date": d["date"], "complete": d.get("complete"), "wet_hours": len(wet), "top_intensity": top,
                     "total_p10": tot.get("p10"), "total_p50": p50, "total_p90": tot.get("p90"),
-                    "sum_hourly_medians": sum_mid, "strip_sum": strip_sum, "strip_heavy_hours": n_heavy,
+                    "sum_hourly_medians": sum_mid, "strip_sum": strip_sum, "runs_in_wet_hours": in_wet,
+                    "outside_wet_hours": None if in_wet is None or p50 is None else round(p50 - in_wet, 2), "strip_heavy_hours": n_heavy,
                     "strip_moderate_plus_hours": n_mod, "runs_heavy_hours_p50_p75": runs_heavy,
                     "runs_moderate_plus_hours_p50_p75": runs_mod, "primary": prim, "flags": flags})
     return out
@@ -389,16 +429,36 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         card["timeline"] = {"title": {"flood": "Rain & flood outlook", "rain": "Rain outlook", "heat": "Heat outlook"}[hazard],
                             "intervals": _runs(heat) if hazard == "heat" else _runs(rain, patterns)}
     if hazard in ("rain", "flood") and total_of is not None:
-        # One total per rain stretch on the chart (contiguous hours with gear), from the same hours as the bars
-        spans, a = [], None
+        # One total per rain stretch on the chart (contiguous hours with gear). v0.16: over the stretch's catchment
+        # (its share of the runs' rain, see catchment()), on the five-day hours when there are any, so an event that is
+        # a day's only rain has exactly the day's total.
+        stretches, a = [], None
         for i, lvl in enumerate(rain + [0]):
             if lvl and a is None:
                 a = i
             elif not lvl and a is not None:
-                w = total_of(hours[a:i])
-                if w:
-                    spans.append({"startHour": a, "endHour": i, "medianIn": round(w["p50"], 2)})
+                stretches.append((a, i))
                 a = None
+        if st and RECONCILE:     # all five days' wet stretches are neighbours, so catchments stop halfway to them
+            hrs_c, known = st["hours"], [c != "unknown" for c in st["classes"]]
+            nb, j = [], 0
+            while j < len(st["wet"]):
+                if st["wet"][j] and known[j]:
+                    s0 = j
+                    while j < len(st["wet"]) and st["wet"][j] and known[j]:
+                        j += 1
+                    nb.append((s0, j))
+                else:
+                    j += 1
+        else:
+            hrs_c, known, nb = hours, [c != "unknown" for c in classes], stretches
+        spans = []
+        for a, b in stretches:
+            L, R = catchment(a, b, [x for x in nb if x != (a, b) and not (x[0] < b and a < x[1])], hrs_c, tz, known) \
+                if RECONCILE else (a, b)
+            w = total_of(hrs_c[L:R]) if RECONCILE else total_of(hours[a:b])
+            if w:
+                spans.append({"startHour": a, "endHour": b, "medianIn": round(w["p50"], 2)})
         if spans:
             card["rainTotals"] = spans
     if hazard == "flood":

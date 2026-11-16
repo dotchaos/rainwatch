@@ -11,7 +11,7 @@ import { Timeline } from '../components/Timeline';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { clockAt, isUnknown, validateScenario } from './rules';
-import { chartBlocks, fiveDays, intensityAt, stripCoverageNote, stripDays, stripEnd, type FiveDayRow } from './derive';
+import { chartBlocks, fiveDays, intensityAt, stripCoverageNote, stripDays, stripEnd, tenths, type FiveDayRow } from './derive';
 
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
 const rows = (s: Scenario) => fiveDays(s)!;
@@ -113,7 +113,7 @@ describe('overnight continuity', () => {
 
   it('each day keeps its own total: an overnight event is not merged or counted twice', () => {
     for (const s of scenarios) rows(s).forEach((r, k) => {
-      if (r.total.kind === 'amount' && s.days[k].rainIn !== undefined && s.days[k].rainIn! >= 0.1) expect(r.total.text).toBe(`~${s.days[k].rainIn!.toFixed(1)}"`);
+      if (r.total.kind === 'amount' && s.days[k].rainIn !== undefined && s.days[k].rainIn! >= 0.1) expect(r.total.text).toBe(`~${tenths(s.days[k].rainIn!)}"`);
     });
   });
 });
