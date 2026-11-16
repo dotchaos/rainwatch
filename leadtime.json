@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-16T23:06:40.185705+00:00",
+ "generated": "2026-11-16T23:21:53.280480+00:00",
  "truth": "SFOC1 (US Mint) only",
  "window_days": 60,
  "heavy_in": 0.2,
@@ -854,7 +854,7 @@
    ]
   }
  },
- "card_records": 2,
+ "card_records": 3,
  "now_split": {
   "radar-corroborated": {
    "n": 3,
