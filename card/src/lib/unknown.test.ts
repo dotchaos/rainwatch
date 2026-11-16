@@ -34,7 +34,7 @@ describe('missing forecast hours', () => {
     s.timeline!.intervals = [{ startHour: 6, endHour: 15, severity: 1, confidence: 'unknown', pattern: 'steady' }];
     s.unknownHours = [{ startHour: 65, endHour: 72 }];
     const i = deriveInsight(s)!;
-    expect(i.headline).toBe('Today: Rain jacket, about 1–10 PM');
+    expect(i.headline).toBe('Today: Umbrella or jacket, about 1–10 PM');
     expect(i.detail).not.toMatch(DRY_AFTER);
     expect(i.detail).toContain('Dry until then.');
     expect(i.detail).toContain('Forecast only covers through Tue 11 PM.');
@@ -88,7 +88,7 @@ describe('open-ended rain is never given an end time (headline bug, Nov 15 2026)
     const s = structuredClone(scenarios.find(x => x.id === 'incomplete')!) as Scenario;
     s.timeline!.intervals = [{ startHour: 50, endHour: 54, severity: 1, confidence: 'unknown', pattern: 'steady' },
       { startHour: 54, endHour: 66, severity: 2, confidence: 'unknown', pattern: 'steady' }];
-    expect(nowNext(s)!.action!.text).toBe('Rain boots · from Tue 9 PM');
+    expect(nowNext(s)!.action!.text).toBe('Rain gear · from Tue 9 PM');
   });
   it('rain with a forecast end keeps its end time', () => {
     expect(nowNext(structuredClone(scenarios.find(s => s.id === 'rain-soon')!) as Scenario)!.headline).toBe('Rain from 4 PM–midnight');

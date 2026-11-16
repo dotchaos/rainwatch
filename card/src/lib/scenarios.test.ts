@@ -30,7 +30,7 @@ describe('the five scenarios', () => {
     for (const s of scenarios) expect(validateScenario(s), s.id).toEqual([]);
   });
 
-  it('a wet hour\'s icon follows its rung: heavy rain at Rain boots and Sandbags hours', () => {
+  it('a wet hour\'s icon follows its rung: heavy rain at Rain gear and Sandbags hours', () => {
     for (const s of scenarios) for (const h of s.hourly) { const i = resolveIcon(h.icon); const r = Math.max(0, ...(s.timeline?.intervals ?? []).filter(p => p.startHour <= h.hour! && h.hour! < p.endHour).map(p => p.severity)); if (gear(s, h.hour!) && i !== 'thunderstorm') expect(i === 'heavy-rain', `${s.id} @${h.hour}`).toBe(r >= 2); }
   });
 
@@ -41,8 +41,8 @@ describe('the five scenarios', () => {
   it('say what the graph shows', () => {
     const say = (id: string) => { const s = byId(id); const a = deriveAlert(s), i = deriveInsight(s); return [a?.headline, i?.headline, i?.detail].filter(Boolean).join(' | '); };
     expect(say('october')).toBe('Great weather for getting outside | Dry skies and comfortable temperatures through the afternoon.');
-    expect(say('rain')).toBe('Today: Rain boots, 11 AM–1 PM | Rain jacket until 2 PM. Then dry 2–7 PM.');
-    expect(say('rain-soon')).toBe('Today: Rain boots, 6–9 PM | About 0.6" of rain. Dry until then. Rain jacket 4 PM–midnight. Then dry tomorrow 7 AM–7 PM.');
+    expect(say('rain')).toBe('Today: Rain gear, 11 AM–1 PM | Umbrella or jacket until 2 PM. Then dry 2–7 PM.');
+    expect(say('rain-soon')).toBe('Today: Rain gear, 6–9 PM | About 0.6" of rain. Dry until then. Umbrella or jacket 4 PM–midnight. Then dry tomorrow 7 AM–7 PM.');
     expect(say('storm')).toBe('Protect your driveway before noon.');
     expect(say('heat')).toBe('Plan to stay cool. 100°+ ahead. | Best outdoor window: Before 10 AM | On Friday and Saturday, mornings are the safer choice.');
   });
@@ -133,7 +133,7 @@ describe('uncertainty', () => {
     expect(actionWindow(s)!.sure).toBe(true);                       // the boots window itself is higher confidence
     s.timeline!.intervals[1].confidence = 'shifting';
     const i = deriveInsight(s)!;
-    expect(i.headline).toBe('Today: Rain boots, about 6–9 PM');
+    expect(i.headline).toBe('Today: Rain gear, about 6–9 PM');
     expect(i.detail).toContain('Timing is approximate.');
   });
 });
@@ -142,8 +142,8 @@ describe('Now & next (integrated design)', () => {
   const nn = (id: string) => nowNext(byId(id))!;
   it('leads with the event, then one actionable line', () => {
     expect(nn('october')).toEqual({ headline: 'Great weather for getting outside', detail: 'Dry skies and comfortable temperatures through the afternoon.' });
-    expect(nn('rain')).toMatchObject({ headline: 'Rain until 2 PM', detail: 'Then dry 2–7 PM.', action: { text: 'Rain boots · 11 AM–1 PM', risk: false } });
-    expect(nn('rain-soon')).toMatchObject({ headline: 'Rain from 4 PM–midnight', action: { text: 'Rain boots · 6–9 PM' } });
+    expect(nn('rain')).toMatchObject({ headline: 'Rain until 2 PM', detail: 'Then dry 2–7 PM.', action: { text: 'Rain gear · 11 AM–1 PM', risk: false } });
+    expect(nn('rain-soon')).toMatchObject({ headline: 'Rain from 4 PM–midnight', action: { text: 'Rain gear · 6–9 PM' } });
     expect(nn('storm')).toMatchObject({ headline: 'Protect your driveway before noon', action: { icon: 'shield', text: 'Sandbags · 4–9 PM', risk: true } });
     expect(nn('heat')).toMatchObject({ headline: 'Dangerous heat tomorrow, about 1–6 PM', action: { icon: 'sun', text: 'Best outdoor window: before 10 AM', risk: false } });
     expect(nn('heat').detail).not.toContain('outdoor window');
@@ -159,7 +159,7 @@ describe('Now & next (integrated design)', () => {
     const n = nowNext(s)!;
     expect(n.headline).toBe('Two rounds of rain today');
     expect(n.detail.startsWith('Rain until noon, then 4–8 PM.')).toBe(true);   // 9 AM is within the hour at 8: now (v0.17)
-    expect(n.action!.text).toBe('Rain jacket');
+    expect(n.action!.text).toBe('Umbrella or jacket');
   });
 });
 

@@ -38,7 +38,7 @@ describe('every timing statement is derived from the forecast', () => {
     for (const w of criticalWindows(s)) expect((9 + w.startHour) % 24, w.label).toBeGreaterThanOrEqual(10);
   });
   it('rain: gear and window come from the chart intervals (raining now, boots later)', () => {
-    expect(deriveInsight(byId('rain'))).toEqual({ headline: 'Today: Rain boots, 11 AM–1 PM', detail: 'Rain jacket until 2 PM. Then dry 2–7 PM.' });
+    expect(deriveInsight(byId('rain'))).toEqual({ headline: 'Today: Rain gear, 11 AM–1 PM', detail: 'Umbrella or jacket until 2 PM. Then dry 2–7 PM.' });
     expect(labelledWindows(byId('rain')).map(w => [w.label, w.rung])).toEqual([['Thu 11 AM–1 PM', 2]]);
   });
   it('the insight and the chart label describe the same hours', () => {
@@ -51,13 +51,13 @@ describe('every timing statement is derived from the forecast', () => {
   it('rain, dry right now: says how long it stays dry (Nov 14 live case)', () => {
     const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 19;
     s.timeline!.intervals = [{ startHour: 17, endHour: 27, severity: 1, confidence: 'unknown' }];
-    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Rain jacket, about noon–10 PM', detail: 'Dry before and after. Timing is approximate.' });
+    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Umbrella or jacket, about noon–10 PM', detail: 'Dry before and after. Timing is approximate.' });
     expect(labelledWindows(s)[0].label).toBe('Sun noon–10 PM');
   });
   it('rain, raining now: a dry spell across midnight still yields the next daylight stretch', () => {
     const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 19;
     s.timeline!.intervals = [{ startHour: 0, endHour: 3, severity: 1, confidence: 'unknown' }, { startHour: 17, endHour: 27, severity: 1, confidence: 'unknown' }];
-    expect(deriveInsight(s)).toEqual({ headline: 'Now: Rain jacket, until about 10 PM', detail: 'Then dry tomorrow 7 AM–noon. Timing is approximate.' });
+    expect(deriveInsight(s)).toEqual({ headline: 'Now: Umbrella or jacket, until about 10 PM', detail: 'Then dry tomorrow 7 AM–noon. Timing is approximate.' });
   });
   it('rain, no rain at all ahead: dry for 3 days', () => {
     const s = byId('rain'); s.timeline!.intervals = s.timeline!.intervals.filter(p => p.startHour >= 72);
@@ -90,22 +90,22 @@ describe('rain patterns: dry breaks are kept, never invented', () => {
   it('continuous rain stays one bar and one window', () => {
     const s = jacketDay([{ startHour: 17, endHour: 26, severity: 1, confidence: 'unknown', pattern: 'steady' }]);
     expect(jacketPlan(s)!.kind).toBe('continuous');
-    expect(deriveInsight(s)!.headline).toBe('Tomorrow: Rain jacket, about 1–10 PM');
+    expect(deriveInsight(s)!.headline).toBe('Tomorrow: Umbrella or jacket, about 1–10 PM');
     expect(labelledWindows(s).map(w => w.label)).toEqual(['Sun 1–10 PM']);
   });
   it('a forecast-dry break gives separate bars and separate windows', () => {
     const s = jacketDay([{ startHour: 17, endHour: 19, severity: 1, confidence: 'higher' }, { startHour: 22, endHour: 26, severity: 1, confidence: 'higher' }]);
     expect(rainEvents(s).length).toBe(2);
-    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Rain jacket, 1–3 PM and 6–10 PM', detail: 'Dry in between. Dry before and after.' });
+    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Umbrella or jacket, 1–3 PM and 6–10 PM', detail: 'Dry in between. Dry before and after.' });
     expect(labelledWindows(s).map(w => w.label)).toEqual(['Sun 1–3 PM', 'Sun 6–10 PM']);
   });
   it('uncertain timing on separate periods is hedged once', () => {
     const s = jacketDay([{ startHour: 17, endHour: 19, severity: 1, confidence: 'unknown' }, { startHour: 22, endHour: 26, severity: 1, confidence: 'unknown' }]);
-    expect(deriveInsight(s)!.headline).toBe('Tomorrow: Rain jacket, about 1–3 PM and 6–10 PM');
+    expect(deriveInsight(s)!.headline).toBe('Tomorrow: Umbrella or jacket, about 1–3 PM and 6–10 PM');
   });
   it('intermittent showers without reliable timing: parts of day, no hours, breaks possible', () => {
     const s = jacketDay([{ startHour: 17, endHour: 26, severity: 1, confidence: 'unknown', pattern: 'intermittent' }]);
-    expect(deriveInsight(s)).toEqual({ headline: 'Rain jacket tomorrow afternoon and evening', detail: 'Timing is approximate.' });
+    expect(deriveInsight(s)).toEqual({ headline: 'Umbrella or jacket tomorrow afternoon and evening', detail: 'Timing is approximate.' });
     expect(labelledWindows(s).map(w => w.label)).toEqual(['Sun on and off']);
   });
   it('the card never adds a break the intervals do not contain', () => {

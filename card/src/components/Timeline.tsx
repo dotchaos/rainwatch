@@ -15,7 +15,9 @@ const x0 = 92, plotW = 268, base = 132, step = 28, gap = 1.4;
 const x = (h: number) => x0 + (h / 72) * plotW;
 /** Day-name position: centred over the day; today is always named, starting at its left edge when its stretch is short. */
 const dayLabelX = (a: number, b: number, today: boolean) => today && b - a < 12 ? x(a) + 2 : x((a + b) / 2);
-const SHORT_RAIN = ['No gear', 'Jacket', 'Boots', 'Sandbags'], SHORT_HEAT = ['Comfort', 'Hot', 'Very hot', 'Extreme'];
+const SHORT_RAIN = ['Usual clothes', 'Umbrella or jacket', 'Rain gear', 'Sandbags'], SHORT_HEAT = ['Comfort', 'Hot', 'Very hot', 'Extreme'];
+/** Pale band for forecast hours that need nothing (v0.20): dry is a state, not empty space. Unknown hours keep the hatch. */
+const DRY_FILL = '#e4ecf0', DRY_H = 7;
 
 /** Lab-only drawings of the flood-potential state (v0.19 exploration). 'outline': a dotted box in the Sandbags hue
  *  from the Boots rung up to the Sandbags rung over the window. 'range': a dotted line at the Sandbags rung with end
@@ -34,11 +36,15 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
   const rows = placed.some(p => p.row === 1) ? 2 : callouts.length ? 1 : 0, top = rows * 24;
   const cov = coverageNote(s), edge = edgeNote(s);
   const pots = potential ? floodPotentials(s).filter(p => p.on) : [];
-  const title = heat ? 'Next 3 days' : '3-day gear forecast';
-  return <section className="timeline-section" aria-label={title}>
-    <div className="section-heading"><strong>{title}</strong></div>
+  // v0.20: rain cards ask "Going out"; heat cards keep "Next 3 days" (their rungs are heat levels)
+  const title = heat ? 'Next 3 days' : 'Going out';
+  const blocks = chartBlocks(s);
+  // the person ladder stops at Rain gear; the Sandbags rung (property) gets an axis label only when it is drawn
+  const rungs = heat || blocks.some(b => b.level === 3) ? 4 : 3;
+  return <section className="timeline-section" aria-label={heat ? title : `${title}, next 3 days`}>
+    <div className="section-heading"><strong>{title}</strong>{!heat && <span>Next 3 days</span>}</div>
     <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
-      aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${pots.length ? ` Potential flooding, not yet a sandbag recommendation: ${pots.map(p => p.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
+      aria-label={`${heat ? 'Heat forecast' : 'What to wear going out'} for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${pots.length ? ` Potential flooding, not yet a sandbag recommendation: ${pots.map(p => p.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
       <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern>
 </defs>
       {callouts.map((c, i) => {
@@ -51,9 +57,13 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
       })}
       <g transform={`translate(0 ${top})`}>
         {days.map((d, i) => (i === 0 || d.end - d.start >= 12) && <text key={d.start} x={dayLabelX(d.start, d.end, i === 0)} y={12} textAnchor={i === 0 && d.end - d.start < 12 ? 'start' : 'middle'} className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
-        {labels.map((l, i) => { const y = base - i * step; return <g key={l}><text x={x0 - 8} y={y + 3} textAnchor="end" className="chart-label">{l}</text><line x1={x0} x2={x(72)} y1={y} y2={y} className={i === 0 ? 'chart-base' : 'chart-grid'} /></g>; })}
+        {labels.slice(0, rungs).map((l, i) => { const y = base - i * step, two = l.includes(' or ');
+          return <g key={l}><text x={x0 - 8} y={y + (two ? -2 : 3)} textAnchor="end" className="chart-label">
+            {two ? <><tspan x={x0 - 8}>{l.split(' or ')[0]} or</tspan><tspan x={x0 - 8} dy="11">{l.split(' or ')[1]}</tspan></> : l}</text>
+            <line x1={x0} x2={x(72)} y1={y} y2={y} className={i === 0 ? 'chart-base' : 'chart-grid'} /></g>; })}
+        {!heat && blocks.map(b => !b.unknown && <rect key={`dry-${b.start}`} x={x(b.start) + gap / 2} y={base - DRY_H} width={x(b.end) - x(b.start) - gap} height={DRY_H} rx="1.5" fill={DRY_FILL} />)}
         {days.slice(1).map(d => <line key={d.start} x1={x(d.start)} x2={x(d.start)} y1={22} y2={base} className="chart-midnight" />)}
-        {chartBlocks(s).map(b => {
+        {blocks.map(b => {
           const bx = x(b.start) + gap / 2, w = x(b.end) - x(b.start) - gap;
           if (b.unknown) return <rect key={b.start} x={bx} y={base - 3 * step} width={w} height={3 * step} fill="url(#nodata)" />;
           if (!b.level) return null;

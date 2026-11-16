@@ -3,7 +3,9 @@ import { PRECIP, resolveIcon } from './icons';
 export const showTimeline = (s: Scenario) => s.hazard !== 'none' && Boolean(s.timeline);
 export const levelLabels = (s: Scenario) => s.hazard === 'heat'
   ? ['Comfortable', 'Hot', 'Very hot', 'Extreme']
-  : ['No gear', 'Rain jacket', 'Rain boots', 'Sandbags'];
+  // v0.20 "Going out": what to wear out, one vocabulary for the graph and the hero. Sandbags is the property rung,
+  // shown only when it is recommended (action voice).
+  : ['Usual clothes', 'Umbrella or jacket', 'Rain gear', 'Sandbags'];
 export const intervalColor = (s: Scenario, level: number) => s.hazard === 'heat'
   ? ['transparent', '#e9c477', '#df874a', '#b94c36'][level]
   : ['transparent', '#8cb9cc', '#568cac', '#ba6547'][level];
