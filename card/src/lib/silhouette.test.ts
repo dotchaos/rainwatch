@@ -63,7 +63,11 @@ describe('flood overlay', () => {
   it('spans exactly the potential-flooding window, hour for hour, standing on the shape', () => {
     const s = byId('storm-ahead'), [w] = floodPotentials(s).filter(p => p.on);
     const html = renderToString(createElement(WeatherCard, { scenario: s, potential: 'outline', graph: 'silhouette' }));
-    const m = html.match(/class="chart-potential" x="([\d.]+)" y="[\d.]+" width="([\d.]+)"/)!;
+    const m = html.match(/class="chart-potential" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"/)!;
+    // vertically inside the Flood potential band (132 - 4*28 = 20 to 132 - 3*28 = 48): never into Rain gear
+    expect(Number(m[2])).toBeGreaterThanOrEqual(20);
+    expect(Number(m[2]) + Number(m[4])).toBeLessThanOrEqual(48);
+    m.splice(2, 1);
     const x = (h: number) => 106 + (h / 72) * 254;
     expect(Number(m[1])).toBeCloseTo(x(w.startHour) + .6, 5);
     expect(Number(m[1]) + Number(m[2])).toBeCloseTo(x(w.endHour) - .6, 5);

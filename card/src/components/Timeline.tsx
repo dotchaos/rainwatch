@@ -148,8 +148,9 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
     {runs.filter(r => r.unknown).map(r => <rect key={`u-${r.start}`} x={x(r.start)} y={base - 3 * step} width={x(r.end) - x(r.start)} height={3 * step} fill="url(#nodata)" />)}
     {runs.filter(r => !r.unknown && r.level > 0).map(r => <line key={`e-${r.start}`} className="chart-sil-edge" x1={x(r.start)} x2={x(r.end)}
       y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1.1" strokeOpacity={EDGE_OPACITY} strokeDasharray={r.sure ? undefined : '2.5 2'} />)}
+    {/* confined to the Flood potential band: it never reaches into the Rain gear band below (Nov 16 review) */}
     {pots.map(p => <rect key={`pot-${p.startHour}`} className="chart-potential" x={x(p.startHour) + .6} y={bandTop(3) + 3}
-      width={x(p.endHour) - x(p.startHour) - 1.2} height={plateau(2) - bandTop(3) - 3.6} rx="4"
+      width={x(p.endHour) - x(p.startHour) - 1.2} height={bandTop(2) - bandTop(3) - 4.5} rx="4"
       fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />)}
     <line x1={x0} x2={x(72)} y1={base} y2={base} className="chart-base" />
   </>;
