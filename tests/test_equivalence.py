@@ -45,7 +45,10 @@ def test_batch_output_unchanged(batch, name):
 
 # ---- 2. site vs site-less, identical inputs
 def _general(card: dict) -> dict:
-    return {k: v for k, v in card.items() if k not in SITE_ONLY}
+    out = {k: v for k, v in card.items() if k not in SITE_ONLY}
+    if "evidence" in out:   # the flood-level evidence exists only with a flood site (v0.19); the rest must match
+        out["evidence"] = {k: v for k, v in out["evidence"].items() if k not in ("pFlood", "pBehind", "floodSystems", "systems", "potential")}
+    return out
 
 
 def _rows(report: dict) -> list[dict]:

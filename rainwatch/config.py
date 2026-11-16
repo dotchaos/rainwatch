@@ -28,6 +28,9 @@ class Site:
     driveway_hour_in: float = 0.45      # any hour this big ...
     driveway_jump_in: float = 0.25      # ... or a surge this big over an hour already >= feel_in ...
     driveway_3h_in: float = 0.80        # ... or this much in 3 hours: driveway risk
+    # v0.19: whether the levels above have been checked against flooding at card_location itself. Until they are,
+    # the card never orders action on model frequency alone (only an official NWS flood product can).
+    flood_validated: bool = False
     behind_alert_prob: float = 0.40     # early "long soaker" push (within 24 h)
     driveway_alert_prob: float = 0.30   # urgent push (within 6 h)
 

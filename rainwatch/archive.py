@@ -93,6 +93,34 @@ class Archive:
         self.save_state(st)
         return True
 
+    def flood(self, now: datetime, card: dict | None, force: bool = False) -> bool:
+        """data/flood/YYYY-MM.jsonl (v0.19 exploration): once per clock hour, the raw flood evidence on the card
+        (per-hour shares of runs at the flood and drains-falling-behind levels, model systems agreeing, and each
+        Sandbags peak window counted per run), with real times, so the flood-potential thresholds can be scored
+        later against the gauge (hits, false alarms, misses) and re-run with other cutoffs. Nothing when no hour
+        reaches a level."""
+        ev = (card or {}).get("evidence") or {}
+        if "pFlood" not in ev or not card.get("provenance", {}).get("generated"):
+            return False
+        hour_key = now.astimezone(UTC).strftime("%Y-%m-%dT%H")
+        st = self.state()
+        if st.get("last_flood") == hour_key and not force:
+            return False
+        t0 = datetime.fromisoformat(card["provenance"]["generated"]).astimezone(UTC).replace(minute=0, second=0, microsecond=0)
+        at = lambda h: (t0 + timedelta(hours=h)).isoformat()   # noqa: E731
+        hours = {at(i): {"pFlood": f, "pBehind": (ev.get("pBehind") or [None] * 72)[i],
+                         "systems": (ev.get("floodSystems") or [None] * 72)[i], "pHeavy": ev["pHeavy"][i]}
+                 for i, f in enumerate(ev["pFlood"]) if (f or 0) > 0 or ((ev.get("pBehind") or [0] * 72)[i] or 0) > 0}
+        rec = {"issued": now.astimezone(UTC).isoformat(), "systems": ev.get("systems"), "hours": hours,
+               "windows": [{**w, "start": at(w["startHour"]), "end": at(w["endHour"])} for w in ev.get("potential", [])],
+               "official": ev.get("official", []), "validated": ev.get("floodValidated", False)}
+        (self.root / "flood").mkdir(exist_ok=True)
+        with open(self.root / "flood" / f"{now.astimezone(UTC):%Y-%m}.jsonl", "a") as f:
+            f.write(json.dumps(rec) + "\n")
+        st["last_flood"] = hour_key
+        self.save_state(st)
+        return True
+
     def forecasts(self, since: datetime) -> list[dict]:
         out = []
         for p in sorted((self.root / "forecasts").glob("*.jsonl")):

@@ -33,6 +33,29 @@ def _aligned(s: Series, hrs: list[datetime]) -> np.ndarray | None:
     return np.array(rows) if rows else None
 
 
+def hour_flags(s: Series, t: datetime, cfg):
+    """Per member at hour t: (feel, behind, driveway) boolean arrays, or None without members."""
+    if t not in s.members:
+        return None
+    X = _aligned(s, [t, t + H, t + 2 * H])
+    prev = s.members.get(t - H)
+    x0 = X[0]
+    feel = x0 >= cfg.site.feel_in
+    behind = np.zeros_like(x0, dtype=bool)
+    drive = x0 >= cfg.site.driveway_hour_in
+    if len(X) >= 2:
+        behind |= (X[0] >= cfg.site.behind_run_in) & (X[1] >= cfg.site.behind_run_in)
+    if len(X) >= 3:
+        s3 = X[:3].sum(axis=0)
+        behind |= s3 >= cfg.site.behind_3h_in
+        drive |= s3 >= cfg.site.driveway_3h_in
+    if prev is not None and len(prev) == len(x0):
+        p = np.array(prev)
+        drive |= (p >= cfg.site.feel_in) & (x0 - p >= cfg.site.driveway_jump_in)
+    behind |= drive
+    return feel, behind, drive
+
+
 def hour_levels(s: Series, t: datetime, cfg) -> dict | None:
     if t not in s.members:
         return None
