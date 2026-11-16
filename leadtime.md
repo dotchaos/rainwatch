@@ -1,6 +1,6 @@
 # Lead-time scorecards vs the Mint gauge
 
-Generated 2026-11-16T21:25 UTC · last 60 days · truth: SFOC1 (US Mint) only · heavy = an hour >= 0.20". One verdict per gauge hour per bucket (the latest forecast issued in it). Probabilistic sources say heavy at >= 20% of runs.
+Generated 2026-11-16T21:35 UTC · last 60 days · truth: SFOC1 (US Mint) only · heavy = an hour >= 0.20". One verdict per gauge hour per bucket (the latest forecast issued in it). Probabilistic sources say heavy at >= 20% of runs.
 
 
 ## 0–1 h (the hour in progress and the next)
@@ -84,5 +84,3 @@ Calibration, primary forecast (3–6 h); observed frequency only where a bin has
 | any | 0.20–0.50 | 13 | 0.38 | 0.15 |
 | any | 0.50–0.80 | 6 | 0.58 | too few |
 | any | 0.80–1.00 | 6 | 0.88 | too few |
-
-Card text archive: no records yet (started with this change).
