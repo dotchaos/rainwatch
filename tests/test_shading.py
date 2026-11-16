@@ -39,3 +39,11 @@ def test_update_records_shading_once_per_hour(tmp_path):
     line = json.loads((tmp_path / "shading" / f"{NOW:%Y-%m}.jsonl").read_text().splitlines()[0])
     assert line["stretches"][0]["B"] == [0.1]
     assert "live.json" in out
+
+
+def test_matched_to_median_adds_up_to_the_shown_total():
+    M = np.full((10, 6), 0.05)
+    M[:2] = 0.40                                   # two very wet runs pull the mean up
+    B = shading.matched_to_median(M)
+    assert abs(B.sum() - np.median(M.sum(axis=1))) < 1e-9
+    assert max(B) < 0.20                           # no heavy hour the typical run doesn't have

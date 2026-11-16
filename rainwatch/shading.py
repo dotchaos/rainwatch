@@ -42,6 +42,14 @@ def matched(M: np.ndarray) -> np.ndarray:
     return out
 
 
+def matched_to_median(M: np.ndarray) -> np.ndarray:
+    """B scaled so its hours add up to the median run total, the amount the card shows, rather than the mean
+    (a few very wet runs pull the mean up and would add heavy hours the typical run doesn't have)."""
+    B = matched(M)
+    s = float(B.sum())
+    return B * (float(np.median(M.sum(axis=1))) / s) if s > 0 else B
+
+
 def wet_stretches(pooled, hours: list[datetime], any_in: float, heavy_in: float) -> list[tuple[int, int]]:
     """For the recording: hours where at least half the runs are measurable or 20% heavy (the card's jacket and
     boots rules without the flood levels), joined across one-hour gaps, two hours or longer."""

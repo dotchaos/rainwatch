@@ -195,7 +195,7 @@ def strip(report: dict, cond: Conditions, cfg, t0, tz, graph_rain: list[int], en
             k += 1
         ens_h = [j for j in range(a, k) if row[j].get("primary") == "ens"]
         M = shading.run_matrix(parts or [], [hours[j] for j in ens_h]) if ens_h else None
-        B = dict(zip(ens_h, shading.matched(M))) if M is not None else {}
+        B = dict(zip(ens_h, shading.matched_to_median(M))) if M is not None else {}
         for j in range(a, k):                             # radar and NWS hours keep their own median
             vals[j] = float(B.get(j, row[j].get("mid") or 0.0))
     out = []

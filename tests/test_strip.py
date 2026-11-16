@@ -67,7 +67,7 @@ def test_intensity_and_totals_come_from_the_same_runs():
     for g in groups:
         ens_h = [h for h in g if rows[(t0 + timedelta(hours=h)).isoformat()]["primary"] == "ens"]
         M = shading.run_matrix(parts, [t0 + timedelta(hours=h) for h in ens_h])
-        B = dict(zip(ens_h, shading.matched(M)))
+        B = dict(zip(ens_h, shading.matched_to_median(M)))
         for h in g:
             v = B[h] if h in B else rows[(t0 + timedelta(hours=h)).isoformat()]["mid"]
             assert got[h] == max(1, shading.intensity(v, cfg.heavy_in)), h
