@@ -578,7 +578,11 @@ function eventAmount(s: Scenario, ev: RainEvent, all: RainEvent[]): number | nul
 
 /** When an upcoming event begins, in day parts (its timing may shift, so no clock time): by local start hour. */
 const START_WORDS = Array.from({ length: 24 }, (_, h) => h < 5 ? 'early' : h < 12 ? 'in the morning' : h < 17 ? 'in the afternoon' : h < 21 ? 'in the evening' : 'late');
-export interface Upcoming { startHour: number; day: string; heading: string; sentence: string; reason: string; icon: Scenario['days'][number]['icon'] }
+export interface Upcoming {
+  startHour: number; day: string; heading: string; sentence: string; reason: string; icon: Scenario['days'][number]['icon'];
+  /** 'awareness': "Keep an eye on Wednesday" (two or more days out, no different gear); 'day': "Tomorrow · Around 0.4" of rain" */
+  mode: 'awareness' | 'day';
+}
 
 /**
  * The upcoming-event module (two-horizon hero). Shown only when a later rain event is distinct from the one the
@@ -623,12 +627,19 @@ export function upcomingEvent(s: Scenario): Upcoming | null {
   // the amount leads (information, not interpretation), but only when it is reliable: a complete day, and the
   // event ends inside the forecast; rain still falling where the data stops gets no total (it would be partial)
   const total = amt !== null && amt >= 0.1 && ev.endKnown ? `Around ${amt.toFixed(1)}" of rain` : null;
-  const heading = total ?? (reason === 'higher action' ? levelLabels(s)[ev.rung!] : 'Rain');
   const overnight = ev.end > d.end && ev.endKnown && !isUnknown(s, d.end);
+  const then = overnight ? 'continuing overnight' : !ev.endKnown ? 'still falling where the forecast ends' : null;
+  // Awareness mode (DISPLAY-RULES "Upcoming weather: voice and urgency"): a meaningful event two or more days away
+  // that needs no different gear. Invites attention; the facts follow. Anticipation and action modes: not built yet.
+  if (k >= 2 && reason !== 'higher action') {
+    const lead = total ? `${total} expected` : `Rain beginning ${START_WORDS[localHour(s, ev.start)]}`;
+    return { startHour: ev.start, day, heading: `Keep an eye on ${day}`, sentence: [lead, then].filter(Boolean).join(', ') + '.',
+             reason, icon: s.days[k]?.icon ?? 'rain', mode: 'awareness' };
+  }
+  const heading = total ?? (reason === 'higher action' ? levelLabels(s)[ev.rung!] : 'Rain');
   const parts = [`Beginning ${START_WORDS[localHour(s, ev.start)]}`];
   if (reason === 'higher action' && total) parts.unshift(levelLabels(s)[ev.rung!]);
-  if (overnight) parts.push('continuing overnight');
-  else if (!ev.endKnown) parts.push('still falling where the forecast ends');
+  if (then) parts.push(then);
   const sentence = cap(parts.map((x, i) => i ? x.charAt(0).toLowerCase() + x.slice(1) : x).join(', ')) + '.';
-  return { startHour: ev.start, day, heading, sentence, reason, icon: s.days[k]?.icon ?? 'rain' };
+  return { startHour: ev.start, day, heading, sentence, reason, icon: s.days[k]?.icon ?? 'rain', mode: 'day' };
 }

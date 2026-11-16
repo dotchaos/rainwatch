@@ -49,11 +49,43 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
   - **action first:** it reaches a higher gear rung (the engine's thresholds; inside the graph only).
   - **amount:** at least twice the primary event's amount (whole-run totals).
   - **intensity:** heavier strip rain than the primary event, moderate or more.
-- Copy states information, not interpretation: heading "Wednesday · Around 1.1" of rain" when the amount is reliable (a complete day, and the event ends inside the forecast data); otherwise the rung or "Rain". Sentence: when it begins in day parts ("Beginning early", "in the morning", "in the afternoon", "in the evening", "late"), then "continuing overnight" or "still falling where the forecast ends". A higher-rung event names the rung first ("Rain boots, beginning in the evening.").
+- Copy (day form) states information, not interpretation: heading "Wednesday · Around 1.1" of rain" when the amount is reliable (a complete day, and the event ends inside the forecast data); otherwise the rung or "Rain". Sentence: when it begins in day parts ("Beginning early", "in the morning", "in the afternoon", "in the evening", "late"), then "continuing overnight" or "still falling where the forecast ends". A higher-rung event names the rung first ("Rain boots, beginning in the evening.").
   - Either rain reason needs an amount worth a number in tenths (the existing amounts rule), taken from a complete day with no other rain that day.
 - Never on heat cards. Never for an event holding a Sandbags window the flood alert already lists. Never from an incomplete day's amount, and never for an event whose start borders missing data. No end time, ever. "Continuing overnight" only when the next day's first hours are forecast wet; "still falling where the forecast ends" when the data stops.
 - When shown, the hero detail drops its "More rain …" line for the same event.
 - No new rainfall threshold: comparisons are relative to the primary event. Official warnings aren't in the card contract yet, so they aren't considered.
+
+## Upcoming weather: voice and urgency (accepted Nov 15 2026)
+
+**Principle.** Rainwatch speaks like a thoughtful local observer: attentive, conversational and calm. It calls attention to meaningful changes ahead without making every forecast sound like a warning. The farther away an event is, the more the language invites awareness; the closer and more actionable it becomes, the more direct the language gets.
+
+| Mode | When | Voice | Example |
+|---|---|---|---|
+| Awareness | Meaningful event several days away; no immediate action required | Conversational, lightly anticipatory | Keep an eye on Wednesday |
+| Anticipation | Event approaching, generally tomorrow; planning may be useful | More specific about conditions and timing | Tomorrow's looking wet |
+| Action | Event imminent or preparation needed | Direct, concrete, time-bound | Heavy rain from 2 PM |
+
+These are communication modes, not rigid time buckets: a serious hazard several days away may need actionable language immediately.
+
+1. **Lead with why the event matters.** The module communicates something worth noticing, not a repeat of the forecast.
+2. **Match urgency to consequence.** Ordinary rain should not sound like an emergency; a credible flood risk should not sound casual.
+3. **Conversational language is selective.** "Keep an eye on Wednesday" is an example of a voice, not a mandatory template or reusable label.
+4. **Preserve the facts.** A conversational headline is followed by a concise, specific forecast: amount, timing, duration or preparation.
+5. **Uncertainty through the forecast, not vague alarm.** "Keep an eye on" must not imply an official warning or unsupported risk.
+6. **Advance the language as the event approaches.** Reevaluate on every update; a distant-event headline never stays once the event is immediate.
+7. **No repetitive narration.** No conversational introduction when the primary headline already communicates the event.
+8. **Official warnings override personality.** Established hazard terminology and actionable instructions when warranted.
+
+"Keep an eye on Wednesday" is an invitation to pay attention, not an instruction to keep checking the app: Rainwatch does the monitoring; the reader simply knows what's coming.
+
+Example, Wednesday rain:
+- Several days out: **Keep an eye on Wednesday** / Around 1.1" of rain expected, continuing overnight.
+- The day before: **Wednesday's looking wet** / Around 1.1" expected, beginning early and continuing overnight.
+- During the event: **Rain through tonight** / Around 1.1" expected across the event, only if its end is supported by forecast data.
+
+Implementation: select the event and its consequence first (Upcoming event, below), then the mode, from time until onset, forecast confidence and coverage, severity and action, whether preparation is needed before onset, and whether the headline already represents the event. Copy comes from supported forecast facts only: never invented timing, accumulation, event boundaries or severity to make a sentence sound natural. Test for repetition, exaggerated urgency and inappropriate casualness across all scenarios.
+
+**Built so far (v0.14):** awareness only, for an event two or more local days away that needs no different gear. Tomorrow and gear-changing events keep the plain day form ("Tomorrow · Around 0.1" of rain" / "Rain boots, beginning in the evening."). Anticipation and action modes wait until the voice has been tested on real weather.
 
 ## Five-day rows (v0.13, lab)
 - Five local days, one row each, on one shared axis (local midnight to midnight). Today's hours before now are empty, not dry.

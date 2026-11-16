@@ -19,7 +19,8 @@ describe('show/hide across the seven scenarios', () => {
   it('current rain + larger Wednesday event: shown, as in the brief', () => {
     const s = byId('upcoming'), u = upcomingEvent(s)!;
     expect(validateScenario(s)).toEqual([]);
-    expect([u.day, u.heading, u.sentence]).toEqual(['Wednesday', 'Around 1.1" of rain', 'Beginning early, continuing overnight.']);
+    // awareness mode: several days out, no different gear (DISPLAY-RULES, voice and urgency)
+    expect([u.mode, u.heading, u.sentence]).toEqual(['awareness', 'Keep an eye on Wednesday', 'Around 1.1" of rain expected, continuing overnight.']);
     const n = nowNext(s)!;
     expect(n.headline).toBe('Rain until about 11 PM');                // the primary headline is unchanged
     expect(n.detail).not.toContain('More rain');                       // not said twice
@@ -69,7 +70,7 @@ describe('selection rules', () => {
     s.rainHours = [{ startHour: 93, endHour: 97, intensity: 2 }];
     s.days[4] = { ...s.days[4], rainIn: 0.3 };
     const u = upcomingEvent(s)!;
-    expect([u.day, u.heading, u.sentence]).toEqual(['Monday', 'Around 0.3" of rain', 'Beginning in the morning.']);
+    expect([u.heading, u.sentence]).toEqual(['Keep an eye on Monday', 'Around 0.3" of rain expected.']);
   });
 
   it('extreme storm: events holding a Sandbags window the alert lists are never repeated', () => {
@@ -112,7 +113,7 @@ describe('incomplete coverage', () => {
     delete s.days[4].rainIn;
     expect(validateScenario(s)).toEqual([]);
     const u = upcomingEvent(s)!;
-    expect([u.heading, u.sentence]).toEqual(['Rain', 'Beginning early, still falling where the forecast ends.']);
+    expect([u.heading, u.sentence]).toEqual(['Keep an eye on Wednesday', 'Rain beginning early, still falling where the forecast ends.']);
     expect(u.heading + u.sentence).not.toMatch(/\d"/);                 // no amount at all
     expect(u.sentence).not.toMatch(NO_END_TIME);
   });
@@ -133,5 +134,35 @@ describe('incomplete coverage', () => {
       expect(u.sentence).not.toMatch(NO_END_TIME);
       if (/of rain/.test(u.heading)) expect(u.sentence).not.toContain('where the forecast ends');
     }
+  });
+});
+
+describe('voice and urgency (awareness mode only, v0.14)', () => {
+  it('tomorrow keeps the day form; awareness is for two or more days out', () => {
+    const s = byId('rain-soon');
+    s.timeline!.intervals = s.timeline!.intervals.map(p => p.startHour < 10 ? { ...p, severity: 1 as const } : { ...p, severity: 2 as const });
+    s.days[1] = { ...s.days[1], rainIn: 0.12 };
+    expect(upcomingEvent(s)!.mode).toBe('day');
+  });
+
+  it('an event needing different gear is never put in awareness mode, however far away', () => {
+    const s = byId('upcoming');
+    s.timeline!.intervals = s.timeline!.intervals.map(p => p.startHour >= 57 ? { ...p, severity: 2 as const } : p);
+    const u = upcomingEvent(s)!;
+    expect([u.mode, u.heading, u.sentence]).toEqual(['day', 'Around 1.1" of rain', 'Rain boots, beginning early, continuing overnight.']);
+  });
+
+  it('awareness copy is calm: no warning language, and no instruction to keep checking', () => {
+    const cases = [byId('upcoming'), (() => { const s = byId('october'); s.rainHours = [{ startHour: 93, endHour: 97, intensity: 2 }]; s.days[4] = { ...s.days[4], rainIn: 0.3 }; return s; })()];
+    for (const s of cases) {
+      const u = upcomingEvent(s)!;
+      expect(u.heading + ' ' + u.sentence).not.toMatch(/warning|alert|danger|flood|check|stay tuned|watch for updates/i);
+      expect(html(s)).not.toMatch(/class="upcoming[^"]*(risk|alert)/);   // no alert container or risk styling
+    }
+  });
+
+  it('the facts follow the invitation: awareness always carries an amount or a start', () => {
+    const u = upcomingEvent(byId('upcoming'))!;
+    expect(u.sentence).toMatch(/\d\.\d" of rain expected|beginning/);
   });
 });

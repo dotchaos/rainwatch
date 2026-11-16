@@ -27,8 +27,9 @@ function NowAndNext({ s }: { s: Scenario }) {
     {n && <><h2 className="headline">{n.headline}</h2>{n.detail && <p className="headline-detail">{n.detail}</p>}
       {n.action && Icon && <div className={`action-line${n.action.risk ? ' risk' : ''}`}><Icon size={19} />{n.action.text}</div>}
       {n.note && <p className="action-note">{n.note}</p>}</>}
-    {up && <div className="upcoming" aria-label={`Coming up: ${up.day}, ${up.heading}. ${up.sentence}`}>
-      <div className="upcoming-head"><WeatherIcon name={up.icon} size={20} /><strong>{up.day}</strong><span>· {up.heading}</span></div>
+    {up && <div className="upcoming" aria-label={up.mode === 'awareness' ? `${up.heading}. ${up.sentence}` : `Coming up: ${up.day}, ${up.heading}. ${up.sentence}`}>
+      <div className="upcoming-head"><WeatherIcon name={up.icon} size={20} />{up.mode === 'awareness'
+        ? <strong>{up.heading}</strong> : <><strong>{up.day}</strong><span>· {up.heading}</span></>}</div>
       <p>{up.sentence}</p>
     </div>}
   </section>;

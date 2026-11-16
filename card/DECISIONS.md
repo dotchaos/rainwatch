@@ -73,3 +73,4 @@
   - Per-day check on every card: the strip adds up inside the runs' 10th–90th percentile day total, with no more heavy or moderate-and-heavier hours than three runs in four.
 - **Open-ended later rain:** "More rain from Wed 1 AM." with no end time and no partial amount when the rain runs to the graph edge or into missing data. Fixed Nov 15 2026 on the review branch.
 - **Hero prioritisation (open question, not a blocker):** when a later event is much bigger than the current one (e.g. 0.3" now, ~1.1" Wednesday), it should not sit only in secondary copy.
+- **Upcoming weather voice (Nov 15 2026):** awareness → anticipation → action as an event nears and its consequence grows (DISPLAY-RULES). Only awareness is built ("Keep an eye on Wednesday"); the other modes wait for testing on real weather. Not a generalized copy-generation system.
