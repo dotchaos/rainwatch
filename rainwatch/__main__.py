@@ -84,6 +84,10 @@ def main(argv=None) -> int:
         arc.shading(now, shading.record(fc.ensemble_parts, ens, now, cfg.any_in, cfg.heavy_in))
     except Exception as e:  # noqa: BLE001
         print(f"shading record: {e}")
+    try:    # flood potential (v0.19 exploration): raw evidence for later scoring; never blocks the update
+        arc.flood(now, fc.card)
+    except Exception as e:  # noqa: BLE001
+        print(f"flood record: {e}")
     obs = arc.merge_obs(gs, now)
     truth = archive.truth(obs, [cfg.site.hads_station] if cfg.site else [])   # scoring uses the nearby gauge only, never SFO
     scores = archive.score(arc.forecasts(now - timedelta(days=30)), truth, cfg.heavy_in, cfg.any_in)

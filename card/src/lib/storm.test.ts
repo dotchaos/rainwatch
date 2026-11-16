@@ -139,8 +139,9 @@ describe('flood potential: between Boots and Sandbags (v0.19 exploration, lab on
     expect(html(ahead())).not.toContain('chart-potential');                            // production graph unchanged
     const h = html(ahead(), 'outline');
     expect(h).toContain('class="chart-potential"');
-    expect(h).toContain('Flood potential · not a recommendation yet');
-    expect(h).toContain('Flood potential, not a recommendation: Wed 4–8 AM.');          // accessible description
+    expect(h).toContain('Potential flooding · Not yet a sandbag recommendation');
+    expect(h).toContain('Potential flooding, not yet a sandbag recommendation: Wed 4–8 AM.');
+    expect(h).toContain('url(#flood-potential)');                                     // its own pattern, not only a border          // accessible description
     expect(Math.max(...chartBlocks(ahead()).map(b => b.level))).toBe(2);               // the solid bars stay Boots
     expect(h).not.toMatch(/Sandbags:|Sandbags ·/);
   });

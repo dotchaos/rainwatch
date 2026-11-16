@@ -63,3 +63,21 @@ def test_potential_windows_match_the_cards_peaks_and_count_runs_over_the_window(
     w = card.potential_windows(rain, HOURS, [sysm([44, 47]), sysm([46, 30])], CFG)
     assert [(x["startHour"], x["endHour"]) for x in w] == [(44, 48), (60, 61)]    # 44–45 and 46–48 are one peak
     assert w[0] == {"startHour": 44, "endHour": 48, "pBehindAny": 0.75, "pFloodAny": 0.75, "systems": 2}
+
+
+def test_flood_record_keeps_raw_evidence_with_real_times_once_an_hour(tmp_path):
+    import json as _json
+    from rainwatch import archive
+    arc = archive.Archive(tmp_path)
+    pf = [0.0] * 72
+    pf[44] = 0.21
+    c = {"provenance": {"generated": "2026-11-16T17:01:00+00:00"},
+         "evidence": {"pHeavy": [0.4] * 72, "pFlood": pf, "pBehind": [0.0] * 72, "floodSystems": [0] * 72, "systems": 3,
+                      "floodValidated": False,
+                      "potential": [{"startHour": 43, "endHour": 47, "pBehindAny": 0.6, "pFloodAny": 0.33, "systems": 3}]}}
+    now = datetime(2026, 11, 16, 17, 5, tzinfo=UTC)
+    assert arc.flood(now, c) is True and arc.flood(now, c) is False          # once per clock hour
+    rec = _json.loads((tmp_path / "flood" / "2026-11.jsonl").read_text())
+    assert list(rec["hours"]) == ["2026-11-18T13:00:00+00:00"]              # only hours at a level; real time
+    assert rec["windows"][0]["start"] == "2026-11-18T12:00:00+00:00" and rec["windows"][0]["pFloodAny"] == 0.33
+    assert arc.flood(now, {"provenance": {"generated": "x"}, "evidence": {"pHeavy": []}}) is False   # no flood site
