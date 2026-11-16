@@ -1,6 +1,6 @@
 # Five-day rows on live data
 
-Run at 2026-11-16T00:17+00:00 UTC. Errors before: none; after: none.
+Run at 2026-11-16T00:24+00:00 UTC. Errors before: none; after: none.
 
 ## 1. Existing card unchanged (before vs after, outside the approved additions)
 
@@ -12,13 +12,13 @@ Report (details page input) differences: 0
 
 | Day | Words | Rain column | Strip |
 |---|---|---|---|
-| Today | Rain at times | 0.38 | 7 wet h, top intensity 2 |
+| Today | Rain at times | 0.35 | 7 wet h, top intensity 1 |
 | Tomorrow | Cloudy | 0.05 | 0 wet h, top intensity 0 |
 | Tuesday | Cloudy | 0.0 | 0 wet h, top intensity 0 |
 | Wednesday | Rain at times | 1.14 | 23 wet h, top intensity 2 |
 | Thursday | Rain at times | 0.26 | 10 wet h, top intensity 1 |
 
-rainHours: [{'startHour': 0, 'endHour': 1, 'intensity': 2}, {'startHour': 1, 'endHour': 7, 'intensity': 1}, {'startHour': 57, 'endHour': 60, 'intensity': 1}, {'startHour': 60, 'endHour': 63, 'intensity': 2}, {'startHour': 63, 'endHour': 90, 'intensity': 1}]
+rainHours: [{'startHour': 0, 'endHour': 7, 'intensity': 1}, {'startHour': 57, 'endHour': 60, 'intensity': 1}, {'startHour': 60, 'endHour': 63, 'intensity': 2}, {'startHour': 63, 'endHour': 90, 'intensity': 1}]
 
 unknownHours: none
 
@@ -28,7 +28,7 @@ With the old 5-day fetch, the five-day rows would have had: unknownHours none, r
 
 | Day | Complete | Day total p10 / p50 / p90 | Sum of hourly medians | Top intensity | Sources | Flags |
 |---|---|---|---|---|---|---|
-| 2026-11-15 | True | 0.198 / 0.381 / 0.679 | 0.35 | 2 | ens, radar | — |
+| 2026-11-15 | True | 0.171 / 0.354 / 0.652 | 0.33 | 1 | ens, radar | — |
 | 2026-11-16 | True | 0.0 / 0.054 / 0.256 | 0.01 | 0 | ens | — |
 | 2026-11-17 | True | 0.0 / 0.0 / 0.078 | 0 | 0 | ens | — |
 | 2026-11-18 | True | 0.544 / 1.143 / 2.193 | 0.85 | 2 | ens | — |
