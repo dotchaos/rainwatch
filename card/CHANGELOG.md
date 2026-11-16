@@ -6,6 +6,9 @@
 - **Engine:** `evidence` on the card: per-hour heavy-hour and flood-level odds, `floodValidated` (config, false), and official NWS flood products as hour offsets. `alert.prepare`: softer advice for awareness and anticipation.
 - **Preparation deadline moves earlier on flood days:** 2 hours before the heavy rain, as the advice itself says ("before heavy rain arrives"), not 2 hours before Sandbags (Extreme storm fixture: before 2 PM → before noon).
 - **Hourly row fade:** no CSS mask (a mask on the scroller with sticky day labels can paint as a black box in WebKit and page captures); a white overlay that ignores taps.
+- **Sandbags is a recommendation, not a rain level (review, Nov 16).** The graph shows Sandbags (bars, red callout) only in a storm whose voice is action; elsewhere those hours show as Rain boots and the possible flooding is said in words. The screen-reader text follows the graph.
+- **Day words describe the expected rain:** "Heavy rain at times" only when most runs have a heavy hour that day; otherwise "Rain, heavy at times possible". "Intense rain" is gone (also from current conditions).
+- **Tighter flood hero (awareness):** the day is named once. "Around 1.5" of rain expected, with heavy bursts possible early on. Localized flooding is possible." Flood line without a time; note shortened to "Consider checking flood barriers before the storm. Local driveway risk isn't validated yet." The calibration story stays on the details page.
 - **Fixtures:** new "Storm ahead" (the live forecast of Nov 16, 8 AM); "Extreme storm" gets illustrative evidence and a Flood Watch, so it still shows the action state.
 
 ## v0.18.1: hourly row fix (iOS)
