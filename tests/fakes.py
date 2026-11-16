@@ -83,10 +83,11 @@ def om_conditions(now: datetime, params: dict):
         tz = TZ_BY_POINT.get((params["latitude"], params["longitude"]), "America/New_York")
     if "daily" in params:
         d0 = now.astimezone(ZoneInfo(tz)).date()
-        days = [(d0 + timedelta(days=k)).isoformat() for k in range(5)]
-        return {"timezone": tz, "daily": {"time": days, "temperature_2m_max": [64.0, 61.0, 66.0, 68.0, 63.0],
-                                          "temperature_2m_min": [52.0, 50.0, 53.0, 54.0, 51.0],
-                                          "weather_code": [61, 3, 2, 0, 3]}}
+        n = int(params.get("forecast_days", 5))      # like the real API: as many local days as asked for
+        days = [(d0 + timedelta(days=k)).isoformat() for k in range(n)]
+        return {"timezone": tz, "daily": {"time": days, "temperature_2m_max": [64.0, 61.0, 66.0, 68.0, 63.0, 60.0][:n],
+                                          "temperature_2m_min": [52.0, 50.0, 53.0, 54.0, 51.0, 49.0][:n],
+                                          "weather_code": [61, 3, 2, 0, 3, 61][:n]}}
     h0 = now.replace(minute=0, second=0, microsecond=0, tzinfo=None)
     ts = [(h0 + timedelta(hours=i)).isoformat(timespec="minutes") for i in range(120)]
     return {"timezone": tz, "hourly": {"time": ts, "temperature_2m": [55.0 + 6 * math.sin(i / 24 * 2 * math.pi) for i in range(120)],
@@ -134,7 +135,10 @@ class FakeSession:
                 f"SFOC1,{(h + timedelta(minutes=15 * k)).strftime('%Y-%m-%d %H:%M')},{10 + 0.03 * k:.2f}" for k in range(9))
             return Resp(text=text)
         if "ensemble-api" in url:
-            return Resp(om_ensemble(n))
+            # like the real API: data through the end of the last GMT day asked for
+            end = datetime.combine(n.astimezone(UTC).date() + timedelta(days=int(params.get("forecast_days", 5))),
+                                   datetime.min.time(), UTC)
+            return Resp(om_ensemble(n, hours=int((end - n.replace(minute=0, second=0, microsecond=0)).total_seconds() // 3600)))
         if "api.open-meteo.com" in url and "wind_speed_700hPa" in params.get("hourly", ""):
             h0 = n.replace(minute=0, second=0, microsecond=0)
             ts = [int((h0 + timedelta(hours=i - 2)).timestamp()) for i in range(26)]

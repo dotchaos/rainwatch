@@ -160,6 +160,39 @@
    "lowF": 53,
    "highF": 66,
    "rainIn": 0.0
+  },
+  {
+   "label": "Tuesday",
+   "description": "Sunny",
+   "icon": "clear-day",
+   "lowF": 54,
+   "highF": 68,
+   "rainIn": 0.0
+  },
+  {
+   "label": "Wednesday",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 51,
+   "highF": 63,
+   "rainIn": 0.0
+  }
+ ],
+ "rainHours": [
+  {
+   "startHour": 1,
+   "endHour": 3,
+   "intensity": 1
+  },
+  {
+   "startHour": 3,
+   "endHour": 4,
+   "intensity": 3
+  },
+  {
+   "startHour": 4,
+   "endHour": 9,
+   "intensity": 1
   }
  ],
  "provenance": {
@@ -198,6 +231,78 @@
    "startHour": 1,
    "endHour": 9,
    "medianIn": 0.65
+  }
+ ],
+ "_strip_check": [
+  {
+   "date": "2026-11-14",
+   "complete": true,
+   "wet_hours": 4,
+   "top_intensity": 3,
+   "total_p10": 0.25,
+   "total_p50": 0.45,
+   "total_p90": 0.45,
+   "sum_hourly_medians": 0.45,
+   "primary": [
+    "ens"
+   ],
+   "flags": []
+  },
+  {
+   "date": "2026-11-15",
+   "complete": true,
+   "wet_hours": 4,
+   "top_intensity": 1,
+   "total_p10": 0.2,
+   "total_p50": 0.2,
+   "total_p90": 0.2,
+   "sum_hourly_medians": 0.2,
+   "primary": [
+    "ens"
+   ],
+   "flags": []
+  },
+  {
+   "date": "2026-11-16",
+   "complete": true,
+   "wet_hours": 0,
+   "top_intensity": 0,
+   "total_p10": 0.0,
+   "total_p50": 0.0,
+   "total_p90": 0.0,
+   "sum_hourly_medians": 0,
+   "primary": [
+    "ens"
+   ],
+   "flags": []
+  },
+  {
+   "date": "2026-11-17",
+   "complete": true,
+   "wet_hours": 0,
+   "top_intensity": 0,
+   "total_p10": 0.0,
+   "total_p50": 0.0,
+   "total_p90": 0.0,
+   "sum_hourly_medians": 0,
+   "primary": [
+    "ens"
+   ],
+   "flags": []
+  },
+  {
+   "date": "2026-11-18",
+   "complete": true,
+   "wet_hours": 0,
+   "top_intensity": 0,
+   "total_p10": 0.0,
+   "total_p50": 0.0,
+   "total_p90": 0.0,
+   "sum_hourly_medians": 0,
+   "primary": [
+    "ens"
+   ],
+   "flags": []
   }
  ],
  "_diagnostics": {

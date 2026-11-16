@@ -52,16 +52,23 @@ def _truncated(cut: int, dry: bool = False):
         elif dry:
             r = {**r, "p_any": 0.0, "p_heavy": 0.0, "mid": 0.0, "levels": {}}
         rows.append(r)
-    rep = {**rep, "rows": rows}
+    # the five-day strip's extra hours are cut the same way (the data stops once, for everything)
+    strip = [{"t": r["t"], "label": r["label"], "missing": True} for r in rep["strip_rows"]]
+    rep = {**rep, "rows": rows, "strip_rows": strip}
     return card.build(rep, _cond_for(rep), cfg, NOW, used=["Open-Meteo models"]), cfg
 
 
 def test_truncated_forecast_is_marked_unknown_not_dry():
     c, _ = _truncated(40)
-    assert c["unknownHours"] == [{"startHour": 40, "endHour": 72}]
+    gaps = c["unknownHours"]
+    assert len(gaps) == 1 and gaps[0]["startHour"] == 40                  # one gap from the cut ...
+    assert gaps[0]["endHour"] > 72                                       # ... through the end of the five-day rows
+    assert max(h for r in c["rainHours"] for h in range(r["startHour"], r["endHour"])) < 40
+    assert c["days"][3]["description"] == c["days"][4]["description"] == "Rain forecast incomplete"
+    assert "rainIn" not in c["days"][3] and "rainIn" not in c["days"][4]
     assert all(p["endHour"] <= 40 for p in c.get("timeline", {}).get("intervals", []))
     # a day whose rain hours are partly missing never reads as an ordinary dry day
-    assert [d["description"] for d in c["days"]][1:] == ["Cloudy", "Rain forecast incomplete"]   # Sun fully known; Mon cut
+    assert [d["description"] for d in c["days"]][1:] == ["Cloudy"] + ["Rain forecast incomplete"] * 3   # Sun fully known; Mon on cut
 
 
 def test_truncated_calm_forecast_never_promises_three_dry_days():

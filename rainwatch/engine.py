@@ -61,6 +61,7 @@ def _range(m: list[float] | None, v: float | None) -> tuple[float, float, float]
 
 
 MIN_HOURS = 73          # the card draws 72 hours from the current hour
+STRIP_DAYS = 5          # the card's five-day rows run to the end of the fifth local day (v0.13)
 
 
 def daily_totals(cfg, tz, now, hrs, rows, parts, radar, nws_s) -> list[dict]:
@@ -107,7 +108,11 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     end3 = (local_mid + timedelta(days=3)).astimezone(h0.tzinfo)
     # never shorter than the card's 72-hour chart (plus the current hour), whatever config says
     n_hours = max(cfg.horizon_hours, MIN_HOURS, int((end3 - h0).total_seconds() // 3600))
-    hrs = hours(h0, n_hours)
+    # the five-day rows need hours through the end of the fifth local day. Those extra hours are built the same
+    # way but kept apart (strip_rows, days5), so everything else in the report is computed exactly as before.
+    end5 = (local_mid + timedelta(days=STRIP_DAYS)).astimezone(h0.tzinfo)
+    n_strip = max(n_hours, int((end5 - h0).total_seconds() // 3600))
+    hrs = hours(h0, n_strip)
     radar = nc.series if nc else None
     nws_s = nws.qpf if nws else None
 
@@ -163,6 +168,10 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
             "gust_mph": round(nws.gust_mph[t]) if nws and t in nws.gust_mph else None,
             "levels": lev, "model_flags": flags,
         })
+
+    hrs_all, rows_all = hrs, rows
+    hrs, rows = hrs[:n_hours], rows[:n_hours]
+    days5 = daily_totals(cfg, tz, now, hrs_all, rows_all, ens_parts, radar, nws_s)[:STRIP_DAYS]
 
     valid = [r for r in rows if not r.get("missing")]
     wet = [r for r in valid if (r["p_any"] or 0) >= 0.2 or r["hi"] >= 0.02 or (r["p_heavy"] or 0) >= 0.05]
@@ -287,6 +296,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
                   "nws": round(nws_total, 2) if nws_s else None, "confidence": conf,
                   "through": end_label, "method": "runs" if storm else "hourly medians"},
         "days": days,
+        "strip_rows": rows_all[n_hours:], "days5": days5,
         "radar": {
             "status": nc.status if nc else "unavailable",
             "dbz_now": nc.dbz_now if nc else None,

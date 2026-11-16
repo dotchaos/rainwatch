@@ -47,12 +47,17 @@ def parse_deterministic(data: dict, key: str, label: str) -> Series:
     return Series(key=key, label=label, issued=None, url=FC, values=vals)
 
 
+# 6 GMT days reach the end of the fifth local day at any time of day, in any time zone (was 5 before v0.13,
+# which covered 72 hours but usually stopped partway through day five).
+ENS_DAYS = 6
+
+
 def fetch_ensembles(s, lat, lon, models: list[str]) -> tuple[list[Series], list[str]]:
     out, errs = [], []
     for m in models:
         try:
-            # 5 GMT days: today's remainder plus a full 72 hours ahead at any time of day
-            out.append(parse_ensemble(get_json(s, ENS, **_params(lat, lon, m, days=5)), m))
+            # ENS_DAYS GMT days: the rest of today plus enough to reach the end of the fifth local day
+            out.append(parse_ensemble(get_json(s, ENS, **_params(lat, lon, m, days=ENS_DAYS)), m))
         except Exception as e:
             errs.append(f"ensemble {m}: {e}")
     return out, errs

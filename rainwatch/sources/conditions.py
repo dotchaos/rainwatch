@@ -88,14 +88,17 @@ def parse(data: dict) -> Conditions:
     return c
 
 
+FORECAST_DAYS = 6   # temperatures and sky for the five-day rows (was 5 before v0.13)
+
+
 def fetch(s, lat: float, lon: float, tz: str) -> Conditions:
     """Two calls. `tz` may be "auto": Open-Meteo then resolves the time zone from the coordinates."""
     try:
-        hr = s.get(FC, params={"latitude": lat, "longitude": lon, "timezone": "GMT", "forecast_days": 5,
+        hr = s.get(FC, params={"latitude": lat, "longitude": lon, "timezone": "GMT", "forecast_days": FORECAST_DAYS,
                                "temperature_unit": "fahrenheit", "hourly": "temperature_2m,weather_code,is_day"},
                    timeout=30)
         hr.raise_for_status()
-        dy = s.get(FC, params={"latitude": lat, "longitude": lon, "timezone": tz, "forecast_days": 5,
+        dy = s.get(FC, params={"latitude": lat, "longitude": lon, "timezone": tz, "forecast_days": FORECAST_DAYS,
                                "temperature_unit": "fahrenheit",
                                "daily": "temperature_2m_max,temperature_2m_min,weather_code"}, timeout=30)
         dy.raise_for_status()

@@ -327,7 +327,7 @@ def test_live_card_contract_and_levels():
     rep, *_ = _full_report(cfg, FakeSession(NOW))
     assert len(rep["rows"]) >= 73
     c = card.build(rep, _cond_for(rep), cfg, NOW)
-    assert len(c["hourly"]) == card.HOURLY_N and len(c["days"]) == 3 and c["provenance"]["type"] == "live"
+    assert len(c["hourly"]) == card.HOURLY_N and len(c["days"]) == 5 and c["provenance"]["type"] == "live"
     assert [h["hour"] for h in c["hourly"]] == list(range(card.HOURLY_N))   # consecutive, none skipped
     iv = c["timeline"]["intervals"]
     assert all(p["confidence"] == "unknown" for p in iv)                    # nothing claims calibrated timing

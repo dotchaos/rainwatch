@@ -22,6 +22,9 @@ HEAT_F = (80, 90, 100)
 RAIN_WORDS = {1: ("rain", "Rain"), 2: ("heavy-rain", "Heavy rain"), 3: ("heavy-rain", "Intense rain")}
 TYPE_WORDS = {"snow": "Snow", "freezing-rain": "Freezing rain", "hail": "Hail"}
 HOURLY_N = 24    # the Next hours row: consecutive hours from the current one
+# Five-day rows (v0.13). Rain intensity is the typical (median-run) hourly amount, a separate scale from the gear
+# rungs: light < MODERATE_IN, moderate < cfg.heavy_in (0.20"), heavy >= cfg.heavy_in. Provisional (John, Nov 15 2026).
+STRIP_DAYS, MODERATE_IN = 5, 0.10
 
 
 def wet_icon(level: int, code: int | None) -> tuple[str, str]:
@@ -159,6 +162,72 @@ def _runs(levels: list[int], patterns: list[str] | None = None) -> list[dict]:
     return out
 
 
+def intensity(mid: float | None, heavy_in: float) -> int:
+    """1 light, 2 moderate, 3 heavy, from the hour's median across the model runs (the same members the totals sum)."""
+    m = mid or 0.0
+    return 3 if m >= heavy_in else 2 if m >= MODERATE_IN else 1
+
+
+def strip(report: dict, cond: Conditions, cfg, t0, tz, graph_rain: list[int], ens) -> dict | None:
+    """rainHours, unknownHours and day rows 4–5 for the five-day rows, through the end of the fifth local day.
+    Wet hours are the engine's: inside the graph's 72 hours they are copied from the graph (so the two always
+    agree); after it they come from the same rain levels and dry-break rules, run over all the hours."""
+    if "strip_rows" not in report:
+        return None
+    rows = report["rows"] + report["strip_rows"]
+    local0 = t0.astimezone(tz)
+    end = datetime.combine(local0.date() + timedelta(days=STRIP_DAYS), datetime.min.time(), tz)
+    n = int((end - local0.replace(minute=0, second=0, microsecond=0)).total_seconds() // 3600)
+    hours = [t0 + timedelta(hours=i) for i in range(n)]
+    by_t = {r["t"]: r for r in rows}
+    row = [by_t.get(t.isoformat()) for t in hours]
+    classes = [hour_class(r) for r in row]
+    levels = [rain_level(r, cfg) if r else 0 for r in row]
+    full, _, _ = group_rain(levels, classes, hours, ens, cfg.any_in)
+    wet = [graph_rain[h] if h < HORIZON else full[h] for h in range(n)]
+    out, h = [], 0
+    for h in range(n):
+        if not wet[h] or classes[h] == "unknown":
+            continue
+        i = intensity(row[h].get("mid"), cfg.heavy_in)
+        if out and out[-1]["endHour"] == h and out[-1]["intensity"] == i:
+            out[-1]["endHour"] = h + 1
+        else:
+            out.append({"startHour": h, "endHour": h + 1, "intensity": i})
+    return {"n": n, "hours": hours, "rows": row, "classes": classes, "wet": wet, "rainHours": out,
+            "unknownHours": unknown_spans(classes)}
+
+
+def strip_check(st: dict, days5: list[dict], tz, heavy_in: float) -> list[dict]:
+    """Do the day totals and the strip tell the same story? Both come from the same model runs (totals: each run's
+    own day sum, then the median; strip: each hour's median across the runs), so they differ by method only.
+    Flags real contradictions; never changes either."""
+    out = []
+    for d in days5:
+        idx = [k for k, t in enumerate(st["hours"]) if t.astimezone(tz).date().isoformat() == d["date"]]
+        rs = [st["rows"][k] for k in idx]
+        wet = [k for k in idx if st["wet"][k] and st["classes"][k] != "unknown"]
+        top = max((intensity(st["rows"][k].get("mid"), heavy_in) for k in wet), default=0)
+        tot = (d.get("total") or {})
+        p50 = tot.get("p50")
+        sum_mid = round(sum((r or {}).get("mid") or 0 for r in rs if r and not r.get("missing")), 2)
+        prim = sorted({(r or {}).get("primary") for r in rs if r and not r.get("missing")})
+        flags = []
+        if d.get("complete") and p50 is not None:
+            if top == 3 and p50 < heavy_in:
+                flags.append("a typically-heavy hour, but the day's median total is below one heavy hour")
+            if p50 >= 0.1 and not wet:
+                flags.append("a measurable day total with no rain hours on the strip")
+            if wet and p50 < 0.01:
+                flags.append("rain hours on the strip with no measurable day total")
+        if any(p == "nws" for p in prim):
+            flags.append("some hours come from NWS 6-hour totals spread evenly (no model runs): intensity is approximate")
+        out.append({"date": d["date"], "complete": d.get("complete"), "wet_hours": len(wet), "top_intensity": top,
+                    "total_p10": tot.get("p10"), "total_p50": p50, "total_p90": tot.get("p90"),
+                    "sum_hourly_medians": sum_mid, "primary": prim, "flags": flags})
+    return out
+
+
 def provenance_note(used: list[str] | None, has_site: bool) -> str:
     """Name only the sources this forecast actually used."""
     if not used:
@@ -218,14 +287,26 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
 
     local0 = t0.astimezone(tz)
     today = local0.date()
-    day_rows, labels = [], ["Today", "Tomorrow", (local0 + timedelta(days=2)).strftime("%A")]
-    for k in range(3):
+    st = strip(report, cond, cfg, t0, tz, rain, ens)
+    n_days = STRIP_DAYS if st else 3
+    day_rows = []
+    labels = ["Today", "Tomorrow"] + [(local0 + timedelta(days=k)).strftime("%A") for k in range(2, n_days)]
+    if st:   # day rows 4–5 read the strip's hours; rows 1–3 lie inside the graph and are built exactly as before
+        s_heat = [heat_level((cond.hourly.get(t) or {}).get("temp")) for t in st["hours"]]
+        day_totals.update({d["date"]: round(d["total"]["p50"], 2) for d in report.get("days5", [])
+                           if d.get("total") and d.get("complete") and d["date"] not in day_totals})
+    for k in range(n_days):
         d = today + timedelta(days=k)
-        idx = [i for i, t in enumerate(hours) if t.astimezone(tz).date() == d]
-        dr = max((rain[i] for i in idx), default=0)
-        dh = max((heat[i] for i in idx), default=0)
+        if k < 3:
+            idx = [i for i, t in enumerate(hours) if t.astimezone(tz).date() == d]
+            lv, hv, cl = rain, heat, classes
+        else:
+            idx = [i for i, t in enumerate(st["hours"]) if t.astimezone(tz).date() == d]
+            lv, hv, cl = st["wet"], s_heat, st["classes"]
+        dr = max((lv[i] for i in idx), default=0)
+        dh = max((hv[i] for i in idx), default=0)
         dd = cond.daily.get(d.isoformat()) or {}
-        gap = any(classes[i] == "unknown" for i in idx)
+        gap = any(cl[i] == "unknown" for i in idx)
         if dr:
             icon, _ = wet_icon(dr, dd.get("code"))
             t = precip_type(dd.get("code"))
@@ -241,7 +322,7 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         row = {"label": labels[k], "description": words, "icon": icon,
                "lowF": round(dd["lo"]) if dd else None, "highF": round(dd["hi"]) if dd else None}
         tot = day_totals.get(d.isoformat())
-        if tot is not None:
+        if tot is not None and not gap:     # never an amount for a day with hours the forecast doesn't cover
             row["rainIn"] = tot
         day_rows.append(row)
 
@@ -262,6 +343,9 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
                     "icon": icon0, "highF": round(td["hi"]) if td else None, "lowF": round(td["lo"]) if td else None},
         "hourly": hourly, "days": day_rows,
         **({"unknownHours": unknown} if unknown else {}),
+        # five-day rows: rain through the end of the fifth local day, and every hour there without a forecast
+        **({"rainHours": st["rainHours"], "unknownHours": st["unknownHours"]} if st and st["unknownHours"]
+           else {"rainHours": st["rainHours"]} if st else {}),
         "provenance": {"type": "live", "generated": now.isoformat(),
                        "note": provenance_note(list(used) if used else None, cfg.site is not None)},
     }
@@ -300,6 +384,8 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
             card["insight"] = {"headline": f"Dry through {until:%a} {clock_word(until)}" if anyp < 0.2
                                else f"Only a slight chance of showers through {until:%a} {clock_word(until)}",
                                "detail": "No forecast after that yet."}
+    if st:
+        card["_strip_check"] = strip_check(st, report.get("days5", []), tz, cfg.heavy_in)
     card["_diagnostics"] = {"rain_periods": [{**d, "start_local": hours[d["start"]].astimezone(tz).strftime("%a %-I %p"),
                                               "end_local": hours[min(d["end"], HORIZON - 1)].astimezone(tz).strftime("%a %-I %p")}
                                              for d in rain_diag]}

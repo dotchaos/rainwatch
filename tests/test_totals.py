@@ -86,7 +86,10 @@ def test_card_amounts_come_from_the_same_whole_run_totals():
     import json
     out = run()
     c, rep = json.loads(out["live.json"]), json.loads(out["latest.json"])
-    by_date = {d["date"]: d for d in rep["days"]}
+    by_date = {d["date"]: d for d in rep["days5"]}      # five-day rows (v0.13); the first days match rep["days"]
+    for d in rep["days"]:
+        if d["complete"] and d["date"] in by_date:
+            assert by_date[d["date"]]["total"] == d["total"]
     local0 = datetime.fromisoformat(rep["rows"][0]["t"]).astimezone(ZoneInfo(Config().tz)).date()
     for k, row in enumerate(c["days"]):
         d = by_date[(local0 + timedelta(days=k)).isoformat()]
