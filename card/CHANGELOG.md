@@ -1,9 +1,10 @@
 # Changelog
 
-## v0.21 (lab only, review branch going-out): Going out as a silhouette
-- `?lab&graph`: the Going out graph drawn as one continuous shape, beside the current columns, for calm (forced), intermittent rain, the Wednesday storm, the extreme storm and the incomplete forecast. Live card unchanged.
-- Rendering only: the same level for every hour as the columns. Plateaus at band centres; each level change is a vertical edge on the hour, corners rounded only; the shape breaks at missing hours (no-data hatch kept); dashed top edge where timing is approximate; potential flooding a separate dashed field over its exact hours. Flat band tones (pale grey, jacket blue, rain-gear blue; Sandbags only when recommended); no gradients, shadows or outlines beyond the thin top edge.
-- Hour by hour, so it is narrower than the 3-hour columns where rain is brief (Wednesday's Rain gear: 6 hours, not 9).
+## v0.21 (review branch going-out): Going out as a silhouette
+- **The rain graph is one continuous shape** (heat keeps its columns): each hour is one solid colour from the baseline to its level (clothing levels don't stack), hour by hour with exact transitions, flat plateaus filling their bands, softly rounded shoulders, no seams, gradients or outlines beyond a thin top edge (dashed where timing is approximate). Missing hours break the shape and keep the hatch. Calm days still show no graph.
+- **Blue = clothing; warm = flood concern; dashed = potential; solid = actionable.** The shape stops at Rain gear. Potential flooding is a pale dashed field and actionable flooding (Sandbags) a solid warm field, both in the flood band over their exact windows, standing on Rain gear, never changing the clothing level. Sandbags keeps its window labels; key "Sandbags · Preparation recommended".
+- **Labels:** Going out · Next 3 days; Usual clothes, Umbrella or jacket, Rain gear; the flood row reads "Flood potential", or "Sandbags" when actionable. Quieter Usual clothes fill.
+- Lab: `?lab&graph` keeps the old columns beside the silhouette for comparison.
 
 ## v0.20 (review branch going-out, not deployed): Going out
 - **The graph asks one question: what to wear going out.** Title "Going out" with "Next 3 days"; rungs Usual clothes, Umbrella or jacket, Rain gear. Sandbags (property) gets an axis label only when it is recommended and drawn; potential flooding floats above Rain gear, explained by its key.

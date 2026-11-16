@@ -28,7 +28,7 @@ export type PotentialStyle = 'outline' | 'range';
  *  border in the Sandbags colour (3 on, 2 off). Opaque, never transparency. */
 const POTENTIAL_FILL = '#ede9e6', POTENTIAL_DASH = '3 2';
 
-/** 'columns': the 3-hour blocks (live). 'silhouette': the continuous Going out shape (v0.21, lab only); heat stays columns. */
+/** 'silhouette': the continuous Going out shape (default for rain, v0.21). 'columns': the earlier 3-hour blocks (lab comparison only). Heat always draws columns. */
 export type GraphStyle = 'columns' | 'silhouette';
 /** Silhouette (v0.21): four equal bands; each level's plateau sits at its band's centre. Tone by band, flat fills:
  *  the dry band's pale grey, then the established jacket and rain-gear blues, Sandbags only when recommended. */
@@ -40,9 +40,9 @@ const bandTop = (i: number) => base - (i + 1) * step, plateau = bandTop, labelY 
 const f2 = (n: number) => Math.round(n * 100) / 100;
 // softer shoulders and a quieter baseline (Nov 16 review): radius 9, clamped as before to half a step and half a
 // plateau, so a one-hour burst gets a rounded top but keeps its exact hour edges
-const CORNER = 9, EDGE = '#3f7395', EDGE_OPACITY = .85, SIL_DRY = '#f3f6f8', SIL_JACKET = '#7fafc6';
+const CORNER = 9, EDGE = '#3f7395', EDGE_OPACITY = .85, SIL_DRY = '#f6f8f9', SIL_JACKET = '#7fafc6';
 
-export function Timeline({ scenario: s, potential, graph = 'columns' }: { scenario: Scenario; potential?: PotentialStyle; graph?: GraphStyle }) {
+export function Timeline({ scenario: s, potential, graph = 'silhouette' }: { scenario: Scenario; potential?: PotentialStyle; graph?: GraphStyle }) {
   if (!s.timeline) return null;
   const sil = graph === 'silhouette' && s.hazard !== 'heat';
   const heat = s.hazard === 'heat', labels = heat ? SHORT_HEAT : SHORT_RAIN, full = levelLabels(s);
@@ -116,6 +116,7 @@ export function Timeline({ scenario: s, potential, graph = 'columns' }: { scenar
     {pots.length > 0 && <p className="chart-potential-key"><svg width="22" height="10" aria-hidden>{potential === 'outline'
       ? <rect x="1" y="1" width="20" height="8" rx="1.5" fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />
       : <g stroke={intervalColor(s, 3)} strokeWidth="1.4" strokeLinecap="round"><line x1="1" x2="21" y1="1.5" y2="1.5" strokeDasharray="1.5 2.6" /><line x1="1" x2="1" y1="1.5" y2="9" /><line x1="21" x2="21" y1="1.5" y2="9" /></g>}</svg>Potential flooding · Not yet a sandbag recommendation</p>}
+    {sil && callouts.length > 0 && <p className="chart-potential-key"><svg width="22" height="10" aria-hidden><rect x="1" y="1" width="20" height="8" rx="2" fill={intervalColor(s, 3)} /></svg>Sandbags · Preparation recommended</p>}
     <ul className="sr-only">{srItems(s, full)}{pots.map(p => <li key={`pot-${p.startHour}`}>{`${p.label}: potential flooding, not yet a sandbag recommendation`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;
 }
@@ -141,12 +142,19 @@ function srItems(s: Scenario, full: string[]) {
  *  field over its exact hours, standing on the shape, never blended into it. */
 function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; labels: string[]; sandbagsShown: boolean;
                          pots: ReturnType<typeof floodPotentials> }) {
-  const runs = silhouetteRuns(s), segs = segments(runs);
-  // one recommendation per hour (Nov 16 review): clothing levels don't stack, so each hour is filled with its own
-  // level's colour from the baseline up; the colour changes only at the hour edges. A run's colour spans the full
-  // height of the graph and the shape clips it, so the rounded inside corners take the colour of their own hour.
-  // Sandbags hours: rain gear below, the Sandbags colour in its band, as before (flood separation comes later).
-  const wear = [SIL_DRY, SIL_JACKET, intervalColor(s, 2), intervalColor(s, 2)];
+  // blue = clothing, warm = flood concern; dashed = potential, solid = actionable (final pass, Nov 16).
+  // The clothing shape stops at Rain gear: a Sandbags hour is a Rain gear hour for what to wear, and the flood signal
+  // is an overlay in its own band, never part of the shape and never changing the clothing level below it.
+  const runs = silhouetteRuns(s).map(r => ({ ...r, level: Math.min(r.level, 2) })), segs = segments(runs);
+  // one recommendation per hour: each hour is its own level's colour from the baseline up (levels don't stack)
+  const wear = [SIL_DRY, SIL_JACKET, intervalColor(s, 2)];
+  const act = sandbagsCallouts(s);
+  /** A flood overlay: exactly its window's hours, filling the flood band, standing on the top of the Rain gear band. */
+  const overlay = (a0: number, b0: number) => {
+    const a = x(a0) + .6, b = x(b0) - .6, top = bandTop(3) + .6, floor = bandTop(2), r = Math.min(CORNER, (b - a) / 2);
+    const open = `M${f2(a)} ${floor} L${f2(a)} ${f2(top + r)} Q${f2(a)} ${f2(top)} ${f2(a + r)} ${f2(top)} L${f2(b - r)} ${f2(top)} Q${f2(b)} ${f2(top)} ${f2(b)} ${f2(top + r)} L${f2(b)} ${floor}`;
+    return { a, b, top, floor, open, closed: `${open} Z` };
+  };
   return <>
     <defs>{segs.map((g, k) => <clipPath key={k} id={`sil-${s.id}-${k}`}><path d={segmentPath(g, x, plateau, base, CORNER)} /></clipPath>)}</defs>
     {labels.map((l0, i) => { const l = i === 3 && !sandbagsShown ? 'Flood potential' : l0;
@@ -155,24 +163,18 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
       {/* neighbours overlap by a fraction of a pixel so anti-aliasing leaves no seam; the shape still clips every edge */}
       {g.map((r, i) => <rect key={r.start} className="sil-hours" data-level={r.level} x={x(r.start)} y={bandTop(3)}
         width={x(r.end) - x(r.start) + (i < g.length - 1 ? .5 : 0)} height={base - bandTop(3)} fill={wear[r.level]} />)}
-      {g.filter(r => r.level === 3).map(r => <rect key={`sb-${r.start}`} x={x(r.start)} y={bandTop(3)} width={x(r.end) - x(r.start)}
-        height={step} fill={intervalColor(s, 3)} />)}
     </g>)}
     {runs.filter(r => r.unknown).map(r => <rect key={`u-${r.start}`} x={x(r.start)} y={base - 3 * step} width={x(r.end) - x(r.start)} height={3 * step} fill="url(#nodata)" />)}
-    {runs.filter(r => !r.unknown && r.level > 0).map(r => <line key={`e-${r.start}`} className="chart-sil-edge" x1={x(r.start)} x2={x(r.end)}
-      y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1.1" strokeOpacity={EDGE_OPACITY} strokeDasharray={r.sure ? undefined : '2.5 2'} />)}
-    {/* stands on the shape (Nov 16 review): the field ends exactly at the plateau below it, never overlapping the blue,
-        and has no dashed floor of its own (the shape's top edge is its floor), so nothing doubles or bleeds */}
-    {pots.map(p => {
-      const a = x(p.startHour) + .6, b = x(p.endHour) - .6, top = bandTop(3) + .6;   // fills its band too
-      const floor = Math.min(...silhouetteRuns(s).filter(r => !r.unknown && r.end > p.startHour && r.start < p.endHour).map(r => plateau(r.level)));
-      const r = Math.min(CORNER, (b - a) / 2);
-      return <g key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(a)} data-w={f2(b - a)} data-top={f2(top)} data-floor={f2(floor)}>
-        <path d={`M${a} ${floor} L${a} ${top + r} Q${a} ${top} ${a + r} ${top} L${b - r} ${top} Q${b} ${top} ${b} ${top + r} L${b} ${floor} Z`} fill={POTENTIAL_FILL} />
-        <path d={`M${a} ${floor} L${a} ${top + r} Q${a} ${top} ${a + r} ${top} L${b - r} ${top} Q${b} ${top} ${b} ${top + r} L${b} ${floor}`}
-          fill="none" stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />
-      </g>;
-    })}
+    {/* the top edge stops where each shoulder starts, so no tick sticks out past a rounded corner */}
+    {runs.filter(r => !r.unknown && r.level > 0).map(r => { const rc = Math.min(CORNER, (x(r.end) - x(r.start)) / 2) * .9; return <line key={`e-${r.start}`} className="chart-sil-edge" x1={f2(x(r.start) + rc)} x2={f2(x(r.end) - rc)}
+      y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1.1" strokeOpacity={EDGE_OPACITY} strokeDasharray={r.sure ? undefined : '2.5 2'} />; })}
+    {pots.map(p => { const o = overlay(p.startHour, p.endHour);
+      return <g key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(o.a)} data-w={f2(o.b - o.a)} data-top={f2(o.top)} data-floor={f2(o.floor)}>
+        <path d={o.closed} fill={POTENTIAL_FILL} />
+        <path d={o.open} fill="none" stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />
+      </g>; })}
+    {act.map(w => { const o = overlay(w.startHour, w.endHour);
+      return <path key={`act-${w.startHour}`} className="chart-actionable" data-x={f2(o.a)} data-w={f2(o.b - o.a)} d={o.closed} fill={intervalColor(s, 3)} />; })}
     <line x1={x0} x2={x(72)} y1={base} y2={base} className="chart-base" />
   </>;
 }

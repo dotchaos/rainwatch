@@ -82,11 +82,39 @@ describe('flood overlay', () => {
   });
 });
 
-describe('lab only', () => {
-  it('the live card still draws columns unless asked', () => {
-    const h = renderToString(createElement(WeatherCard, { scenario: byId('storm-ahead') }));
-    expect(h).not.toContain('chart-silhouette');
-    expect(renderToString(createElement(WeatherCard, { scenario: byId('heat'), graph: 'silhouette' }))).not.toContain('chart-silhouette');   // heat stays columns
+describe('the default graph (final pass)', () => {
+  const html = (s: Scenario, extra: object = {}) => renderToString(createElement(WeatherCard, { scenario: s, ...extra }));
+  it('rain cards draw the silhouette; heat keeps its columns; columns only when the lab asks', () => {
+    expect(html(byId('storm-ahead'))).toContain('chart-silhouette');
+    expect(html(byId('heat'))).not.toContain('chart-silhouette');
+    expect(html(byId('storm-ahead'), { graph: 'columns' })).not.toContain('chart-silhouette');
+  });
+  it('calm days still show no graph', () => expect(html(byId('october'))).not.toContain('timeline-section'));
+  it('blue = clothing: the shape stops at Rain gear, also under Sandbags', () => {
+    const levels = [...html(byId('storm')).matchAll(/class="sil-hours" data-level="(\d)"/g)].map(m => Number(m[1]));
+    expect(Math.max(...levels)).toBe(2);
+  });
+  it('solid = actionable: one warm overlay per Sandbags window, exactly its hours, in the flood band only', () => {
+    const s = byId('storm'), h = html(s), x = (q: number) => 106 + (q / 72) * 254;
+    const o = [...h.matchAll(/class="chart-actionable" data-x="([\d.]+)" data-w="([\d.]+)"/g)].map(m => [Number(m[1]), Number(m[2])]);
+    expect(o).toHaveLength(2);
+    for (const [k, w] of [[7, 12], [23, 31]].entries()) {
+      expect(o[k][0]).toBeCloseTo(x(w[0]) + .6, 1);
+      expect(o[k][0] + o[k][1]).toBeCloseTo(x(w[1]) - .6, 1);
+    }
+    expect(h).toContain('Sandbags · Preparation recommended');
+    expect(h).toContain('>Thu 4–9 PM<');                               // the event labels stay
+    expect(h).not.toContain('chart-potential"');                       // actionable replaces potential
+  });
+  it('a flood overlay never changes the clothing level under it', () => {
+    for (const id of ['storm', 'storm-ahead']) {
+      const s = byId(id), shown = shownRungs(s);
+      const runs = [...html(s, { potential: 'outline' }).matchAll(/class="sil-hours" data-level="(\d)" x="([\d.]+)" y="[\d.]+" width="([\d.]+)"/g)];
+      for (const m of runs) {
+        const h0 = Math.round((Number(m[2]) - 106) / 254 * 72);
+        expect(Number(m[1]), `${id} @${h0}`).toBe(Math.min(shown(h0, sevAt(s, h0)), 2));
+      }
+    }
   });
 });
 

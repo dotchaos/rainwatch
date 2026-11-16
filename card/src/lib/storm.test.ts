@@ -178,10 +178,9 @@ describe('Going out (v0.20)', () => {
   it('the top rung reads "Sandbags" when Sandbags is recommended (official flood product)', () => {
     expect(axis(html(byId('storm')))).toEqual(['Usual clothes', 'Umbrella or jacket', 'Rain gear', 'Sandbags']);
   });
-  it('dry forecast hours are a pale band; hours without a forecast keep the hatch, never the band', () => {
+  it('dry forecast hours are the pale Usual clothes level; hours without a forecast keep the hatch', () => {
     const s = byId('incomplete'), h = html(s);
-    const dry = [...h.matchAll(/<rect x="[\d.]+" y="[\d.]+" width="[\d.]+" height="7" rx="1.5" fill="#e4ecf0">/g)].length;
-    expect(dry).toBe(chartBlocks(s).filter(b => !b.unknown).length);
+    expect(h).toMatch(/class="sil-hours" data-level="0"[^>]*fill="#f6f8f9"/);
     expect(h).toContain('url(#nodata)');
   });
   it('hero and graph share one vocabulary', () => {

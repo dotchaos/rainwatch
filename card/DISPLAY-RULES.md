@@ -176,3 +176,8 @@ Timeline offsets are hours from `startDay` at `startHourLocal` (local clock time
 - **Voice:** action = official NWS flood product covering the storm, or validated local flood level in at least half the runs; anticipation = a heavy hour in at least half the runs; awareness = otherwise, or no evidence. Red (risk) only in action.
 - **Sandbags on the graph:** only in a storm whose voice is action; elsewhere the hours show as Rain boots, no callout. The axis keeps its four rungs.
 - **Awareness hero:** the headline names the day; the detail gives the amount and when the heavy bursts may come ("early on" within 6 hours of the start), then "Localized flooding is possible."; the flood line has no time.
+
+## Going out graph (v0.21)
+- Rain cards: a continuous shape over the next 72 hours, hour by hour. Bands bottom to top: Usual clothes, Umbrella or jacket, Rain gear, then the flood row ("Flood potential", or "Sandbags" when actionable). Each hour fills its band to the top in its own level's colour; level changes are vertical edges on the hour.
+- Visual rule: blue = clothing, warm = flood concern, dashed = potential, solid = actionable. Flood overlays occupy only the flood row, over their windows' exact hours, on top of Rain gear.
+- Missing hours: the shape stops; hatch. Approximate timing: dashed top edge. Calm days: no graph. Heat cards: unchanged columns.
