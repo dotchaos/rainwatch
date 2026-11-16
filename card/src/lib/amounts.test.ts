@@ -40,7 +40,37 @@ describe('rain amounts', () => {
     expect(validateScenario(s)).toEqual([]);
     const i = deriveInsight(s)!;
     expect(i.headline).toBe('Today: Rain jacket, about 1–10 PM');
-    expect(i.detail).toBe('About 0.5" of rain. Dry until then. More rain Wed 1–7 AM, about 0.9". Timing may shift.');
+    // Wednesday's rain runs to the graph's last hour (Wed 7 AM): where the forecast stops, not where the rain does.
+    // Until Nov 15 this read "More rain Wed 1–7 AM, about 0.9"" (a false end and a partial total).
+    expect(i.detail).toBe('About 0.5" of rain. Dry until then. More rain from Wed 1 AM. Timing may shift.');
+  });
+
+  it('later rain that ends inside the graph keeps its window and amount', () => {
+    const s = nov15();
+    s.timeline!.intervals[1] = { startHour: 62, endHour: 68, severity: 1, confidence: 'unknown', pattern: 'steady' };
+    s.rainTotals = [s.rainTotals![0], { startHour: 62, endHour: 68, medianIn: 0.86 }];
+    expect(deriveInsight(s)!.detail).toContain('More rain Tue 9 PM–Wed 3 AM, about 0.9".');
+  });
+
+  it('the live card of Nov 15, 4 PM: no end time or partial amount for Wednesday\'s rain', () => {
+    const s = nov15();
+    Object.assign(s, { startDay: 'Sun', startHourLocal: 16 });
+    s.timeline!.intervals = [{ startHour: 0, endHour: 7, severity: 1, confidence: 'unknown', pattern: 'steady' },
+      { startHour: 57, endHour: 72, severity: 1, confidence: 'unknown', pattern: 'steady' }];
+    s.rainTotals = [{ startHour: 0, endHour: 7, medianIn: 0.37 }, { startHour: 57, endHour: 72, medianIn: 0.98 }];
+    s.hourly = s.hourly.map((h, k) => ({ ...h, icon: k < 7 ? 'rain' : 'overcast' }));
+    s.days = s.days.map((d, k) => ({ ...d, icon: k === 0 ? 'rain' : 'overcast', description: k === 0 ? 'Rain at times' : 'Cloudy' }));
+    expect(validateScenario(s)).toEqual([]);
+    const i = deriveInsight(s)!;
+    expect(i.detail).toContain('More rain from Wed 1 AM.');
+    expect(i.detail).not.toMatch(/Wed 1 AM–|0\.98|about 1\.0/);
+  });
+
+  it('an event that runs to the graph edge gets no "About X" total', () => {
+    const s = nov15();
+    s.timeline!.intervals = [{ startHour: 6, endHour: 72, severity: 1, confidence: 'unknown', pattern: 'steady' }];
+    s.rainTotals = [{ startHour: 6, endHour: 72, medianIn: 1.4 }];
+    expect(deriveInsight(s)!.detail).not.toContain('of rain');
   });
 
   it('rain within a day is left to "Then dry …", not repeated', () => {

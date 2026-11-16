@@ -171,6 +171,7 @@ export function rainAmount(x: number | undefined): string | null {
 }
 const amountOf = (s: Scenario, a: number, b: number) => s.rainTotals?.find(t => t.startHour === a && t.endHour === b)?.medianIn;
 function amountNote(s: Scenario, a: number, b: number): string | null {
+  if (openEnd(s, b)) return null;           // a total that stops where the forecast stops is not the event's total
   const x = amountOf(s, a, b);
   return x === undefined || x < 0.05 ? null : x < 0.1 ? 'Under 0.1" of rain.' : `About ${x.toFixed(1)}" of rain.`;
 }
@@ -179,6 +180,7 @@ function amountNote(s: Scenario, a: number, b: number): string | null {
 function laterRain(s: Scenario, from: number): string | null {
   const e = rainEvents(s).find(x => x.start >= from);
   if (!e || e.start - from < 24) return null;
+  if (openEnd(s, e.end)) return `More rain from ${timeAt(s, e.start)}.`;   // no end time and no partial amount
   const x = amountOf(s, e.start, e.end);
   const amt = x === undefined || x < 0.05 ? '' : x < 0.1 ? ', under 0.1"' : `, about ${x.toFixed(1)}"`;
   return `More rain ${windowLabel(s, { startHour: e.start, endHour: e.end })}${amt}.`;
@@ -205,7 +207,8 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       const more = dryUntil(s, last.end);
       const times = plan.events.length === 1
         ? when(s, first.start, first.end, plan.sure)
-        : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => e.start === 0 ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
+        : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => openEnd(s, e.end) ? (e.start === 0 ? 'now' : `from ${clock(s, e.start)}`)
+          : e.start === 0 ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
       const head = `${first.start === 0 ? 'Now' : cap(relDay(s, first.start))}: ${jacket}, ${times}`;
       if (plan.kind === 'separate') notes.push('Dry in between.');
       if (first.start > 0 && knownBefore(s, first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
