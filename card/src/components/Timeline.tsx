@@ -61,8 +61,12 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
         })}
         {pots.map(p => {
           const a = x(p.startHour) + gap / 2, b = x(p.endHour) - gap / 2, yS = base - 3 * step, yB = base - 2 * step, c = intervalColor(s, 3);
+          // outline: one dashed, pale-tinted box per graph block of the window, sitting on the solid Boots bars
           return potential === 'outline'
-            ? <rect key={`pot-${p.startHour}`} className="chart-potential" x={a} y={yS} width={b - a} height={yB - yS} rx="1.5" fill="none" stroke={c} strokeWidth="1.3" strokeDasharray="1.5 2.2" strokeLinecap="round" />
+            ? <g key={`pot-${p.startHour}`} className="chart-potential">{chartBlocks(s).filter(k => k.end > p.startHour && k.start < p.endHour).map(k => {
+                const ka = x(Math.max(k.start, p.startHour)) + gap / 2, kb = x(Math.min(k.end, p.endHour)) - gap / 2;
+                return <rect key={k.start} x={ka + .5} y={yS + .5} width={kb - ka - 1} height={yB - yS - 1} rx="1.5" fill={c} fillOpacity=".09" stroke={c} strokeWidth="1" strokeDasharray="2.4 1.8" />;
+              })}</g>
             : <g key={`pot-${p.startHour}`} className="chart-potential" stroke={c} strokeWidth="1.4" strokeLinecap="round">
                 <line x1={a} x2={b} y1={yS} y2={yS} strokeDasharray="1.5 2.6" />
                 <line x1={a} x2={a} y1={yS} y2={yB} /><line x1={b} x2={b} y1={yS} y2={yB} />
@@ -72,7 +76,7 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
       </g>
     </svg>
     {pots.length > 0 && <p className="chart-potential-key"><svg width="22" height="10" aria-hidden>{potential === 'outline'
-      ? <rect x="1" y="1" width="20" height="8" rx="1.5" fill="none" stroke={intervalColor(s, 3)} strokeWidth="1.3" strokeDasharray="1.5 2.2" strokeLinecap="round" />
+      ? <rect x="1" y="1" width="20" height="8" rx="1.5" fill={intervalColor(s, 3)} fillOpacity=".09" stroke={intervalColor(s, 3)} strokeWidth="1" strokeDasharray="2.4 1.8" />
       : <g stroke={intervalColor(s, 3)} strokeWidth="1.4" strokeLinecap="round"><line x1="1" x2="21" y1="1.5" y2="1.5" strokeDasharray="1.5 2.6" /><line x1="1" x2="1" y1="1.5" y2="9" /><line x1="21" x2="21" y1="1.5" y2="9" /></g>}</svg>Flood potential · not a recommendation yet</p>}
     <ul className="sr-only">{srItems(s, full)}{pots.map(p => <li key={`pot-${p.startHour}`}>{`${p.label}: flood potential, not a recommendation`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;

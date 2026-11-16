@@ -47,3 +47,19 @@ def test_engine_and_card_share_the_likely_threshold_and_never_say_intense():
     ts = (Path(__file__).resolve().parents[1] / "card/src/lib/derive.ts").read_text()
     assert float(re.search(r"export const LIKELY_P = ([\d.]+);", ts).group(1)) == card.LIKELY_P
     assert all(w != "Intense rain" for _, w in card.RAIN_WORDS.values())
+
+
+def test_potential_windows_match_the_cards_peaks_and_count_runs_over_the_window():
+    from rainwatch.model import Series
+    rain = [0] * 72
+    for h, v in {40: 1, 41: 1, 42: 1, 43: 1, 44: 3, 45: 2, 46: 3, 47: 3, 48: 2, 49: 2, 60: 3}.items():
+        rain[h] = v
+    # two systems, two runs each; runs peak at different hours (0.5" in one hour: driveway level, also falling behind)
+    def sysm(peaks):
+        s = Series(key="e", label="e", issued=None)
+        for i, t in enumerate(HOURS):
+            s.members[t] = [0.5 if i == p else 0.0 for p in peaks]
+        return s
+    w = card.potential_windows(rain, HOURS, [sysm([44, 47]), sysm([46, 30])], CFG)
+    assert [(x["startHour"], x["endHour"]) for x in w] == [(44, 48), (60, 61)]    # 44–45 and 46–48 are one peak
+    assert w[0] == {"startHour": 44, "endHour": 48, "pBehindAny": 0.75, "pFloodAny": 0.75, "systems": 2}

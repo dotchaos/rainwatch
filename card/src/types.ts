@@ -40,6 +40,9 @@ export interface Evidence {
   floodSystems?: (number | null)[];
   /** How many model systems there are. */
   systems?: number;
+  /** Per Sandbags peak window (the card's peaks), counted per model run over the whole window: share of runs reaching
+   *  drains-falling-behind / the flood level at any hour of it, and model systems with 10% of their runs at the level. */
+  potential?: { startHour: number; endHour: number; pBehindAny: number; pFloodAny: number; systems: number }[];
   /** Official NWS flood products in force (Flood Watch, Flash Flood Warning …), as hour offsets, end exclusive. */
   official?: { event: string; startHour: number; endHour: number }[];
 }

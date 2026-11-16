@@ -786,10 +786,12 @@ function roughWhen(s: Scenario, h: number, head = false): string {
 /**
  * The state between "nothing" and Sandbags: an emerging flood concern, not a recommendation. Proposed trigger, all
  * three on the storm's peak window (none is a single heavy hour, and runs are never counted as independent votes):
- *   agreement   at least POTENTIAL_SYSTEMS model systems each put 10% of their own runs at the flood level;
+ *   agreement   at least POTENTIAL_SYSTEMS model systems each put 10% of their own runs at the flood level in the window;
  *   sustained   at least POTENTIAL_HOURS hours of the window have 10% of all runs at the flood level;
- *   size        the typical run (half of all runs) reaches the drains-falling-behind level: the expected storm, not
- *               only its wet tail, is near local flood levels.
+ *   size        the typical run (half of all runs) reaches the drains-falling-behind level at some hour of the window:
+ *               the expected storm, not only its wet tail, is near local flood levels.
+ * Agreement and size are counted per run over the whole window (engine: evidence.potential), because runs reach a
+ * level at different hours; hour-by-hour shares understate it.
  * Never in a storm that already has action voice (Sandbags proper), never without the evidence fields, and never
  * escalated by the clock: only stronger evidence (official product, validated level) turns it into Sandbags.
  */
@@ -802,14 +804,13 @@ export interface FloodPotential {
 }
 export function floodPotentials(s: Scenario): FloodPotential[] {
   const ev = s.evidence;
-  if (s.hazard !== 'flood' || !ev?.pFlood || !ev.floodSystems || !ev.pBehind) return [];
-  return storms(s).filter(st => stormVoice(s, st) !== 'action').flatMap(st => st.peaks.map(p => {
-    let sys = 0, hrs = 0, beh = 0;
-    for (let h = p.startHour; h < p.endHour; h++) {
-      sys = Math.max(sys, ev.floodSystems![h] ?? 0);
-      if ((ev.pFlood![h] ?? 0) >= FLOOD_FLOOR) hrs++;
-      beh = Math.max(beh, ev.pBehind![h] ?? 0);
-    }
+  if (s.hazard !== 'flood' || !ev?.pFlood || !ev.potential) return [];
+  return storms(s).filter(st => stormVoice(s, st) !== 'action').flatMap(st => st.peaks.flatMap(p => {
+    const w = ev.potential!.find(x => x.startHour === p.startHour && x.endHour === p.endHour);
+    if (!w) return [];                                      // engine and card disagree on the window: say nothing
+    let hrs = 0;
+    for (let h = p.startHour; h < p.endHour; h++) if ((ev.pFlood![h] ?? 0) >= FLOOD_FLOOR) hrs++;
+    const sys = w.systems, beh = w.pBehindAny;
     const checks = { agreement: { systems: sys, of: ev.systems ?? 0, ok: sys >= POTENTIAL_SYSTEMS },
                      sustained: { hours: hrs, ok: hrs >= POTENTIAL_HOURS }, size: { pBehind: beh, ok: beh >= LIKELY_P } };
     return { startHour: p.startHour, endHour: p.endHour, label: p.label, checks,

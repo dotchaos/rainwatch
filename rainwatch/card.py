@@ -327,7 +327,58 @@ FLOOD_PRODUCTS = ("Flash Flood Warning", "Flood Warning", "Flash Flood Watch", "
 FLOOD_FLOOR = 0.10   # a model system "sees" the flood level in an hour when this share of its own runs reach it
 
 
-def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, cfg, parts=None) -> dict:
+PEAK_GAP_H = 2       # same as the card's: a top-rung gap this short does not split a peak
+
+
+def potential_windows(rain: list[int], hours: list[datetime], parts, cfg) -> list[dict]:
+    """Per top-rung peak window (the card's peaks: Sandbags hours, gaps <= PEAK_GAP_H bridged), counted per model run
+    over the whole window, because runs reach a level at different hours (v0.19 exploration, flood potential):
+      pBehindAny  share of all runs reaching drains-falling-behind at any hour of the window
+      pFloodAny   share of all runs reaching the flood (driveway) level at any hour of the window
+      systems     model systems with FLOOD_FLOOR of their own runs at the flood level in the window"""
+    from . import levels as lv_mod
+    wins, i = [], 0
+    while i < len(rain):
+        if rain[i] == 3:
+            a = b = i
+            while b < len(rain):
+                if rain[b] == 3:
+                    b += 1
+                    continue
+                k = b
+                while k < len(rain) and rain[k] != 3 and k - b < PEAK_GAP_H and rain[k] >= 2:
+                    k += 1
+                if k < len(rain) and rain[k] == 3 and k - b <= PEAK_GAP_H:
+                    b = k
+                else:
+                    break
+            wins.append((a, b))
+            i = b
+        else:
+            i += 1
+    out = []
+    for a, b in wins:
+        beh_all, drv_all, systems = [], [], 0
+        for p in parts:
+            beh = drv = None
+            for t in hours[a:b]:
+                f = lv_mod.hour_flags(p, t, cfg)
+                if f is None or (beh is not None and len(f[1]) != len(beh)):
+                    continue
+                beh = f[1].copy() if beh is None else beh | f[1]
+                drv = f[2].copy() if drv is None else drv | f[2]
+            if beh is None:
+                continue
+            beh_all += list(beh)
+            drv_all += list(drv)
+            systems += bool(drv.mean() >= FLOOD_FLOOR)
+        if beh_all:
+            out.append({"startHour": a, "endHour": b, "pBehindAny": round(float(np.mean(beh_all)), 2),
+                        "pFloodAny": round(float(np.mean(drv_all)), 2), "systems": systems})
+    return out
+
+
+def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, cfg, parts=None, rain=None) -> dict:
     """What the card needs to judge how strongly to speak (v0.19), per hour of the graph: the share of model runs
     with a heavy hour (p_heavy) and, with a flood site, the share reaching the driveway level; whether those levels
     are validated at the address; and official flood products in force, as hour offsets. null: no forecast."""
@@ -344,6 +395,8 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
         # v0.19 exploration (flood potential): the share of runs at the drains-falling-behind level, and how many
         # model systems (not runs: one system's members are correlated) put FLOOD_FLOOR of their runs at the flood level
         ev["pBehind"] = per(lambda r: (r.get("levels") or {}).get("behind"))
+        if parts and rain:
+            ev["potential"] = potential_windows(rain, hours, parts, cfg)
         if parts:
             from . import levels as lv_mod
             sysn = []
@@ -531,7 +584,7 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         if spans:
             card["rainTotals"] = spans
     if hazard in ("rain", "flood"):
-        card["evidence"] = evidence(rows, hours, by_t, report, cfg, parts)
+        card["evidence"] = evidence(rows, hours, by_t, report, cfg, parts, rain)
     if hazard == "flood":
         card["alert"] = {"actionTitle": f"Driveway · {cfg.site.card_location}",
                          "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
