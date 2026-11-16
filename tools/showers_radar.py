@@ -93,6 +93,13 @@ def main():
         except Exception as e:  # noqa: BLE001
             om[m] = str(e)
     out["open_meteo"] = om
+    # the gauge's raw reports (timestamps exactly as sent), to check its hour stamps against the radar
+    from rainwatch.sources import gauges
+    try:
+        rr = s.get(gauges.HADS, params={"stations": cfg.site.hads_station, "sts": "2026-11-16T16:00Z", "ets": "2026-11-16T22:00Z"}, timeout=60)
+        out["gauge_raw"] = rr.text.splitlines()[:80]
+    except Exception as e:  # noqa: BLE001
+        out["gauge_raw"] = [str(e)]
     Path("showers_radar.json").write_text(json.dumps(out, indent=1, default=str))
 
     G = out["gauge"]
@@ -107,6 +114,7 @@ def main():
     for m, rows in om.items():
         print(f"**{m}**: " + ("; ".join(f"{r['t'][11:13]}h code {r['weather_code']} pr {r['precipitation']} sh {r['showers']}"
                                         for r in rows) if isinstance(rows, list) else rows))
+    print("\n## Gauge raw reports (UTC)\n\n```\n" + "\n".join(out["gauge_raw"]) + "\n```")
     if out.get("errors"):
         print(f"\nErrors: {len(out['errors'])} frames ({out['errors'][:3]})")
 
