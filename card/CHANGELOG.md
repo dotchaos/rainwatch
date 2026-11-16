@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.20 (review branch going-out, not deployed): Going out
+- **The graph asks one question: what to wear going out.** Title "Going out" with "Next 3 days"; rungs Usual clothes, Umbrella or jacket, Rain gear. Sandbags (property) gets an axis label only when it is recommended and drawn; potential flooding floats above Rain gear, explained by its key.
+- **Dry is a state:** forecast hours that need nothing get a pale band; hours with no forecast keep the grey hatch.
+- **One vocabulary:** the hero uses the same words ("Rain gear · 11 AM–1 PM").
+- Key kept as "Potential flooding · Not yet a sandbag recommendation": "No action recommended yet" would contradict the hero's "Consider checking flood barriers".
+
 ## v0.19: one storm, evidence-based voice, potential flooding
 - **One storm, not fragments.** A storm is one rain event; inside it the card names four different times and never mixes them: the rain onset, the heavy period (Rain boots or higher), the intensity peaks (Sandbags hours; a gap of 2 hours or less does not split a peak, because the far-range data comes in 3-hour blocks), and the time to prepare (2 hours before the heavy period, never before the onset). The hero, the action line, the graph callouts and the graph's screen-reader text all come from the same storm. Live Nov 16: "Sandbags around Wed 4–5 AM and Wed 6–8 AM" becomes one peak, Wed 4–8 AM.
 - **Voice from evidence, not a clock.** Action ("Protect your driveway before …") only with an official NWS flood product, or when the local flood level is validated and likely. Heavy rain likely (half the runs or more): anticipation ("Heavy rain likely early Wednesday", with onset, heavy period, peak and deadline). Otherwise awareness ("Keep an eye on Wednesday morning", day parts only, no clock times). Being close never escalates by itself.
