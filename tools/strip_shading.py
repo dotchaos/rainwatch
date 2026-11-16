@@ -54,10 +54,12 @@ def matrix(parts, hours):
     return np.vstack(rows) if rows else None
 
 
-def stretches(M, hours, any_in, heavy_in):
-    """Wet hours by the card's jacket/boots rules (>= half the runs measurable, or >= 20% heavy); joined across
-    gaps under 2 hours; at least 2 hours long."""
-    wet = [(M[:, k] >= any_in).mean() >= 0.5 or (M[:, k] >= heavy_in).mean() >= 0.2 for k in range(len(hours))]
+def stretches(pooled, hours, any_in, heavy_in):
+    """Wet hours by the card's jacket/boots rules over all pooled runs (>= half measurable, or >= 20% heavy);
+    joined across gaps under 2 hours; at least 2 hours long."""
+    def share(m, x):
+        return sum(v >= x for v in m) / len(m) if m else 0
+    wet = [share(pooled.members.get(t), any_in) >= 0.5 or share(pooled.members.get(t), heavy_in) >= 0.2 for t in hours]
     out, k = [], 0
     while k < len(hours):
         if not wet[k]:
@@ -119,18 +121,21 @@ def main():
     s = session(cfg.contact)
     parts = fetch_parts(s, cfg)
     all_t = sorted(set().union(*[set(p.members) for p in parts])) if parts else []
-    hours = [t for t in all_t if matrix(parts, [t]) is not None]
-    M = matrix(parts, hours)
+    pooled = openmeteo.pooled(parts)
+    hours = [t for t in all_t if pooled.members.get(t)]
     obs_path = Path("data/obs.json")
     obs = json.loads(obs_path.read_text()).get("SFOC1", {}) if obs_path.exists() else {}
     obs = {datetime.fromisoformat(k): v for k, v in obs.items()}
 
     report, fig_rows = [], []
-    print(f"# Strip shading prototype\n\nRun {now:%Y-%m-%d %H:%M} UTC. {M.shape[0] if M is not None else 0} runs "
-          f"({', '.join(p.label for p in parts)}). Classes: `.` none, `L` light (<0.10\"/h), `M` moderate (0.10–0.20), `H` heavy (≥0.20).\n")
-    for a, b in stretches(M, hours, cfg.any_in, cfg.heavy_in):
+    print(f"# Strip shading prototype\n\nRun {now:%Y-%m-%d %H:%M} UTC. Models: {', '.join(p.label for p in parts)}; "
+          f"each stretch uses every run present for all its hours. Classes: `.` none, `L` light (<0.10\"/h), `M` moderate (0.10–0.20), `H` heavy (≥0.20).\n")
+    for a, b in stretches(pooled, hours, cfg.any_in, cfg.heavy_in):
         hs = hours[a:b]
-        sh = shade(M[:, a:b])
+        Ms = matrix(parts, hs)
+        if Ms is None:
+            continue
+        sh = shade(Ms)
         past = hs[-1] < now
         o = [obs.get(t) for t in hs] if hs[0] < now else None
         lead, arch = archive_at_lead(hs) if hs[0] < now else (None, None)
@@ -140,7 +145,7 @@ def main():
              "past": past, "run_total_p50": round(sh["run_total_p50"], 2), "run_total_mean": round(sh["run_total_mean"], 2),
              "sum_A": round(float(sh["A"].sum()), 2), "sum_B": round(float(sh["B"].sum()), 2),
              "A": strip_text(sh["A"]), "B": strip_text(sh["B"]), "C": strip_text(sh["C"]),
-             "C_peak": round(float(sh["C"][0]), 2)}
+             "C_peak": round(float(sh["C"][0]), 2), "runs": sh["runs"]}
         if o is not None:
             r["obs"] = "".join("?" if x is None else CLASS_CH[cls(x)] for x in o)
             r["obs_total"] = round(sum(x or 0 for x in o), 2)
@@ -154,7 +159,7 @@ def main():
     for r in report:
         loc = lambda t: datetime.fromisoformat(t).astimezone(__import__("zoneinfo").ZoneInfo(cfg.tz)).strftime("%a %-I %p")
         print(f"## {loc(r['start'])} – {loc(r['end'])} ({r['hours']} h, {'past' if r['past'] else 'forecast'})\n")
-        print(f"Run totals: median {r['run_total_p50']}\", mean {r['run_total_mean']}\". Sum of A {r['sum_A']}\", sum of B {r['sum_B']}\"."
+        print(f"{r['runs']} runs. Run totals: median {r['run_total_p50']}\", mean {r['run_total_mean']}\". Sum of A {r['sum_A']}\", sum of B {r['sum_B']}\"."
               + (f" Gauge {r['obs_total']}\" ({r['obs_missing']} hours missing)." if "obs" in r else "") + "\n")
         print("```")
         print(f"A median     {r['A']}")
