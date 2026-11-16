@@ -79,6 +79,20 @@ class Archive:
         self.save_state(st)
         return True
 
+    def shading(self, now: datetime, stretches: list[dict], force: bool = False) -> bool:
+        """data/shading/YYYY-MM.jsonl: once per clock hour, how the strip would shade each wet stretch ahead
+        (A hourly median, B probability-matched; rainwatch/shading.py), to score against the gauge."""
+        hour_key = now.astimezone(UTC).strftime("%Y-%m-%dT%H")
+        st = self.state()
+        if st.get("last_shading") == hour_key and not force:
+            return False
+        (self.root / "shading").mkdir(exist_ok=True)
+        with open(self.root / "shading" / f"{now.astimezone(UTC):%Y-%m}.jsonl", "a") as f:
+            f.write(json.dumps({"issued": now.astimezone(UTC).isoformat(), "stretches": stretches}) + "\n")
+        st["last_shading"] = hour_key
+        self.save_state(st)
+        return True
+
     def forecasts(self, since: datetime) -> list[dict]:
         out = []
         for p in sorted((self.root / "forecasts").glob("*.jsonl")):

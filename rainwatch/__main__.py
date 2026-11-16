@@ -10,7 +10,7 @@ import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from . import alerts, archive, forecast, nowcast, render, storms
+from . import alerts, archive, forecast, nowcast, render, shading, storms
 from .config import Config
 from .model import UTC
 from .net import session
@@ -80,6 +80,10 @@ def main(argv=None) -> int:
     arc = archive.Archive(a.data)
     series = [x for x in [nc.series, ens, *det, nb.qpf if nb else None] if x]
     arc.snapshot(now, series, report, cfg.heavy_in, cfg.any_in)
+    try:    # strip shading trial (v0.13): record A and B for scoring; never blocks the update
+        arc.shading(now, shading.record(fc.ensemble_parts, ens, now, cfg.any_in, cfg.heavy_in))
+    except Exception as e:  # noqa: BLE001
+        print(f"shading record: {e}")
     obs = arc.merge_obs(gs, now)
     truth = archive.truth(obs, [cfg.site.hads_station] if cfg.site else [])   # scoring uses the nearby gauge only, never SFO
     scores = archive.score(arc.forecasts(now - timedelta(days=30)), truth, cfg.heavy_in, cfg.any_in)
