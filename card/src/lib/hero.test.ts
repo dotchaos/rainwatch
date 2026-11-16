@@ -49,7 +49,7 @@ describe('selection rules', () => {
     s.timeline!.intervals = s.timeline!.intervals.map(p => p.startHour < 10 ? { ...p, severity: 1 as const } : { ...p, severity: 2 as const });
     s.days[1] = { ...s.days[1], rainIn: 0.12 };
     const u = upcomingEvent(s)!;
-    expect([u.day, u.heading, u.sentence, u.reason]).toEqual(['Tomorrow', 'Around 0.1" of rain', 'Rain boots, beginning in the evening.', 'higher action']);
+    expect([u.day, u.heading, u.sentence, u.reason]).toEqual(['Tomorrow', 'Around 0.1" of rain', 'Rain gear, beginning in the evening.', 'higher action']);
   });
 
   it('routine rain is not more consequential: a smaller, lighter later event stays hidden', () => {
@@ -149,7 +149,7 @@ describe('voice and urgency (awareness mode only, v0.14)', () => {
     const s = byId('upcoming');
     s.timeline!.intervals = s.timeline!.intervals.map(p => p.startHour >= 57 ? { ...p, severity: 2 as const } : p);
     const u = upcomingEvent(s)!;
-    expect([u.mode, u.heading, u.sentence]).toEqual(['day', 'Around 1.1" of rain', 'Rain boots, beginning early, continuing overnight.']);
+    expect([u.mode, u.heading, u.sentence]).toEqual(['day', 'Around 1.1" of rain', 'Rain gear, beginning early, continuing overnight.']);
   });
 
   it('awareness copy is calm: no warning language, and no instruction to keep checking', () => {
@@ -168,13 +168,14 @@ describe('voice and urgency (awareness mode only, v0.14)', () => {
 });
 
 describe('headings and navigation (v0.15)', () => {
-  it('the graph is the "3-day gear forecast"; heat cards say "Next 3 days"; no "outlook" headings', () => {
+  it('the graph is "Going out · Next 3 days" (v0.20); heat cards say "Next 3 days"; no "outlook" headings', () => {
     for (const s of scenarios) {
       const h = html(s);
       if (!h.includes('timeline-section')) { expect(s.hazard).toBe('none'); continue; }
       const head = h.slice(h.indexOf('timeline-section'), h.indexOf('</div>', h.indexOf('timeline-section')));
-      expect(head, s.id).toContain(s.hazard === 'heat' ? '<strong>Next 3 days</strong>' : '<strong>3-day gear forecast</strong>');
-      expect(head).not.toMatch(/Action outlook|Heat outlook|<span>/);   // no right-hand label
+      if (s.hazard === 'heat') { expect(head).toContain('<strong>Next 3 days</strong>'); expect(head).not.toContain('<span>'); }
+      else expect(head, s.id).toContain('<strong>Going out</strong><span>Next 3 days</span>');
+      expect(head).not.toMatch(/Action outlook|Heat outlook|gear forecast/);
     }
   });
 

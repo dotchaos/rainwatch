@@ -27,13 +27,13 @@ describe('one storm, not fragments (v0.19)', () => {
     expect(all).toHaveLength(1);
     const st = all[0];
     expect([st.start, st.heavy, st.prepareBy]).toEqual([41, { start: 44, end: 50 }, 42]);   // Wed 1 AM; 4–10 AM; 2 AM
-    // the 4–5 AM and 6–8 AM Sandbags hours are one peak: the 5 AM Rain boots hour between them is resolution, not a break
+    // the 4–5 AM and 6–8 AM Sandbags hours are one peak: the 5 AM Rain gear hour between them is resolution, not a break
     expect(st.peaks.map(p => p.label)).toEqual(['Wed 4–8 AM']);
   });
   it('a real lull between bursts keeps two peaks in one storm', () => {
     const s = byId('storm');
     expect(storms(s).filter(x => x.peaks.length)).toHaveLength(1);
-    expect(peakWindows(s).map(p => p.label)).toEqual(['Thu 4–9 PM', 'Fri 8 AM–4 PM']);       // 11 hours of Rain boots apart
+    expect(peakWindows(s).map(p => p.label)).toEqual(['Thu 4–9 PM', 'Fri 8 AM–4 PM']);       // 11 hours of Rain gear apart
   });
   it('no fragment times anywhere on the rendered card', () => {
     const html = renderToString(createElement(WeatherCard, { scenario: ahead() }));
@@ -163,5 +163,28 @@ describe('flood potential: between Boots and Sandbags (v0.19 exploration, lab on
   it('replaced by Sandbags proper once the evidence is actionable', () => {
     const s = ahead(); s.evidence!.official = [{ event: 'Flood Watch', startHour: 38, endHour: 60 }];
     expect(floodPotentials(s)).toEqual([]);
+  });
+});
+
+describe('Going out (v0.20)', () => {
+  const html = (s: Scenario, p?: 'outline' | 'range') => renderToString(createElement(WeatherCard, { scenario: s, potential: p }));
+  const axis = (h: string) => [...h.matchAll(/class="chart-label"[^>]*>(.*?)<\/text>/g)].map(m => m[1].replace(/<[^>]+>/g, ''));
+  it('the top rung is "Flood potential" unless Sandbags is recommended; the potential boxes sit on it', () => {
+    const h = html(ahead(), 'outline');
+    expect(axis(h)).toEqual(['Usual clothes', 'Umbrella or jacket', 'Rain gear', 'Flood potential']);
+    expect(h).toContain('class="chart-potential"');
+    expect(h).toContain('Potential flooding · Not yet a sandbag recommendation');
+  });
+  it('the top rung reads "Sandbags" when Sandbags is recommended (official flood product)', () => {
+    expect(axis(html(byId('storm')))).toEqual(['Usual clothes', 'Umbrella or jacket', 'Rain gear', 'Sandbags']);
+  });
+  it('dry forecast hours are the pale Usual clothes level; hours without a forecast keep the hatch', () => {
+    const s = byId('incomplete'), h = html(s);
+    expect(h).toMatch(/class="sil-hours" data-level="0"[^>]*fill="#f6f8f9"/);
+    expect(h).toContain('url(#nodata)');
+  });
+  it('hero and graph share one vocabulary', () => {
+    expect(nowNext(byId('rain'))!.action!.text).toBe('Rain gear · 11 AM–1 PM');
+    expect(html(byId('rain'))).not.toMatch(/Rain boots|Rain jacket|No gear/);
   });
 });

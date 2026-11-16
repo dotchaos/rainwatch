@@ -4,7 +4,7 @@ import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
 import { edgeNote, fiveDays, hourLabel, nowNext, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
-import { Timeline, type PotentialStyle } from './Timeline';
+import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -130,11 +130,11 @@ function MoreInformation({ s, detailsHref }: { s: Scenario; detailsHref?: string
   </section>;
 }
 
-export function WeatherCard({ scenario: s, detailsHref, potential }: { scenario: Scenario; detailsHref?: string; potential?: PotentialStyle }) {
+export function WeatherCard({ scenario: s, detailsHref, potential, graph }: { scenario: Scenario; detailsHref?: string; potential?: PotentialStyle; graph?: GraphStyle }) {
   return <article className="weather-card">
     <Header s={s} />
     <NowAndNext s={s} />
-    {showTimeline(s) && <Timeline scenario={s} potential={potential} />}
+    {showTimeline(s) && <Timeline scenario={s} potential={potential} graph={graph} />}
     <Hourly s={s} />
     <MoreInformation s={s} detailsHref={detailsHref} />
   </article>;
