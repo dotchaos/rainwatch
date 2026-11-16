@@ -243,6 +243,17 @@
    "total_p50": 0.45,
    "total_p90": 0.45,
    "sum_hourly_medians": 0.45,
+   "strip_sum": 0.45,
+   "strip_heavy_hours": 1,
+   "strip_moderate_plus_hours": 1,
+   "runs_heavy_hours_p50_p75": [
+    1.0,
+    1.0
+   ],
+   "runs_moderate_plus_hours_p50_p75": [
+    1.0,
+    1.0
+   ],
    "primary": [
     "ens"
    ],
@@ -257,6 +268,17 @@
    "total_p50": 0.2,
    "total_p90": 0.2,
    "sum_hourly_medians": 0.2,
+   "strip_sum": 0.2,
+   "strip_heavy_hours": 0,
+   "strip_moderate_plus_hours": 0,
+   "runs_heavy_hours_p50_p75": [
+    0.0,
+    0.0
+   ],
+   "runs_moderate_plus_hours_p50_p75": [
+    0.0,
+    0.0
+   ],
    "primary": [
     "ens"
    ],
@@ -271,6 +293,17 @@
    "total_p50": 0.0,
    "total_p90": 0.0,
    "sum_hourly_medians": 0,
+   "strip_sum": 0,
+   "strip_heavy_hours": 0,
+   "strip_moderate_plus_hours": 0,
+   "runs_heavy_hours_p50_p75": [
+    0.0,
+    0.0
+   ],
+   "runs_moderate_plus_hours_p50_p75": [
+    0.0,
+    0.0
+   ],
    "primary": [
     "ens"
    ],
@@ -285,6 +318,17 @@
    "total_p50": 0.0,
    "total_p90": 0.0,
    "sum_hourly_medians": 0,
+   "strip_sum": 0,
+   "strip_heavy_hours": 0,
+   "strip_moderate_plus_hours": 0,
+   "runs_heavy_hours_p50_p75": [
+    0.0,
+    0.0
+   ],
+   "runs_moderate_plus_hours_p50_p75": [
+    0.0,
+    0.0
+   ],
    "primary": [
     "ens"
    ],
@@ -299,6 +343,17 @@
    "total_p50": 0.0,
    "total_p90": 0.0,
    "sum_hourly_medians": 0,
+   "strip_sum": 0,
+   "strip_heavy_hours": 0,
+   "strip_moderate_plus_hours": 0,
+   "runs_heavy_hours_p50_p75": [
+    0.0,
+    0.0
+   ],
+   "runs_moderate_plus_hours_p50_p75": [
+    0.0,
+    0.0
+   ],
    "primary": [
     "ens"
    ],

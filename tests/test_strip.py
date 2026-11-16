@@ -11,8 +11,9 @@ from zoneinfo import ZoneInfo
 
 import numpy as np
 
-from rainwatch import card, forecast, totals as tl
+from rainwatch import card, forecast, shading, totals as tl
 from rainwatch.config import Config
+from rainwatch.model import Series
 from rainwatch.sources import conditions, openmeteo
 from tests.batch_run import NOW, run
 from tests.fakes import GeoFakeSession
@@ -46,26 +47,41 @@ def test_strip_matches_the_graph_inside_72_hours():
 
 
 def test_intensity_and_totals_come_from_the_same_runs():
-    """Strip intensity: the hour's median across the pooled members. Day totals: each run's own sum, then the median.
-    Same member values; only the order of median and sum differs."""
+    """Hybrid B: wet hours are the engine's; each wet stretch's shades are the probability-matched values of the same
+    runs the day totals sum (never lighter than light). Day totals: each run's own sum, then the median."""
     s, cfg = GeoFakeSession(NOW), Config.load("config.toml")
     parts, _ = openmeteo.fetch_ensembles(s, cfg.lat, cfg.lon, cfg.ensemble_models)
-    pooled = openmeteo.pooled(parts)
     fc = forecast.forecast_at(GeoFakeSession(NOW), cfg, NOW)
     rows = {r["t"]: r for r in fc.report["rows"] + fc.report["strip_rows"]}
     t0 = datetime.fromisoformat(fc.report["rows"][0]["t"])
-    for r in fc.card["rainHours"]:
-        for h in range(r["startHour"], r["endHour"]):
-            t = t0 + timedelta(hours=h)
-            row = rows[t.isoformat()]
-            if row["primary"] == "ens":
-                assert row["mid"] == round(float(np.median(pooled.members[t])), 2)    # the strip's input
-            assert r["intensity"] == card.intensity(row["mid"], cfg.heavy_in)
+    wet = sorted(h for r in fc.card["rainHours"] for h in range(r["startHour"], r["endHour"]))
+    got = {h: r["intensity"] for r in fc.card["rainHours"] for h in range(r["startHour"], r["endHour"])}
+    # recompute B independently over each contiguous wet stretch
+    groups, cur = [], []
+    for h in wet:
+        if cur and h != cur[-1] + 1:
+            groups.append(cur); cur = []
+        cur.append(h)
+    if cur:
+        groups.append(cur)
+    for g in groups:
+        ens_h = [h for h in g if rows[(t0 + timedelta(hours=h)).isoformat()]["primary"] == "ens"]
+        M = shading.run_matrix(parts, [t0 + timedelta(hours=h) for h in ens_h])
+        B = dict(zip(ens_h, shading.matched(M)))
+        for h in g:
+            v = B[h] if h in B else rows[(t0 + timedelta(hours=h)).isoformat()]["mid"]
+            assert got[h] == max(1, shading.intensity(v, cfg.heavy_in)), h
     for d in fc.report["days5"]:
         if d["complete"] and d["total"]:
             hrs = [datetime.fromisoformat(r["t"]) for r in rows.values()
                    if d["from"] <= r["t"] < d["to"] and not r.get("missing")]
             assert d["total"] == tl.window(parts, None, hrs)          # no radar on this path: whole runs only
+
+
+def test_strip_never_draws_a_wet_hour_as_dry():
+    """B can put zeros on wet hours (the typical run is dry there); the strip still shows them as light."""
+    c, _ = _live()
+    assert all(r["intensity"] >= 1 for r in c["rainHours"])
 
 
 def test_strip_check_flags_contradictions_only():
@@ -75,10 +91,23 @@ def test_strip_check_flags_contradictions_only():
     for d in chk:
         assert d["flags"] == [], d                                   # the fake forecast tells one story
     # a typically-heavy hour on a day whose median total is below one heavy hour is flagged
-    st = {"hours": [NOW], "rows": [{"mid": 0.25, "primary": "ens"}], "wet": [1], "classes": ["wet"]}
+    st = {"hours": [NOW], "rows": [{"mid": 0.25, "primary": "ens"}], "wet": [1], "classes": ["wet"], "vals": [0.25]}
     day = {"date": NOW.astimezone(TZ).date().isoformat(), "complete": True, "total": {"p10": 0.05, "p50": 0.12, "p90": 0.3}}
     assert card.strip_check(st, [day], TZ, 0.20)[0]["flags"] == ["a typically-heavy hour, but the day's median total is below one heavy hour"]
 
 
 def test_fetches_enough_days_for_five_calendar_days():
     assert openmeteo.ENS_DAYS >= 6 and conditions.FORECAST_DAYS >= 6
+
+
+def test_strip_check_catches_an_overstating_strip():
+    """Three heavy hours drawn where the runs typically have one, adding up past the wettest runs' total."""
+    hrs = [NOW + timedelta(hours=k) for k in range(3)]
+    runs = [[0.25, 0.02, 0.02]] * 6 + [[0.02, 0.25, 0.02]] * 2 + [[0.02, 0.02, 0.02]] * 2
+    part = Series(key="e", label="e", issued=None, url="", values={},
+                  members={t: [r[k] for r in runs] for k, t in enumerate(hrs)})
+    st = {"hours": hrs, "rows": [{"mid": 0.25, "primary": "ens"}] * 3, "wet": [1] * 3, "classes": ["wet"] * 3, "vals": [0.25] * 3}
+    day = {"date": NOW.astimezone(TZ).date().isoformat(), "complete": True, "total": {"p10": 0.06, "p50": 0.29, "p90": 0.29}}
+    flags = card.strip_check(st, [day], TZ, 0.20, [part])[0]["flags"]
+    assert "the strip adds up to more than the wettest runs' day total (overstates)" in flags
+    assert "more heavy hours on the strip than three runs in four have (overstates)" in flags

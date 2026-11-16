@@ -96,11 +96,15 @@ def main():
           f"{sum(1 for r in before.report.get('strip_rows', []) if not r.get('missing'))} with data of "
           f"{len(before.report.get('strip_rows', []))}.\n")
 
-    print("## 3. Totals vs strips (same model runs)\n")
-    print("| Day | Complete | Day total p10 / p50 / p90 | Sum of hourly medians | Top intensity | Sources | Flags |\n|---|---|---|---|---|---|---|")
+    print("## 3. Strip vs accumulation (hybrid B; same model runs)\n")
+    print("Agrees when the strip's amounts add up inside the runs' 10th–90th percentile day total; does not overstate when it "
+          "shows no more heavy, or moderate-and-heavier, hours than three runs in four have that day.\n")
+    print("| Day | Day total p10 / p50 / p90 | Strip adds up to | Hourly medians add up to | Heavy hours: strip / runs p50, p75 | "
+          "Moderate+ hours: strip / runs p50, p75 | Flags |\n|---|---|---|---|---|---|---|")
     for c in a["_strip_check"]:
-        print(f"| {c['date']} | {c['complete']} | {c['total_p10']} / {c['total_p50']} / {c['total_p90']} | {c['sum_hourly_medians']} | "
-              f"{c['top_intensity']} | {', '.join(x for x in c['primary'] if x)} | {'; '.join(c['flags']) or '—'} |")
+        print(f"| {c['date']} | {c['total_p10']} / {c['total_p50']} / {c['total_p90']} | {c['strip_sum']} | {c['sum_hourly_medians']} | "
+              f"{c['strip_heavy_hours']} / {c['runs_heavy_hours_p50_p75']} | {c['strip_moderate_plus_hours']} / {c['runs_moderate_plus_hours_p50_p75']} | "
+              f"{'; '.join(c['flags']) or '—'} |")
     print(f"\nRain words in the hero: {a.get('insight') or '(derived in the app)'}; hazard {a['hazard']}; t0 {t0:%a %-I %p}.")
 
 
