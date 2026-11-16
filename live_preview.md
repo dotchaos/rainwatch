@@ -1,6 +1,6 @@
 # Five-day rows on live data
 
-Run at 2026-11-16T16:45+00:00 UTC. Errors before: none; after: none.
+Run at 2026-11-16T16:58+00:00 UTC. Errors before: none; after: none.
 
 ## 1. Existing card unchanged (before vs after, outside the approved additions)
 
