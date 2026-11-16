@@ -1,0 +1,235 @@
+{
+  "id": "incomplete",
+  "title": "Incomplete forecast",
+  "season": "November",
+  "location": "18th & Shotwell",
+  "observedAt": "Sunday \u00b7 3:05 PM",
+  "startDay": "Sun",
+  "startHourLocal": 15,
+  "hazard": "rain",
+  "current": {
+    "temperatureF": 61,
+    "condition": "Partly cloudy",
+    "icon": "partly-day",
+    "highF": 63,
+    "lowF": 50
+  },
+  "hourly": [
+    {
+      "hour": 0,
+      "temperatureF": 61,
+      "icon": "partly-day"
+    },
+    {
+      "hour": 1,
+      "temperatureF": 60,
+      "icon": "partly-day"
+    },
+    {
+      "hour": 2,
+      "temperatureF": 58,
+      "icon": "partly-day"
+    },
+    {
+      "hour": 3,
+      "temperatureF": 56,
+      "icon": "partly-day"
+    },
+    {
+      "hour": 4,
+      "temperatureF": 55,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 5,
+      "temperatureF": 54,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 6,
+      "temperatureF": 53,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 7,
+      "temperatureF": 53,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 8,
+      "temperatureF": 52,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 9,
+      "temperatureF": 52,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 10,
+      "temperatureF": 51,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 11,
+      "temperatureF": 51,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 12,
+      "temperatureF": 50,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 13,
+      "temperatureF": 50,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 14,
+      "temperatureF": 50,
+      "icon": "partly-night"
+    },
+    {
+      "hour": 15,
+      "temperatureF": 50,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 16,
+      "temperatureF": 51,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 17,
+      "temperatureF": 53,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 18,
+      "temperatureF": 55,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 19,
+      "temperatureF": 57,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 20,
+      "temperatureF": 59,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 21,
+      "temperatureF": 60,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 22,
+      "temperatureF": 61,
+      "icon": "clear-day"
+    },
+    {
+      "hour": 23,
+      "temperatureF": 62,
+      "icon": "clear-day"
+    }
+  ],
+  "days": [
+    {
+      "label": "Today",
+      "icon": "partly-day",
+      "description": "Partly cloudy",
+      "lowF": 50,
+      "highF": 63
+    },
+    {
+      "label": "Tomorrow",
+      "icon": "clear-day",
+      "description": "Mostly sunny",
+      "lowF": 49,
+      "highF": 64
+    },
+    {
+      "label": "Tuesday",
+      "icon": "rain",
+      "description": "Rain tonight",
+      "lowF": 51,
+      "highF": 60,
+      "rainIn": 0.42
+    },
+    {
+      "label": "Wednesday",
+      "icon": "rain",
+      "description": "Rain at times",
+      "lowF": 50,
+      "highF": 57
+    },
+    {
+      "label": "Thursday",
+      "icon": "unknown",
+      "description": "Rain forecast incomplete",
+      "lowF": null,
+      "highF": null
+    }
+  ],
+  "timeline": {
+    "title": "Rain outlook",
+    "intervals": [
+      {
+        "startHour": 50,
+        "endHour": 54,
+        "severity": 1,
+        "confidence": "unknown",
+        "pattern": "steady"
+      },
+      {
+        "startHour": 54,
+        "endHour": 62,
+        "severity": 2,
+        "confidence": "unknown",
+        "pattern": "steady"
+      },
+      {
+        "startHour": 62,
+        "endHour": 66,
+        "severity": 1,
+        "confidence": "unknown",
+        "pattern": "steady"
+      }
+    ]
+  },
+  "unknownHours": [
+    {
+      "startHour": 66,
+      "endHour": 105
+    }
+  ],
+  "rainHours": [
+    {
+      "startHour": 50,
+      "endHour": 53,
+      "intensity": 1
+    },
+    {
+      "startHour": 53,
+      "endHour": 60,
+      "intensity": 2
+    },
+    {
+      "startHour": 60,
+      "endHour": 62,
+      "intensity": 3
+    },
+    {
+      "startHour": 62,
+      "endHour": 66,
+      "intensity": 1
+    }
+  ],
+  "provenance": {
+    "type": "illustrative",
+    "note": "Illustrative scenario: model data ends partway through Wednesday."
+  }
+}

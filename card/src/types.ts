@@ -30,6 +30,7 @@ export interface Scenario {
   timeline?: { title: string; intervals: Interval[] };
   /**
    * Stretches (hour offsets, end exclusive) with no rain forecast at all, e.g. past the end of the model data.
+   * May run past hour 72 when the card has five-day rows (rainHours); the graph only reads its first 72 hours.
    * Unknown is never dry: the chart shows "No data", and no statement may call these hours dry.
    */
   unknownHours?: { startHour: number; endHour: number }[];
@@ -38,6 +39,14 @@ export interface Scenario {
    * the median of the model runs' own totals over exactly those hours.
    */
   rainTotals?: { startHour: number; endHour: number; medianIn: number }[];
+  /**
+   * Rain for the five-day rows (hour offsets, end exclusive), up to the end of the fifth local day.
+   * Which hours are wet is the engine's decision: within the graph's 72 hours, exactly the hours with rain gear.
+   * `intensity` is how hard the rain typically falls (median of the model runs), a separate scale from the
+   * gear rungs: 1 light (under 0.10"/h), 2 moderate (0.10–0.20"/h), 3 heavy (0.20"/h or more, the config's heavy hour).
+   * A Rain boots hour can be light rain (heavy is plausible, not typical); the card never converts one into the other.
+   */
+  rainHours?: { startHour: number; endHour: number; intensity: 1 | 2 | 3 }[];
   /** 'illustrative' for fixtures; 'live' only for the card built from the real forecast (rainwatch/card.py). */
   provenance: { type: 'illustrative' | 'live'; note: string; generated?: string };
 }

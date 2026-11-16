@@ -55,3 +55,14 @@
 4. Run `npm test` and `npm run build`.
 5. Review all four scenarios, including calm state.
 6. Record any new decision here.
+
+- **Five-day rows (v0.13, accepted for the lab Nov 15 2026; live deployment on hold).** Five compact rows on one shared midnight-to-midnight axis replace the daily rows in More information when the card carries `rainHours`.
+  - Approved: the layout, intensity colours separate from the gear rungs, overnight arrows, missing-data hatching.
+  - Rain intensity and gear are different scales and are never merged. The storm shows why: the strips tell the rainfall story across days, and the graph tells the preparation story.
+  - Intensity breakpoints are kept provisionally (light <0.10"/h, moderate 0.10–0.20"/h, heavy ≥0.20"/h, median of the runs); revisit with live forecasts.
+  - Heatwave strips stay neutral for now.
+  - Review refinements: a continuous track with no internal hour lines (the axis is the reference), a thin, soft now mark, a tighter heading and axis, a quieter legend.
+  - Live deployment waits for live-data coverage: the engine must emit `rainHours` and five days, and fetch about 6 days of model data. That is a separate step.
+- **Open-ended rain has no end time (v0.13).** When rain runs into missing data or the end of the graph, its last hour is where the forecast stops, not when the rain stops.
+  - Headlines and action lines give only the start ("Rain Tue from about 5 PM", "Rain boots · from Tue 9 PM").
+  - The detail says "Still raining at Wed 8 AM, where the forecast ends."

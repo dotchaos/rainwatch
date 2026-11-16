@@ -163,6 +163,22 @@
       "description": "Partly sunny",
       "lowF": 47,
       "highF": 60
+    },
+    {
+      "label": "Friday",
+      "icon": "rain",
+      "description": "Rain late",
+      "lowF": 50,
+      "highF": 59,
+      "rainIn": 0.21
+    },
+    {
+      "label": "Saturday",
+      "icon": "showers-day",
+      "description": "Early rain, then clearing",
+      "lowF": 49,
+      "highF": 61,
+      "rainIn": 0.18
     }
   ],
   "timeline": {
@@ -208,6 +224,43 @@
       "startHour": 30,
       "endHour": 33,
       "medianIn": 0.12
+    }
+  ],
+  "rainHours": [
+    {
+      "startHour": 2,
+      "endHour": 4,
+      "intensity": 2
+    },
+    {
+      "startHour": 4,
+      "endHour": 7,
+      "intensity": 3
+    },
+    {
+      "startHour": 7,
+      "endHour": 10,
+      "intensity": 1
+    },
+    {
+      "startHour": 30,
+      "endHour": 33,
+      "intensity": 1
+    },
+    {
+      "startHour": 79,
+      "endHour": 81,
+      "intensity": 1
+    },
+    {
+      "startHour": 81,
+      "endHour": 85,
+      "intensity": 2
+    },
+    {
+      "startHour": 85,
+      "endHour": 86,
+      "intensity": 1
     }
   ]
 }

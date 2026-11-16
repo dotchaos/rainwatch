@@ -43,6 +43,15 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
 - Rain more than a day after that stretch is named with its window and amount ("More rain Wed 1–9 AM, about 0.9".") in place of the "Then dry …" note; sooner rain is already implied by "Then dry …".
 - Each amount belongs to exactly one rain stretch on the chart (`rainTotals`); the rules reject one that doesn't match.
 
+## Five-day rows (v0.13, lab)
+- Five local days, one row each, on one shared axis (local midnight to midnight). Today's hours before now are empty, not dry.
+- The strip shows how hard rain typically falls (median of the model runs): light under 0.10"/h, moderate 0.10–0.20"/h, heavy 0.20"/h or more (the config's heavy hour). It is **not** the gear rung, and the card never converts between them. A Rain boots hour can be light rain: heavy is plausible, not typical.
+- Which hours are wet is the engine's decision. Inside the graph's 72 hours, a strip hour is wet exactly when the graph shows rain gear (rain and flood cards; validated). Calm cards have no rain inside 72 hours. Heat graphs are not compared.
+- Dry is one flat neutral. Cloud cover is left to the words.
+- Rain column: the day's amount (bold); "Dry" (quiet) only when every hour of the day is forecast and none has rain; "Incomplete" when any hour lacks data; a dry-strip day with a measurable total shows it, quietly.
+- Overnight: rain in the last hour of a day and the first of the next gets edge arrows on both rows and "continues overnight" on the earlier one. Each day keeps its own total.
+- No forecast: hatched, legend entry "No forecast", and "Rain forecast only covers through …". Never dry, never continuing.
+
 ## Missing data
 **Missing forecast data is unknown, never dry.** An hour with no rain forecast (past the end of the model data, or a gap in it) is listed in `unknownHours` and:
 - the graph hatches any 3-hour block with no forecast; no interval may be drawn over it;

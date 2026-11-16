@@ -18,8 +18,10 @@ function syncHours(s: Scenario): Scenario {
 }
 
 /** The Nov 15 live case: jacket Sun 1–10 PM (~0.5"), more rain Wed 1–9 AM (~0.9"). */
+/** A three-day card (no five-day rows), the shape older producers and today's live card send. */
+const threeDay = (s: Scenario) => { delete s.rainHours; s.days = s.days.slice(0, 3); return s; };
 function nov15(): Scenario {
-  const s = rain();
+  const s = threeDay(rain());
   Object.assign(s, { startDay: 'Sun', startHourLocal: 7 });
   s.timeline!.intervals = [
     { startHour: 6, endHour: 15, severity: 1, confidence: 'unknown', pattern: 'steady' },

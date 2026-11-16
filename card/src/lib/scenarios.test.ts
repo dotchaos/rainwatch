@@ -15,13 +15,15 @@ import { daysAt, isUnknown, validateScenario } from './rules';
 import { actionWindow, chartBlocks, deriveAlert, deriveInsight, edgeNote, halfDayLabels, hourLabel, labelledWindows, nowNext, sandbagsCallouts } from './derive';
 
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
+/** A three-day card (no five-day rows), the shape older producers and today's live card send. */
+const threeDay = (s: Scenario) => { delete s.rainHours; s.days = s.days.slice(0, 3); return s; };
 const gear = (s: Scenario, h: number) => (s.hazard === 'rain' || s.hazard === 'flood')
   && Boolean(s.timeline?.intervals.some(p => p.severity > 0 && p.startHour <= h && h < p.endHour));
 const wetHour = (s: Scenario, h: number) => PRECIP.has(resolveIcon(s.hourly[h].icon));
 
 describe('the five scenarios', () => {
   it('are the five the brief names, in order', () => {
-    expect(scenarios.map(s => s.title)).toEqual(['Calm October', 'Intermittent rain', 'Rain starting soon', 'Extreme storm', 'Heatwave']);
+    expect(scenarios.map(s => s.title)).toEqual(['Calm October', 'Intermittent rain', 'Rain starting soon', 'Extreme storm', 'Heatwave', 'Incomplete forecast']);
   });
 
   it('each validates: hours consecutive, and hours and days agree with the graph', () => {
@@ -98,7 +100,7 @@ describe('partial days', () => {
 
 describe('incomplete forecast horizon', () => {
   const truncated = () => {
-    const s = byId('rain-soon');
+    const s = threeDay(byId('rain-soon'));
     s.timeline!.intervals = s.timeline!.intervals.filter(p => p.endHour <= 18);
     s.rainTotals = s.rainTotals!.filter(t => t.endHour <= 18);
     s.unknownHours = [{ startHour: 18, endHour: 72 }];
@@ -216,9 +218,12 @@ describe('events at the edge of the outlook', () => {
       expect(nowNext(s)?.detail ?? '', s.id).not.toContain('where this outlook ends');
       expect(deriveInsight(s)?.detail ?? '', s.id).not.toContain('where this outlook ends');
     }
-    const html = renderToString(createElement(WeatherCard, { scenario: byId('storm') }));
+    const html = renderToString(createElement(WeatherCard, { scenario: threeDay(byId('storm')) }));
     const more = html.slice(html.indexOf('More information'));
     expect(more).toContain('Still raining at Sun 9 AM, where this outlook ends.');
+    // With five-day rows the rain past the graph is drawn, so the note would be wrong ("outlook ends"): it is dropped
+    const five = renderToString(createElement(WeatherCard, { scenario: byId('storm') }));
+    expect(five.slice(five.indexOf('More information'))).not.toContain('where this outlook ends');
   });
   it('a final hour without data is not called rain, heat or dry', () => {
     const s = byId('storm'); s.unknownHours = [{ startHour: 60, endHour: 72 }];

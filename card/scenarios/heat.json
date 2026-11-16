@@ -161,6 +161,20 @@
       "description": "Extreme heat",
       "lowF": 75,
       "highF": 104
+    },
+    {
+      "label": "Sunday",
+      "icon": "heat",
+      "description": "Very hot",
+      "lowF": 74,
+      "highF": 98
+    },
+    {
+      "label": "Monday",
+      "icon": "heat",
+      "description": "Hot",
+      "lowF": 70,
+      "highF": 88
     }
   ],
   "alert": {
@@ -255,5 +269,6 @@
         "confidence": "shifting"
       }
     ]
-  }
+  },
+  "rainHours": []
 }

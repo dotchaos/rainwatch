@@ -146,21 +146,39 @@
       "icon": "thunderstorm",
       "description": "Heavy rain, wind",
       "lowF": 47,
-      "highF": 54
+      "highF": 54,
+      "rainIn": 2.1
     },
     {
       "label": "Tomorrow",
       "icon": "heavy-rain",
       "description": "Intense rain",
       "lowF": 45,
-      "highF": 52
+      "highF": 52,
+      "rainIn": 2.6
     },
     {
       "label": "Saturday",
       "icon": "drizzle",
       "description": "Showers easing",
       "lowF": 46,
-      "highF": 55
+      "highF": 55,
+      "rainIn": 0.7
+    },
+    {
+      "label": "Sunday",
+      "icon": "showers-day",
+      "description": "Showers ending",
+      "lowF": 47,
+      "highF": 57,
+      "rainIn": 0.15
+    },
+    {
+      "label": "Monday",
+      "icon": "partly-day",
+      "description": "Partly sunny",
+      "lowF": 46,
+      "highF": 60
     }
   ],
   "alert": {
@@ -244,5 +262,52 @@
         "confidence": "shifting"
       }
     ]
-  }
+  },
+  "rainHours": [
+    {
+      "startHour": 0,
+      "endHour": 5,
+      "intensity": 2
+    },
+    {
+      "startHour": 5,
+      "endHour": 7,
+      "intensity": 3
+    },
+    {
+      "startHour": 7,
+      "endHour": 12,
+      "intensity": 3
+    },
+    {
+      "startHour": 12,
+      "endHour": 23,
+      "intensity": 2
+    },
+    {
+      "startHour": 23,
+      "endHour": 31,
+      "intensity": 3
+    },
+    {
+      "startHour": 31,
+      "endHour": 36,
+      "intensity": 2
+    },
+    {
+      "startHour": 36,
+      "endHour": 45,
+      "intensity": 1
+    },
+    {
+      "startHour": 45,
+      "endHour": 50,
+      "intensity": 2
+    },
+    {
+      "startHour": 50,
+      "endHour": 76,
+      "intensity": 1
+    }
+  ]
 }

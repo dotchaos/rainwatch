@@ -161,10 +161,32 @@
       "description": "Sunny",
       "lowF": 53,
       "highF": 74
+    },
+    {
+      "label": "Sunday",
+      "icon": "clear-day",
+      "description": "Sunny",
+      "lowF": 52,
+      "highF": 73
+    },
+    {
+      "label": "Monday",
+      "icon": "showers-day",
+      "description": "Light morning showers",
+      "lowF": 54,
+      "highF": 66,
+      "rainIn": 0.06
     }
   ],
   "insight": {
     "headline": "Great weather for getting outside",
     "detail": "Dry skies and comfortable temperatures through the afternoon."
-  }
+  },
+  "rainHours": [
+    {
+      "startHour": 93,
+      "endHour": 97,
+      "intensity": 1
+    }
+  ]
 }

@@ -3,10 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { validateScenario, knownUntil } from './rules';
-import { actionWindow, coverageNote, deriveDaysSummary, deriveInsight, rainEvents } from './derive';
+import { actionWindow, coverageNote, deriveDaysSummary, deriveInsight, nowNext, rainEvents } from './derive';
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
 /** The forecast stops at `cut`: no intervals after it, and those hours marked unknown. */
+/** A three-day card (no five-day rows), the shape older producers and today's live card send. */
+const threeDay = (s: Scenario) => { delete s.rainHours; s.days = s.days.slice(0, 3); return s; };
 function truncate(s: Scenario, cut: number): Scenario {
+  threeDay(s);
   if (s.timeline) s.timeline.intervals = s.timeline.intervals.filter(p => p.startHour < cut).map(p => ({ ...p, endHour: Math.min(p.endHour, cut) }));
   s.unknownHours = [{ startHour: cut, endHour: 72 }];
   return s;
@@ -14,7 +17,7 @@ function truncate(s: Scenario, cut: number): Scenario {
 const DRY_AFTER = /Dry before and after|Dry after that|Dry for the next 3 days/;
 
 describe('missing forecast hours', () => {
-  it('a fully covered card says nothing about coverage', () => { for (const s of scenarios) expect(coverageNote(s), s.id).toBeNull(); });
+  it('a fully covered card says nothing about coverage', () => { for (const s of scenarios.filter(x => x.id !== 'incomplete')) expect(coverageNote(s), s.id).toBeNull(); });
 
   it('a truncated rain card never claims the hours after the data are dry', () => {
     const s = truncate(byId('rain'), 40);
@@ -63,5 +66,31 @@ describe('missing forecast hours', () => {
   it('no forecast at all is said plainly', () => {
     const s = truncate(byId('october'), 0);
     expect(deriveInsight(s)!.headline).toBe('Rain forecast unavailable');
+  });
+});
+
+describe('open-ended rain is never given an end time (headline bug, Nov 15 2026)', () => {
+  it('rain running into missing data: start only, and the detail says the rain is still falling where the data ends', () => {
+    const n = nowNext(structuredClone(scenarios.find(s => s.id === 'incomplete')!) as Scenario)!;
+    expect(n.headline).toBe('Rain Tue from about 5 PM');
+    expect(n.headline).not.toMatch(/–|until/);
+    expect(n.detail).toContain('Still raining at Wed 8 AM, where the forecast ends.');
+    expect(n.detail).not.toContain('Forecast only covers through');   // replaced, not repeated
+  });
+  it('rain reaching the end of the graph: start only', () => {
+    const s = threeDay(byId('rain-soon'));
+    s.timeline!.intervals = [{ startHour: 60, endHour: 72, severity: 1, confidence: 'unknown', pattern: 'steady' }];
+    s.rainTotals = [];
+    const n = nowNext(s)!;
+    expect(n.headline).toMatch(/^Rain Fri from about 2 AM$/);
+  });
+  it('a boots window that runs into missing data names its start only', () => {
+    const s = structuredClone(scenarios.find(x => x.id === 'incomplete')!) as Scenario;
+    s.timeline!.intervals = [{ startHour: 50, endHour: 54, severity: 1, confidence: 'unknown', pattern: 'steady' },
+      { startHour: 54, endHour: 66, severity: 2, confidence: 'unknown', pattern: 'steady' }];
+    expect(nowNext(s)!.action!.text).toBe('Rain boots · from Tue 9 PM');
+  });
+  it('rain with a forecast end keeps its end time', () => {
+    expect(nowNext(structuredClone(scenarios.find(s => s.id === 'rain-soon')!) as Scenario)!.headline).toBe('Rain from 4 PM–midnight');
   });
 });

@@ -31,3 +31,35 @@
 .chart-day-halo{paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
 .edge-note{margin:14px 0 0;font-size:13px;color:#53636c;line-height:1.4}
 .location small.updated{letter-spacing:0;font-size:12px}
+
+/* Five-day rows (lab, v0.13). Intensity blues step in lightness (readable in greyscale) and are not the gear-rung colours. */
+.five-days{--dry:#e3e7ea;--i1:#a9cbe7;--i2:#5f9bcf;--i3:#245d96;--strip-pad:10px}
+.five-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
+.five-head strong{font-size:13px}.five-head span{font-size:11px;color:#7b8991}
+.strip-axis{position:relative;height:12px;margin:0 var(--strip-pad);font-size:10px;color:#8a979e}
+.strip-axis span{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
+.strip-axis span:first-child{transform:none}.strip-axis span:last-child{transform:translateX(-100%)}
+.five-rows{list-style:none;margin:0;padding:0}
+.five-row{padding:8px 0 10px;border-top:1px solid #eef1f3}
+.five-row:first-child{border-top:0}
+.five-top,.five-sub{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.five-top strong{font-size:15px;font-weight:650}
+.five-sub{font-size:13px;color:#7b8991;margin-top:1px}
+.five-desc{min-width:0}.five-temps{white-space:nowrap;font-size:12px}
+.total{white-space:nowrap}
+.total-amount{font-size:16px;font-weight:700;color:#26343d}
+.total-quiet{font-size:13px;font-weight:500;color:#7b8991}
+.total-dry{font-size:13px;font-weight:400;color:#8a979e}
+.total-incomplete{font-size:13px;font-weight:500;color:#6b7a83}
+.strip-wrap{position:relative;margin:6px var(--strip-pad) 0}
+.strip{position:relative;height:8px;border-radius:4px;overflow:hidden}
+.seg{position:absolute;top:0;bottom:0}
+.seg-dry{background:var(--dry)}.seg-past{background:transparent;border-top:1px dotted #d3dadf;top:3.5px;bottom:auto;height:0}
+.seg-rain.i1,.sw.i1{background:var(--i1)}.seg-rain.i2,.sw.i2{background:var(--i2)}.seg-rain.i3,.sw.i3{background:var(--i3)}
+.seg-unknown,.sw.seg-unknown{background:#fff repeating-linear-gradient(45deg,rgba(38,52,61,.26) 0 1.2px,transparent 1.2px 4.5px);box-shadow:inset 0 0 0 1px rgba(38,52,61,.12)}
+.now-mark{position:absolute;top:-2px;width:1px;height:12px;margin-left:-.5px;background:#9aa6ad}
+.cont{position:absolute;top:0;width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid var(--i3)}
+.cont-out{right:-8px}.cont-in{left:-8px}
+.strip-legend{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:10px;color:#98a4ab;margin:2px var(--strip-pad) 0}
+.strip-legend span{display:flex;align-items:center;gap:4px}
+.sw{display:inline-block;width:10px;height:5px;border-radius:2.5px}

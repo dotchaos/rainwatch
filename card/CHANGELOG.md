@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.13 (lab only, in review): compact five-day rows
+- **More information:** when the card carries `rainHours`, the daily rows become five compact rows on one shared midnight-to-midnight axis (labels at the top; ticks at 6 AM, noon and 6 PM through every strip). The rain amount leads each row; "Dry" is quiet; days the data doesn't cover say "Incomplete".
+- **Strip:** typical rain intensity (light / moderate / heavy), one flat neutral for dry, hatched where there is no forecast, empty before now. Crisp edges: uncertainty is not shown with fading (AGENTS.md).
+- **Overnight:** a rain stretch through midnight gets an arrow at both strip edges and "continues overnight" on the earlier day; rain running into missing data never does.
+- **Graph:** unchanged. Its end-of-outlook line is dropped from More information when the five-day rows show what comes after.
+- **Contract:** new `rainHours` field; `unknownHours` may run past hour 72. Cards without `rainHours` (today's live card) keep the three-day rows.
+- **Lab:** sixth fixture, Incomplete forecast (data ends Wed 8 AM).
+- **Review refinements:** continuous strips with no internal hour lines; a thin, soft now mark; a tighter heading and axis; a quieter legend that appears only when there is rain or a gap.
+- **Headline fix:** rain running into missing data (or the end of the graph) no longer gets an invented end time. Before: "Rain Tue from about 5 PM–Wed 9 AM". After: "Rain Tue from about 5 PM" with "Still raining at Wed 8 AM, where the forecast ends." This also applies to the live card.
+
 ## v0.12.4: header
 - The card header's right side reads "Updated 2:36 PM" instead of the month and time. The page bar drops its duplicate "Updated … ago" and keeps the links, plus "Late: last updated …" when an update is overdue.
 

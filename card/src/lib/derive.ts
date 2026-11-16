@@ -101,8 +101,13 @@ export function jacketPlan(s: Scenario) {
   return { kind, events: today, sure, day };
 }
 
-/** Plain-language "when" for hours a..b: "now until 2 PM", "11 AM–1 PM"; prefixed "about" when timing may shift. */
+/** True when rain up to hour b has no forecast end: the data stops (unknown) or the graph ends there. Its last hour
+ *  is where the forecast runs out, not when the rain stops, so it is never worded as an end time. */
+export const openEnd = (s: Scenario, b: number) => b >= 72 || isUnknown(s, b);
+/** Plain-language "when" for hours a..b: "now until 2 PM", "11 AM–1 PM"; prefixed "about" when timing may shift.
+ *  Open-ended rain gives only its start: "from about 5 PM", or "now". */
 function when(s: Scenario, a: number, b: number, sure: boolean) {
+  if (openEnd(s, b)) return a === 0 ? 'now' : `from ${sure ? '' : 'about '}${clock(s, a)}`;
   if (a === 0) return sure ? `until ${clock(s, b)}` : `until about ${clock(s, b)}`;
   return sure ? span(s, a, b) : `about ${span(s, a, b)}`;
 }
@@ -359,10 +364,19 @@ export function nowNext(s: Scenario): NowNext | null {
     headline = `Rain on and off ${partsPhrase(s, plan.events[0].start, plan.events[plan.events.length - 1].end)}`;
   } else {
     const a = aw.eventStart, b = aw.eventEnd, d = relDay(s, a);
-    headline = a === 0 ? `Rain ${when(s, 0, b, aw.sure)}`
+    headline = openEnd(s, b) ? (a === 0 ? 'Rain now' : `Rain ${d === 'today' ? '' : `${d} `}from ${aw.sure ? '' : 'about '}${clock(s, a)}`)
+      : a === 0 ? `Rain ${when(s, 0, b, aw.sure)}`
       : `Rain ${d === 'today' ? '' : `${d} `}from ${aw.sure ? '' : 'about '}${span(s, a, b)}`;
   }
-  const gear = aw.rung >= 2 ? `${aw.action} · ${windowShort(s, aw.startHour, aw.endHour)}` : aw.action;
+  // rain still falling when the data stops: say so in place of the bare coverage line
+  if (isUnknown(s, aw.eventEnd)) {
+    const k = notes.findIndex(n => n.startsWith('Forecast only covers through'));
+    const still = `Still raining at ${timeAt(s, aw.eventEnd - 1)}, where the forecast ends.`;
+    if (k >= 0) notes[k] = still; else notes.push(still);
+  }
+  const gearWhen = openEnd(s, aw.endHour) && aw.endHour === aw.eventEnd
+    ? `from ${dayIndexAt(s, aw.startHour) === 0 ? clock(s, aw.startHour) : timeAt(s, aw.startHour)}` : windowShort(s, aw.startHour, aw.endHour);
+  const gear = aw.rung >= 2 ? `${aw.action} · ${gearWhen}` : aw.action;
   return { headline, detail: notes.join(' '), action: { icon: 'boots', text: gear, risk: false } };
 }
 
@@ -417,4 +431,88 @@ export function halfDayLabels(s: Scenario) {
     if (hi - lo >= 6) out.push({ at: (lo + hi) / 2, text: ((a + s.startHourLocal) / 12) % 2 === 0 ? 'AM' : 'PM' });
   }
   return out;
+}
+
+/* ---------- Five-day rows (lab, v0.13) ---------- */
+
+export const STRIP_DAYS = 5;
+/** Hour offset where the fifth local day ends: the end of the five-day rows. */
+export const stripEnd = (s: Scenario) => 24 * STRIP_DAYS - s.startHourLocal;
+/** The five local days as hour-offset spans (today starts now). Unlike daysAt, not clipped to the graph's 72 hours. */
+export function stripDays(s: Scenario) {
+  const names = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const first = names.findIndex(n => n.toLowerCase() === s.startDay.slice(0, 3).toLowerCase());
+  const firstEnd = 24 - s.startHourLocal;
+  return Array.from({ length: STRIP_DAYS }, (_, i) => ({
+    name: names[(first + i) % 7], start: i === 0 ? 0 : firstEnd + (i - 1) * 24, end: firstEnd + i * 24,
+    /** local clock hour at `start` */ localStart: i === 0 ? s.startHourLocal : 0,
+  }));
+}
+/** Typical rain intensity at hour offset h: 0 none, 1 light, 2 moderate, 3 heavy. Never derived from the gear rung. */
+export const intensityAt = (s: Scenario, h: number): 0 | 1 | 2 | 3 => s.rainHours?.find(r => r.startHour <= h && h < r.endHour)?.intensity ?? 0;
+
+export type StripKind = 'past' | 'dry' | 'rain' | 'unknown';
+/** A piece of one day's strip in local clock hours (0–24). `intensity` only on rain. */
+export interface StripSeg { from: number; to: number; kind: StripKind; intensity?: 1 | 2 | 3 }
+export interface DayTotal { text: string; kind: 'amount' | 'quiet' | 'dry' | 'incomplete' }
+export interface FiveDayRow {
+  label: string; description: string; highF: number | null; lowF: number | null;
+  segs: StripSeg[]; now: number | null; continuesFromPrev: boolean; continuesIntoNext: boolean; total: DayTotal;
+}
+const LOCAL = (L: number) => L % 24 === 0 ? 'midnight' : L === 12 ? 'noon' : `${L % 12 || 12} ${L < 12 ? 'AM' : 'PM'}`;
+export const INTENSITY_WORDS = ['', 'light', 'moderate', 'heavy'] as const;
+
+/** One day's strip: past hours (today before now) are empty, not dry; hours with no forecast are unknown, never dry. */
+function stripSegs(s: Scenario, d: ReturnType<typeof stripDays>[number]): StripSeg[] {
+  const out: StripSeg[] = [];
+  for (let L = 0; L < 24; L++) {
+    const h = d.start + L - d.localStart;
+    const i = h < 0 ? 0 : intensityAt(s, h);
+    const kind: StripKind = h < 0 ? 'past' : isUnknown(s, h) ? 'unknown' : i ? 'rain' : 'dry';
+    const last = out[out.length - 1];
+    if (last && last.kind === kind && (last.intensity ?? 0) === i) last.to = L + 1;
+    else out.push(kind === 'rain' ? { from: L, to: L + 1, kind, intensity: i as 1 | 2 | 3 } : { from: L, to: L + 1, kind });
+  }
+  return out;
+}
+
+/** The day's rain column. Incomplete beats everything (no number for a day the data doesn't cover); amounts in tenths;
+ *  "Dry" only when every hour of the day is forecast and none has rain. */
+function dayTotal(segs: StripSeg[], rainIn: number | undefined): DayTotal {
+  if (segs.some(g => g.kind === 'unknown')) return { text: 'Incomplete', kind: 'incomplete' };
+  const wet = segs.some(g => g.kind === 'rain'), a = rainAmount(rainIn);
+  if (wet) return { text: a ?? (rainIn === undefined ? 'Rain' : '<0.1"'), kind: 'amount' };
+  return a ? { text: a, kind: 'quiet' } : { text: 'Dry', kind: 'dry' };
+}
+
+/** The five-day rows, or null when the card has no five-day rain data (older producers, today's live card). */
+export function fiveDays(s: Scenario): FiveDayRow[] | null {
+  if (!s.rainHours) return null;
+  const days = stripDays(s);
+  return days.map((d, k) => {
+    const segs = stripSegs(s, d), row = s.days[k];
+    const into = k < days.length - 1 && intensityAt(s, d.end - 1) > 0 && intensityAt(s, d.end) > 0;
+    const from = k > 0 && intensityAt(s, d.start - 1) > 0 && intensityAt(s, d.start) > 0;
+    return {
+      label: row?.label ?? d.name, description: (row?.description ?? '') + (into ? ' · continues overnight' : ''),
+      highF: row?.highF ?? null, lowF: row?.lowF ?? null, segs, now: k === 0 ? s.startHourLocal : null,
+      continuesFromPrev: from, continuesIntoNext: into, total: dayTotal(segs, row?.rainIn),
+    };
+  });
+}
+
+/** Spoken summary of one strip: "light rain 9 AM–2 PM, moderate rain 2–4 PM; no forecast after 9 AM". */
+export function stripWords(r: FiveDayRow): string {
+  const rain = r.segs.filter(g => g.kind === 'rain').map(g => `${INTENSITY_WORDS[g.intensity!]} rain ${LOCAL(g.from)}–${LOCAL(g.to)}`);
+  const gap = r.segs.find(g => g.kind === 'unknown');
+  const parts = [rain.length ? rain.join(', ') : gap ? '' : 'no rain'];
+  if (gap) parts.push(gap.from === 0 ? 'no forecast this day' : `no forecast after ${LOCAL(gap.from)}`);
+  return parts.filter(Boolean).join('; ');
+}
+
+/** "Forecast only covers through Wed 8 AM." when the five-day rows run past the data. */
+export function stripCoverageNote(s: Scenario): string | null {
+  const end = stripEnd(s);
+  for (let h = 0; h < end; h++) if (isUnknown(s, h)) return h === 0 ? 'No rain forecast available right now.' : `Rain forecast only covers through ${timeAt(s, h - 1)}.`;
+  return null;
 }

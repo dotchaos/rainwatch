@@ -19,14 +19,33 @@ export function validateScenario(s: Scenario): string[] {
     if (PRECIP.has(icon) !== gearAt(at)) errors.push(`Hour ${at} icon "${icon}" disagrees with the graph`);
   }
   // Daily rows: a day with gear shows precipitation; a fully forecast day without gear does not
-  daysAt(s.startDay, s.startHourLocal).slice(0, 3).forEach((d, k) => {
+  // With five-day rows, rain past the graph comes from rainHours (which must match the graph inside it, below)
+  const end5 = 120 - s.startHourLocal, rainAt = (h: number) => (s.rainHours ?? []).some(r => r.startHour <= h && h < r.endHour);
+  const wetAt = (h: number) => s.rainHours ? rainAt(h) : gearAt(h);
+  const dayList = s.rainHours ? [0, 1, 2, 3, 4].map(i => ({ start: i ? 24 - s.startHourLocal + (i - 1) * 24 : 0, end: 24 - s.startHourLocal + i * 24 })) : daysAt(s.startDay, s.startHourLocal).slice(0, 3);
+  dayList.forEach((d, k) => {
     const row = s.days[k]; if (!row) return;
-    let wet = false, gap = false; for (let h = d.start; h < d.end; h++) { wet ||= gearAt(h); gap ||= isUnknown(s, h); }
+    let wet = false, gap = false; for (let h = d.start; h < d.end; h++) { wet ||= wetAt(h); gap ||= isUnknown(s, h); }
     const icon = resolveIcon(row.icon);
     if (wet && !PRECIP.has(icon)) errors.push(`${row.label} has rain on the graph but its row shows "${icon}"`);
     if (!wet && !gap && PRECIP.has(icon)) errors.push(`${row.label} shows "${icon}" but the graph has no rain that day`);
   });
-  if (s.days.length !== 3) errors.push('Exactly three daily outlook rows required');
+  if (s.days.length !== (s.rainHours ? 5 : 3)) errors.push(s.rainHours ? 'Five-day rows need exactly five daily rows' : 'Exactly three daily outlook rows required');
+  if (s.rainHours) {
+    const rh = [...s.rainHours].sort((a, b) => a.startHour - b.startHour);
+    rh.forEach((r, k) => {
+      if (r.startHour < 0 || r.endHour > end5 || r.endHour <= r.startHour || ![1, 2, 3].includes(r.intensity)) errors.push(`Invalid rain hours ${r.startHour}–${r.endHour}`);
+      if (k && r.startHour < rh[k - 1].endHour) errors.push('Rain hours overlap');
+      if ((s.unknownHours ?? []).some(u => u.startHour < r.endHour && r.startHour < u.endHour)) errors.push('Rain hours overlap hours with no forecast');
+    });
+    // Inside the graph the strips and the graph show the same wet hours (rain and flood). Calm: no rain at all
+    // inside the graph. Heat graphs don't show rain, so they are not compared.
+    for (let h = 0; h < 72; h++) {
+      if (isUnknown(s, h)) continue;
+      if ((s.hazard === 'rain' || s.hazard === 'flood') && rainAt(h) !== gearAt(h)) errors.push(`Hour ${h}: the five-day strip and the graph disagree about rain`);
+      if (s.hazard === 'none' && rainAt(h)) errors.push(`Hour ${h}: rain on the five-day strip but the calm card says no rain gear`);
+    }
+  }
   if (s.hazard === 'none' && s.timeline) errors.push('Calm scenario must not show a timeline');
   const reachesTop = Boolean(s.timeline?.intervals.some(p => p.severity === 3));
   if ((s.hazard === 'flood' || s.hazard === 'heat') && reachesTop && !s.alert) errors.push('Forecast reaches the top rung: the scenario needs action advice (alert.action)');
@@ -50,7 +69,7 @@ export function validateScenario(s: Scenario): string[] {
     if (!ok) errors.push(`Rain total ${t.startHour}–${t.endHour} does not match a rain stretch on the chart`);
   }
   for (const u of s.unknownHours ?? []) {
-    if (u.startHour < 0 || u.endHour > 72 || u.endHour <= u.startHour) errors.push('Invalid unknown-hours span');
+    if (u.startHour < 0 || u.endHour > (s.rainHours ? 120 - s.startHourLocal : 72) || u.endHour <= u.startHour) errors.push('Invalid unknown-hours span');
     if (s.timeline?.intervals.some(p => p.startHour < u.endHour && u.startHour < p.endHour)) errors.push('An interval overlaps hours with no forecast');
   }
   if (s.provenance.type !== 'illustrative' && s.provenance.type !== 'live') errors.push('Provenance must say illustrative or live');
