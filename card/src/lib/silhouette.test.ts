@@ -60,18 +60,15 @@ describe('missing data', () => {
 });
 
 describe('flood overlay', () => {
-  it('spans exactly the potential-flooding window and stands on the shape: no gap, no overlap, no doubled edge', () => {
+  it('spans exactly the potential-flooding window, as its own shape in the flood row, detached from the clothing shape', () => {
     const s = byId('storm-ahead'), [w] = floodPotentials(s).filter(p => p.on);
     const html = renderToString(createElement(WeatherCard, { scenario: s, potential: 'outline', graph: 'silhouette' }));
     const g = html.match(/class="chart-potential" data-x="([\d.]+)" data-w="([\d.]+)" data-top="([\d.]+)" data-floor="([\d.]+)"/)!.slice(1).map(Number);
     const x = (h: number) => 106 + (h / 72) * 254;
     expect(g[0]).toBeCloseTo(x(w.startHour) + .6, 1);
     expect(g[0] + g[1]).toBeCloseTo(x(w.endHour) - .6, 1);
-    expect(g[3]).toBe(132 - 3 * 28);                                // the floor is the Rain gear plateau: the top of its band
-    expect(g[2]).toBeGreaterThanOrEqual(20);                         // and it fills the Flood potential row, no higher
-    expect(g[2]).toBeLessThan(21);
-    const outline = html.slice(html.indexOf('class="chart-potential"')).match(/<path d="([^"]+)" fill="none"/)![1];
-    expect(outline.trim().endsWith('Z')).toBe(false);                // open at the bottom: no dashed floor on the blue
+    expect(g[2]).toBeGreaterThanOrEqual(20);                         // inside the flood row
+    expect(g[3]).toBeLessThan(132 - 3 * 28);                         // with a gap above Rain gear: detached
     expect(html).toContain('Potential flooding, not yet a sandbag recommendation: Wed 4–8 AM.');
     expect(html).toContain('Potential flooding · Not yet a sandbag recommendation');
   });
@@ -103,6 +100,7 @@ describe('the default graph (final pass)', () => {
       expect(o[k][0] + o[k][1]).toBeCloseTo(x(w[1]) - .6, 1);
     }
     expect(h).toContain('Sandbags · Preparation recommended');
+    for (const m of h.matchAll(/class="chart-actionable"[^>]*data-floor="([\d.]+)"/g)) expect(Number(m[1])).toBeLessThan(132 - 3 * 28);   // detached
     expect(h).toContain('>Thu 4–9 PM<');                               // the event labels stay
     expect(h).not.toContain('chart-potential"');                       // actionable replaces potential
   });

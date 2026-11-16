@@ -40,6 +40,7 @@ const bandTop = (i: number) => base - (i + 1) * step, plateau = bandTop, labelY 
 const f2 = (n: number) => Math.round(n * 100) / 100;
 // softer shoulders and a quieter baseline (Nov 16 review): radius 9, clamped as before to half a step and half a
 // plateau, so a one-hour burst gets a rounded top but keeps its exact hour edges
+const FLOOD_GAP = 4;   // space between a flood event and the clothing shape below it
 const CORNER = 9, EDGE = '#3f7395', EDGE_OPACITY = .85, SIL_DRY = '#f6f8f9', SIL_JACKET = '#7fafc6';
 
 export function Timeline({ scenario: s, potential, graph = 'silhouette' }: { scenario: Scenario; potential?: PotentialStyle; graph?: GraphStyle }) {
@@ -149,11 +150,11 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
   // one recommendation per hour: each hour is its own level's colour from the baseline up (levels don't stack)
   const wear = [SIL_DRY, SIL_JACKET, intervalColor(s, 2)];
   const act = sandbagsCallouts(s);
-  /** A flood overlay: exactly its window's hours, filling the flood band, standing on the top of the Rain gear band. */
+  /** A flood event: its own detached shape (Nov 16) in the flood row, exactly its window's hours wide, with a gap above
+   *  the Rain gear band so it never reads as the top of a clothing column. Rounded on all four corners. */
   const overlay = (a0: number, b0: number) => {
-    const a = x(a0) + .6, b = x(b0) - .6, top = bandTop(3) + .6, floor = bandTop(2), r = Math.min(CORNER, (b - a) / 2);
-    const open = `M${f2(a)} ${floor} L${f2(a)} ${f2(top + r)} Q${f2(a)} ${f2(top)} ${f2(a + r)} ${f2(top)} L${f2(b - r)} ${f2(top)} Q${f2(b)} ${f2(top)} ${f2(b)} ${f2(top + r)} L${f2(b)} ${floor}`;
-    return { a, b, top, floor, open, closed: `${open} Z` };
+    const a = x(a0) + .6, b = x(b0) - .6, top = bandTop(3) + 3, floor = bandTop(2) - FLOOD_GAP;
+    return { a, b, top, floor, r: Math.min(6, (b - a) / 2, (floor - top) / 2) };
   };
   return <>
     <defs>{segs.map((g, k) => <clipPath key={k} id={`sil-${s.id}-${k}`}><path d={segmentPath(g, x, plateau, base, CORNER)} /></clipPath>)}</defs>
@@ -169,12 +170,12 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
     {runs.filter(r => !r.unknown && r.level > 0).map(r => { const rc = Math.min(CORNER, (x(r.end) - x(r.start)) / 2) * .9; return <line key={`e-${r.start}`} className="chart-sil-edge" x1={f2(x(r.start) + rc)} x2={f2(x(r.end) - rc)}
       y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1.1" strokeOpacity={EDGE_OPACITY} strokeDasharray={r.sure ? undefined : '2.5 2'} />; })}
     {pots.map(p => { const o = overlay(p.startHour, p.endHour);
-      return <g key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(o.a)} data-w={f2(o.b - o.a)} data-top={f2(o.top)} data-floor={f2(o.floor)}>
-        <path d={o.closed} fill={POTENTIAL_FILL} />
-        <path d={o.open} fill="none" stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />
-      </g>; })}
+      return <rect key={`pot-${p.startHour}`} className="chart-potential" data-x={f2(o.a)} data-w={f2(o.b - o.a)} data-top={f2(o.top)} data-floor={f2(o.floor)}
+        x={f2(o.a)} y={f2(o.top)} width={f2(o.b - o.a)} height={f2(o.floor - o.top)} rx={f2(o.r)}
+        fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />; })}
     {act.map(w => { const o = overlay(w.startHour, w.endHour);
-      return <path key={`act-${w.startHour}`} className="chart-actionable" data-x={f2(o.a)} data-w={f2(o.b - o.a)} d={o.closed} fill={intervalColor(s, 3)} />; })}
+      return <rect key={`act-${w.startHour}`} className="chart-actionable" data-x={f2(o.a)} data-w={f2(o.b - o.a)} data-top={f2(o.top)} data-floor={f2(o.floor)}
+        x={f2(o.a)} y={f2(o.top)} width={f2(o.b - o.a)} height={f2(o.floor - o.top)} rx={f2(o.r)} fill={intervalColor(s, 3)} />; })}
     <line x1={x0} x2={x(72)} y1={base} y2={base} className="chart-base" />
   </>;
 }
