@@ -1,0 +1,244 @@
+{
+ "id": "live",
+ "title": "Live",
+ "season": "November",
+ "location": "18th & Shotwell",
+ "observedAt": "Sunday \u00b7 4:17 PM",
+ "startDay": "Sun",
+ "startHourLocal": 16,
+ "hazard": "rain",
+ "current": {
+  "temperatureF": 55,
+  "condition": "Rain",
+  "icon": "rain",
+  "highF": 59,
+  "lowF": 53
+ },
+ "hourly": [
+  {
+   "hour": 0,
+   "temperatureF": 55,
+   "icon": "rain"
+  },
+  {
+   "hour": 1,
+   "temperatureF": 55,
+   "icon": "rain"
+  },
+  {
+   "hour": 2,
+   "temperatureF": 53,
+   "icon": "rain"
+  },
+  {
+   "hour": 3,
+   "temperatureF": 53,
+   "icon": "rain"
+  },
+  {
+   "hour": 4,
+   "temperatureF": 54,
+   "icon": "rain"
+  },
+  {
+   "hour": 5,
+   "temperatureF": 54,
+   "icon": "rain"
+  },
+  {
+   "hour": 6,
+   "temperatureF": 53,
+   "icon": "rain"
+  },
+  {
+   "hour": 7,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 8,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 9,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 10,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 11,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 12,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 13,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 14,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 15,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 16,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 17,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 18,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 19,
+   "temperatureF": 55,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 20,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 21,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 22,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 23,
+   "temperatureF": 55,
+   "icon": "overcast"
+  }
+ ],
+ "days": [
+  {
+   "label": "Today",
+   "description": "Rain at times",
+   "icon": "rain",
+   "lowF": 53,
+   "highF": 59,
+   "rainIn": 0.38
+  },
+  {
+   "label": "Tomorrow",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 48,
+   "highF": 57,
+   "rainIn": 0.05
+  },
+  {
+   "label": "Tuesday",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 46,
+   "highF": 60,
+   "rainIn": 0.0
+  },
+  {
+   "label": "Wednesday",
+   "description": "Rain at times",
+   "icon": "rain",
+   "lowF": 54,
+   "highF": 58,
+   "rainIn": 1.14
+  },
+  {
+   "label": "Thursday",
+   "description": "Rain at times",
+   "icon": "rain",
+   "lowF": 51,
+   "highF": 56,
+   "rainIn": 0.26
+  }
+ ],
+ "rainHours": [
+  {
+   "startHour": 0,
+   "endHour": 1,
+   "intensity": 2
+  },
+  {
+   "startHour": 1,
+   "endHour": 7,
+   "intensity": 1
+  },
+  {
+   "startHour": 57,
+   "endHour": 60,
+   "intensity": 1
+  },
+  {
+   "startHour": 60,
+   "endHour": 63,
+   "intensity": 2
+  },
+  {
+   "startHour": 63,
+   "endHour": 90,
+   "intensity": 1
+  }
+ ],
+ "provenance": {
+  "type": "live",
+  "generated": "2026-11-16T00:17:54.522082+00:00",
+  "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
+ },
+ "timeline": {
+  "title": "Rain outlook",
+  "intervals": [
+   {
+    "startHour": 0,
+    "endHour": 7,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "steady"
+   },
+   {
+    "startHour": 57,
+    "endHour": 72,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "steady"
+   }
+  ]
+ },
+ "rainTotals": [
+  {
+   "startHour": 0,
+   "endHour": 7,
+   "medianIn": 0.37
+  },
+  {
+   "startHour": 57,
+   "endHour": 72,
+   "medianIn": 0.98
+  }
+ ]
+}
