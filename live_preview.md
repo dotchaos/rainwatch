@@ -1,6 +1,6 @@
 # Five-day rows on live data
 
-Run at 2026-11-16T19:20+00:00 UTC. Errors before: none; after: none.
+Run at 2026-11-16T19:39+00:00 UTC. Errors before: none; after: none.
 
 ## 1. Existing card unchanged (before vs after, outside the approved additions)
 
@@ -12,7 +12,7 @@ Report (details page input) differences: 0
 
 | Day | Words | Rain column | Strip |
 |---|---|---|---|
-| Today | Rain, heavy at times possible | 0.04 | 1 wet h, top intensity 1 |
+| Today | Rain, heavy at times possible | 0.0 | 1 wet h, top intensity 1 |
 | Tomorrow | Cloudy | 0.0 | 0 wet h, top intensity 0 |
 | Wednesday | Heavy rain at times | 1.51 | 23 wet h, top intensity 3 |
 | Thursday | Rain at times | 0.58 | 13 wet h, top intensity 1 |
@@ -30,7 +30,7 @@ Agrees when the strip's amounts add up inside the runs' 10th–90th percentile d
 
 | Day | Day total p10 / p50 / p90 | Strip adds up to | Hourly medians add up to | Heavy hours: strip / runs p50, p75 | Moderate+ hours: strip / runs p50, p75 | Flags |
 |---|---|---|---|---|---|---|
-| 2026-11-16 | 0.043 / 0.043 / 0.067 | 0.04 | 0.04 | 0 / [0.0, 0.0] | 0 / [0.0, 0.0] | — |
+| 2026-11-16 | 0.004 / 0.004 / 0.028 | 0 | 0 | 0 / [0.0, 0.0] | 0 / [0.0, 0.0] | rain hours on the strip with no measurable day total |
 | 2026-11-17 | 0.0 / 0.004 / 0.036 | 0 | 0 | 0 / [0.0, 0.0] | 0 / [0.0, 0.0] | — |
 | 2026-11-18 | 1.066 / 1.514 / 2.258 | 1.44 | 1.39 | 3 / [3.0, 3.0] | 5 / [6.0, 6.0] | — |
 | 2026-11-19 | 0.145 / 0.579 / 1.099 | 0.43 | 0.41 | 0 / [0.0, 0.0] | 0 / [0.0, 3.0] | — |

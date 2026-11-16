@@ -3,7 +3,7 @@
  "title": "Live",
  "season": "November",
  "location": "18th & Shotwell",
- "observedAt": "Monday \u00b7 11:20 AM",
+ "observedAt": "Monday \u00b7 11:39 AM",
  "startDay": "Mon",
  "startHourLocal": 11,
  "hazard": "flood",
@@ -143,7 +143,7 @@
    "icon": "heavy-rain",
    "lowF": 48,
    "highF": 57,
-   "rainIn": 0.04
+   "rainIn": 0.0
   },
   {
    "label": "Tomorrow",
@@ -180,7 +180,7 @@
  ],
  "observedNow": {
   "rainingNow": true,
-  "recentRain": false
+  "recentRain": null
  },
  "rainHours": [
   {
@@ -216,7 +216,7 @@
  ],
  "provenance": {
   "type": "live",
-  "generated": "2026-11-16T19:20:24.431806+00:00",
+  "generated": "2026-11-16T19:39:20.588684+00:00",
   "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
  },
  "timeline": {
@@ -225,7 +225,7 @@
    {
     "startHour": 0,
     "endHour": 1,
-    "severity": 2,
+    "severity": 3,
     "confidence": "unknown",
     "pattern": "steady"
    },
@@ -284,7 +284,7 @@
   {
    "startHour": 0,
    "endHour": 1,
-   "medianIn": 0.04
+   "medianIn": 0.0
   },
   {
    "startHour": 38,
@@ -294,8 +294,8 @@
  ],
  "evidence": {
   "pHeavy": [
-   0.23,
-   0.04,
+   0.27,
+   0.02,
    0,
    0,
    0,
@@ -369,7 +369,7 @@
   ],
   "floodValidated": false,
   "pFlood": [
-   0.02,
+   0.16,
    0.0,
    0,
    0,
@@ -443,7 +443,7 @@
    0
   ],
   "pBehind": [
-   0.02,
+   0.16,
    0.0,
    0,
    0,
@@ -517,6 +517,13 @@
    0
   ],
   "potential": [
+   {
+    "startHour": 0,
+    "endHour": 1,
+    "pBehindAny": 0.0,
+    "pFloodAny": 0.0,
+    "systems": 0
+   },
    {
     "startHour": 41,
     "endHour": 46,
