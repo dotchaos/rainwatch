@@ -33,7 +33,9 @@ export type GraphStyle = 'columns' | 'silhouette';
 /** Silhouette (v0.21): four equal bands; each level's plateau sits at its band's centre. Tone by band, flat fills:
  *  the dry band's pale grey, then the established jacket and rain-gear blues, Sandbags only when recommended. */
 const bandTop = (i: number) => base - (i + 1) * step, plateau = (i: number) => base - (i + 0.5) * step;
-const CORNER = 3, EDGE = '#3f7395';
+// refinement (Nov 16): rounder corners (still clamped to half a plateau and half a step, so every vertical edge stays
+// on its hour); a slightly deeper jacket tone and firmer top edge so one-hour bursts read; a lighter dry baseline
+const CORNER = 4.5, EDGE = '#3f7395', EDGE_OPACITY = .85, SIL_DRY = '#eef3f5', SIL_JACKET = '#7fafc6';
 
 export function Timeline({ scenario: s, potential, graph = 'columns' }: { scenario: Scenario; potential?: PotentialStyle; graph?: GraphStyle }) {
   if (!s.timeline) return null;
@@ -135,7 +137,7 @@ function srItems(s: Scenario, full: string[]) {
 function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; labels: string[]; sandbagsShown: boolean;
                          pots: ReturnType<typeof floodPotentials> }) {
   const runs = silhouetteRuns(s), segs = segments(runs);
-  const fills = [DRY_FILL, intervalColor(s, 1), intervalColor(s, 2), intervalColor(s, 3)];
+  const fills = [SIL_DRY, SIL_JACKET, intervalColor(s, 2), intervalColor(s, 3)];
   return <>
     <defs>{segs.map((g, k) => <clipPath key={k} id={`sil-${s.id}-${k}`}><path d={segmentPath(g, x, plateau, base, CORNER)} /></clipPath>)}</defs>
     {labels.map((l0, i) => { const l = i === 3 && !sandbagsShown ? 'Flood potential' : l0;
@@ -145,7 +147,7 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
     </g>)}
     {runs.filter(r => r.unknown).map(r => <rect key={`u-${r.start}`} x={x(r.start)} y={base - 3 * step} width={x(r.end) - x(r.start)} height={3 * step} fill="url(#nodata)" />)}
     {runs.filter(r => !r.unknown && r.level > 0).map(r => <line key={`e-${r.start}`} className="chart-sil-edge" x1={x(r.start)} x2={x(r.end)}
-      y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1" strokeOpacity=".55" strokeDasharray={r.sure ? undefined : '2.5 2'} />)}
+      y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1.1" strokeOpacity={EDGE_OPACITY} strokeDasharray={r.sure ? undefined : '2.5 2'} />)}
     {pots.map(p => <rect key={`pot-${p.startHour}`} className="chart-potential" x={x(p.startHour) + .6} y={bandTop(3) + 3}
       width={x(p.endHour) - x(p.startHour) - 1.2} height={plateau(2) - bandTop(3) - 3.6} rx="4"
       fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />)}
