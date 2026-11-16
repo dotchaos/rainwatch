@@ -1,6 +1,6 @@
 # Five-day rows on live data
 
-Run at 2026-11-16T16:37+00:00 UTC. Errors before: none; after: none.
+Run at 2026-11-16T16:45+00:00 UTC. Errors before: none; after: none.
 
 ## 1. Existing card unchanged (before vs after, outside the approved additions)
 
@@ -14,7 +14,7 @@ Report (details page input) differences: 0
 |---|---|---|---|
 | Today | Cloudy | 0.01 | 0 wet h, top intensity 0 |
 | Tomorrow | Cloudy | 0.01 | 0 wet h, top intensity 0 |
-| Wednesday | Intense rain | 1.54 | 23 wet h, top intensity 3 |
+| Wednesday | Rain, heavy at times possible | 1.54 | 23 wet h, top intensity 3 |
 | Thursday | Rain at times | 0.59 | 13 wet h, top intensity 1 |
 | Friday | Cloudy | 0.0 | 0 wet h, top intensity 0 |
 
