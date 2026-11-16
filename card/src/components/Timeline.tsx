@@ -60,11 +60,13 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
           </g>;
         })}
         {pots.map(p => {
-          const a = x(p.startHour) + gap / 2, b = x(p.endHour) - gap / 2, yS = base - 3 * step, yB = base - 2 * step, c = intervalColor(s, 3);
+          // drawn at the graph's own resolution: the whole 3-hour blocks the window touches
+          const blocks = chartBlocks(s).filter(k => k.end > p.startHour && k.start < p.endHour);
+          const a = x(blocks[0].start) + gap / 2, b = x(blocks[blocks.length - 1].end) - gap / 2, yS = base - 3 * step, yB = base - 2 * step, c = intervalColor(s, 3);
           // outline: one dashed, pale-tinted box per graph block of the window, sitting on the solid Boots bars
           return potential === 'outline'
-            ? <g key={`pot-${p.startHour}`} className="chart-potential">{chartBlocks(s).filter(k => k.end > p.startHour && k.start < p.endHour).map(k => {
-                const ka = x(Math.max(k.start, p.startHour)) + gap / 2, kb = x(Math.min(k.end, p.endHour)) - gap / 2;
+            ? <g key={`pot-${p.startHour}`} className="chart-potential">{blocks.map(k => {
+                const ka = x(k.start) + gap / 2, kb = x(k.end) - gap / 2;
                 return <rect key={k.start} x={ka + .5} y={yS + .5} width={kb - ka - 1} height={yB - yS - 1} rx="1.5" fill={c} fillOpacity=".09" stroke={c} strokeWidth="1" strokeDasharray="2.4 1.8" />;
               })}</g>
             : <g key={`pot-${p.startHour}`} className="chart-potential" stroke={c} strokeWidth="1.4" strokeLinecap="round">

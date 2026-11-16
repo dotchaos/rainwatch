@@ -5,7 +5,7 @@ import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { WeatherCard } from '../components/WeatherCard';
 import { validateScenario } from './rules';
-import { chartBlocks, floodHero, floodStorm, nowNext, peakWindows, sandbagsCallouts, stormVoice, storms } from './derive';
+import { chartBlocks, floodHero, floodPotentials, floodStorm, nowNext, peakWindows, sandbagsCallouts, stormVoice, storms } from './derive';
 
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
 /** The live forecast of Mon Nov 16, 8 AM: dry until Wednesday's storm, heavy hours in 36% of runs, flood levels unvalidated. */
@@ -125,5 +125,41 @@ describe('one level of urgency across hero, graph and five-day row (v0.19 review
   it('the Extreme storm fixture (official Flood Watch) keeps its Sandbags blocks and callouts', () => {
     expect(top(byId('storm'))).toBe(3);
     expect(sandbagsCallouts(byId('storm')).map(p => p.label)).toEqual(['Thu 4–9 PM', 'Fri 8 AM–4 PM']);
+  });
+});
+
+describe('flood potential: between Boots and Sandbags (v0.19 exploration, lab only)', () => {
+  const html = (s: Scenario, p?: 'outline' | 'range') => renderToString(createElement(WeatherCard, { scenario: s, potential: p }));
+  it('today\'s storm meets all three checks (real figures, Mon 9 AM)', () => {
+    const [w] = floodPotentials(ahead());
+    expect(w).toMatchObject({ label: 'Wed 4–8 AM', on: true, checks: { agreement: { systems: 3, of: 3, ok: true },
+      sustained: { hours: 3, ok: true }, size: { pBehind: 0.6, ok: true } } });
+  });
+  it('drawn only when asked (lab), on top of Boots, never as a Sandbags bar or recommendation', () => {
+    expect(html(ahead())).not.toContain('chart-potential');                            // production graph unchanged
+    const h = html(ahead(), 'outline');
+    expect(h).toContain('class="chart-potential"');
+    expect(h).toContain('Flood potential · not a recommendation yet');
+    expect(h).toContain('Flood potential, not a recommendation: Wed 4–8 AM.');          // accessible description
+    expect(Math.max(...chartBlocks(ahead()).map(b => b.level))).toBe(2);               // the solid bars stay Boots
+    expect(h).not.toMatch(/Sandbags:|Sandbags ·/);
+  });
+  it('one weak check is enough to say nothing; runs are not votes', () => {
+    for (const change of [(w: any) => { w.systems = 1; }, (w: any) => { w.pBehindAny = 0.4; }]) {
+      const s = ahead(); change(s.evidence!.potential![0]);
+      expect(floodPotentials(s)[0].on).toBe(false);
+    }
+    const s = ahead(); s.evidence!.pFlood = s.evidence!.pFlood!.map((v, h) => h === 47 ? v : Math.min(v ?? 0, 0.05));
+    expect(floodPotentials(s)[0].checks.sustained).toEqual({ hours: 1, ok: false });     // one isolated spike
+  });
+  it('closer is not stronger: moving the storm nearer changes nothing', () => {
+    const near = earlier(ahead(), 38); near.evidence!.potential = [{ startHour: 6, endHour: 10, pBehindAny: 0.6, pFloodAny: 0.33, systems: 3 }];
+    expect(floodPotentials(near).map(w => w.on)).toEqual([true]);
+    expect(stormVoice(near, floodStorm(near)!)).toBe('awareness');
+    expect(sandbagsCallouts(near)).toEqual([]);
+  });
+  it('replaced by Sandbags proper once the evidence is actionable', () => {
+    const s = ahead(); s.evidence!.official = [{ event: 'Flood Watch', startHour: 38, endHour: 60 }];
+    expect(floodPotentials(s)).toEqual([]);
   });
 });

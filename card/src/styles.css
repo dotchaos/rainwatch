@@ -98,3 +98,4 @@
 .chart-potential-key{display:flex;align-items:center;justify-content:center;gap:7px;margin:6px 0 0;font-size:11px;color:#7b8991}
 .lab-compare{display:grid;grid-template-columns:repeat(3,minmax(0,380px));gap:22px;justify-content:center;align-items:start}
 .lab-compare h3{font-size:13px;margin:0 0 8px}.lab-checks{font-size:12px;color:#55646d;max-width:1180px;margin:18px auto 0;line-height:1.5}
+.timeline-section .chart-potential-key svg{width:22px;max-width:none;flex:none;margin:0;display:inline-block}
