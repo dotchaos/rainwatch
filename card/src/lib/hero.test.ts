@@ -19,7 +19,7 @@ describe('show/hide across the seven scenarios', () => {
   it('current rain + larger Wednesday event: shown, as in the brief', () => {
     const s = byId('upcoming'), u = upcomingEvent(s)!;
     expect(validateScenario(s)).toEqual([]);
-    expect([u.day, u.heading, u.sentence]).toEqual(['Wednesday', 'More substantial rain', 'Around 1.1", continuing overnight.']);
+    expect([u.day, u.heading, u.sentence]).toEqual(['Wednesday', 'Around 1.1" of rain', 'Beginning early, continuing overnight.']);
     const n = nowNext(s)!;
     expect(n.headline).toBe('Rain until about 11 PM');                // the primary headline is unchanged
     expect(n.detail).not.toContain('More rain');                       // not said twice
@@ -48,7 +48,7 @@ describe('selection rules', () => {
     s.timeline!.intervals = s.timeline!.intervals.map(p => p.startHour < 10 ? { ...p, severity: 1 as const } : { ...p, severity: 2 as const });
     s.days[1] = { ...s.days[1], rainIn: 0.12 };
     const u = upcomingEvent(s)!;
-    expect([u.day, u.heading, u.reason]).toEqual(['Tomorrow', 'Rain boots', 'higher action']);
+    expect([u.day, u.heading, u.sentence, u.reason]).toEqual(['Tomorrow', 'Around 0.1" of rain', 'Rain boots, beginning in the evening.', 'higher action']);
   });
 
   it('routine rain is not more consequential: a smaller, lighter later event stays hidden', () => {
@@ -63,13 +63,13 @@ describe('selection rules', () => {
     expect(upcomingEvent(s)).toBeNull();
   });
 
-  it('calm card: light showers past the graph stay hidden; moderate rain worth a number is shown as "Rain"', () => {
+  it('calm card: light showers past the graph stay hidden; moderate rain worth a number is shown', () => {
     expect(upcomingEvent(byId('october'))).toBeNull();
     const s = byId('october');
     s.rainHours = [{ startHour: 93, endHour: 97, intensity: 2 }];
     s.days[4] = { ...s.days[4], rainIn: 0.3 };
     const u = upcomingEvent(s)!;
-    expect([u.day, u.heading, u.sentence]).toEqual(['Monday', 'Rain', 'Around 0.3".']);
+    expect([u.day, u.heading, u.sentence]).toEqual(['Monday', 'Around 0.3" of rain', 'Beginning in the morning.']);
   });
 
   it('extreme storm: events holding a Sandbags window the alert lists are never repeated', () => {
@@ -104,7 +104,7 @@ describe('incomplete coverage', () => {
     expect(upcomingEvent(s)).toBeNull();
   });
 
-  it('a complete day whose rain runs into missing data: amount, no end time, no "continuing overnight"', () => {
+  it('rain running past the forecast data: no total (it would be partial), no end time, no "continuing overnight"', () => {
     const s = byId('upcoming');
     s.rainHours = s.rainHours!.filter(r => r.startHour < 80).map(r => ({ ...r, endHour: Math.min(r.endHour, 80) }));
     s.unknownHours = [{ startHour: 80, endHour: 104 }];                  // data stops at Thu midnight
@@ -112,7 +112,8 @@ describe('incomplete coverage', () => {
     delete s.days[4].rainIn;
     expect(validateScenario(s)).toEqual([]);
     const u = upcomingEvent(s)!;
-    expect(u.sentence).toBe('Around 1.1", still falling where the forecast ends.');
+    expect([u.heading, u.sentence]).toEqual(['Rain', 'Beginning early, still falling where the forecast ends.']);
+    expect(u.heading + u.sentence).not.toMatch(/\d"/);                 // no amount at all
     expect(u.sentence).not.toMatch(NO_END_TIME);
   });
 
@@ -125,7 +126,12 @@ describe('incomplete coverage', () => {
     expect(upcomingEvent(s)).toBeNull();
   });
 
-  it('no sentence anywhere carries an end time', () => {
-    for (const s of scenarios) { const u = upcomingEvent(s); if (u) expect(u.sentence).not.toMatch(NO_END_TIME); }
+  it('no sentence anywhere carries an end time; an amount appears only for an event that ends inside the data', () => {
+    for (const s of scenarios) {
+      const u = upcomingEvent(s);
+      if (!u) continue;
+      expect(u.sentence).not.toMatch(NO_END_TIME);
+      if (/of rain/.test(u.heading)) expect(u.sentence).not.toContain('where the forecast ends');
+    }
   });
 });

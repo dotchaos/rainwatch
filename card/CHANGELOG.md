@@ -2,6 +2,7 @@
 
 ## v0.14 (review branch two-horizon-hero, not deployed): upcoming event in the hero
 - **Now & next:** an upcoming-event module beneath the primary forecast when a later event is materially more consequential (higher gear rung, at least twice the rain, or heavier rain), with its start supported by data. Hidden on all five canonical scenarios and the incomplete one.
+- **Review changes:** the amount leads ("Wednesday · Around 1.1" of rain" / "Beginning early, continuing overnight."), and is omitted when the event runs past the forecast data. Next hours: the half-visible hour at the card edge fades instead of being cut mid-label.
 - **Lab:** seventh scenario, Bigger storm ahead (from the live card of Nov 15, 4:41 PM). Lab label v0.14.
 - **Tests:** hero.test.ts (show/hide, selection rules, incomplete coverage), in CI.
 

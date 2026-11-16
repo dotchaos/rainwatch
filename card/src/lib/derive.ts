@@ -576,6 +576,8 @@ function eventAmount(s: Scenario, ev: RainEvent, all: RainEvent[]): number | nul
   return dayAmount(s, ev, all);
 }
 
+/** When an upcoming event begins, in day parts (its timing may shift, so no clock time): by local start hour. */
+const START_WORDS = Array.from({ length: 24 }, (_, h) => h < 5 ? 'early' : h < 12 ? 'in the morning' : h < 17 ? 'in the afternoon' : h < 21 ? 'in the evening' : 'late');
 export interface Upcoming { startHour: number; day: string; heading: string; sentence: string; reason: string; icon: Scenario['days'][number]['icon'] }
 
 /**
@@ -587,7 +589,9 @@ export interface Upcoming { startHour: number; day: string; heading: string; sen
  *      With no primary event (calm card), only a higher rung or moderate-or-heavier rain qualifies.
  * Never: on calm cards without notable rain, heat cards, events containing a Sandbags window the flood alert lists,
  * events the headline already covers, events whose start borders missing data, or amounts from incomplete days.
- * No end time is ever given; "continuing overnight" only when the next day's first hours are forecast wet.
+ * Heading: the day and its amount ("Wednesday · Around 1.1" of rain") when the amount is reliable (a complete day, and
+ * the event ends inside the forecast); otherwise the rung or "Rain". Sentence: when it begins, in day parts
+ * ("Beginning early"), then "continuing overnight" or "still falling where the forecast ends". No end time, ever.
  */
 export function upcomingEvent(s: Scenario): Upcoming | null {
   if (s.hazard === 'heat') return null;                              // the heat headline owns the hero
@@ -616,13 +620,15 @@ export function upcomingEvent(s: Scenario): Upcoming | null {
   const { ev, reason, amt } = pick;
   const k = stripDayAt(s, ev.start), d = stripDays(s)[k];
   const day = k === 1 ? 'Tomorrow' : fullDay[d.name];
-  const heading = reason === 'higher action' ? levelLabels(s)[ev.rung!]
-    : reason === 'heavier rain' ? (primary ? 'Heavier rain' : 'Rain') : 'More substantial rain';
-  const overnight = ev.end > d.end && ev.endKnown !== false && !isUnknown(s, d.end);
-  const parts: string[] = [];
-  if (amt !== null && amt >= 0.1) parts.push(`Around ${amt.toFixed(1)}"`);
-  else parts.push(`From about ${clock(s, ev.start)}`);
+  // the amount leads (information, not interpretation), but only when it is reliable: a complete day, and the
+  // event ends inside the forecast; rain still falling where the data stops gets no total (it would be partial)
+  const total = amt !== null && amt >= 0.1 && ev.endKnown ? `Around ${amt.toFixed(1)}" of rain` : null;
+  const heading = total ?? (reason === 'higher action' ? levelLabels(s)[ev.rung!] : 'Rain');
+  const overnight = ev.end > d.end && ev.endKnown && !isUnknown(s, d.end);
+  const parts = [`Beginning ${START_WORDS[localHour(s, ev.start)]}`];
+  if (reason === 'higher action' && total) parts.unshift(levelLabels(s)[ev.rung!]);
   if (overnight) parts.push('continuing overnight');
   else if (!ev.endKnown) parts.push('still falling where the forecast ends');
-  return { startHour: ev.start, day, heading, sentence: `${parts.join(', ')}.`, reason, icon: s.days[k]?.icon ?? 'rain' };
+  const sentence = cap(parts.map((x, i) => i ? x.charAt(0).toLowerCase() + x.slice(1) : x).join(', ')) + '.';
+  return { startHour: ev.start, day, heading, sentence, reason, icon: s.days[k]?.icon ?? 'rain' };
 }

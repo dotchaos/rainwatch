@@ -46,9 +46,10 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
 ## Upcoming event (two-horizon hero, v0.14, in review)
 - Beneath the primary forecast in Now & next, after a subtle divider: day, a short heading, one sentence. No alert container.
 - Shown only for a later rain event that is distinct from the one the headline is about, not already named by the hero, with a start inside the forecast data, and materially more consequential:
-  - **action first:** it reaches a higher gear rung (the engine's thresholds; inside the graph only). Heading: the rung ("Rain boots").
-  - **amount:** at least twice the primary event's amount (whole-run totals). Heading "More substantial rain".
-  - **intensity:** heavier strip rain than the primary event, moderate or more. Heading "Heavier rain" ("Rain" on a calm card).
+  - **action first:** it reaches a higher gear rung (the engine's thresholds; inside the graph only).
+  - **amount:** at least twice the primary event's amount (whole-run totals).
+  - **intensity:** heavier strip rain than the primary event, moderate or more.
+- Copy states information, not interpretation: heading "Wednesday · Around 1.1" of rain" when the amount is reliable (a complete day, and the event ends inside the forecast data); otherwise the rung or "Rain". Sentence: when it begins in day parts ("Beginning early", "in the morning", "in the afternoon", "in the evening", "late"), then "continuing overnight" or "still falling where the forecast ends". A higher-rung event names the rung first ("Rain boots, beginning in the evening.").
   - Either rain reason needs an amount worth a number in tenths (the existing amounts rule), taken from a complete day with no other rain that day.
 - Never on heat cards. Never for an event holding a Sandbags window the flood alert already lists. Never from an incomplete day's amount, and never for an event whose start borders missing data. No end time, ever. "Continuing overnight" only when the next day's first hours are forecast wet; "still falling where the forecast ends" when the data stops.
 - When shown, the hero detail drops its "More rain …" line for the same event.

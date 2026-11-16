@@ -69,3 +69,6 @@
 .upcoming-head{display:flex;align-items:center;gap:6px;font-size:14px}
 .upcoming-head strong{font-weight:650}.upcoming-head span{color:#53636c}
 .upcoming p{margin:3px 0 0 26px;font-size:14px;color:#7b8991;line-height:1.4}
+
+/* Next hours: the half-visible hour at the card edge fades instead of being cut mid-label (v0.14). */
+.hours-scroll{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent)}
