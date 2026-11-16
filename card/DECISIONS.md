@@ -66,3 +66,10 @@
 - **Open-ended rain has no end time (v0.13).** When rain runs into missing data or the end of the graph, its last hour is where the forecast stops, not when the rain stops.
   - Headlines and action lines give only the start ("Rain Tue from about 5 PM", "Rain boots · from Tue 9 PM").
   - The detail says "Still raining at Wed 8 AM, where the forecast ends."
+
+- **Strip shading: hybrid B, controlled trial (Nov 15 2026; not deployed).** The engine decides which hours are wet; each wet stretch is shaded from the runs' probability-matched amounts (rainwatch/shading.py). They are scaled to the median run total, so the strip adds up to the amount shown, and capped at the typical run's heaviest hour, so the strip never shows a burst the typical run doesn't have. Wet hours are never lighter than light.
+  - Rejected: C, shading a whole stretch by the typical run's peak, which exaggerates every storm.
+  - Recording A and B every hour (data/shading/) started Nov 15 to score both against the Mint gauge.
+  - Per-day check on every card: the strip adds up inside the runs' 10th–90th percentile day total, with no more heavy or moderate-and-heavier hours than three runs in four.
+- **Open-ended later rain:** "More rain from Wed 1 AM." with no end time and no partial amount when the rain runs to the graph edge or into missing data. Fixed Nov 15 2026 on the review branch.
+- **Hero prioritisation (open question, not a blocker):** when a later event is much bigger than the current one (e.g. 0.3" now, ~1.1" Wednesday), it should not sit only in secondary copy.

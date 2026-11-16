@@ -45,7 +45,7 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
 
 ## Five-day rows (v0.13, lab)
 - Five local days, one row each, on one shared axis (local midnight to midnight). Today's hours before now are empty, not dry.
-- The strip shows how hard rain typically falls (median of the model runs): light under 0.10"/h, moderate 0.10–0.20"/h, heavy 0.20"/h or more (the config's heavy hour). It is **not** the gear rung, and the card never converts between them. A Rain boots hour can be light rain: heavy is plausible, not typical.
+- The strip shows how hard rain falls: light under 0.10"/h, moderate 0.10–0.20"/h, heavy 0.20"/h or more (the config's heavy hour). Live shading (trial, hybrid B): over each wet stretch, the runs' own hourly amounts ranked and placed on the hours the runs agree on (probability-matched), scaled to add up to the median run total the card shows, and never heavier than the typical run's heaviest hour; a wet hour is never drawn lighter than light. It is **not** the gear rung, and the card never converts between them. A Rain boots hour can be light rain: heavy is plausible, not typical.
 - Which hours are wet is the engine's decision. Inside the graph's 72 hours, a strip hour is wet exactly when the graph shows rain gear (rain and flood cards; validated). Calm cards have no rain inside 72 hours. Heat graphs are not compared.
 - Dry is one flat neutral. Cloud cover is left to the words.
 - Rain column: the day's amount (bold); "Dry" (quiet) only when every hour of the day is forecast and none has rain; "Incomplete" when any hour lacks data; a dry-strip day with a measurable total shows it, quietly.

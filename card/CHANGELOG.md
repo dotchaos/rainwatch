@@ -1,6 +1,11 @@
 # Changelog
 
-## v0.13 (lab only, in review): compact five-day rows
+## v0.13 (review branch five-day-live, not deployed): live five-day rows
+- **Engine:** five calendar days (6-day model fetch), kept apart from everything the card and details page already show (verified identical on real data).
+- **Strip shading (trial):** hybrid B, probability-matched and held to the shown total and the typical run's peak. A and B recorded hourly since Nov 15 for scoring.
+- **Hero:** later rain that runs past the graph or into missing data gets no end time or partial amount.
+
+## v0.13 (lab): compact five-day rows
 - **More information:** when the card carries `rainHours`, the daily rows become five compact rows on one shared midnight-to-midnight axis (labels at the top; ticks at 6 AM, noon and 6 PM through every strip). The rain amount leads each row; "Dry" is quiet; days the data doesn't cover say "Incomplete".
 - **Strip:** typical rain intensity (light / moderate / heavy), one flat neutral for dry, hatched where there is no forecast, empty before now. Crisp edges: uncertainty is not shown with fading (AGENTS.md).
 - **Overnight:** a rain stretch through midnight gets an arrow at both strip edges and "continues overnight" on the earlier day; rain running into missing data never does.
