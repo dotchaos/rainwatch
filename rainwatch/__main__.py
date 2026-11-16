@@ -94,6 +94,11 @@ def main(argv=None) -> int:
     storm_card = storms.report(truth, arc.forecasts(now - timedelta(days=120)), now, cfg.any_in, cfg.heavy_in)
     (Path(a.data) / "storms.json").write_text(json.dumps(storm_card, default=str, indent=1))
     scores["_storms"] = storm_card
+    try:    # lead-time scorecards (1–3 h, 3–6 h) against the Mint gauge; never blocks the update
+        from . import scorecard
+        scorecard.leadtime(a.data, truth, cfg, now)
+    except Exception as e:  # noqa: BLE001
+        print(f"leadtime scorecard: {e}")
 
     # --- page
     meta = {"sources": meta_sources}

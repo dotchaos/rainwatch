@@ -16,6 +16,7 @@ import numpy as np
 
 from . import totals as tl
 
+from . import escalation
 from . import levels as lv
 from . import outlook as ol
 from .model import Series, hour_floor, hours
@@ -136,6 +137,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     radar = nc.series if nc else None
     nws_s = nws.qpf if nws else None
 
+    gauge_in = escalation.gauge_level(gauges, cfg, now) if cfg.site else None
     rows = []
     for t in hrs:
         prim: Series | None = None
@@ -172,6 +174,8 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
             cap = 0.95 if nc.motion.confidence != "low" else 0.85
             for k in ("feel", "behind", "driveway"):
                 lev[k] = min(lev[k], cap)
+            # radar alone never escalates drainage levels (rainwatch/escalation.py)
+            lev = escalation.gate(lev, t, cfg, ens, det, gauge_in, nws.alerts if nws else [])
         flags = {d.label: f[0] for d in det if cfg.flood_site and (f := lv.deterministic_flags(d.values, t, cfg))}
         srcs = {}
         for s in [radar, ens, *det, nws_s]:
@@ -188,6 +192,9 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
             "gust_mph": round(nws.gust_mph[t]) if nws and t in nws.gust_mph else None,
             "levels": lev, "model_flags": flags,
         })
+        if prim is radar:   # who backs up a radar heavy hour (push wording, 0–1 h scoring); the probability stands
+            rows[-1]["radar_heavy"] = {"corroborated": escalation.heavy_corroboration(
+                t, cfg, ens, det, gauge_in, nws.alerts if nws else [])}
 
     hrs_all, rows_all = hrs, rows
     hrs, rows = hrs[:n_hours], rows[:n_hours]

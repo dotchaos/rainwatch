@@ -75,9 +75,27 @@
     "feel": 0.035,
     "behind": 0.0,
     "driveway": 0.0,
-    "window_h": 2
+    "window_h": 2,
+    "radar_raw": {
+     "behind": 0.0,
+     "driveway": 0.0
+    },
+    "corroborated": {
+     "behind": [
+      "Flood Advisory"
+     ],
+     "driveway": [
+      "Flood Advisory"
+     ]
+    },
+    "gated": false
    },
-   "model_flags": {}
+   "model_flags": {},
+   "radar_heavy": {
+    "corroborated": [
+     "Flood Advisory"
+    ]
+   }
   },
   {
    "t": "2026-11-14T20:00:00+00:00",
@@ -110,9 +128,27 @@
     "feel": 0.399,
     "behind": 0.0,
     "driveway": 0.0,
-    "window_h": 1
+    "window_h": 1,
+    "radar_raw": {
+     "behind": 0.0,
+     "driveway": 0.0
+    },
+    "corroborated": {
+     "behind": [
+      "Flood Advisory"
+     ],
+     "driveway": [
+      "Flood Advisory"
+     ]
+    },
+    "gated": false
    },
-   "model_flags": {}
+   "model_flags": {},
+   "radar_heavy": {
+    "corroborated": [
+     "Flood Advisory"
+    ]
+   }
   },
   {
    "t": "2026-11-14T21:00:00+00:00",
@@ -2416,9 +2452,27 @@
     "feel": 0.035,
     "behind": 0.0,
     "driveway": 0.0,
-    "window_h": 2
+    "window_h": 2,
+    "radar_raw": {
+     "behind": 0.0,
+     "driveway": 0.0
+    },
+    "corroborated": {
+     "behind": [
+      "Flood Advisory"
+     ],
+     "driveway": [
+      "Flood Advisory"
+     ]
+    },
+    "gated": false
    },
-   "model_flags": {}
+   "model_flags": {},
+   "radar_heavy": {
+    "corroborated": [
+     "Flood Advisory"
+    ]
+   }
   },
   {
    "t": "2026-11-14T20:00:00+00:00",
@@ -2451,9 +2505,27 @@
     "feel": 0.399,
     "behind": 0.0,
     "driveway": 0.0,
-    "window_h": 1
+    "window_h": 1,
+    "radar_raw": {
+     "behind": 0.0,
+     "driveway": 0.0
+    },
+    "corroborated": {
+     "behind": [
+      "Flood Advisory"
+     ],
+     "driveway": [
+      "Flood Advisory"
+     ]
+    },
+    "gated": false
    },
-   "model_flags": {}
+   "model_flags": {},
+   "radar_heavy": {
+    "corroborated": [
+     "Flood Advisory"
+    ]
+   }
   },
   {
    "t": "2026-11-14T21:00:00+00:00",

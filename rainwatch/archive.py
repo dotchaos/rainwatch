@@ -68,6 +68,15 @@ class Archive:
                 e["p"] = round(r["p_heavy"], 3)
             if r["p_any"] is not None:
                 e["pa"] = round(r["p_any"], 3)
+            lv = r.get("levels")
+            if lv:      # drainage levels as published (after the radar safeguard), and what radar alone said
+                e["lv"] = {"b": lv["behind"], "d": lv["driveway"]}
+                if lv.get("gated"):
+                    e["lv"]["radar_raw"] = {"b": lv["radar_raw"]["behind"], "d": lv["radar_raw"]["driveway"]}
+            if r.get("primary") == "radar":     # which sources backed up the radar (0–1 h scoring, review)
+                e["src"] = "radar"
+                e["rc"] = {"heavy": (r.get("radar_heavy") or {}).get("corroborated", []),
+                           **((lv or {}).get("corroborated") or {})}
             hrs[r["t"]]["rainwatch"] = e
         ol = report.get("outlook") or {}
         keep = {k: ol[k] for k in ("p_rain", "n_rain", "runs", "onset", "peak", "peak_rate", "event_total", "threshold")

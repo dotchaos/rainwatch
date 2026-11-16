@@ -69,7 +69,7 @@ jobs:
         working-directory: card
         run: |
           npm ci --no-audit --no-fund
-          npx vitest run src/lib/rules.test.ts src/lib/unknown.test.ts src/lib/amounts.test.ts src/lib/scenarios.test.ts src/lib/fiveday.test.ts src/lib/hero.test.ts src/lib/reconcile.test.ts src/lib/wording.test.ts src/lib/clock.test.ts
+          npx vitest run src/lib/rules.test.ts src/lib/unknown.test.ts src/lib/amounts.test.ts src/lib/scenarios.test.ts src/lib/fiveday.test.ts src/lib/hero.test.ts src/lib/reconcile.test.ts src/lib/wording.test.ts src/lib/clock.test.ts src/lib/cardtext.test.ts
           npm run build
           cp -r dist/. ../site/
       - name: Check the live card against the same rules as the fixtures
@@ -77,6 +77,13 @@ jobs:
         continue-on-error: true
         working-directory: card
         run: LIVE_JSON=../site/live.json npx vitest run src/lib/live.test.ts
+
+      - name: Archive what the card says (headline, gear line, gear per hour) next to the forecast
+        if: steps.card.outcome == 'success'
+        continue-on-error: true
+        run: |
+          (cd card && npx vite-node scripts/card-text.ts ../site/live.json > ../site/card_text.json)
+          python -m rainwatch.scorecard archive-card site/card_text.json data
 
       - uses: actions/upload-pages-artifact@v3
         with:

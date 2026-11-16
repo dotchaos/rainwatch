@@ -3,7 +3,9 @@
 Sends:
 * a heavy-rain alert when an hour within the alert window reaches the probability threshold,
   once per event; re-sends only if the peak moves by 2+ hours or the chance climbs sharply;
-* each new NWS alert for the point (Flood Advisory, Wind Advisory, ...), once.
+* each new NWS alert for the point (Flood Advisory, Wind Advisory, ...), once, in its own words and urgency.
+A heavy hour carried by the radar nowcast alone (nothing corroborates it: rainwatch/escalation.py) is worded
+"Heavy rain possible in the next hour", not by its probability; corroborated, the probability wording stands.
 """
 from __future__ import annotations
 
@@ -27,7 +29,18 @@ def decide(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
             same_event = abs((pk_t - last_t).total_seconds()) < 2 * 3600 and now - sent < timedelta(hours=12)
             if same_event and pk["p_heavy"] - last["p"] < cfg.alert_reraise_pts:
                 fresh = False
-        if fresh:
+        radar_only = pk.get("primary") == "radar" and not (pk.get("radar_heavy") or {}).get("corroborated")
+        if fresh and radar_only:
+            # radar extrapolation alone: say "possible", whatever its sample share (John, Nov 16 2026); still sent
+            when = "in the next hour" if pk_t < now + timedelta(hours=1) else pk["label"]
+            msgs.append({
+                "kind": "heavy", "peak": pk["t"], "p": pk["p_heavy"], "radar_only": True,
+                "title": f"Heavy rain possible {when}",
+                "message": (f"Radar shows a burst heading this way (~{pk['mid']:.2f}\"/hr). No model, the Mint gauge "
+                            f"or an NWS product shows it yet, so it may weaken or miss. {pk['basis']}"),
+                "priority": 3, "tags": ["cloud_with_rain"],
+            })
+        elif fresh:
             msgs.append({
                 "kind": "heavy", "peak": pk["t"], "p": pk["p_heavy"],
                 "title": f"Rain at your .20\" threshold {chance(pk['p_heavy'])} {pk['label']}",
