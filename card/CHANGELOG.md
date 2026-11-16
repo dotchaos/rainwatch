@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.16 (review branch rain-reconcile, not deployed): one amount story
+- **Rounding:** one policy for every amount on the card (tenths, half up). Fixes "About 0.1" of rain" beside "Today ~0.2"" for the same 0.15–0.16".
+- **Event totals:** each event's share of the runs' rain, not only its consensus wet hours (live Nov 15: tonight 0.15 → 0.16", the day's own total; Wednesday's stretch 1.03 → 1.14").
+- **Strip:** shaded per local day; Thursday's strip now adds up to 0.13" (was 0.10") of the 0.17" the runs put in its shaded hours. No intensity class changed on the live card.
+
 ## v0.15 (review branch headings-nav, not deployed): headings and Wednesday navigation
 - **Headings:** the graph is "3-day gear forecast" (heat cards: "Next 3 days"); "Action outlook" and the duplicate "Next 3 days" label are gone. The daily rows are just "Next 5 days".
 - **Upcoming module:** "Keep an eye on Wednesday" / "Around 1.1" of rain, beginning early and continuing overnight." The whole module links to its day's row in the five-day forecast, which scrolls into view, takes focus and briefly highlights; keyboard-reachable, instant with no animation under reduced motion. Day and destination come from the selected event.

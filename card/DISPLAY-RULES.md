@@ -43,6 +43,11 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
 - Rain more than a day after that stretch is named with its window and amount ("More rain Wed 1–9 AM, about 0.9".") in place of the "Then dry …" note; sooner rain is already implied by "Then dry …".
 - Each amount belongs to exactly one rain stretch on the chart (`rainTotals`); the rules reject one that doesn't match.
 
+### One amount story (v0.16, in review)
+- **Two kinds of amount, kept distinct.** An *event* amount (the hero, "More rain …") is that event's share of the model runs' rain: its wet hours plus the forecast-dry hours around it, out to halfway to the neighbouring event or the local day boundary, never into missing data. A *day* amount (the five-day rows, the upcoming module) is each run's total for the local day, then the median. When an event is a day's only rain, the two use the same hours and show the same number.
+- **One rounding policy.** Every displayed amount: under 0.05" nothing; 0.05–0.09" "under 0.1" / "<0.1""; otherwise tenths rounded half up (0.15 → 0.2, 0.85 → 0.9). Never toFixed (its binary rounding gave 0.15 → 0.1 but 0.25 → 0.3).
+- **The strip reconciles per day.** Each day's shading is matched within that day (not across a multi-day event) and adds up to the runs' rain in the hours it shades, less any trimming by the typical-run-peak cap. The rest of the day's total is rain the runs put in hours the forecast calls dry (timing spread); the card's check reports it. The intensity scale and the wet hours are unchanged.
+
 ## Upcoming event (two-horizon hero, v0.14, in review)
 - Beneath the primary forecast in Now & next, after a subtle divider: day, a short heading, one sentence. No alert container.
 - Shown only for a later rain event that is distinct from the one the headline is about, not already named by the hero, with a start inside the forecast data, and materially more consequential:
