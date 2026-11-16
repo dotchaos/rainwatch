@@ -142,13 +142,21 @@ function srItems(s: Scenario, full: string[]) {
 function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; labels: string[]; sandbagsShown: boolean;
                          pots: ReturnType<typeof floodPotentials> }) {
   const runs = silhouetteRuns(s), segs = segments(runs);
-  const fills = [SIL_DRY, SIL_JACKET, intervalColor(s, 2), intervalColor(s, 3)];
+  // one recommendation per hour (Nov 16 review): clothing levels don't stack, so each hour is filled with its own
+  // level's colour from the baseline up; the colour changes only at the hour edges. A run's colour spans the full
+  // height of the graph and the shape clips it, so the rounded inside corners take the colour of their own hour.
+  // Sandbags hours: rain gear below, the Sandbags colour in its band, as before (flood separation comes later).
+  const wear = [SIL_DRY, SIL_JACKET, intervalColor(s, 2), intervalColor(s, 2)];
   return <>
     <defs>{segs.map((g, k) => <clipPath key={k} id={`sil-${s.id}-${k}`}><path d={segmentPath(g, x, plateau, base, CORNER)} /></clipPath>)}</defs>
     {labels.map((l0, i) => { const l = i === 3 && !sandbagsShown ? 'Flood potential' : l0;
       return <text key={l} x={x0 - 8} y={labelY(i) + 3.5} textAnchor="end" className="chart-label">{l}</text>; })}
     {segs.map((g, k) => <g key={k} clipPath={`url(#sil-${s.id}-${k})`} className="chart-silhouette">
-      {fills.map((c, i) => <rect key={i} x={x(g[0].start)} y={bandTop(i)} width={x(g[g.length - 1].end) - x(g[0].start)} height={step} fill={c} />)}
+      {/* neighbours overlap by a fraction of a pixel so anti-aliasing leaves no seam; the shape still clips every edge */}
+      {g.map((r, i) => <rect key={r.start} className="sil-hours" data-level={r.level} x={x(r.start)} y={bandTop(3)}
+        width={x(r.end) - x(r.start) + (i < g.length - 1 ? .5 : 0)} height={base - bandTop(3)} fill={wear[r.level]} />)}
+      {g.filter(r => r.level === 3).map(r => <rect key={`sb-${r.start}`} x={x(r.start)} y={bandTop(3)} width={x(r.end) - x(r.start)}
+        height={step} fill={intervalColor(s, 3)} />)}
     </g>)}
     {runs.filter(r => r.unknown).map(r => <rect key={`u-${r.start}`} x={x(r.start)} y={base - 3 * step} width={x(r.end) - x(r.start)} height={3 * step} fill="url(#nodata)" />)}
     {runs.filter(r => !r.unknown && r.level > 0).map(r => <line key={`e-${r.start}`} className="chart-sil-edge" x1={x(r.start)} x2={x(r.end)}

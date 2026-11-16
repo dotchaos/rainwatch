@@ -99,3 +99,19 @@ describe('bands fill (Nov 16 review)', () => {
     expect(labels).toEqual([0, 1, 2, 3].map(i => 132 - (i + 0.5) * 28 + 3.5));
   });
 });
+
+describe('one recommendation per hour (Nov 16 review)', () => {
+  it('each run of hours is one colour, its own level\'s, from the baseline up: levels never stack', () => {
+    const s = byId('storm-ahead');
+    const html = renderToString(createElement(WeatherCard, { scenario: s, graph: 'silhouette' }));
+    const rects = [...html.matchAll(/class="sil-hours" data-level="(\d)" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)" fill="([^"]+)"/g)]
+      .map(m => ({ level: Number(m[1]), x: Number(m[2]), y: Number(m[3]), w: Number(m[4]), h: Number(m[5]), fill: m[6] }));
+    const colour = new Map<number, string>();
+    for (const r of rects) {
+      expect(r.y + r.h).toBe(132);                                      // every hour's colour reaches the baseline
+      if (colour.has(r.level)) expect(r.fill).toBe(colour.get(r.level)); else colour.set(r.level, r.fill);
+    }
+    expect(new Set(colour.values()).size).toBe(colour.size);             // each level its own colour
+    for (let k = 1; k < rects.length; k++) expect(rects[k].x).toBeCloseTo(rects[k - 1].x + rects[k - 1].w - .5, 5);   // side by side (half-pixel overlap against seams), never layered
+  });
+});
