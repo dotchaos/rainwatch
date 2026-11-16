@@ -3,7 +3,7 @@
  "title": "Live",
  "season": "November",
  "location": "18th & Shotwell",
- "observedAt": "Sunday \u00b7 4:40 PM",
+ "observedAt": "Sunday \u00b7 4:41 PM",
  "startDay": "Sun",
  "startHourLocal": 16,
  "hazard": "rain",
@@ -191,11 +191,6 @@
   },
   {
    "startHour": 60,
-   "endHour": 61,
-   "intensity": 3
-  },
-  {
-   "startHour": 61,
    "endHour": 64,
    "intensity": 2
   },
@@ -207,7 +202,7 @@
  ],
  "provenance": {
   "type": "live",
-  "generated": "2026-11-16T00:40:04.634632+00:00",
+  "generated": "2026-11-16T00:41:38.387942+00:00",
   "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
  },
  "timeline": {
