@@ -20,10 +20,10 @@ body{background:#f2f4f5}.t{max-width:460px;margin:0 auto;padding:18px 12px 48px;
 <h1>A weather graph for this Wednesday</h1>
 <p class="hint">Look at the graph for a few seconds. No key on purpose.</p>
 ${graph}
-<p class="q">What do you think the striped boxes above the Wednesday bars mean? Would you do anything about them?</p>
+<p class="q">What do you think the pale boxes above the Wednesday bars mean? Would you do anything about them?</p>
 <p class="hint">Answer out loud before opening the next part.</p>
 <details><summary>Show the whole card, with its key</summary>${card}
-<p class="q">Now: does the striped area mean you should put out sandbags?</p></details>
+<p class="q">Now: does the pale area mean you should put out sandbags?</p></details>
 <p class="note">Rainwatch lab test, flood potential (illustrative, based on the forecast of Mon Nov 16, 8 AM). Not a forecast to act on.</p>
 </main></body></html>`;
 writeFileSync('/tmp/shots/potential-test.html', html);

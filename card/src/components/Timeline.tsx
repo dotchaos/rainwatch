@@ -21,6 +21,9 @@ const SHORT_RAIN = ['No gear', 'Jacket', 'Boots', 'Sandbags'], SHORT_HEAT = ['Co
  *  from the Boots rung up to the Sandbags rung over the window. 'range': a dotted line at the Sandbags rung with end
  *  ticks down to Boots, like a range bar. Neither is filled, so neither reads as a forecast level. */
 export type PotentialStyle = 'outline' | 'range';
+/** A solid, opaque light tint of the Sandbags colour (#ba6547 at about 18% on white): not transparency, which the
+ *  design system keeps from signalling uncertainty. */
+const POTENTIAL_FILL = '#f3e3dd';
 
 export function Timeline({ scenario: s, potential }: { scenario: Scenario; potential?: PotentialStyle }) {
   if (!s.timeline) return null;
@@ -37,8 +40,7 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
     <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
       aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${pots.length ? ` Potential flooding, not yet a sandbag recommendation: ${pots.map(p => p.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
       <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern>
-        {/* flood potential: a sparse hatch in the Sandbags hue, leaning the other way from the grey no-data hatch */}
-        <pattern id="flood-potential" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line x1="0" y1="0" x2="0" y2="6" stroke={intervalColor(s, 3)} strokeOpacity=".55" strokeWidth="1" /></pattern></defs>
+</defs>
       {callouts.map((c, i) => {
         const { left, row } = placed[i], ty = (rows - 1 - row) * 24, color = intervalColor(s, 3);
         return <g key={c.label}>
@@ -69,10 +71,7 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
           return potential === 'outline'
             ? <g key={`pot-${p.startHour}`} className="chart-potential">{blocks.map(k => {
                 const ka = x(k.start) + gap / 2, kb = x(k.end) - gap / 2;
-                return <g key={k.start}>
-                  <rect x={ka + .5} y={yS + .5} width={kb - ka - 1} height={yB - yS - 1} rx="1.5" fill={c} fillOpacity=".08" />
-                  <rect x={ka + .5} y={yS + .5} width={kb - ka - 1} height={yB - yS - 1} rx="1.5" fill="url(#flood-potential)" stroke={c} strokeWidth="1" strokeDasharray="2.4 1.8" />
-                </g>;
+                return <rect key={k.start} x={ka + .5} y={yS + .5} width={kb - ka - 1} height={yB - yS - 1} rx="1.5" fill={POTENTIAL_FILL} stroke={c} strokeWidth="1" strokeDasharray="2.4 1.8" />;
               })}</g>
             : <g key={`pot-${p.startHour}`} className="chart-potential" stroke={c} strokeWidth="1.4" strokeLinecap="round">
                 <line x1={a} x2={b} y1={yS} y2={yS} strokeDasharray="1.5 2.6" />
@@ -83,7 +82,7 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
       </g>
     </svg>
     {pots.length > 0 && <p className="chart-potential-key"><svg width="22" height="10" aria-hidden>{potential === 'outline'
-      ? <><rect x="1" y="1" width="20" height="8" rx="1.5" fill={intervalColor(s, 3)} fillOpacity=".08" /><rect x="1" y="1" width="20" height="8" rx="1.5" fill="url(#flood-potential)" stroke={intervalColor(s, 3)} strokeWidth="1" strokeDasharray="2.4 1.8" /></>
+      ? <rect x="1" y="1" width="20" height="8" rx="1.5" fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1" strokeDasharray="2.4 1.8" />
       : <g stroke={intervalColor(s, 3)} strokeWidth="1.4" strokeLinecap="round"><line x1="1" x2="21" y1="1.5" y2="1.5" strokeDasharray="1.5 2.6" /><line x1="1" x2="1" y1="1.5" y2="9" /><line x1="21" x2="21" y1="1.5" y2="9" /></g>}</svg>Potential flooding · Not yet a sandbag recommendation</p>}
     <ul className="sr-only">{srItems(s, full)}{pots.map(p => <li key={`pot-${p.startHour}`}>{`${p.label}: potential flooding, not yet a sandbag recommendation`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;
