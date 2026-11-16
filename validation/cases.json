@@ -1,0 +1,44 @@
+{
+ "_about": "Storms kept as validation cases (John, Nov 16 2026). Truth is the Mint gauge (SFOC1) only. Times UTC; local is America/Los_Angeles. tools/validate_cases.py scores each case from the data branch; 'expect' is what a correct forecast system should have done, used to judge future changes. Nothing here tunes a forecast.",
+ "cases": [
+  {
+   "id": "2026-11-15-sunday-miss",
+   "status": "observed",
+   "window": ["2026-11-15T21:00:00+00:00", "2026-11-16T10:00:00+00:00"],
+   "local": "Sun Nov 15, 1 PM – Mon 2 AM PT",
+   "observed": {
+    "total_in": 0.86,
+    "heavy_hours": {"2026-11-15T22:00:00+00:00": 0.25},
+    "level_reached": "drains working hard (one hour >= 0.20\"); never falling behind or driveway",
+    "notable": {"2026-11-16T07:00:00+00:00": 0.07, "2026-11-16T08:00:00+00:00": 0.02, "2026-11-16T09:00:00+00:00": 0.0}
+   },
+   "forecast_as_issued": {
+    "heavy_hour_2pm": "primary 0.06–0.08\" with 2–3% of runs heavy at 1–6 h; best single source HRRR 0.10\" (1–3 h); every source low",
+    "total": "0.64–0.70\" predicted at 1–12 h (good); onset within 0–1 h (good)",
+    "false_alarm_midnight": "08 UTC: radar nowcast 0.38\" (98% heavy), pushed heavy 85%, drains-falling-behind 46%, driveway 30%; ensemble 0.03\", HRRR 0.00\", gauge last hour 0.07\""
+   },
+   "expect": [
+    "radar alone does not raise drains-falling-behind or driveway at 08 UTC (tests/test_radar_safeguard.py)",
+    "heavy-hour miss at 22 UTC stays visible in the 1–3 h and 3–6 h scorecards until a change, reviewed by John, fixes it"
+   ]
+  },
+  {
+   "id": "2026-11-18-wednesday-storm",
+   "status": "pending",
+   "window": ["2026-11-18T06:00:00+00:00", "2026-11-19T16:00:00+00:00"],
+   "local": "Tue Nov 17 10 PM – Thu Nov 19 8 AM PT",
+   "forecast_as_issued": {
+    "issued": "2026-11-16T17:15:58+00:00",
+    "card": "hazard flood (15:32 UTC run): heaviest hour most likely Wed 7–8 AM PT, possible 0.20\" (~0.17\"/hr), about 1.92\" through Thu 8 AM",
+    "onset": "2026-11-18T09:00 (06–09) UTC, from the ensemble",
+    "peak": "2026-11-18T12:00 (10–15) UTC; peak hour median 0.22\" (p10 0.02, p90 0.37)",
+    "total": "median 1.31\" (p10 0.03, p90 2.51) over the event",
+    "heavy_share": "60% of runs have a 0.20\" hour; primary hours 12–18 UTC at 0.16–0.17\"/h with 27–41% heavy"
+   },
+   "expect": [
+    "score onset, peak timing, heavy hours and total against SFOC1 at 1–3 h and 3–6 h, and the card's gear (data/cards) hour by hour",
+    "any Sandbags or driveway push must have corroboration recorded (levels.corroborated) if it came from a radar-primary hour"
+   ]
+  }
+ ]
+}
