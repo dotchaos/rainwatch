@@ -1,0 +1,52 @@
+[
+ {
+  "start": "2026-11-13T15:00:00+00:00",
+  "end": "2026-11-14T00:00:00+00:00",
+  "hours": 9,
+  "past": true,
+  "run_total_p50": 0.62,
+  "run_total_mean": 0.63,
+  "sum_A": 0.61,
+  "sum_B": 0.63,
+  "A": "LLLMMMLLL",
+  "B": "LLLMMMLL.",
+  "C": "MMMMMMMMM",
+  "C_peak": 0.15,
+  "obs": "LLMMML...",
+  "obs_total": 0.6,
+  "obs_missing": 0
+ },
+ {
+  "start": "2026-11-15T21:00:00+00:00",
+  "end": "2026-11-16T03:00:00+00:00",
+  "hours": 6,
+  "past": false,
+  "run_total_p50": 0.41,
+  "run_total_mean": 0.41,
+  "sum_A": 0.38,
+  "sum_B": 0.4,
+  "A": "LLLLLL",
+  "B": "LL.MML",
+  "C": "MMMMMM",
+  "C_peak": 0.1,
+  "obs": "MH????",
+  "obs_total": 0.37,
+  "obs_missing": 4,
+  "A_at_lead": "??????",
+  "lead_h": 36
+ },
+ {
+  "start": "2026-11-18T12:00:00+00:00",
+  "end": "2026-11-18T21:00:00+00:00",
+  "hours": 9,
+  "past": false,
+  "run_total_p50": 0.46,
+  "run_total_mean": 0.52,
+  "sum_A": 0.29,
+  "sum_B": 0.51,
+  "A": "LLLLLLLLL",
+  "B": "LLLMMLL..",
+  "C": "MMMMMMMMM",
+  "C_peak": 0.1
+ }
+]
