@@ -43,6 +43,17 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
 - Rain more than a day after that stretch is named with its window and amount ("More rain Wed 1–9 AM, about 0.9".") in place of the "Then dry …" note; sooner rain is already implied by "Then dry …".
 - Each amount belongs to exactly one rain stretch on the chart (`rainTotals`); the rules reject one that doesn't match.
 
+## Upcoming event (two-horizon hero, v0.14, in review)
+- Beneath the primary forecast in Now & next, after a subtle divider: day, a short heading, one sentence. No alert container.
+- Shown only for a later rain event that is distinct from the one the headline is about, not already named by the hero, with a start inside the forecast data, and materially more consequential:
+  - **action first:** it reaches a higher gear rung (the engine's thresholds; inside the graph only). Heading: the rung ("Rain boots").
+  - **amount:** at least twice the primary event's amount (whole-run totals). Heading "More substantial rain".
+  - **intensity:** heavier strip rain than the primary event, moderate or more. Heading "Heavier rain" ("Rain" on a calm card).
+  - Either rain reason needs an amount worth a number in tenths (the existing amounts rule), taken from a complete day with no other rain that day.
+- Never on heat cards. Never for an event holding a Sandbags window the flood alert already lists. Never from an incomplete day's amount, and never for an event whose start borders missing data. No end time, ever. "Continuing overnight" only when the next day's first hours are forecast wet; "still falling where the forecast ends" when the data stops.
+- When shown, the hero detail drops its "More rain …" line for the same event.
+- No new rainfall threshold: comparisons are relative to the primary event. Official warnings aren't in the card contract yet, so they aren't considered.
+
 ## Five-day rows (v0.13, lab)
 - Five local days, one row each, on one shared axis (local midnight to midnight). Today's hours before now are empty, not dry.
 - The strip shows how hard rain falls: light under 0.10"/h, moderate 0.10–0.20"/h, heavy 0.20"/h or more (the config's heavy hour). Live shading (trial, hybrid B): over each wet stretch, the runs' own hourly amounts ranked and placed on the hours the runs agree on (probability-matched), scaled to add up to the median run total the card shows, and never heavier than the typical run's heaviest hour; a wet hour is never drawn lighter than light. It is **not** the gear rung, and the card never converts between them. A Rain boots hour can be light rain: heavy is plausible, not typical.

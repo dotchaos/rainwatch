@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.14 (review branch two-horizon-hero, not deployed): upcoming event in the hero
+- **Now & next:** an upcoming-event module beneath the primary forecast when a later event is materially more consequential (higher gear rung, at least twice the rain, or heavier rain), with its start supported by data. Hidden on all five canonical scenarios and the incomplete one.
+- **Lab:** seventh scenario, Bigger storm ahead (from the live card of Nov 15, 4:41 PM). Lab label v0.14.
+- **Tests:** hero.test.ts (show/hide, selection rules, incomplete coverage), in CI.
+
 ## v0.13 (review branch five-day-live, not deployed): live five-day rows
 - **Engine:** five calendar days (6-day model fetch), kept apart from everything the card and details page already show (verified identical on real data).
 - **Strip shading (trial):** hybrid B, probability-matched and held to the shown total and the typical run's peak. A and B recorded hourly since Nov 15 for scoring.

@@ -1,7 +1,7 @@
 import { MapPin, ShieldAlert, Footprints, Sun } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
-import { edgeNote, fiveDays, hourLabel, nowNext, rainAmount, stripCoverageNote, stripWords, type FiveDayRow } from '../lib/derive';
+import { edgeNote, fiveDays, hourLabel, nowNext, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline } from './Timeline';
 
@@ -21,12 +21,16 @@ function Header({ s }: { s: Scenario }) {
 
 /** 1. Now & next: current conditions, then the headline, its detail and one actionable line. */
 function NowAndNext({ s }: { s: Scenario }) {
-  const n = nowNext(s), Icon = n?.action ? ACTION_ICON[n.action.icon] : null;
+  const n = nowNext(s), Icon = n?.action ? ACTION_ICON[n.action.icon] : null, up = upcomingEvent(s);
   return <section className="now-next">
     <div className="now"><WeatherIcon name={s.current.icon} size={34} /><span className="now-temp">{deg(s.current.temperatureF)}</span><span className="now-cond">{s.current.condition}</span></div>
     {n && <><h2 className="headline">{n.headline}</h2>{n.detail && <p className="headline-detail">{n.detail}</p>}
       {n.action && Icon && <div className={`action-line${n.action.risk ? ' risk' : ''}`}><Icon size={19} />{n.action.text}</div>}
       {n.note && <p className="action-note">{n.note}</p>}</>}
+    {up && <div className="upcoming" aria-label={`Coming up: ${up.day}, ${up.heading}. ${up.sentence}`}>
+      <div className="upcoming-head"><WeatherIcon name={up.icon} size={20} /><strong>{up.day}</strong><span>· {up.heading}</span></div>
+      <p>{up.sentence}</p>
+    </div>}
   </section>;
 }
 

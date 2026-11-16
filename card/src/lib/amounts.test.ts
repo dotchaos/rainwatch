@@ -85,8 +85,8 @@ describe('rain amounts', () => {
     expect(validateScenario(s)).toContain('Rain total 6–12 does not match a rain stretch on the chart');
   });
 
-  it('only the rain-starting-soon fixture carries amounts; the others read as before', () => {
-    for (const s of scenarios) if (s.id !== 'rain-soon') expect(s.rainTotals, s.id).toBeUndefined();
+  it('only the rain-starting-soon and bigger-storm-ahead fixtures carry amounts; the others read as before', () => {
+    for (const s of scenarios) if (s.id !== 'rain-soon' && s.id !== 'upcoming') expect(s.rainTotals, s.id).toBeUndefined();
     expect(deriveInsight(scenarios.find(s => s.id === 'rain-soon')!)!.detail).toContain('About 0.6" of rain.');
   });
 });

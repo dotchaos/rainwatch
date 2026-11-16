@@ -379,6 +379,16 @@ export function nowNext(s: Scenario): NowNext | null {
   }
   const gearWhen = openEnd(s, aw.endHour) && aw.endHour === aw.eventEnd
     ? `from ${dayIndexAt(s, aw.startHour) === 0 ? clock(s, aw.startHour) : timeAt(s, aw.startHour)}` : windowShort(s, aw.startHour, aw.endHour);
+  // the upcoming-event module carries the later event: don't also name it in the detail ("More rain …")
+  const up = upcomingEvent(s);
+  if (up) {
+    const from = plan?.events.length ? plan.events[plan.events.length - 1].end : aw.eventEnd;
+    const next = rainEvents(s).find(e => e.start >= from);
+    if (next && next.start === up.startHour) {
+      const k = notes.findIndex(n => n.startsWith('More rain'));
+      if (k >= 0) notes.splice(k, 1);
+    }
+  }
   const gear = aw.rung >= 2 ? `${aw.action} · ${gearWhen}` : aw.action;
   return { headline, detail: notes.join(' '), action: { icon: 'boots', text: gear, risk: false } };
 }
@@ -518,4 +528,101 @@ export function stripCoverageNote(s: Scenario): string | null {
   const end = stripEnd(s);
   for (let h = 0; h < end; h++) if (isUnknown(s, h)) return h === 0 ? 'No rain forecast available right now.' : `Rain forecast only covers through ${timeAt(s, h - 1)}.`;
   return null;
+}
+
+/* ---------- Upcoming event (two-horizon hero, v0.14) ---------- */
+
+/** A rain event: a maximal run of wet hours. Uses the five-day strip when the card has one, else the graph. */
+export interface RainEvent {
+  start: number; end: number;
+  /** highest gear rung over its hours inside the graph (null if none of its hours are inside the graph) */
+  rung: number | null;
+  /** highest strip intensity (null without five-day data) */
+  intensity: number | null;
+  /** last hour before it and first hour after it are forecast: its boundaries are supported */
+  startKnown: boolean; endKnown: boolean;
+}
+export function allRainEvents(s: Scenario): RainEvent[] {
+  const end = s.rainHours ? stripEnd(s) : 72;
+  const wet = (h: number) => s.rainHours ? intensityAt(s, h) > 0 : sevAt(s, h) > 0;
+  const out: RainEvent[] = [];
+  for (let h = 0; h < end;) {
+    if (!wet(h)) { h++; continue; }
+    const a = h; while (h < end && wet(h)) h++;
+    let rung: number | null = null, inten: number | null = null;
+    for (let k = a; k < h; k++) {
+      if (k < 72) rung = Math.max(rung ?? 0, sevAt(s, k));
+      if (s.rainHours) inten = Math.max(inten ?? 0, intensityAt(s, k));
+    }
+    out.push({ start: a, end: h, rung, intensity: inten,
+      startKnown: a === 0 || !isUnknown(s, a - 1), endKnown: h < end && !isUnknown(s, h) });
+  }
+  return out;
+}
+
+/** Index of the local day (0–4) an hour offset falls on. */
+const stripDayAt = (s: Scenario, h: number) => stripDays(s).findIndex(d => d.start <= h && h < d.end);
+/** A day's shown total when it is complete and this is the only rain that day (else no amount: never a share guessed). */
+function dayAmount(s: Scenario, ev: RainEvent, all: RainEvent[]): number | null {
+  const k = stripDayAt(s, ev.start), d = stripDays(s)[k], row = s.days[k];
+  if (!d || !row || row.rainIn === undefined) return null;
+  for (let h = d.start; h < d.end; h++) if (isUnknown(s, h)) return null;
+  const others = all.filter(e => e !== ev && e.start < d.end && e.end > d.start);
+  return others.length ? null : row.rainIn;
+}
+/** The primary event's amount: its own whole-run total when it ends inside the forecast, else its day's. */
+function eventAmount(s: Scenario, ev: RainEvent, all: RainEvent[]): number | null {
+  if (ev.endKnown && ev.end <= 72) { const x = amountOf(s, ev.start, ev.end); if (x !== undefined) return x; }
+  return dayAmount(s, ev, all);
+}
+
+export interface Upcoming { startHour: number; day: string; heading: string; sentence: string; reason: string; icon: Scenario['days'][number]['icon'] }
+
+/**
+ * The upcoming-event module (two-horizon hero). Shown only when a later rain event is distinct from the one the
+ * headline is about, materially more consequential, and its timing is supported by the data:
+ *   1. action first: it reaches a higher gear rung than the primary event (engine's thresholds, inside the graph);
+ *   2. otherwise rain: at least twice the primary event's amount (whole-run totals), or heavier strip intensity than
+ *      the primary event (moderate or more); either way with an amount worth a number in tenths (existing amounts rule).
+ *      With no primary event (calm card), only a higher rung or moderate-or-heavier rain qualifies.
+ * Never: on calm cards without notable rain, heat cards, events containing a Sandbags window the flood alert lists,
+ * events the headline already covers, events whose start borders missing data, or amounts from incomplete days.
+ * No end time is ever given; "continuing overnight" only when the next day's first hours are forecast wet.
+ */
+export function upcomingEvent(s: Scenario): Upcoming | null {
+  if (s.hazard === 'heat') return null;                              // the heat headline owns the hero
+  const all = allRainEvents(s);
+  const aw = s.hazard === 'rain' || s.hazard === 'flood' ? actionWindow(s) : null;
+  const primary = aw ? all.find(e => e.start <= aw.eventStart && aw.eventStart < e.end) ?? null : null;
+  const covered = new Set((jacketPlan(s)?.events ?? []).map(e => e.start));   // windows the headline already names
+  const sandbags = s.hazard === 'flood' ? criticalWindows(s) : [];           // the flood alert lists every one of these
+  const later = all.filter(e => (!primary || e.start >= primary.end) && !covered.has(e.start) && e !== primary
+    && !sandbags.some(w => w.startHour < e.end && e.start < w.endHour));
+  const pAmt = primary ? eventAmount(s, primary, all) : null;
+  const pRung = primary ? (aw?.rung ?? primary.rung ?? 0) : 0, pInt = primary?.intensity ?? 0;
+  let pick: { ev: RainEvent; reason: string; amt: number | null } | null = null;
+  for (const ev of later) {
+    if (!ev.startKnown) continue;                                    // boundary not supported by data
+    const amt = dayAmount(s, ev, all);
+    const worth = amt !== null && amt >= 0.1;                        // existing rule: a number in tenths
+    let reason = '';
+    if (ev.rung !== null && ev.rung > pRung && ev.rung >= 2) reason = 'higher action';
+    else if (primary && worth && pAmt !== null && pAmt > 0 && amt! >= 2 * pAmt) reason = 'more rain';   // whole-run totals first
+    else if (ev.intensity !== null && ev.intensity >= 2 && ev.intensity > pInt && worth && (pAmt === null || amt! >= pAmt)) reason = 'heavier rain';
+    if (!reason) continue;
+    if (!pick || (ev.rung ?? 0) > (pick.ev.rung ?? 0) || ((ev.rung ?? 0) === (pick.ev.rung ?? 0) && (amt ?? 0) > (pick.amt ?? 0))) pick = { ev, reason, amt };
+  }
+  if (!pick) return null;
+  const { ev, reason, amt } = pick;
+  const k = stripDayAt(s, ev.start), d = stripDays(s)[k];
+  const day = k === 1 ? 'Tomorrow' : fullDay[d.name];
+  const heading = reason === 'higher action' ? levelLabels(s)[ev.rung!]
+    : reason === 'heavier rain' ? (primary ? 'Heavier rain' : 'Rain') : 'More substantial rain';
+  const overnight = ev.end > d.end && ev.endKnown !== false && !isUnknown(s, d.end);
+  const parts: string[] = [];
+  if (amt !== null && amt >= 0.1) parts.push(`Around ${amt.toFixed(1)}"`);
+  else parts.push(`From about ${clock(s, ev.start)}`);
+  if (overnight) parts.push('continuing overnight');
+  else if (!ev.endKnown) parts.push('still falling where the forecast ends');
+  return { startHour: ev.start, day, heading, sentence: `${parts.join(', ')}.`, reason, icon: s.days[k]?.icon ?? 'rain' };
 }

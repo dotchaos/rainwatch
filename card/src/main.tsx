@@ -6,9 +6,9 @@ import { scenarios } from './data/scenarios';
 import { WeatherCard } from './components/WeatherCard';
 import { validateScenario } from './lib/rules';
 import './styles.css';
-const CHIP:Record<string,string>={october:'Calm',rain:'Intermittent','rain-soon':'Starting soon',storm:'Extreme storm',heat:'Heatwave',incomplete:'Incomplete'};
+const CHIP:Record<string,string>={october:'Calm',rain:'Intermittent','rain-soon':'Starting soon',storm:'Extreme storm',heat:'Heatwave',incomplete:'Incomplete',upcoming:'Bigger storm ahead'};
 function Lab(){const [selected,setSelected]=useState(scenarios[0].id);const s=scenarios.find(x=>x.id===selected)!;const errors=validateScenario(s);
- return <main className="lab-single"><header className="lab-header"><div><div className="eyebrow">SCENARIO LAB · V0.12</div><h1>Weather, when it matters.</h1><p>One adaptive interface. Five canonical scenarios, plus an incomplete forecast.</p></div></header>
+ return <main className="lab-single"><header className="lab-header"><div><div className="eyebrow">SCENARIO LAB · V0.14</div><h1>Weather, when it matters.</h1><p>One adaptive interface. Five canonical scenarios, plus an incomplete forecast and a bigger storm ahead.</p></div></header>
  <div className="chips" role="group" aria-label="Scenario">{scenarios.map(x=><button key={x.id} aria-pressed={x.id===selected} onClick={()=>setSelected(x.id)}>{CHIP[x.id]??x.title}</button>)}</div>
  <div className="scenario" style={{marginTop:16}}><WeatherCard scenario={s}/>{errors.length>0&&<div className="validation">Fixture errors: {errors.join(', ')}</div>}</div>
  <div className="lab-footer">Design-only fixture data. No live weather, calibrated flood model, or official warnings are connected.</div></main>};

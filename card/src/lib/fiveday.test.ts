@@ -23,8 +23,8 @@ const segAt = (r: FiveDayRow, L: number) => r.segs.find(g => g.from <= L && L < 
 const localAt = (s: Scenario, h: number) => { const c = clockAt(s.startDay, s.startHourLocal, h); return (c.hour % 12) + (c.meridiem === 'PM' ? 12 : 0); };
 
 describe('five-day rows: every scenario', () => {
-  it('all six fixtures carry five days and validate', () => {
-    expect(scenarios.map(s => s.id)).toEqual(['october', 'rain', 'rain-soon', 'storm', 'heat', 'incomplete']);
+  it('all seven fixtures carry five days and validate', () => {
+    expect(scenarios.map(s => s.id)).toEqual(['october', 'rain', 'rain-soon', 'storm', 'heat', 'incomplete', 'upcoming']);
     for (const s of scenarios) { expect(validateScenario(s), s.id).toEqual([]); expect(rows(s)).toHaveLength(5); }
   });
   it('a card without five-day data (today\'s live card) keeps the three-day rows', () => {

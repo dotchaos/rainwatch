@@ -23,7 +23,7 @@ const wetHour = (s: Scenario, h: number) => PRECIP.has(resolveIcon(s.hourly[h].i
 
 describe('the five scenarios', () => {
   it('are the five the brief names, in order', () => {
-    expect(scenarios.map(s => s.title)).toEqual(['Calm October', 'Intermittent rain', 'Rain starting soon', 'Extreme storm', 'Heatwave', 'Incomplete forecast']);
+    expect(scenarios.map(s => s.title)).toEqual(['Calm October', 'Intermittent rain', 'Rain starting soon', 'Extreme storm', 'Heatwave', 'Incomplete forecast', 'Bigger storm ahead']);
   });
 
   it('each validates: hours consecutive, and hours and days agree with the graph', () => {

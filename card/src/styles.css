@@ -63,3 +63,9 @@
 .strip-legend{display:flex;flex-wrap:wrap;gap:3px 10px;font-size:10px;color:#98a4ab;margin:2px var(--strip-pad) 0}
 .strip-legend span{display:flex;align-items:center;gap:4px}
 .sw{display:inline-block;width:10px;height:5px;border-radius:2.5px}
+
+/* Upcoming event (two-horizon hero, v0.14): secondary to the headline; a subtle divider, no alert container. */
+.upcoming{margin-top:12px;padding-top:11px;border-top:1px solid #e8edef}
+.upcoming-head{display:flex;align-items:center;gap:6px;font-size:14px}
+.upcoming-head strong{font-weight:650}.upcoming-head span{color:#53636c}
+.upcoming p{margin:3px 0 0 26px;font-size:14px;color:#7b8991;line-height:1.4}
