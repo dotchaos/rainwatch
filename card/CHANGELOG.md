@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.17 (review branch wording-labels, not deployed): wording by evidence, renamed sections
+- **Hero:** rain within the hour reads as now; "Rain on and off" / "Rain at times" / "Rain" by evidence; on-and-off rain gets an end time and amount; "Timing is approximate"; "Dry right now" when the radar sees no rain during forecast rain.
+- **Engine:** `now_obs` in the report and `observedNow` on the card (radar echo over the point when the frame is fresh; the gauge's last two hours). Words only.
+- **Sections:** "Hourly forecast" with a pinned day label; "Next 5 days" replaces "More information".
+
 ## v0.16 (review branch rain-reconcile, not deployed): one amount story
 - **Rounding:** one policy for every amount on the card (tenths, half up). Fixes "About 0.1" of rain" beside "Today ~0.2"" for the same 0.15–0.16".
 - **Event totals:** each event's share of the runs' rain, not only its consensus wet hours (live Nov 15: tonight 0.15 → 0.16", the day's own total; Wednesday's stretch 1.03 → 1.14").

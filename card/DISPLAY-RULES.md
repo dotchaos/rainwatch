@@ -61,6 +61,18 @@ Derived by `nowNext` in `src/lib/derive.ts` from the same windows as the graph:
 - The whole module links to its event's day in the five-day forecast (scroll, focus, brief highlight; instant under reduced motion). Without five-day rows it is not a link.
 - No new rainfall threshold: comparisons are relative to the primary event. Official warnings aren't in the card contract yet, so they aren't considered.
 
+## Rain wording by evidence (v0.17, in review)
+- **Within the hour is now.** Rain starting within the next hour reads as current: "Rain until about 11 PM", never "Rain from about 8–11 PM" (read at 8) and never "Dry until then".
+- **Name rain by what the data supports.**
+  - "Rain on and off": breaks are supported, either because the model runs show their own dry breaks, or because the radar sees no rain over the point right after the gauge measured some.
+  - "Rain at times": light rain throughout. Hourly models smear showers into drizzle, so a continuous pattern isn't claimed.
+  - "Rain": moderate or heavier somewhere in the spell (continuous is credible), or no intensity data.
+  - Never "intermittent" (jargon).
+- **On-and-off rain gets its end time and amount** like any other: "Rain on and off until about 11 PM" / "Under 0.1" of rain." Parts of the day ("tomorrow afternoon and evening") only when a later spell spans two days. "Breaks possible" is not added: "on and off" says it.
+- **What's happening now** (radar, fresh frames only; the gauge's last two hours) changes words only, never the forecast, graph or gear: "Dry right now." when the forecast has rain now and the radar sees none.
+- **"Timing is approximate."** replaces "Timing may shift."
+- **Sections:** "Hourly forecast" (each day's label pinned at the row's left edge while its hours scroll by); "Next 5 days" (replaces "More information").
+
 ## Upcoming weather: voice and urgency (accepted Nov 15 2026)
 
 **Principle.** Rainwatch speaks like a thoughtful local observer: attentive, conversational and calm. It calls attention to meaningful changes ahead without making every forecast sound like a warning. The farther away an event is, the more the language invites awareness; the closer and more actionable it becomes, the more direct the language gets.
