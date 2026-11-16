@@ -81,3 +81,37 @@ def test_leadtime_writes_both_reports(tmp_path):
     assert rep["sources"]["rainwatch"]["1–3 h"]["heavy"]["misses"] == 1
     md = (tmp_path / "leadtime.md").read_text()
     assert "## 1–3 h ahead" in md and "## 3–6 h ahead" in md and "no records yet" in md
+
+
+# ---- 0–1 h: radar-only vs corroborated radar (John, Nov 16 2026)
+
+T8 = datetime(2026, 11, 16, 8, tzinfo=UTC)
+
+
+def test_now_bucket_scores_the_hour_in_progress_and_splits_radar(tmp_path):
+    truth = {iso(T8): 0.02, iso(T8 + H): 0.0, iso(T): 0.25}
+    issued = T8 + timedelta(minutes=1, seconds=19)
+    fcs = [
+        # Sunday 08 UTC as archived (before the corroboration record): radar-only false alarm, inferred
+        fc(issued, {T8: {"radar": {"v": 0.383, "p": 0.981, "pa": 1.0}, "ens": {"v": 0.028, "p": 0.0, "pa": 0.779},
+                         "hrrr": {"v": 0.0}, "rainwatch": {"v": 0.38, "p": 0.85, "pa": 0.85}}}),
+        # new-style record: radar backed by HRRR, the next hour
+        fc(issued, {T8 + H: {"rainwatch": {"v": 0.23, "p": 0.56, "pa": 0.85, "src": "radar",
+                                           "rc": {"heavy": ["HRRR"], "behind": [], "driveway": []}}}}),
+        # models carried the 2 PM hour (no radar), 30 min ahead: a miss
+        fc(T - timedelta(minutes=30), {T: {"rainwatch": {"v": 0.08, "p": 0.03, "pa": 0.9}}}),
+    ]
+    split, meta = scorecard.radar_split(fcs, CFG.heavy_in)
+    sc = {k: v["0–1 h"] for k, v in scorecard.forecast_scores(split, truth, CFG.heavy_in, CFG.any_in).items()}
+    assert sc["radar-only"]["heavy"]["false_alarms"] == 1 and sc["radar-only"]["n"] == 1
+    assert sc["radar-corroborated"]["heavy"]["false_alarms"] == 1
+    assert sc["models"]["heavy"]["misses"] == 1
+    assert meta == {"corroborated_by": {"HRRR": 1}, "inferred_hours": 1}
+    whole = scorecard.forecast_scores(fcs, truth, CFG.heavy_in, CFG.any_in)
+    assert set(whole["rainwatch"]) == {"0–1 h"}                       # none of these leads fall in 1–3 h or 3–6 h
+    (tmp_path / "forecasts").mkdir()
+    (tmp_path / "forecasts" / "2026-11.jsonl").write_text("".join(json.dumps(f) + "\n" for f in fcs))
+    rep = scorecard.leadtime(tmp_path, truth, CFG, T8 + 2 * H)
+    md = (tmp_path / "leadtime.md").read_text()
+    assert "## 0–1 h" in md and "| radar-only | 1 |" in md and "Corroborating sources (radar hours): HRRR 1" in md
+    assert rep["now_split"]["radar-only"]["heavy"]["false_alarms"] == 1

@@ -4,13 +4,22 @@
   {
    "id": "2026-11-15-sunday-miss",
    "status": "observed",
-   "window": ["2026-11-15T21:00:00+00:00", "2026-11-16T10:00:00+00:00"],
+   "window": [
+    "2026-11-15T21:00:00+00:00",
+    "2026-11-16T10:00:00+00:00"
+   ],
    "local": "Sun Nov 15, 1 PM – Mon 2 AM PT",
    "observed": {
     "total_in": 0.86,
-    "heavy_hours": {"2026-11-15T22:00:00+00:00": 0.25},
+    "heavy_hours": {
+     "2026-11-15T22:00:00+00:00": 0.25
+    },
     "level_reached": "drains working hard (one hour >= 0.20\"); never falling behind or driveway",
-    "notable": {"2026-11-16T07:00:00+00:00": 0.07, "2026-11-16T08:00:00+00:00": 0.02, "2026-11-16T09:00:00+00:00": 0.0}
+    "notable": {
+     "2026-11-16T07:00:00+00:00": 0.07,
+     "2026-11-16T08:00:00+00:00": 0.02,
+     "2026-11-16T09:00:00+00:00": 0.0
+    }
    },
    "forecast_as_issued": {
     "heavy_hour_2pm": "primary 0.06–0.08\" with 2–3% of runs heavy at 1–6 h; best single source HRRR 0.10\" (1–3 h); every source low",
@@ -25,7 +34,10 @@
   {
    "id": "2026-11-18-wednesday-storm",
    "status": "pending",
-   "window": ["2026-11-18T06:00:00+00:00", "2026-11-19T16:00:00+00:00"],
+   "window": [
+    "2026-11-18T06:00:00+00:00",
+    "2026-11-19T16:00:00+00:00"
+   ],
    "local": "Tue Nov 17 10 PM – Thu Nov 19 8 AM PT",
    "forecast_as_issued": {
     "issued": "2026-11-16T17:15:58+00:00",
@@ -37,7 +49,9 @@
    },
    "expect": [
     "score onset, peak timing, heavy hours and total against SFOC1 at 1–3 h and 3–6 h, and the card's gear (data/cards) hour by hour",
-    "any Sandbags or driveway push must have corroboration recorded (levels.corroborated) if it came from a radar-primary hour"
+    "any Sandbags or driveway push must have corroboration recorded (levels.corroborated) if it came from a radar-primary hour",
+    "radar-only heavy pushes read 'Heavy rain possible in the next hour'; review every push sent against the gauge and the card's words (data/cards) after the storm",
+    "prospective case: no model, threshold or weighting change before the storm is observed and reviewed (John, Nov 16)"
    ]
   }
  ]

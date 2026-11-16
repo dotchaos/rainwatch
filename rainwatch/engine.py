@@ -137,7 +137,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
     radar = nc.series if nc else None
     nws_s = nws.qpf if nws else None
 
-    gauge_in = escalation.gauge_level(gauges, cfg, now) if cfg.flood_site else None
+    gauge_in = escalation.gauge_level(gauges, cfg, now) if cfg.site else None
     rows = []
     for t in hrs:
         prim: Series | None = None
@@ -192,6 +192,9 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
             "gust_mph": round(nws.gust_mph[t]) if nws and t in nws.gust_mph else None,
             "levels": lev, "model_flags": flags,
         })
+        if prim is radar:   # who backs up a radar heavy hour (push wording, 0–1 h scoring); the probability stands
+            rows[-1]["radar_heavy"] = {"corroborated": escalation.heavy_corroboration(
+                t, cfg, ens, det, gauge_in, nws.alerts if nws else [])}
 
     hrs_all, rows_all = hrs, rows
     hrs, rows = hrs[:n_hours], rows[:n_hours]

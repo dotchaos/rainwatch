@@ -1,4 +1,12 @@
-"""Lead-time verification against the Mint gauge (SFOC1), separately for 1–3 h and 3–6 h ahead (John, Nov 16 2026).
+"""Lead-time verification against the Mint gauge (SFOC1), separately for 0–1 h, 1–3 h and 3–6 h ahead (John, Nov 16 2026).
+
+  0–1 h  does the radar nowcast improve immediate decisions? (the hour in progress and the next one)
+  1–3 h  can short-range forecasts identify heavy bursts?
+  3–6 h  how reliable is the advance warning?
+In 0–1 h the primary forecast is also split by what carried it: radar-only (nothing corroborated a heavy hour),
+radar-corroborated (and by which source), or models. Records made before Nov 16 2026 carry no corroboration list;
+for them it is inferred from the archived sources at that hour only (ensemble >= 10% heavy or a run >= 0.20"), and
+the split says so.
 
 Per source and lead bucket (one verdict per gauge hour: the latest forecast issued inside the bucket):
   * hourly MAE and bias (inches);
@@ -21,6 +29,10 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 BUCKETS = [(1, 3, "1–3 h"), (3, 6, "3–6 h")]
+NOW_BUCKET = "0–1 h"      # leads in (-1, 1): issued during the hour, or within the hour before it
+ALL_BUCKETS = [NOW_BUCKET] + [b for _, _, b in BUCKETS]
+SPLIT = ("radar-only", "radar-corroborated", "models")
+DET = ("hrrr", "nbm", "ecmwf", "nws")
 HEAVY_P = 0.20            # same as card.RAIN_BOOTS_P: the share of runs at which the card says Rain boots
 BINS = [0.0, 0.05, 0.20, 0.50, 0.80, 1.0001]
 MIN_BIN = 10              # hours a calibration bin needs before its observed frequency means anything
@@ -87,6 +99,8 @@ def observed_rung(truth: dict[str, float], t: datetime, site) -> int | None:
 # ---------- scoring ----------
 
 def _bucket(lead: float):
+    if -1 < lead < 1:
+        return NOW_BUCKET
     for lo, hi, name in BUCKETS:
         if lo <= lead < hi:
             return name
@@ -162,6 +176,36 @@ def forecast_scores(fcs: list[dict], truth: dict[str, float], heavy: float, anyt
     return out
 
 
+def radar_split(fcs: list[dict], heavy: float) -> tuple[list[dict], dict]:
+    """For the 0–1 h split: per gauge hour, the latest record issued within (-1, 1) h of it, its primary forecast
+    relabelled by what carried the hour (radar-only / radar-corroborated / models); and which sources corroborated."""
+    latest: dict[str, tuple] = {}
+    for rec in fcs:
+        issued = datetime.fromisoformat(rec["issued"])
+        for t, srcs in rec["hours"].items():
+            if "rainwatch" in srcs and _bucket((datetime.fromisoformat(t) - issued).total_seconds() / 3600) == NOW_BUCKET:
+                if t not in latest or latest[t][0] < issued:
+                    latest[t] = (issued, srcs)
+    out, by, inferred = [], {}, 0
+    for t, (issued, srcs) in latest.items():
+        e = srcs["rainwatch"]
+        if "src" in e:
+            radar = e["src"] == "radar"
+            who = (e.get("rc") or {}).get("heavy", [])
+        else:   # before Nov 16 2026: radar was primary when the published amount is the radar's
+            r = srcs.get("radar")
+            radar = bool(r) and abs(r["v"] - e["v"]) < 0.006
+            who = (["ensemble"] if (srcs.get("ens") or {}).get("p", 0) >= 0.10 else []) + \
+                  [k.upper() for k in DET if (srcs.get(k) or {}).get("v", 0) >= heavy]
+            inferred += radar
+        kind = "models" if not radar else "radar-corroborated" if who else "radar-only"
+        out.append({"issued": issued.isoformat(), "hours": {t: {kind: e}}})
+        if radar:
+            for w in who:
+                by[w] = by.get(w, 0) + 1
+    return out, {"corroborated_by": by, "inferred_hours": inferred}
+
+
 def card_scores(cards: list[dict], truth: dict[str, float], site) -> dict:
     """Gear the card showed vs gear the gauge supports, per lead bucket (hour offset from the card's hour 0)."""
     def hours(rec):
@@ -202,6 +246,10 @@ def leadtime(data: str | Path, truth: dict[str, float], cfg, now: datetime, days
            "heavy_in": cfg.heavy_in, "heavy_rule_prob": HEAVY_P, "min_bin": MIN_BIN,
            "sources": forecast_scores(fcs, truth, cfg.heavy_in, cfg.any_in),
            "card": card_scores(cards, truth, cfg.site) if cfg.site else {}, "card_records": len(cards)}
+    split, meta = radar_split(fcs, cfg.heavy_in)
+    rep["now_split"] = {k: v[NOW_BUCKET] for k, v in forecast_scores(split, truth, cfg.heavy_in, cfg.any_in).items()
+                        if NOW_BUCKET in v}
+    rep["now_split_meta"] = meta
     (root / "leadtime.json").write_text(json.dumps(rep, indent=1))
     (root / "leadtime.md").write_text(markdown(rep))
     return rep
@@ -213,8 +261,8 @@ def markdown(rep: dict) -> str:
          f"(the latest forecast issued in it). Probabilistic sources say heavy at >= {rep['heavy_rule_prob']:.0%} of runs.\n"]
     order = ["rainwatch", "ens", "radar", "hrrr", "nbm", "ecmwf", "nws"]
     srcs = sorted(rep["sources"], key=lambda s: order.index(s) if s in order else 99)
-    for _, _, b in BUCKETS:
-        L.append(f"\n## {b} ahead\n")
+    for b in ALL_BUCKETS:
+        L.append(f"\n## {b} ahead\n" if b != NOW_BUCKET else "\n## 0–1 h (the hour in progress and the next)\n")
         L.append("| source | hours | MAE | bias | heavy hits | misses | false alarms | POD | FAR | CSI |")
         L.append("|---|---|---|---|---|---|---|---|---|---|")
         for s in srcs:
@@ -225,6 +273,21 @@ def markdown(rep: dict) -> str:
             f = lambda v: "–" if v is None else v   # noqa: E731
             L.append(f"| {s} | {x['n']} | {x['mae']:.3f} | {x['bias']:+.3f} | {h['hits']} | {h['misses']} | "
                      f"{h['false_alarms']} | {f(h['pod'])} | {f(h['far'])} | {f(h['csi'])} |")
+        if b == NOW_BUCKET and rep.get("now_split"):
+            L.append("\nPrimary forecast by what carried the hour (heavy = the same rule as above):\n")
+            L.append("| carried by | hours | MAE | bias | heavy hits | misses | false alarms |")
+            L.append("|---|---|---|---|---|---|---|")
+            for k in SPLIT:
+                x = rep["now_split"].get(k)
+                if x:
+                    h = x["heavy"]
+                    L.append(f"| {k} | {x['n']} | {x['mae']:.3f} | {x['bias']:+.3f} | {h['hits']} | {h['misses']} | {h['false_alarms']} |")
+            m = rep.get("now_split_meta") or {}
+            if m.get("corroborated_by"):
+                L.append("\nCorroborating sources (radar hours): " + ", ".join(f"{k} {v}" for k, v in sorted(m["corroborated_by"].items())))
+            if m.get("inferred_hours"):
+                L.append(f"\n{m['inferred_hours']} radar hours predate the corroboration record; inferred from the archived "
+                         "sources at that hour (no gauge or NWS products).")
         rw = rep["sources"].get("rainwatch", {}).get(b)
         if rw and rw["calibration"]:
             L.append(f"\nCalibration, primary forecast ({b}); observed frequency only where a bin has >= {rep['min_bin']} hours:\n")

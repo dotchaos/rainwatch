@@ -40,12 +40,19 @@ def run(data: Path, cfg) -> str:
         since = a - timedelta(hours=12)
         fcs = [f for f in scorecard.read_jsonl(data / "forecasts", since) if datetime.fromisoformat(f["issued"]) <= b]
         sc = scorecard.forecast_scores(fcs, sub, cfg.heavy_in, cfg.any_in)
-        for _, _, bk in scorecard.BUCKETS:
+        for bk in scorecard.ALL_BUCKETS:
             rows = [(s, x[bk]) for s, x in sorted(sc.items()) if bk in x]
             if rows:
                 L.append(f"{bk}: " + " · ".join(f"{s} MAE {x['mae']:.3f} bias {x['bias']:+.3f} heavy {x['heavy']['hits']}/"
                                                  f"{x['heavy']['hits'] + x['heavy']['misses']} FA {x['heavy']['false_alarms']}"
                                                  for s, x in rows))
+        split, meta = scorecard.radar_split(fcs, cfg.heavy_in)
+        ns = {k: v[scorecard.NOW_BUCKET] for k, v in scorecard.forecast_scores(split, sub, cfg.heavy_in, cfg.any_in).items()
+              if scorecard.NOW_BUCKET in v}
+        if ns:
+            L.append("0–1 h primary by what carried it: " + " · ".join(
+                f"{k} {x['n']} h, heavy hits {x['heavy']['hits']} misses {x['heavy']['misses']} FA {x['heavy']['false_alarms']}"
+                for k, x in ns.items()) + (f" (corroborated by {meta['corroborated_by']})" if meta["corroborated_by"] else ""))
         gated = [(f["issued"][:16], t) for f in fcs for t, s in f["hours"].items()
                  if a <= datetime.fromisoformat(t) <= b and (s.get("rainwatch") or {}).get("lv", {}).get("radar_raw")]
         L.append(f"\nRadar-primary hours with gated drainage levels: {len(gated)}" + (f" (e.g. {gated[:3]})" if gated else ""))

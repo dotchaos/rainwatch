@@ -12,6 +12,8 @@ one independent source corroborates that level near that hour:
               level (>= feel_in);
   * official: an NWS flood product (watch, warning, advisory) is in force at that hour.
 Otherwise the level falls back to what the non-radar evidence says for that hour (the ensemble's own share, or 0).
+The heavy-rain push from a radar-primary hour with no corroborating heavy evidence (heavy_corroboration) is worded
+"Heavy rain possible"; with corroboration it keeps the probability wording. Thresholds here are provisional.
 Nothing else changes: amounts, p_heavy, p_any, timing and the 'feel' level stay the radar's. NWS alerts are pushed
 on their own path (alerts.decide) and never pass through here.
 
@@ -83,6 +85,22 @@ def corroboration(t: datetime, cfg, ens, det, gauge_in: float | None, alerts) ->
     for k in GATED:
         out[k] += off
     return out
+
+
+def heavy_corroboration(t: datetime, cfg, ens, det, gauge_in: float | None, alerts) -> list[str]:
+    """Independent evidence for a heavy hour (>= heavy_in) near hour t, for radar-primary hours. Used only for how the
+    heavy-rain push is worded (radar alone: "possible"); the heavy-rain probability itself is never changed.
+    Provisional, like the level thresholds: one model run counts (John, Nov 16 2026: record who corroborated)."""
+    out = []
+    near = [t - H, t, t + H]
+    if ens is not None and any((ens.p_exceed(u, cfg.heavy_in) or 0) >= MODEL_P for u in near):
+        out.append("ensemble")
+    for d in det or []:
+        if any((d.values.get(u) or 0) >= cfg.heavy_in for u in near):
+            out.append(d.label)
+    if gauge_in is not None and gauge_in >= cfg.heavy_in:
+        out.append(f"Mint gauge {gauge_in:.2f}\" last hour")
+    return out + _official(alerts, t)
 
 
 def gate(lev: dict, t: datetime, cfg, ens, det, gauge_in, alerts) -> dict:

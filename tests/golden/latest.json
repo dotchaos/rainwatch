@@ -90,7 +90,12 @@
     },
     "gated": false
    },
-   "model_flags": {}
+   "model_flags": {},
+   "radar_heavy": {
+    "corroborated": [
+     "Flood Advisory"
+    ]
+   }
   },
   {
    "t": "2026-11-14T20:00:00+00:00",
@@ -138,7 +143,12 @@
     },
     "gated": false
    },
-   "model_flags": {}
+   "model_flags": {},
+   "radar_heavy": {
+    "corroborated": [
+     "Flood Advisory"
+    ]
+   }
   },
   {
    "t": "2026-11-14T21:00:00+00:00",
@@ -2457,7 +2467,12 @@
     },
     "gated": false
    },
-   "model_flags": {}
+   "model_flags": {},
+   "radar_heavy": {
+    "corroborated": [
+     "Flood Advisory"
+    ]
+   }
   },
   {
    "t": "2026-11-14T20:00:00+00:00",
@@ -2505,7 +2520,12 @@
     },
     "gated": false
    },
-   "model_flags": {}
+   "model_flags": {},
+   "radar_heavy": {
+    "corroborated": [
+     "Flood Advisory"
+    ]
+   }
   },
   {
    "t": "2026-11-14T21:00:00+00:00",

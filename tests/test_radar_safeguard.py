@@ -139,3 +139,39 @@ def test_model_hours_are_untouched():
     rep = build()
     later = [r for r in rep["rows"] if r.get("primary") == "ens"]
     assert later and all("gated" not in (r.get("levels") or {}) for r in later)
+
+
+# ---- heavy-rain push wording (John, Nov 16 2026): a communication safeguard, the probability is unchanged
+
+def heavy_push(rep):
+    return next(m for m in alerts.decide(rep, {}, NOW, CFG) if m["kind"] == "heavy")
+
+
+def test_radar_only_heavy_push_says_possible_in_the_next_hour():
+    rep = build()
+    r8 = row(rep, T8)
+    assert r8["radar_heavy"]["corroborated"] == [] and r8["p_heavy"] >= 0.8    # probability itself unchanged
+    m = heavy_push(rep)
+    assert m["title"] == "Heavy rain possible in the next hour" and m["radar_only"] is True
+    assert "likely" not in m["title"] + m["message"]
+
+
+def test_corroborated_radar_heavy_push_keeps_probability_wording():
+    rep = build(det=[hrrr(0.25, 0.0)])
+    assert row(rep, T8)["radar_heavy"]["corroborated"] == ["HRRR"]
+    m = heavy_push(rep)
+    assert "very likely" in m["title"] and not m.get("radar_only")
+
+
+def test_gauge_and_ensemble_corroborate_heavy():
+    assert row(build(gauge_in=0.22), T8)["radar_heavy"]["corroborated"] == ['Mint gauge 0.22" last hour']
+    ens = ens_series()
+    ens.members[T8] = [0.25] * 4 + [0.02] * 26                                 # 13% of runs heavy
+    assert escalation.heavy_corroboration(T8, CFG, ens, [], None, []) == ["ensemble"]
+
+
+def test_official_warning_keeps_its_own_words_beside_a_radar_only_push():
+    other = {"id": "urn:wind:2", "event": "Wind Advisory", "headline": "Wind Advisory until 4 AM", "onset": None, "ends": None}
+    msgs = alerts.decide(build(nws_alerts=[other]), {}, NOW, CFG)
+    assert [m["title"] for m in msgs] == ["Heavy rain possible in the next hour", "Wind Advisory"]
+    assert msgs[1]["message"] == "Wind Advisory until 4 AM" and msgs[1]["priority"] == 4
