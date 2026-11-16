@@ -169,13 +169,13 @@ describe('flood potential: between Boots and Sandbags (v0.19 exploration, lab on
 describe('Going out (v0.20)', () => {
   const html = (s: Scenario, p?: 'outline' | 'range') => renderToString(createElement(WeatherCard, { scenario: s, potential: p }));
   const axis = (h: string) => [...h.matchAll(/class="chart-label"[^>]*>(.*?)<\/text>/g)].map(m => m[1].replace(/<[^>]+>/g, ''));
-  it('the person ladder stops at Rain gear; potential flooding floats above it, unlabelled on the axis', () => {
+  it('the top rung is "Flood potential" unless Sandbags is recommended; the potential boxes sit on it', () => {
     const h = html(ahead(), 'outline');
-    expect(axis(h)).toEqual(['Usual clothes', 'Umbrella orjacket', 'Rain gear']);
+    expect(axis(h)).toEqual(['Usual clothes', 'Umbrella orjacket', 'Rain gear', 'Flood potential']);
     expect(h).toContain('class="chart-potential"');
     expect(h).toContain('Potential flooding · Not yet a sandbag recommendation');
   });
-  it('the Sandbags rung appears on the axis only when Sandbags is recommended', () => {
+  it('the top rung reads "Sandbags" when Sandbags is recommended (official flood product)', () => {
     expect(axis(html(byId('storm')))).toEqual(['Usual clothes', 'Umbrella orjacket', 'Rain gear', 'Sandbags']);
   });
   it('dry forecast hours are a pale band; hours without a forecast keep the hatch, never the band', () => {

@@ -39,8 +39,8 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
   // v0.20: rain cards ask "Going out"; heat cards keep "Next 3 days" (their rungs are heat levels)
   const title = heat ? 'Next 3 days' : 'Going out';
   const blocks = chartBlocks(s);
-  // the person ladder stops at Rain gear; the Sandbags rung (property) gets an axis label only when it is drawn
-  const rungs = heat || blocks.some(b => b.level === 3) ? 4 : 3;
+  // top rung (John, Nov 16): "Flood potential", or "Sandbags" when Sandbags is recommended and drawn
+  const sandbagsShown = blocks.some(b => b.level === 3);
   return <section className="timeline-section" aria-label={heat ? title : `${title}, next 3 days`}>
     <div className="section-heading"><strong>{title}</strong>{!heat && <span>Next 3 days</span>}</div>
     <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
@@ -57,7 +57,7 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
       })}
       <g transform={`translate(0 ${top})`}>
         {days.map((d, i) => (i === 0 || d.end - d.start >= 12) && <text key={d.start} x={dayLabelX(d.start, d.end, i === 0)} y={12} textAnchor={i === 0 && d.end - d.start < 12 ? 'start' : 'middle'} className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
-        {labels.slice(0, rungs).map((l, i) => { const y = base - i * step, two = l.includes(' or ');
+        {labels.map((l0, i) => { const l = !heat && i === 3 && !sandbagsShown ? 'Flood potential' : l0; const y = base - i * step, two = l.includes(' or ');
           return <g key={l}><text x={x0 - 8} y={y + (two ? -2 : 3)} textAnchor="end" className="chart-label">
             {two ? <><tspan x={x0 - 8}>{l.split(' or ')[0]} or</tspan><tspan x={x0 - 8} dy="11">{l.split(' or ')[1]}</tspan></> : l}</text>
             <line x1={x0} x2={x(72)} y1={y} y2={y} className={i === 0 ? 'chart-base' : 'chart-grid'} /></g>; })}
