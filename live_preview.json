@@ -3,67 +3,67 @@
  "title": "Live",
  "season": "November",
  "location": "18th & Shotwell",
- "observedAt": "Monday \u00b7 10:16 AM",
+ "observedAt": "Monday \u00b7 11:20 AM",
  "startDay": "Mon",
- "startHourLocal": 10,
+ "startHourLocal": 11,
  "hazard": "flood",
  "current": {
-  "temperatureF": 56,
-  "condition": "Sunny",
-  "icon": "clear-day",
-  "highF": 58,
+  "temperatureF": 57,
+  "condition": "Heavy rain",
+  "icon": "heavy-rain",
+  "highF": 57,
   "lowF": 48
  },
  "hourly": [
   {
    "hour": 0,
-   "temperatureF": 56,
-   "icon": "clear-day"
+   "temperatureF": 57,
+   "icon": "heavy-rain"
   },
   {
    "hour": 1,
-   "temperatureF": 57,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 2,
-   "temperatureF": 56,
-   "icon": "overcast"
-  },
-  {
-   "hour": 3,
    "temperatureF": 57,
    "icon": "overcast"
   },
   {
+   "hour": 3,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
    "hour": 4,
-   "temperatureF": 58,
-   "icon": "partly-day"
-  },
-  {
-   "hour": 5,
-   "temperatureF": 52,
-   "icon": "overcast"
-  },
-  {
-   "hour": 6,
-   "temperatureF": 52,
-   "icon": "overcast"
-  },
-  {
-   "hour": 7,
    "temperatureF": 51,
    "icon": "overcast"
   },
   {
-   "hour": 8,
+   "hour": 5,
+   "temperatureF": 52,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 6,
+   "temperatureF": 51,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 7,
    "temperatureF": 50,
    "icon": "overcast"
   },
   {
-   "hour": 9,
+   "hour": 8,
    "temperatureF": 49,
    "icon": "partly-night"
+  },
+  {
+   "hour": 9,
+   "temperatureF": 49,
+   "icon": "clear-night"
   },
   {
    "hour": 10,
@@ -87,7 +87,7 @@
   },
   {
    "hour": 14,
-   "temperatureF": 48,
+   "temperatureF": 47,
    "icon": "clear-night"
   },
   {
@@ -97,7 +97,7 @@
   },
   {
    "hour": 16,
-   "temperatureF": 47,
+   "temperatureF": 46,
    "icon": "clear-night"
   },
   {
@@ -107,43 +107,43 @@
   },
   {
    "hour": 18,
-   "temperatureF": 47,
+   "temperatureF": 46,
    "icon": "clear-night"
   },
   {
    "hour": 19,
-   "temperatureF": 46,
+   "temperatureF": 47,
    "icon": "clear-night"
   },
   {
    "hour": 20,
    "temperatureF": 47,
-   "icon": "clear-night"
-  },
-  {
-   "hour": 21,
-   "temperatureF": 47,
    "icon": "clear-day"
   },
   {
-   "hour": 22,
+   "hour": 21,
    "temperatureF": 48,
    "icon": "partly-day"
   },
   {
-   "hour": 23,
+   "hour": 22,
    "temperatureF": 53,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 23,
+   "temperatureF": 55,
    "icon": "clear-day"
   }
  ],
  "days": [
   {
    "label": "Today",
-   "description": "Cloudy",
-   "icon": "overcast",
+   "description": "Rain, heavy at times possible",
+   "icon": "heavy-rain",
    "lowF": 48,
-   "highF": 58,
-   "rainIn": 0.0
+   "highF": 57,
+   "rainIn": 0.04
   },
   {
    "label": "Tomorrow",
@@ -179,88 +179,100 @@
   }
  ],
  "observedNow": {
-  "rainingNow": null,
+  "rainingNow": true,
   "recentRain": false
  },
  "rainHours": [
   {
-   "startHour": 39,
-   "endHour": 42,
+   "startHour": 0,
+   "endHour": 1,
    "intensity": 1
   },
   {
-   "startHour": 42,
-   "endHour": 44,
+   "startHour": 38,
+   "endHour": 41,
+   "intensity": 1
+  },
+  {
+   "startHour": 41,
+   "endHour": 43,
    "intensity": 2
   },
   {
-   "startHour": 44,
-   "endHour": 45,
+   "startHour": 43,
+   "endHour": 44,
    "intensity": 1
   },
   {
-   "startHour": 45,
-   "endHour": 48,
+   "startHour": 44,
+   "endHour": 47,
    "intensity": 3
   },
   {
-   "startHour": 48,
-   "endHour": 75,
+   "startHour": 47,
+   "endHour": 74,
    "intensity": 1
   }
  ],
  "provenance": {
   "type": "live",
-  "generated": "2026-11-16T18:16:33.971136+00:00",
+  "generated": "2026-11-16T19:20:24.431806+00:00",
   "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
  },
  "timeline": {
   "title": "Rain & flood outlook",
   "intervals": [
    {
-    "startHour": 39,
-    "endHour": 41,
+    "startHour": 0,
+    "endHour": 1,
+    "severity": 2,
+    "confidence": "unknown",
+    "pattern": "steady"
+   },
+   {
+    "startHour": 38,
+    "endHour": 40,
     "severity": 1,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 40,
+    "endHour": 41,
+    "severity": 2,
     "confidence": "unknown",
     "pattern": "intermittent"
    },
    {
     "startHour": 41,
     "endHour": 42,
-    "severity": 2,
+    "severity": 3,
     "confidence": "unknown",
     "pattern": "intermittent"
    },
    {
     "startHour": 42,
     "endHour": 43,
-    "severity": 3,
+    "severity": 2,
     "confidence": "unknown",
     "pattern": "intermittent"
    },
    {
     "startHour": 43,
-    "endHour": 44,
-    "severity": 2,
-    "confidence": "unknown",
-    "pattern": "intermittent"
-   },
-   {
-    "startHour": 44,
-    "endHour": 47,
+    "endHour": 46,
     "severity": 3,
     "confidence": "unknown",
     "pattern": "intermittent"
    },
    {
-    "startHour": 47,
-    "endHour": 48,
+    "startHour": 46,
+    "endHour": 47,
     "severity": 2,
     "confidence": "unknown",
     "pattern": "intermittent"
    },
    {
-    "startHour": 48,
+    "startHour": 47,
     "endHour": 72,
     "severity": 1,
     "confidence": "unknown",
@@ -270,16 +282,20 @@
  },
  "rainTotals": [
   {
-   "startHour": 39,
+   "startHour": 0,
+   "endHour": 1,
+   "medianIn": 0.04
+  },
+  {
+   "startHour": 38,
    "endHour": 72,
    "medianIn": 2.16
   }
  ],
  "evidence": {
   "pHeavy": [
-   0.02,
-   0.02,
-   0,
+   0.23,
+   0.04,
    0,
    0,
    0,
@@ -348,13 +364,13 @@
    0.01,
    0.01,
    0.01,
-   0.01
+   0.01,
+   0
   ],
   "floodValidated": false,
   "pFlood": [
-   0,
-   0,
-   0,
+   0.02,
+   0.0,
    0,
    0,
    0,
@@ -423,12 +439,12 @@
    0,
    0,
    0,
+   0,
    0
   ],
   "pBehind": [
-   0,
-   0,
-   0,
+   0.02,
+   0.0,
    0,
    0,
    0,
@@ -497,12 +513,13 @@
    0,
    0.01,
    0.01,
+   0,
    0
   ],
   "potential": [
    {
-    "startHour": 42,
-    "endHour": 47,
+    "startHour": 41,
+    "endHour": 46,
     "pBehindAny": 0.76,
     "pFloodAny": 0.43,
     "systems": 3
@@ -549,13 +566,13 @@
    0,
    0,
    0,
-   0,
    1,
    2,
    1,
    2,
    3,
    2,
+   0,
    0,
    0,
    0,
