@@ -47,6 +47,12 @@ export interface Scenario {
    * A Rain boots hour can be light rain (heavy is plausible, not typical); the card never converts one into the other.
    */
   rainHours?: { startHour: number; endHour: number; intensity: 1 | 2 | 3 }[];
+  /**
+   * What is happening at the point now (v0.17), for wording only, never to change the forecast. `rainingNow`: the
+   * latest radar frame (fresh, within 20 minutes) shows echo over the point; `recentRain`: the nearby gauge measured
+   * rain in its last two completed hours. null when that source can't say.
+   */
+  observedNow?: { rainingNow: boolean | null; recentRain: boolean | null };
   /** 'illustrative' for fixtures; 'live' only for the card built from the real forecast (rainwatch/card.py). */
   provenance: { type: 'illustrative' | 'live'; note: string; generated?: string };
 }

@@ -29,7 +29,7 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
   return <section className="timeline-section" aria-label={title}>
     <div className="section-heading"><strong>{title}</strong></div>
     <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
-      aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing may shift.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
+      aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
       <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern></defs>
       {callouts.map((c, i) => {
         const { left, row } = placed[i], ty = (rows - 1 - row) * 24, color = intervalColor(s, 3);
@@ -56,6 +56,6 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
         {halfDayLabels(s).map(l => <text key={l.at} x={x(l.at)} y={base + 18} textAnchor="middle" className="chart-time">{l.text}</text>)}
       </g>
     </svg>
-    <ul className="sr-only">{s.timeline.intervals.filter(p => p.severity > 0).map((p, i) => <li key={i}>{`${windowLabel(s, p)}: ${full[p.severity]}, timing ${p.confidence === 'higher' ? 'more certain' : 'may shift'}`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
+    <ul className="sr-only">{s.timeline.intervals.filter(p => p.severity > 0).map((p, i) => <li key={i}>{`${windowLabel(s, p)}: ${full[p.severity]}, timing ${p.confidence === 'higher' ? 'more certain' : 'approximate'}`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;
 }

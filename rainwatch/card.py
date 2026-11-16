@@ -418,6 +418,9 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         "current": {"temperatureF": round(temps[0]) if temps[0] is not None else None, "condition": words0,
                     "icon": icon0, "highF": round(td["hi"]) if td else None, "lowF": round(td["lo"]) if td else None},
         "hourly": hourly, "days": day_rows,
+        # what is happening now (radar, gauge): words only, never the forecast (v0.17)
+        **({"observedNow": {"rainingNow": report["now_obs"]["raining_now"], "recentRain": report["now_obs"]["recent_rain"]}}
+           if report.get("now_obs") else {}),
         **({"unknownHours": unknown} if unknown else {}),
         # five-day rows: rain through the end of the fifth local day, and every hour there without a forecast
         **({"rainHours": st["rainHours"], "unknownHours": st["unknownHours"]} if st and st["unknownHours"]

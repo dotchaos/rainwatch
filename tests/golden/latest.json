@@ -4078,6 +4078,13 @@
    "last_24h": 0.13
   }
  ],
+ "now_obs": {
+  "raining_now": null,
+  "dbz": null,
+  "radar_at": null,
+  "recent_rain": true,
+  "gauge_in_2h": 0.24
+ },
  "alerts": [
   {
    "id": "urn:1",

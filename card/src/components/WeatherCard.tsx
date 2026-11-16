@@ -7,7 +7,7 @@ import { Timeline } from './Timeline';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
- * 1 Now & next · 2 3-day gear forecast (graph, when useful) · 3 Next hours · 4 More information (Next 5 days).
+ * 1 Now & next · 2 3-day gear forecast (graph, when useful) · 3 Hourly forecast · 4 Next 5 days.
  * Every word and window comes from src/lib/derive.ts; components never hard-code scenario wording.
  */
 const deg = (v: number | null) => v === null ? '—' : `${v}°`;
@@ -58,15 +58,26 @@ function NowAndNext({ s }: { s: Scenario }) {
   </section>;
 }
 
-/** 3. Next hours: every hour from the current one, in a row that scrolls sideways. */
+/** 3. Hourly forecast: every hour from the current one, in a row that scrolls sideways. The hours are grouped by day;
+ *  each day's label stays pinned at the row's left edge while its hours are in view (v0.17). */
 function Hourly({ s }: { s: Scenario }) {
-  return <section className="next-hours"><div className="section-heading"><strong>Next hours</strong><span>Local time</span></div>
-    <div className="hours-scroll" role="list" aria-label="Next hours">{s.hourly.map((h, i) => {
-      const at = h.hour ?? i, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon;
-      return <div className={`hour${l.day ? ' hour-midnight' : ''}`} role="listitem" key={at}>
-        <em className="hour-day" aria-hidden={!l.day}>{l.day ?? ''}</em><span>{l.text}</span><WeatherIcon name={icon} size={24} label /><strong>{deg(h.temperatureF)}</strong>
-      </div>;
-    })}</div></section>;
+  const groups: { day: string; hours: Scenario['hourly'] }[] = [];
+  s.hourly.forEach((h, i) => {
+    const at = h.hour ?? i, l = hourLabel(s, at);
+    if (!groups.length || l.day) groups.push({ day: groups.length ? l.day! : 'Today', hours: [] });
+    groups[groups.length - 1].hours.push({ ...h, hour: at });
+  });
+  return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
+    <div className="hours-scroll" role="list" aria-label="Hourly forecast">{groups.map((g, k) =>
+      <div className={`hour-group${k ? ' hour-group-next' : ''}`} role="none" key={g.day}>
+        <em className="hour-day-pin" aria-hidden>{g.day}</em>
+        {g.hours.map(h => {
+          const at = h.hour!, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon;
+          return <div className="hour" role="listitem" key={at} aria-label={l.day ? `${l.day} ${l.text}` : undefined}>
+            <span>{l.text}</span><WeatherIcon name={icon} size={24} label /><strong>{deg(h.temperatureF)}</strong>
+          </div>;
+        })}
+      </div>)}</div></section>;
 }
 
 /** A day's rain amount, only when it is rain worth a number (see DISPLAY-RULES.md, Rain amounts). */
@@ -96,7 +107,6 @@ function Strip({ r }: { r: FiveDayRow }) {
 function FiveDays({ s, rows }: { s: Scenario; rows: FiveDayRow[] }) {
   const gap = rows.some(r => r.segs.some(g => g.kind === 'unknown')), wet = rows.some(r => r.segs.some(g => g.kind === 'rain')), note = stripCoverageNote(s);
   return <div className="five-days">
-    <div className="five-head"><strong>Next 5 days</strong></div>
     <div className="strip-axis" aria-hidden>{AXIS.map(([L, t]) => <span key={L} data-at={L} style={{ left: pct(L) }}>{t}</span>)}</div>
     <ol className="five-rows">{rows.map((r, k) => <li className="five-row" key={r.label} id={`five-day-${k}`} tabIndex={-1}>
       <div className="five-top"><strong>{r.label}</strong><span className={`total total-${r.total.kind}`}>{r.total.text}</span></div>
@@ -113,7 +123,7 @@ function FiveDays({ s, rows }: { s: Scenario; rows: FiveDayRow[] }) {
 function MoreInformation({ s, detailsHref }: { s: Scenario; detailsHref?: string }) {
   const five = fiveDays(s);
   return <section className="more-info">
-    <div className="section-heading"><strong>More information</strong></div>
+    <div className="section-heading"><strong>{five ? 'Next 5 days' : 'Next 3 days'}</strong></div>
     {five ? <FiveDays s={s} rows={five} /> : <div className="days">{s.days.map(d => <div className="day" key={d.label}>
       <div><strong>{d.label}</strong><span className="day-desc">{d.description}{dayAmount(d) && ` · ${dayAmount(d)}`}</span></div>
       <span className="day-temps">{deg(d.highF)} / {deg(d.lowF)}</span>

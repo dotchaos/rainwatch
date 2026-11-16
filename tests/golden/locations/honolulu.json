@@ -178,6 +178,10 @@
    "rainIn": 0.0
   }
  ],
+ "observedNow": {
+  "rainingNow": null,
+  "recentRain": null
+ },
  "rainHours": [
   {
    "startHour": 1,

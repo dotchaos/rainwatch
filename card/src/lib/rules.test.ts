@@ -18,7 +18,7 @@ describe('every timing statement is derived from the forecast', () => {
     const s = byId('storm');
     expect(criticalWindows(s).map(w => w.label)).toEqual(['Thu 4–9 PM', 'Fri 8 AM–4 PM']);
     expect(deriveAlert(s)).toEqual({ level: 'SANDBAGS · DRIVEWAY FLOOD RISK', headline: 'Protect your driveway before 2 PM.',
-      summary: 'Two periods of intense rain could overwhelm local drainage. Sandbags: Thu 4–9 PM and about Fri 8 AM–4 PM. Timing may shift.' });
+      summary: 'Two periods of intense rain could overwhelm local drainage. Sandbags: Thu 4–9 PM and about Fri 8 AM–4 PM. Timing is approximate.' });
     expect(deriveDaysSummary(s)).toBe('Worst today and tomorrow, easing Saturday');
   });
   it('heat: hottest period and outdoor window agree with the forecast', () => {
@@ -27,7 +27,7 @@ describe('every timing statement is derived from the forecast', () => {
     const a = deriveAlert(s)!;
     expect(a.level).toBe('EXTREME HEAT · FRIDAY & SATURDAY');
     expect(a.headline).toBe('Plan to stay cool. 100°+ ahead.');
-    expect(a.summary).toBe('Hottest around Fri 1–6 PM and Sat noon–7 PM. Timing may shift. Lows near 75° may offer little relief overnight.');
+    expect(a.summary).toBe('Hottest around Fri 1–6 PM and Sat noon–7 PM. Timing is approximate. Lows near 75° may offer little relief overnight.');
     expect(deriveInsight(s)).toEqual({ headline: 'Best outdoor window: Before 10 AM', detail: 'On Friday and Saturday, mornings are the safer choice.' });
     expect(deriveDaysSummary(s)).toBe('Heat peaks Saturday');
   });
@@ -49,13 +49,13 @@ describe('every timing statement is derived from the forecast', () => {
   it('rain, dry right now: says how long it stays dry (Nov 14 live case)', () => {
     const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 19;
     s.timeline!.intervals = [{ startHour: 17, endHour: 27, severity: 1, confidence: 'unknown' }];
-    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Rain jacket, about noon–10 PM', detail: 'Dry before and after. Timing may shift.' });
+    expect(deriveInsight(s)).toEqual({ headline: 'Tomorrow: Rain jacket, about noon–10 PM', detail: 'Dry before and after. Timing is approximate.' });
     expect(labelledWindows(s)[0].label).toBe('Sun noon–10 PM');
   });
   it('rain, raining now: a dry spell across midnight still yields the next daylight stretch', () => {
     const s = byId('rain'); s.startDay = 'Sat'; s.startHourLocal = 19;
     s.timeline!.intervals = [{ startHour: 0, endHour: 3, severity: 1, confidence: 'unknown' }, { startHour: 17, endHour: 27, severity: 1, confidence: 'unknown' }];
-    expect(deriveInsight(s)).toEqual({ headline: 'Now: Rain jacket, until about 10 PM', detail: 'Then dry tomorrow 7 AM–noon. Timing may shift.' });
+    expect(deriveInsight(s)).toEqual({ headline: 'Now: Rain jacket, until about 10 PM', detail: 'Then dry tomorrow 7 AM–noon. Timing is approximate.' });
   });
   it('rain, no rain at all ahead: dry for 3 days', () => {
     const s = byId('rain'); s.timeline!.intervals = s.timeline!.intervals.filter(p => p.startHour >= 72);
@@ -101,7 +101,7 @@ describe('rain patterns: dry breaks are kept, never invented', () => {
   });
   it('intermittent showers without reliable timing: parts of day, no hours, breaks possible', () => {
     const s = jacketDay([{ startHour: 17, endHour: 26, severity: 1, confidence: 'unknown', pattern: 'intermittent' }]);
-    expect(deriveInsight(s)).toEqual({ headline: 'Rain jacket tomorrow afternoon and evening', detail: 'Breaks possible. Timing may shift.' });
+    expect(deriveInsight(s)).toEqual({ headline: 'Rain jacket tomorrow afternoon and evening', detail: 'Timing is approximate.' });
     expect(labelledWindows(s).map(w => w.label)).toEqual(['Sun on and off']);
   });
   it('the card never adds a break the intervals do not contain', () => {

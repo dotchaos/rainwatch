@@ -134,7 +134,7 @@ describe('uncertainty', () => {
     s.timeline!.intervals[1].confidence = 'shifting';
     const i = deriveInsight(s)!;
     expect(i.headline).toBe('Today: Rain boots, about 6–9 PM');
-    expect(i.detail).toContain('Timing may shift.');
+    expect(i.detail).toContain('Timing is approximate.');
   });
 });
 
@@ -158,7 +158,7 @@ describe('Now & next (integrated design)', () => {
     delete s.rainTotals;
     const n = nowNext(s)!;
     expect(n.headline).toBe('Two rounds of rain today');
-    expect(n.detail.startsWith('Rain 9 AM–noon, then 4–8 PM.')).toBe(true);
+    expect(n.detail.startsWith('Rain until noon, then 4–8 PM.')).toBe(true);   // 9 AM is within the hour at 8: now (v0.17)
     expect(n.action!.text).toBe('Rain jacket');
   });
 });
@@ -219,11 +219,11 @@ describe('events at the edge of the outlook', () => {
       expect(deriveInsight(s)?.detail ?? '', s.id).not.toContain('where this outlook ends');
     }
     const html = renderToString(createElement(WeatherCard, { scenario: threeDay(byId('storm')) }));
-    const more = html.slice(html.indexOf('More information'));
+    const more = html.slice(html.indexOf('class="more-info"'));
     expect(more).toContain('Still raining at Sun 9 AM, where this outlook ends.');
     // With five-day rows the rain past the graph is drawn, so the note would be wrong ("outlook ends"): it is dropped
     const five = renderToString(createElement(WeatherCard, { scenario: byId('storm') }));
-    expect(five.slice(five.indexOf('More information'))).not.toContain('where this outlook ends');
+    expect(five.slice(five.indexOf('class="more-info"'))).not.toContain('where this outlook ends');
   });
   it('a final hour without data is not called rain, heat or dry', () => {
     const s = byId('storm'); s.unknownHours = [{ startHour: 60, endHour: 72 }];

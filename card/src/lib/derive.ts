@@ -104,11 +104,15 @@ export function jacketPlan(s: Scenario) {
 /** True when rain up to hour b has no forecast end: the data stops (unknown) or the graph ends there. Its last hour
  *  is where the forecast runs out, not when the rain stops, so it is never worded as an end time. */
 export const openEnd = (s: Scenario, b: number) => b >= 72 || isUnknown(s, b);
+/** Rain starting within this many hours counts as happening now: "Rain until about 11 PM", never "from about 8–11 PM"
+ *  read at 8, and never "Dry until then" (v0.17). */
+export const NOW_H = 1;
+export const isNow = (h: number) => h <= NOW_H;
 /** Plain-language "when" for hours a..b: "now until 2 PM", "11 AM–1 PM"; prefixed "about" when timing may shift.
  *  Open-ended rain gives only its start: "from about 5 PM", or "now". */
 function when(s: Scenario, a: number, b: number, sure: boolean) {
-  if (openEnd(s, b)) return a === 0 ? 'now' : `from ${sure ? '' : 'about '}${clock(s, a)}`;
-  if (a === 0) return sure ? `until ${clock(s, b)}` : `until about ${clock(s, b)}`;
+  if (openEnd(s, b)) return isNow(a) ? 'now' : `from ${sure ? '' : 'about '}${clock(s, a)}`;
+  if (isNow(a)) return sure ? `until ${clock(s, b)}` : `until about ${clock(s, b)}`;
   return sure ? span(s, a, b) : `about ${span(s, a, b)}`;
 }
 
@@ -129,7 +133,7 @@ export function labelledWindows(s: Scenario) {
   return w ? [{ startHour: w.startHour, endHour: w.endHour, sure: w.sure, label: w.label, rung: w.rung }] : [];
 }
 
-const MAY_SHIFT = 'Timing may shift.';
+const MAY_SHIFT = 'Timing is approximate.';   // (was "Timing may shift.", v0.17)
 
 export interface DerivedAlert { level: string; headline: string; summary: string; }
 
@@ -200,7 +204,8 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
     const plan = jacketPlan(s);
     if (plan && plan.kind === 'intermittent') {
       const jacket = levelLabels(s)[1], first = plan.events[0], last = plan.events[plan.events.length - 1];
-      const notes = ['Breaks possible.'];
+      const notes: string[] = [];
+      if (plan.events.length === 1) { const amt = amountNote(s, first.start, first.end); if (amt) notes.push(amt); }
       const later = laterRain(s, last.end); if (later) notes.push(later);
       if (!plan.sure) notes.push(MAY_SHIFT);
       const cov = coverageNote(s); if (cov) notes.push(cov);
@@ -213,11 +218,11 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       const more = dryUntil(s, last.end);
       const times = plan.events.length === 1
         ? when(s, first.start, first.end, plan.sure)
-        : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => openEnd(s, e.end) ? (e.start === 0 ? 'now' : `from ${clock(s, e.start)}`)
-          : e.start === 0 ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
-      const head = `${first.start === 0 ? 'Now' : cap(relDay(s, first.start))}: ${jacket}, ${times}`;
+        : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => openEnd(s, e.end) ? (isNow(e.start) ? 'now' : `from ${clock(s, e.start)}`)
+          : isNow(e.start) ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
+      const head = `${isNow(first.start) ? 'Now' : cap(relDay(s, first.start))}: ${jacket}, ${times}`;
       if (plan.kind === 'separate') notes.push('Dry in between.');
-      if (first.start > 0 && knownBefore(s, first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+      if (!isNow(first.start) && knownBefore(s, first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
       else if (more >= 72) notes.push('Dry after that.');
       const later = laterRain(s, last.end);
       if (later) notes.push(later);                      // the next rain matters more than the next dry spell
@@ -227,16 +232,16 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
       return { headline: head, detail: notes.join(' ') };
     }
     const day = cap(relDay(s, aw.startHour));
-    const headline = `${aw.startHour === 0 ? 'Now' : day}: ${aw.action}, ${when(s, aw.startHour, aw.endHour, aw.sure)}`;
+    const headline = `${isNow(aw.startHour) ? 'Now' : day}: ${aw.action}, ${when(s, aw.startHour, aw.endHour, aw.sure)}`;
     const notes: string[] = [];
     { const amt = amountNote(s, aw.eventStart, aw.eventEnd); if (amt) notes.push(amt); }
     const more = dryUntil(s, aw.eventEnd);
-    if (aw.eventStart > 0 && knownBefore(s, aw.eventStart)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+    if (!isNow(aw.eventStart) && knownBefore(s, aw.eventStart)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
     if (aw.rung > 1 && (aw.eventStart < aw.startHour || aw.eventEnd > aw.endHour))
       notes.push(`${levelLabels(s)[1]} ${when(s, aw.eventStart, aw.eventEnd, aw.sure)}.`);
     const later = laterRain(s, aw.eventEnd);
     const dry = more >= 72 || later ? null : nextDry(s, aw.eventEnd);
-    if (more >= 72 && aw.eventStart === 0) notes.push('Dry after that.');
+    if (more >= 72 && isNow(aw.eventStart)) notes.push('Dry after that.');
     else if (later) notes.push(later);
     else if (dry) notes.push(`Then dry ${dry}.`);
     if (!aw.sure) notes.push(MAY_SHIFT);
@@ -369,13 +374,17 @@ export function nowNext(s: Scenario): NowNext | null {
   if (plan?.kind === 'separate' && plan.events.length <= 4) {
     headline = `${NUMBER_WORDS[plan.events.length]} rounds of rain ${relDay(s, plan.events[0].start)}`;
     notes.unshift(`Rain ${joinAnd(plan.events.map(e => when(s, e.start, e.end, e.sure)))}.`.replace(' and ', ', then '));
-  } else if (plan?.kind === 'intermittent') {
-    headline = `Rain on and off ${partsPhrase(s, plan.events[0].start, plan.events[plan.events.length - 1].end)}`;
   } else {
-    const a = aw.eventStart, b = aw.eventEnd, d = relDay(s, a);
-    headline = openEnd(s, b) ? (a === 0 ? 'Rain now' : `Rain ${d === 'today' ? '' : `${d} `}from ${aw.sure ? '' : 'about '}${clock(s, a)}`)
-      : a === 0 ? `Rain ${when(s, 0, b, aw.sure)}`
-      : `Rain ${d === 'today' ? '' : `${d} `}from ${aw.sure ? '' : 'about '}${span(s, a, b)}`;
+    const multi = plan?.kind === 'intermittent';
+    const a = multi ? plan!.events[0].start : aw.eventStart, b = multi ? plan!.events[plan!.events.length - 1].end : aw.eventEnd;
+    const d = relDay(s, a), word = rainWord(s, a, b), sure = multi ? plan!.sure : aw.sure;
+    headline = !isNow(a) && dayIndexAt(s, a) !== dayIndexAt(s, Math.max(a, b - 1)) && !openEnd(s, b)
+      ? `${word} ${partsPhrase(s, a, b)}`                                   // spans days: parts of the day, not clock times
+      : openEnd(s, b) ? (isNow(a) ? `${word} now` : `${word} ${d === 'today' ? '' : `${d} `}from ${sure ? '' : 'about '}${clock(s, a)}`)
+      : isNow(a) ? `${word} ${when(s, a, b, sure)}`
+      : `${word} ${d === 'today' ? '' : `${d} `}from ${sure ? '' : 'about '}${span(s, a, b)}`;
+    // the forecast has rain now but the radar sees none over the point: say so (words only, the forecast stands)
+    if (isNow(a) && s.observedNow?.rainingNow === false) notes.unshift('Dry right now.');
   }
   // rain still falling when the data stops: say so in place of the bare coverage line
   if (isUnknown(s, aw.eventEnd)) {
@@ -397,6 +406,21 @@ export function nowNext(s: Scenario): NowNext | null {
   }
   const gear = aw.rung >= 2 ? `${aw.action} · ${gearWhen}` : aw.action;
   return { headline, detail: notes.join(' '), action: { icon: 'boots', text: gear, risk: false } };
+}
+
+/**
+ * How to name rain by what the evidence supports (v0.17):
+ *   "Rain on and off"  breaks are supported: the runs show their own dry breaks (pattern intermittent), or the radar
+ *                      sees no rain now right after the gauge measured some (it stopped and may start again);
+ *   "Rain at times"    light rain throughout, whose pattern the hourly models can't resolve (they smear showers);
+ *   "Rain"             moderate or heavier somewhere in it (continuous is credible), or no intensity data.
+ */
+export function rainWord(s: Scenario, a: number, b: number): string {
+  const iv = (s.timeline?.intervals ?? []).filter(p => p.severity > 0 && p.startHour < b && a < p.endHour);
+  const observedBreak = isNow(a) && s.observedNow?.rainingNow === false && s.observedNow?.recentRain === true;
+  if (iv.some(p => p.pattern === 'intermittent') || observedBreak) return 'Rain on and off';
+  if (s.rainHours) { let top = 0; for (let h = a; h < b; h++) top = Math.max(top, intensityAt(s, h)); if (top <= 1) return 'Rain at times'; }
+  return 'Rain';
 }
 
 export interface ChartBlock { start: number; end: number; level: number; shifting: boolean; unknown: boolean }

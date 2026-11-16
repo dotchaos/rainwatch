@@ -91,6 +91,26 @@ def daily_totals(cfg, tz, now, hrs, rows, parts, radar, nws_s) -> list[dict]:
     return out
 
 
+ECHO_DBZ = 15.0          # the engine's echo line (radar quiet check, coverage)
+RADAR_FRESH_MIN = 20     # a radar frame older than this says nothing about "right now"
+
+
+def observed_now(nc, gauges, cfg, now: datetime) -> dict:
+    """Is it raining at the point right now, and did it rain recently? From the radar's latest frame (when fresh) and
+    the nearby gauge's last two completed hours. None where a source can't say. Never used to change the forecast:
+    the card only uses it to describe what is happening now (v0.17)."""
+    out = {"raining_now": None, "dbz": None, "radar_at": None, "recent_rain": None, "gauge_in_2h": None}
+    if nc and nc.frames and nc.dbz_now is not None and (now - nc.frames[-1]).total_seconds() <= RADAR_FRESH_MIN * 60:
+        out.update(raining_now=nc.dbz_now >= ECHO_DBZ, dbz=round(nc.dbz_now, 1), radar_at=nc.frames[-1].isoformat())
+    for g in gauges or []:
+        if cfg.site and g.station == cfg.site.hads_station and g.hourly:
+            last = max(g.hourly)
+            if (now - last).total_seconds() <= 2.5 * 3600:            # the gauge is still reporting
+                tot = sum(v for t, v in g.hourly.items() if t > last - timedelta(hours=2))
+                out.update(recent_rain=tot >= cfg.any_in, gauge_in_2h=round(tot, 2))
+    return out
+
+
 def obs_src(gauges, cfg):
     """The nearby gauge's latest completed hour (never SFO)."""
     for g in gauges:
@@ -304,6 +324,7 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
             "motion": nc.motion.describe() if nc else "",
         },
         "gauges": obs,
+        "now_obs": observed_now(nc, gauges, cfg, now),
         "alerts": nws.alerts if nws else [],
         "errors": errors,
     }

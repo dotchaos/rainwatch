@@ -81,3 +81,13 @@
 .five-row-flash{animation:five-flash 2.2s ease-out}
 @keyframes five-flash{0%,35%{background:#e6f0f8}100%{background:transparent}}
 @media (prefers-reduced-motion: reduce){.five-row-flash{animation:none;background:#e6f0f8}}
+
+/* Hourly forecast (v0.17): hours grouped by day; the day label pins to the row's left edge while its hours scroll by.
+   Hour width is a share of the row (container units), as before when hours were direct children. */
+.hours-scroll{container-type:inline-size}
+.hour-group{display:flex;position:relative;flex:0 0 auto;padding-top:15px}
+.hour-group-next{border-left:1px dashed #cfd8dc}
+.hour{flex:0 0 calc(100cqw / 6.5)}
+.hour-day-pin{position:sticky;left:0;align-self:flex-start;flex:0 0 0;width:0;margin-top:-15px;overflow:visible;white-space:nowrap;
+  font-style:normal;font-size:9px;font-weight:700;letter-spacing:.04em;color:#26343d;text-transform:uppercase;line-height:11px;
+  padding-left:4px;z-index:1}

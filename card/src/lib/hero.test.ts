@@ -22,7 +22,7 @@ describe('show/hide across the seven scenarios', () => {
     // awareness mode: several days out, no different gear (DISPLAY-RULES, voice and urgency)
     expect([u.mode, u.heading, u.sentence]).toEqual(['awareness', 'Keep an eye on Wednesday', 'Around 1.1" of rain, beginning early and continuing overnight.']);
     const n = nowNext(s)!;
-    expect(n.headline).toBe('Rain until about 11 PM');                // the primary headline is unchanged
+    expect(n.headline).toBe('Rain at times until about 11 PM');       // light rain: 'at times' (v0.17)
     expect(n.detail).not.toContain('More rain');                       // not said twice
     const h = html(s);
     expect(h.indexOf('class="upcoming')).toBeGreaterThan(h.indexOf('class="headline"'));
@@ -181,7 +181,8 @@ describe('headings and navigation (v0.15)', () => {
   it('the daily forecast is just "Next 5 days"', () => {
     for (const s of scenarios) {
       const h = html(s);
-      expect(h).toContain('<div class="five-head"><strong>Next 5 days</strong></div>');
+      expect(h).toContain('<section class="more-info"><div class="section-heading"><strong>Next 5 days</strong></div>');   // the section heading (v0.17)
+      expect(h).not.toContain('More information');
       expect(h).not.toContain('Rain · High / Low');
     }
   });

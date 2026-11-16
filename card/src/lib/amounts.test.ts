@@ -42,7 +42,7 @@ describe('rain amounts', () => {
     expect(i.headline).toBe('Today: Rain jacket, about 1–10 PM');
     // Wednesday's rain runs to the graph's last hour (Wed 7 AM): where the forecast stops, not where the rain does.
     // Until Nov 15 this read "More rain Wed 1–7 AM, about 0.9"" (a false end and a partial total).
-    expect(i.detail).toBe('About 0.5" of rain. Dry until then. More rain from Wed 1 AM. Timing may shift.');
+    expect(i.detail).toBe('About 0.5" of rain. Dry until then. More rain from Wed 1 AM. Timing is approximate.');
   });
 
   it('later rain that ends inside the graph keeps its window and amount', () => {
