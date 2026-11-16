@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.22 (review branch hero-priority): the hero leads with the most consequential storm
+- Event selection only (no engine, threshold or graph change). Among storms with flood-level hours: immediate danger first (official product or validated hazard, under way or past its time to prepare), then voice (action, anticipation, awareness), then accumulation in 0.5" steps, then hours of heavy rain, then the earlier storm.
+- A transient burst (under 2 hours of heavy rain, not actionable) never leads: the 11:39 AM radar spike no longer replaces Wednesday, and a spike appearing or vanishing leaves the headline where it was. Alone, it reads as an ordinary rain day (no flood hero).
+- A later storm that could lead in its own right keeps one line: "Another round early Wednesday."
+
 ## v0.21 (review branch going-out): Going out as a silhouette
 - **The rain graph is one continuous shape** (heat keeps its columns): each hour is one solid colour from the baseline to its level (clothing levels don't stack), hour by hour with exact transitions, flat plateaus filling their bands, softly rounded shoulders, no seams, gradients or outlines beyond a thin top edge (dashed where timing is approximate). Missing hours break the shape and keep the hatch. Calm days still show no graph.
 - **Blue = clothing; warm = flood concern; dashed = potential; solid = actionable.** The shape stops at Rain gear. Potential flooding is a pale dashed field and actionable flooding (Sandbags) a solid warm field, both in the flood band over their exact windows, standing on Rain gear, never changing the clothing level. Sandbags keeps its window labels; key "Sandbags · Preparation recommended".

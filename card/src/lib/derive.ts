@@ -195,7 +195,7 @@ function laterRain(s: Scenario, from: number): string | null {
 
 export function deriveInsight(s: Scenario): { headline: string; detail: string } | null {
   if (s.hazard === 'rain' || s.hazard === 'flood') {
-    if (s.hazard === 'flood') return null;      // the alert carries the message on flood days
+    if (s.hazard === 'flood') return floodStorm(s) ? null : deriveInsight(asRainDay(s));   // the alert leads when a storm does
     const aw = actionWindow(s);
     if (!aw) return knownUntil(s) < 72 ? partialDry(s) : { headline: 'Dry for the next 3 days', detail: 'No rain worth a jacket in the forecast.' };
     const plan = jacketPlan(s);
@@ -359,6 +359,7 @@ export function nowNext(s: Scenario): NowNext | null {
       action: { icon: 'sun', text: ins ? ins.headline.replace(': Before', ': before') : s.alert.actionTitle, risk: false },
     };
   }
+  if (s.hazard === 'flood' && !floodStorm(s)) return nowNext(asRainDay(s));   // no storm leads: an ordinary rain day
   if (s.hazard !== 'rain') return ins;                           // calm and ordinary heat: the insight as is
   const aw = actionWindow(s);
   if (!aw || !ins) return ins;
@@ -750,7 +751,51 @@ export function storms(s: Scenario): Storm[] {
 export function peakWindows(s: Scenario) { return storms(s).flatMap(st => st.peaks); }
 
 /** The storm the flood hero is about: the first with a top-rung peak. */
-export function floodStorm(s: Scenario): Storm | null { return storms(s).find(st => st.peaks.length) ?? null; }
+/**
+ * The storm the hero leads with (v0.22): the most consequential, not the current or earliest. Only storms with a
+ * top-rung peak are candidates; ranked, in order:
+ *   1. immediate danger: action voice (official product, or a validated likely flood level) and already under way
+ *      or past its time to prepare: it takes over at once (a current event that becomes dangerous is never held back);
+ *   2. voice: action > anticipation > awareness, but a transient burst (heavy rain shorter than TRANSIENT_H, not
+ *      action) ranks below every storm: a passing radar spike never displaces a storm, and never thrashes the headline;
+ *   3. accumulation in AMOUNT_STEP steps (similar storms tie): the storm's own total, else its heavy day's total;
+ *   4. duration: hours of heavy rain;
+ *   5. the earlier storm.
+ * Uses only what the card already derives (voice, heavy period, amounts); no new thresholds on the forecast.
+ * null when no storm qualifies to lead: then the card speaks as on an ordinary rain day.
+ */
+export const TRANSIENT_H = 2, AMOUNT_STEP = 0.5;
+export function stormRank(s: Scenario, st: Storm): number[] {
+  const v = stormVoice(s, st), heavyH = st.heavy ? st.heavy.end - st.heavy.start : 0;
+  const transient = v !== 'action' && heavyH < TRANSIENT_H;
+  const immediate = v === 'action' && (isNowAt(s, st.start) || st.prepareBy <= nowAt(s)) ? 1 : 0;
+  return [immediate, transient ? 0 : { awareness: 1, anticipation: 2, action: 3 }[v], Math.floor(stormAmount(s, st) / AMOUNT_STEP), heavyH];
+}
+/** A storm's rain for ranking: its own whole-run total when it ends inside the forecast, else its heavy day's total. */
+function stormAmount(s: Scenario, st: Storm): number {
+  const own = openEnd(s, st.end) ? undefined : amountOf(s, st.start, st.end);
+  return own ?? s.days[dayIndexAt(s, (st.heavy ?? st).start)]?.rainIn ?? 0;
+}
+const cmpRank = (a: number[], b: number[]) => { for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return b[i] - a[i]; return 0; };
+export function floodStorm(s: Scenario): Storm | null {
+  const c = storms(s).filter(st => st.peaks.length).map(st => ({ st, r: stormRank(s, st) }));
+  if (!c.length) return null;
+  c.sort((a, b) => cmpRank(a.r, b.r) || a.st.start - b.st.start);
+  return c[0].r[1] === 0 && c[0].r[0] === 0 ? null : c[0].st;     // a lone transient burst never leads
+}
+/** Later storms that could lead in their own right (not transient bursts): named once in the detail, "Another round …",
+ *  so a significant storm keeps its place when something more urgent or a similar earlier storm leads. */
+function similarLater(s: Scenario, lead: Storm): Storm[] {
+  return storms(s).filter(st => st.peaks.length && st.start >= lead.end && (stormRank(s, st)[1] > 0 || stormRank(s, st)[0] > 0));
+}
+/** The card read as an ordinary rain day: no storm leads as a flood (a passing burst only). Graph unaffected. */
+export function asRainDay(s: Scenario): Scenario {
+  const c = structuredClone(s) as Scenario;
+  c.hazard = 'rain';
+  if (c.timeline) c.timeline.intervals = c.timeline.intervals.map(p => ({ ...p, severity: Math.min(p.severity, 2) as 0 | 1 | 2 | 3 }));
+  delete c.alert;
+  return c;
+}
 
 /** Share of model runs at or above which an outcome is called likely (provisional). */
 export const LIKELY_P = 0.5;
@@ -833,6 +878,14 @@ export interface FloodHero { voice: Voice; headline: string; detail: string; act
 export function floodHero(s: Scenario): FloodHero | null {
   const st = floodStorm(s);
   if (!st || !st.heavy || !s.alert) return null;
+  const h = floodHeroFor(s, st);
+  const more = similarLater(s, st)[0];
+  if (more && h) h.detail = `${h.detail} Another round ${roughWhen(s, (more.heavy ?? more).start)}.`;
+  return h;
+}
+
+function floodHeroFor(s: Scenario, st: Storm): FloodHero | null {
+  if (!st.heavy || !s.alert) return null;
   const voice = stormVoice(s, st), peak = st.peaks[0], heavy = st.heavy;
   const likely = (st.pHeavy ?? 0) >= LIKELY_P;
   const at = (h: number) => dayIndexAt(s, h) === 0 ? clock(s, h) : timeAt(s, h);
