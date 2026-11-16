@@ -39,3 +39,11 @@ def test_only_flood_products_count_as_official():
           {"event": "Flash Flood Warning", "onset": None, "ends": None, "expires": (T0 + timedelta(minutes=90)).isoformat()}]
     assert ev(rows(), al)["official"] == [{"event": "Flood Watch", "startHour": 30, "endHour": 60},
                                           {"event": "Flash Flood Warning", "startHour": 0, "endHour": 2}]
+
+
+def test_engine_and_card_share_the_likely_threshold_and_never_say_intense():
+    import re
+    from pathlib import Path
+    ts = (Path(__file__).resolve().parents[1] / "card/src/lib/derive.ts").read_text()
+    assert float(re.search(r"export const LIKELY_P = ([\d.]+);", ts).group(1)) == card.LIKELY_P
+    assert all(w != "Intense rain" for _, w in card.RAIN_WORDS.values())

@@ -152,7 +152,7 @@
     {
       "label": "Tomorrow",
       "icon": "heavy-rain",
-      "description": "Intense rain",
+      "description": "Heavy rain at times",
       "lowF": 45,
       "highF": 52,
       "rainIn": 2.6
@@ -185,7 +185,7 @@
     "actionTitle": "Driveway · 18th & Shotwell",
     "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
     "context": "Potential upstream pooling near 17th & Folsom is a local indicator; its relationship to driveway flooding is not yet validated.",
-    "prepare": "Consider checking flood barriers and moving vulnerable items before the storm."
+    "prepare": "Consider checking flood barriers before the storm."
   },
   "timeline": {
     "title": "Rain & flood outlook",

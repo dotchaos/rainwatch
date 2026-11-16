@@ -427,7 +427,9 @@ export interface ChartBlock { start: number; end: number; level: number; shiftin
  */
 export function chartBlocks(s: Scenario): ChartBlock[] {
   const out: ChartBlock[] = [];
-  const at = (h: number) => s.timeline?.intervals.find(q => q.startHour <= h && h < q.endHour);
+  const shown = shownRungs(s);
+  const raw = (h: number) => s.timeline?.intervals.find(q => q.startHour <= h && h < q.endHour);
+  const at = (h: number) => { const p = raw(h); return p && shown(h, p.severity) !== p.severity ? { ...p, severity: shown(h, p.severity) as 0 | 1 | 2 | 3 } : p; };
   /** One piece of the graph over hours a..b: its highest rung, dashed when that rung may shift. */
   const piece = (a: number, b: number): ChartBlock => {
     let level = 0, shifting = false, unknown = false;
@@ -444,7 +446,7 @@ export function chartBlocks(s: Scenario): ChartBlock[] {
     const start = Math.max(a, nowAt(s)), end = Math.min(a + 3, 72);
     if (end <= start) continue;                               // already past (an aging card)
     const block = piece(start, end);
-    // Sandbags is a risk window, so on flood days its edges are drawn at the hour, not rounded to the block
+    // Sandbags is a risk window, so when it is shown its edges are drawn at the hour, not rounded to the block
     if (s.hazard === 'flood' && block.level === 3) {
       let h = start;
       while (h < end) {
@@ -460,7 +462,19 @@ export function chartBlocks(s: Scenario): ChartBlock[] {
 /** Graph callouts: Sandbags risk windows on validated local flood days only (never other rungs, never heat).
  *  Each names the risk window itself ("Thu 4–9 PM"), not the time to prepare by. */
 export function sandbagsCallouts(s: Scenario) {
-  return s.hazard === 'flood' && s.alert ? peakWindows(s) : [];
+  return s.hazard === 'flood' && s.alert ? storms(s).filter(st => stormVoice(s, st) === 'action').flatMap(st => st.peaks) : [];
+}
+
+/**
+ * The rung the graph shows for an hour (v0.19). Sandbags is a recommendation, not a rain intensity: it is shown only
+ * in a storm whose voice is action (an official flood product, or a validated and likely local flood level). Anywhere
+ * else a top-rung hour shows as Rain boots, the rain-driven level, and the possible flooding is said in words (the hero).
+ * Heat cards are unchanged.
+ */
+export function shownRungs(s: Scenario): (h: number, rung: number) => number {
+  if (s.hazard !== 'flood') return (_h, r) => r;
+  const act = storms(s).filter(st => stormVoice(s, st) === 'action');
+  return (h, r) => r === 3 && !act.some(st => st.start <= h && h < st.end) ? 2 : r;
 }
 
 /** Half-day labels for the rolling axis: AM or PM centred on each half-day with at least 6 hours in view. */
@@ -767,6 +781,12 @@ function roughWhen(s: Scenario, h: number, head = false): string {
   return part === 'early' ? `early ${day}` : `${day} ${part}`;
 }
 
+/** "in the morning", "in the afternoon" …: a part of the day without the day (the headline already names it). */
+function roughPart(s: Scenario, h: number): string {
+  const L = localHour(s, h);
+  return L < 5 ? 'overnight' : L < 12 ? 'in the morning' : L < 17 ? 'in the afternoon' : L < 21 ? 'in the evening' : 'late';
+}
+
 export interface FloodHero { voice: Voice; headline: string; detail: string; action: string; note: string; storm: Storm }
 /**
  * The hero for a storm reaching the top rung (flood days). Three different times, never interchanged:
@@ -785,8 +805,7 @@ export function floodHero(s: Scenario): FloodHero | null {
   const dayRow = s.days[dayIndexAt(s, heavy.start)];
   const dayName = relDay(s, heavy.start), onDay = dayName === 'today' ? 'today' : dayName === 'tomorrow' ? 'tomorrow' : fullDay[dayName];
   const dayAmt = dayRow?.rainIn !== undefined && dayRow.rainIn >= 0.1 ? tenths(dayRow.rainIn) : null;
-  // awareness wording (the sentence already names the day) and the factual line (names it)
-  const amt = own !== undefined && own >= 0.1 ? `around ${tenths(own)}" expected` : dayAmt ? `around ${dayAmt}" expected through the day` : null;
+  // the factual line names the day; the awareness sentence doesn't (the headline already does)
   const amtFact = own !== undefined && own >= 0.1 ? `Around ${tenths(own)}" in all.` : dayAmt ? `Around ${dayAmt}" ${onDay}.` : '';
   const flooding = 'Localized flooding is possible.';
   const official = st.official.length ? `${joinAnd([...new Set(st.official.map(o => o.event))])} from the National Weather Service.` : '';
@@ -796,10 +815,13 @@ export function floodHero(s: Scenario): FloodHero | null {
     + (amtFact ? ` ${amtFact}` : '');
 
   if (voice === 'awareness') {
+    // v0.19 review: the headline names the day once; the detail and the flood line don't repeat it
     const headline = heavyNow ? 'Heavy rain possible now' : `Keep an eye on ${roughWhen(s, heavy.start, true)}`;
-    const detail = `Heavy rain is possible ${heavyNow ? 'now' : roughWhen(s, heavy.start)}${amt ? `, with ${amt}` : ''}. ${flooding}`;
-    return { voice, storm: st, headline, detail,
-             action: `Potential drainage flooding · ${heavyNow ? 'Now' : cap(roughWhen(s, peak.startHour))}`,
+    const when = heavyNow ? 'now' : heavy.start - st.start <= 6 ? 'early on' : roughPart(s, heavy.start);
+    const total = own !== undefined && own >= 0.1 ? tenths(own) : dayAmt;
+    const detail = total ? `Around ${total}" of rain expected, with heavy bursts possible ${when}. ${flooding}`
+      : `Heavy bursts of rain possible ${when}. ${flooding}`;
+    return { voice, storm: st, headline, detail, action: 'Potential drainage flooding',
              note: [s.alert.prepare ?? s.alert.action, s.alert.context].filter(Boolean).join(' ') };
   }
   if (voice === 'anticipation') {

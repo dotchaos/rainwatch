@@ -155,7 +155,7 @@
   },
   {
    "label": "Wednesday",
-   "description": "Intense rain",
+   "description": "Rain, heavy at times possible",
    "icon": "heavy-rain",
    "lowF": 50,
    "highF": 60,
@@ -270,8 +270,8 @@
  "alert": {
   "actionTitle": "Driveway · 18th & Shotwell",
   "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
-  "context": "Rated against levels from 4 past floods near 17th & Folsom (2012–2022); their relationship to driveway flooding at 18th & Shotwell is not yet validated.",
-  "prepare": "Consider checking flood barriers and moving vulnerable items before the storm."
+  "context": "Local driveway risk isn't validated yet.",
+  "prepare": "Consider checking flood barriers before the storm."
  },
  "evidence": {
   "pHeavy": [

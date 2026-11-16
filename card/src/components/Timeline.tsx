@@ -1,6 +1,6 @@
 import type { Scenario } from '../types';
 import { daysAt, intervalColor, layoutLabels, levelLabels, windowLabel } from '../lib/rules';
-import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts, storms } from '../lib/derive';
+import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts, shownRungs, storms } from '../lib/derive';
 
 /**
  * 3-day gear forecast: the compact graph of rain gear over the rolling 72 hours from now (v0.12.2; heading v0.15).
@@ -66,10 +66,12 @@ function srItems(s: Scenario, full: string[]) {
   const timing = (sure: boolean) => `timing ${sure ? 'more certain' : 'approximate'}`;
   if (s.hazard === 'heat') return s.timeline!.intervals.filter(p => p.severity > 0)
     .map((p, i) => <li key={i}>{`${windowLabel(s, p)}: ${full[p.severity]}, ${timing(p.confidence === 'higher')}`}</li>);
+  const shown = shownRungs(s);
   return storms(s).map(st => {
-    const parts = [`${windowLabel(s, { startHour: st.start, endHour: st.end })}: ${full[st.rung]} at most`];
-    if (st.heavy) parts.push(`${full[2]} or more ${windowLabel(s, { startHour: st.heavy.start, endHour: st.heavy.end })}`);
-    if (st.peaks.length) parts.push(`${full[3]} ${st.peaks.map(p => p.label).join(' and ')}`);
+    const top = shown(st.start, st.rung);                       // Sandbags only where the graph shows it
+    const parts = [`${windowLabel(s, { startHour: st.start, endHour: st.end })}: ${full[top]} at most`];
+    if (st.heavy) parts.push(`${full[2]}${top > 2 ? ' or more' : ''} ${windowLabel(s, { startHour: st.heavy.start, endHour: st.heavy.end })}`);
+    if (st.peaks.length && top === 3) parts.push(`${full[3]} ${st.peaks.map(p => p.label).join(' and ')}`);
     return <li key={st.start}>{`${parts.join('; ')}, ${timing(st.sure)}`}</li>;
   });
 }
