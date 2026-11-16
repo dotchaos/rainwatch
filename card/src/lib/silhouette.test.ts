@@ -60,7 +60,7 @@ describe('missing data', () => {
 });
 
 describe('flood overlay', () => {
-  it('spans exactly the potential-flooding window, as its own shape in the flood row, detached from the clothing shape', () => {
+  it('spans exactly the potential-flooding window and meets the Rain gear plateau, outlined on the sides and top only', () => {
     const s = byId('storm-ahead'), [w] = floodPotentials(s).filter(p => p.on);
     const html = renderToString(createElement(WeatherCard, { scenario: s, potential: 'outline', graph: 'silhouette' }));
     const g = html.match(/class="chart-potential" data-x="([\d.]+)" data-w="([\d.]+)" data-top="([\d.]+)" data-floor="([\d.]+)"/)!.slice(1).map(Number);
@@ -68,7 +68,9 @@ describe('flood overlay', () => {
     expect(g[0]).toBeCloseTo(x(w.startHour) + .6, 1);
     expect(g[0] + g[1]).toBeCloseTo(x(w.endHour) - .6, 1);
     expect(g[2]).toBeGreaterThanOrEqual(20);                         // inside the flood row
-    expect(g[3]).toBeLessThan(132 - 3 * 28);                         // with a gap above Rain gear: detached
+    expect(g[3]).toBe(132 - 3 * 28);                                // its floor is the Rain gear plateau: attached
+    const outline = html.slice(html.indexOf('class="chart-potential"')).match(/<path d="([^"]+)" fill="none"/)![1];
+    expect(outline.trim().endsWith('Z')).toBe(false);                // no dashed floor over the blue edge
     expect(html).toContain('Potential flooding, not yet a sandbag recommendation: Wed 4–8 AM.');
     expect(html).toContain('Potential flooding · Not yet a sandbag recommendation');
   });
