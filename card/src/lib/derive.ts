@@ -781,7 +781,7 @@ function roughWhen(s: Scenario, h: number, head = false): string {
   return part === 'early' ? `early ${day}` : `${day} ${part}`;
 }
 
-/* ---------- Flood potential (v0.19 exploration, lab only) ---------- */
+/* ---------- Flood potential (v0.19; live Nov 16 2026, thresholds provisional) ---------- */
 
 /**
  * The state between "nothing" and Sandbags: an emerging flood concern, not a recommendation. Proposed trigger, all

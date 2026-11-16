@@ -29,7 +29,7 @@ function Live(){
  if(!card)return <main className="live"><p className="muted">Loading the forecast…</p></main>;
  const shown=ageCard(card,elapsedHours(card,Date.now()));   // the card as of now on this device (v0.18)
  const errors=validateScenario(shown), gen=card.provenance.generated??'', stale=gen&&(Date.now()-new Date(gen).getTime())>45*60000;
- return <main className="live"><div className={`live-bar${stale?' stale':''}`}><span>{stale?`Late: last updated ${ago(gen)}`:''}</span><span><a href="details/">Details</a> · <a href="?lab">Scenario lab</a></span></div><WeatherCard scenario={shown} detailsHref="details/"/>{errors.length>0&&<div className="validation">Forecast data problem: {errors.join(', ')}</div>}</main>;
+ return <main className="live"><div className={`live-bar${stale?' stale':''}`}><span>{stale?`Late: last updated ${ago(gen)}`:''}</span><span><a href="details/">Details</a> · <a href="?lab">Scenario lab</a></span></div><WeatherCard scenario={shown} detailsHref="details/" potential="outline"/>{errors.length>0&&<div className="validation">Forecast data problem: {errors.join(', ')}</div>}</main>;
 }
 /** ?lab&potential: the flood-potential state (v0.19 exploration) on the Storm ahead fixture, three ways side by side. */
 function PotentialLab(){const s=scenarios.find(x=>x.id==='storm-ahead')!;const p=floodPotentials(s);
