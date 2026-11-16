@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.21 (lab only, review branch going-out): Going out as a silhouette
+- `?lab&graph`: the Going out graph drawn as one continuous shape, beside the current columns, for calm (forced), intermittent rain, the Wednesday storm, the extreme storm and the incomplete forecast. Live card unchanged.
+- Rendering only: the same level for every hour as the columns. Plateaus at band centres; each level change is a vertical edge on the hour, corners rounded only; the shape breaks at missing hours (no-data hatch kept); dashed top edge where timing is approximate; potential flooding a separate dashed field over its exact hours. Flat band tones (pale grey, jacket blue, rain-gear blue; Sandbags only when recommended); no gradients, shadows or outlines beyond the thin top edge.
+- Hour by hour, so it is narrower than the 3-hour columns where rain is brief (Wednesday's Rain gear: 6 hours, not 9).
+
 ## v0.20 (review branch going-out, not deployed): Going out
 - **The graph asks one question: what to wear going out.** Title "Going out" with "Next 3 days"; rungs Usual clothes, Umbrella or jacket, Rain gear. Sandbags (property) gets an axis label only when it is recommended and drawn; potential flooding floats above Rain gear, explained by its key.
 - **Dry is a state:** forecast hours that need nothing get a pale band; hours with no forecast keep the grey hatch.

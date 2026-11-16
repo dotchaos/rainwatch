@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import type { Scenario } from './types';
 import { scenarios } from './data/scenarios';
 import { WeatherCard } from './components/WeatherCard';
+import { Timeline } from './components/Timeline';
 import { validateScenario } from './lib/rules';
 import { ageCard, elapsedHours, floodPotentials } from './lib/derive';
 import './styles.css';
@@ -37,6 +38,19 @@ function PotentialLab(){const s=scenarios.find(x=>x.id==='storm-ahead')!;const p
  return <main><header className="lab-header"><div><div className="eyebrow">SCENARIO LAB · FLOOD POTENTIAL (EXPLORATION)</div><h1>Between Boots and Sandbags.</h1><p>Storm ahead (live forecast, Mon Nov 16, 8 AM). Hero unchanged; only the graph differs.</p></div></header>
  <div className="lab-compare">{([['Now (branch): Boots only',undefined],['A · dashed outline over Boots',"outline"],['B · range bar',"range"]] as const).map(([t,v])=><div key={t}><h3>{t}</h3><WeatherCard scenario={s} potential={v as any}/></div>)}</div>
  <div className="lab-checks">{p.map(w=><p key={w.startHour}><b>{w.label}: flood potential {w.on?'shown':'not shown'}.</b> Agreement: {w.checks.agreement.systems} of {w.checks.agreement.of} model systems put 10%+ of their runs at the flood level in the window ({yes(w.checks.agreement.ok)}, needs 2). Sustained: {w.checks.sustained.hours} hours with 10%+ of all runs at the level ({yes(w.checks.sustained.ok)}, needs 2). Size: {Math.round(w.checks.size.pBehind*100)}% of runs reach the drains-falling-behind level at some hour of the window ({yes(w.checks.size.ok)}, needs half).</p>)}</div></main>}
+/** ?lab&graph: Going out as columns (live) vs the silhouette (v0.21), side by side, for the review scenarios. */
+function GraphLab(){
+ const by=(id:string)=>structuredClone(scenarios.find(x=>x.id===id)!) as Scenario;
+ // calm days show no graph (unchanged); for review only, the calm fixture with an all-dry outlook
+ const calm=Object.assign(by('october'),{hazard:'rain',timeline:{title:'Rain outlook',intervals:[]}}) as Scenario;
+ const rows:[string,Scenario,boolean][]=[['Calm weather (no graph on calm days; forced here for review)',calm,false],['Intermittent rain',by('rain'),false],
+  ['Wednesday storm, flood potential (live forecast Mon 8 AM)',by('storm-ahead'),true],['Extreme storm, actionable flood risk (Flood Watch)',by('storm'),false],['Incomplete forecast',by('incomplete'),false]];
+ return <main><header className="lab-header"><div><div className="eyebrow">SCENARIO LAB · GOING OUT AS A SILHOUETTE (V0.21)</div><h1>Columns vs silhouette.</h1><p>Same forecast, same levels hour by hour; only the drawing differs.</p></div></header>
+ {rows.map(([t,s,pot])=><section key={t} className="graph-pair"><h3>{t}</h3><div className="graph-pair-row">
+  <div><span className="muted">Current</span><article className="weather-card"><Timeline scenario={s} potential={pot?'outline':undefined}/></article></div>
+  <div><span className="muted">Silhouette</span><article className="weather-card"><Timeline scenario={s} potential={pot?'outline':undefined} graph="silhouette"/></article></div></div></section>)}
+ </main>}
 const lab=new URLSearchParams(location.search).has('lab');
+const graphLab=lab&&new URLSearchParams(location.search).has('graph');
 const potentialLab=lab&&new URLSearchParams(location.search).has('potential');
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{potentialLab?<PotentialLab/>:lab?<Lab/>:<Live/>}</React.StrictMode>);
+ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{graphLab?<GraphLab/>:potentialLab?<PotentialLab/>:lab?<Lab/>:<Live/>}</React.StrictMode>);

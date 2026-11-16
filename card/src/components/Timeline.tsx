@@ -1,6 +1,7 @@
 import type { Scenario } from '../types';
 import { daysAt, intervalColor, layoutLabels, levelLabels, windowLabel } from '../lib/rules';
 import { chartBlocks, coverageNote, edgeNote, floodPotentials, halfDayLabels, sandbagsCallouts, shownRungs, storms } from '../lib/derive';
+import { segmentPath, segments, silhouetteRuns } from '../lib/silhouette';
 
 /**
  * 3-day gear forecast: the compact graph of rain gear over the rolling 72 hours from now (v0.12.2; heading v0.15).
@@ -27,8 +28,16 @@ export type PotentialStyle = 'outline' | 'range';
  *  border in the Sandbags colour (3 on, 2 off). Opaque, never transparency. */
 const POTENTIAL_FILL = '#ede9e6', POTENTIAL_DASH = '3 2';
 
-export function Timeline({ scenario: s, potential }: { scenario: Scenario; potential?: PotentialStyle }) {
+/** 'columns': the 3-hour blocks (live). 'silhouette': the continuous Going out shape (v0.21, lab only); heat stays columns. */
+export type GraphStyle = 'columns' | 'silhouette';
+/** Silhouette (v0.21): four equal bands; each level's plateau sits at its band's centre. Tone by band, flat fills:
+ *  the dry band's pale grey, then the established jacket and rain-gear blues, Sandbags only when recommended. */
+const bandTop = (i: number) => base - (i + 1) * step, plateau = (i: number) => base - (i + 0.5) * step;
+const CORNER = 3, EDGE = '#3f7395';
+
+export function Timeline({ scenario: s, potential, graph = 'columns' }: { scenario: Scenario; potential?: PotentialStyle; graph?: GraphStyle }) {
   if (!s.timeline) return null;
+  const sil = graph === 'silhouette' && s.hazard !== 'heat';
   const heat = s.hazard === 'heat', labels = heat ? SHORT_HEAT : SHORT_RAIN, full = levelLabels(s);
   const days = daysAt(s.startDay, s.startHourLocal);
   const callouts = sandbagsCallouts(s).map(w => ({ ...w, center: x((w.startHour + w.endHour) / 2), width: Math.min(130, Math.max(70, w.label.length * 5.6 + 14)) }));
@@ -40,23 +49,24 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
   const title = heat ? 'Next 3 days' : 'Going out';
   const blocks = chartBlocks(s);
   // top rung (John, Nov 16): "Flood potential", or "Sandbags" when Sandbags is recommended and drawn
-  const sandbagsShown = blocks.some(b => b.level === 3);
+  const sandbagsShown = blocks.some(b => b.level === 3);   // the same hours, whichever way they are drawn
   return <section className="timeline-section" aria-label={heat ? title : `${title}, next 3 days`}>
     <div className="section-heading"><strong>{title}</strong>{!heat && <span>Next 3 days</span>}</div>
     <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
-      aria-label={`${heat ? 'Heat forecast' : 'What to wear going out'} for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${pots.length ? ` Potential flooding, not yet a sandbag recommendation: ${pots.map(p => p.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
+      aria-label={`${heat ? 'Heat forecast' : 'What to wear going out'} for the next 72 hours, ${sil ? 'hour by hour. Solid edge: timing more certain; dashed edge: timing approximate.' : 'in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.'}${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${pots.length ? ` Potential flooding, not yet a sandbag recommendation: ${pots.map(p => p.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
       <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern>
 </defs>
       {callouts.map((c, i) => {
         const { left, row } = placed[i], ty = (rows - 1 - row) * 24, color = intervalColor(s, 3);
         return <g key={c.label}>
-          <line x1={c.center} x2={c.center} y1={ty + 20} y2={top + base - 3 * step} stroke={color} strokeWidth="1.5" strokeDasharray={c.sure ? undefined : '2 2'} />
+          <line x1={c.center} x2={c.center} y1={ty + 20} y2={top + (sil ? plateau(3) : base - 3 * step)} stroke={color} strokeWidth="1.5" strokeDasharray={c.sure ? undefined : '2 2'} />
           <rect x={left} y={ty} width={c.width} height="20" rx="4" fill={color} />
           <text x={left + c.width / 2} y={ty + 13.5} className="chart-window" textAnchor="middle">{c.label}</text>
         </g>;
       })}
       <g transform={`translate(0 ${top})`}>
         {days.map((d, i) => (i === 0 || d.end - d.start >= 12) && <text key={d.start} x={dayLabelX(d.start, d.end, i === 0)} y={12} textAnchor={i === 0 && d.end - d.start < 12 ? 'start' : 'middle'} className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
+        {sil ? <SilhouettePlot s={s} labels={labels} sandbagsShown={sandbagsShown} pots={pots} /> : <>
         {labels.map((l0, i) => { const l = !heat && i === 3 && !sandbagsShown ? 'Flood potential' : l0; const y = base - i * step;
           // each label sits centred in its own band (v0.20): Usual clothes on the pale dry band; Umbrella or jacket
           // between the dry band and its line; the others between their line and the one below. Heat: on the lines.
@@ -91,6 +101,8 @@ export function Timeline({ scenario: s, potential }: { scenario: Scenario; poten
                 <line x1={a} x2={a} y1={yS} y2={yB} /><line x1={b} x2={b} y1={yS} y2={yB} />
               </g>;
         })}
+        </>}
+        {sil && days.slice(1).map(d => <line key={`m-${d.start}`} x1={x(d.start)} x2={x(d.start)} y1={22} y2={base} className="chart-midnight" />)}
         {halfDayLabels(s).map(l => <text key={l.at} x={x(l.at)} y={base + 18} textAnchor="middle" className="chart-time">{l.text}</text>)}
       </g>
     </svg>
@@ -115,4 +127,28 @@ function srItems(s: Scenario, full: string[]) {
     if (st.peaks.length && top === 3) parts.push(`${full[3]} ${st.peaks.map(p => p.label).join(' and ')}`);
     return <li key={st.start}>{`${parts.join('; ')}, ${timing(st.sure)}`}</li>;
   });
+}
+
+/** The continuous Going out shape (v0.21, lab). Plateaus at band centres, vertical edges on the hour, corners rounded
+ *  only (segmentPath); missing hours break the shape and keep the no-data hatch; potential flooding is a separate dashed
+ *  field over its exact hours, standing on the shape, never blended into it. */
+function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; labels: string[]; sandbagsShown: boolean;
+                         pots: ReturnType<typeof floodPotentials> }) {
+  const runs = silhouetteRuns(s), segs = segments(runs);
+  const fills = [DRY_FILL, intervalColor(s, 1), intervalColor(s, 2), intervalColor(s, 3)];
+  return <>
+    <defs>{segs.map((g, k) => <clipPath key={k} id={`sil-${s.id}-${k}`}><path d={segmentPath(g, x, plateau, base, CORNER)} /></clipPath>)}</defs>
+    {labels.map((l0, i) => { const l = i === 3 && !sandbagsShown ? 'Flood potential' : l0;
+      return <text key={l} x={x0 - 8} y={plateau(i) + 3.5} textAnchor="end" className="chart-label">{l}</text>; })}
+    {segs.map((g, k) => <g key={k} clipPath={`url(#sil-${s.id}-${k})`} className="chart-silhouette">
+      {fills.map((c, i) => <rect key={i} x={x(g[0].start)} y={bandTop(i)} width={x(g[g.length - 1].end) - x(g[0].start)} height={step} fill={c} />)}
+    </g>)}
+    {runs.filter(r => r.unknown).map(r => <rect key={`u-${r.start}`} x={x(r.start)} y={base - 3 * step} width={x(r.end) - x(r.start)} height={3 * step} fill="url(#nodata)" />)}
+    {runs.filter(r => !r.unknown && r.level > 0).map(r => <line key={`e-${r.start}`} className="chart-sil-edge" x1={x(r.start)} x2={x(r.end)}
+      y1={plateau(r.level)} y2={plateau(r.level)} stroke={EDGE} strokeWidth="1" strokeOpacity=".55" strokeDasharray={r.sure ? undefined : '2.5 2'} />)}
+    {pots.map(p => <rect key={`pot-${p.startHour}`} className="chart-potential" x={x(p.startHour) + .6} y={bandTop(3) + 3}
+      width={x(p.endHour) - x(p.startHour) - 1.2} height={plateau(2) - bandTop(3) - 3.6} rx="4"
+      fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />)}
+    <line x1={x0} x2={x(72)} y1={base} y2={base} className="chart-base" />
+  </>;
 }

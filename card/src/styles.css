@@ -99,3 +99,7 @@
 .lab-compare{display:grid;grid-template-columns:repeat(3,minmax(0,380px));gap:22px;justify-content:center;align-items:start}
 .lab-compare h3{font-size:13px;margin:0 0 8px}.lab-checks{font-size:12px;color:#55646d;max-width:1180px;margin:18px auto 0;line-height:1.5}
 .timeline-section .chart-potential-key svg{width:22px;max-width:none;flex:none;margin:0;display:inline-block}
+/* Graph lab (v0.21): current vs silhouette, phone-width cards */
+.graph-pair{max-width:820px;margin:0 auto 26px}.graph-pair h3{font-size:14px;margin:0 0 8px}
+.graph-pair-row{display:grid;grid-template-columns:repeat(2,minmax(0,390px));gap:20px}
+.graph-pair-row .weather-card{margin-top:4px}.graph-pair-row .weather-card section{border-top:0;padding-top:0}
