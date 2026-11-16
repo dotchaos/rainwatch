@@ -45,5 +45,13 @@ def test_matched_to_median_adds_up_to_the_shown_total():
     M = np.full((10, 6), 0.05)
     M[:2] = 0.40                                   # two very wet runs pull the mean up
     B = shading.matched_to_median(M)
-    assert abs(B.sum() - np.median(M.sum(axis=1))) < 1e-9
+    assert B.sum() <= np.median(M.sum(axis=1)) + 1e-9  # adds up to the shown total (less if the peak cap applies)
     assert max(B) < 0.20                           # no heavy hour the typical run doesn't have
+
+
+def test_no_hour_heavier_than_the_typical_runs_peak():
+    rng = np.random.default_rng(1)
+    M = rng.gamma(0.5, 0.06, size=(40, 24))
+    M[:8, 5] = 0.6                                 # a fifth of the runs have one very heavy hour
+    B = shading.matched_to_median(M)
+    assert max(B) <= np.median(M.max(axis=1)) + 1e-12
