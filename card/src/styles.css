@@ -71,7 +71,13 @@
 .upcoming p{margin:3px 0 0 26px;font-size:14px;color:#7b8991;line-height:1.4}
 
 /* Next hours: the half-visible hour at the card edge fades instead of being cut mid-label (v0.14). */
-.hours-scroll{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 44px),transparent)}
+/* v0.19: no CSS mask on the scroller. A mask on a scrolling element with a sticky, layered child (the day pins) can
+   paint as a solid black box in WebKit and in page captures (iOS full-page screenshots, PDF). The fade is now a plain
+   white overlay on a non-scrolling wrapper; it ignores taps so the row still scrolls under it. */
+.hours-fade{position:relative}
+.hours-fade::after{content:'';position:absolute;top:0;bottom:0;right:-22px;width:44px;pointer-events:none;
+  background:linear-gradient(to right,rgba(255,255,255,0),#fff)}
+@media(max-width:420px){.hours-fade::after{right:-12px}}
 
 /* Upcoming module as a link (v0.15): same look, the whole module tappable; a quiet chevron says it goes somewhere. */
 .upcoming-link{display:block;color:inherit;text-decoration:none;border-radius:6px;cursor:pointer}
@@ -88,3 +94,8 @@
 .hour-pin{position:sticky;left:0;z-index:1;align-self:flex-start;flex:0 0 52px;margin:-16px -52px 0 0;height:13px;
   background:#fff;font-style:normal;font-size:9px;font-weight:700;letter-spacing:.04em;line-height:13px;color:#26343d;
   text-transform:uppercase;padding-left:2px;white-space:nowrap}
+/* Flood potential (v0.19 exploration, lab only): a quiet key under the graph */
+.chart-potential-key{display:flex;align-items:center;justify-content:center;gap:7px;margin:6px 0 0;font-size:11px;color:#7b8991}
+.lab-compare{display:grid;grid-template-columns:repeat(3,minmax(0,380px));gap:22px;justify-content:center;align-items:start}
+.lab-compare h3{font-size:13px;margin:0 0 8px}.lab-checks{font-size:12px;color:#55646d;max-width:1180px;margin:18px auto 0;line-height:1.5}
+.timeline-section .chart-potential-key svg{width:22px;max-width:none;flex:none;margin:0;display:inline-block}

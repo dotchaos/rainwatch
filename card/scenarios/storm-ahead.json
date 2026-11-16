@@ -1,0 +1,437 @@
+{
+ "id": "storm-ahead",
+ "title": "Storm ahead",
+ "season": "November",
+ "location": "18th & Shotwell",
+ "observedAt": "Monday · 8:03 AM",
+ "startDay": "Mon",
+ "startHourLocal": 8,
+ "hazard": "flood",
+ "current": {
+  "temperatureF": 53,
+  "condition": "Cloudy",
+  "icon": "overcast",
+  "highF": 58,
+  "lowF": 48
+ },
+ "hourly": [
+  {
+   "hour": 0,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 1,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 2,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 3,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 4,
+   "temperatureF": 55,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 5,
+   "temperatureF": 56,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 6,
+   "temperatureF": 56,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 7,
+   "temperatureF": 58,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 8,
+   "temperatureF": 56,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 9,
+   "temperatureF": 52,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 10,
+   "temperatureF": 51,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 11,
+   "temperatureF": 50,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 12,
+   "temperatureF": 49,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 13,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 14,
+   "temperatureF": 49,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 15,
+   "temperatureF": 48,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 16,
+   "temperatureF": 48,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 17,
+   "temperatureF": 47,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 18,
+   "temperatureF": 47,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 19,
+   "temperatureF": 47,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 20,
+   "temperatureF": 47,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 21,
+   "temperatureF": 46,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 22,
+   "temperatureF": 47,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 23,
+   "temperatureF": 47,
+   "icon": "clear-day"
+  }
+ ],
+ "days": [
+  {
+   "label": "Today",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 48,
+   "highF": 58,
+   "rainIn": 0.01
+  },
+  {
+   "label": "Tomorrow",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 46,
+   "highF": 57,
+   "rainIn": 0.01
+  },
+  {
+   "label": "Wednesday",
+   "description": "Rain, heavy at times possible",
+   "icon": "heavy-rain",
+   "lowF": 50,
+   "highF": 60,
+   "rainIn": 1.54
+  },
+  {
+   "label": "Thursday",
+   "description": "Rain at times",
+   "icon": "rain",
+   "lowF": 52,
+   "highF": 57,
+   "rainIn": 0.59
+  },
+  {
+   "label": "Friday",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 51,
+   "highF": 58,
+   "rainIn": 0.0
+  }
+ ],
+ "observedNow": {
+  "rainingNow": null,
+  "recentRain": false
+ },
+ "rainHours": [
+  {
+   "startHour": 41,
+   "endHour": 44,
+   "intensity": 1
+  },
+  {
+   "startHour": 44,
+   "endHour": 46,
+   "intensity": 2
+  },
+  {
+   "startHour": 46,
+   "endHour": 47,
+   "intensity": 1
+  },
+  {
+   "startHour": 47,
+   "endHour": 50,
+   "intensity": 3
+  },
+  {
+   "startHour": 50,
+   "endHour": 77,
+   "intensity": 1
+  }
+ ],
+ "provenance": {
+  "type": "illustrative",
+  "note": "Based on the live forecast of Mon Nov 16, 8 AM; flood-level shares illustrative. Not official guidance."
+ },
+ "timeline": {
+  "title": "Rain & flood outlook",
+  "intervals": [
+   {
+    "startHour": 41,
+    "endHour": 44,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 44,
+    "endHour": 45,
+    "severity": 3,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 45,
+    "endHour": 46,
+    "severity": 2,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 46,
+    "endHour": 48,
+    "severity": 3,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 48,
+    "endHour": 50,
+    "severity": 2,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 50,
+    "endHour": 72,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   }
+  ]
+ },
+ "rainTotals": [
+  {
+   "startHour": 41,
+   "endHour": 72,
+   "medianIn": 2.15
+  }
+ ],
+ "alert": {
+  "actionTitle": "Driveway · 18th & Shotwell",
+  "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
+  "context": "Local driveway risk isn't validated yet.",
+  "prepare": "Consider checking flood barriers before the storm."
+ },
+ "evidence": {
+  "pHeavy": [
+   0.02,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0.08,
+   0.08,
+   0.08,
+   0.36,
+   0.36,
+   0.36,
+   0.34,
+   0.34,
+   0.34,
+   0.1,
+   0.1,
+   0.1,
+   0.01,
+   0.01,
+   0.01,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "pFlood": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0.13,
+   0.09,
+   0.16,
+   0.21,
+   0.08,
+   0.07,
+   0.07,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "floodValidated": false,
+  "potential": [
+   {
+    "startHour": 44,
+    "endHour": 48,
+    "pBehindAny": 0.6,
+    "pFloodAny": 0.33,
+    "systems": 3
+   }
+  ],
+  "systems": 3
+ }
+}

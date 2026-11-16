@@ -4,7 +4,7 @@ import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
 import { edgeNote, fiveDays, hourLabel, nowNext, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
-import { Timeline } from './Timeline';
+import { Timeline, type PotentialStyle } from './Timeline';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -73,7 +73,7 @@ function Hourly({ s }: { s: Scenario }) {
     </div>);
   });
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
-    <div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></section>;
+    <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div></section>;
 }
 
 /** A day's rain amount, only when it is rain worth a number (see DISPLAY-RULES.md, Rain amounts). */
@@ -130,11 +130,11 @@ function MoreInformation({ s, detailsHref }: { s: Scenario; detailsHref?: string
   </section>;
 }
 
-export function WeatherCard({ scenario: s, detailsHref }: { scenario: Scenario; detailsHref?: string }) {
+export function WeatherCard({ scenario: s, detailsHref, potential }: { scenario: Scenario; detailsHref?: string; potential?: PotentialStyle }) {
   return <article className="weather-card">
     <Header s={s} />
     <NowAndNext s={s} />
-    {showTimeline(s) && <Timeline scenario={s} />}
+    {showTimeline(s) && <Timeline scenario={s} potential={potential} />}
     <Hourly s={s} />
     <MoreInformation s={s} detailsHref={detailsHref} />
   </article>;

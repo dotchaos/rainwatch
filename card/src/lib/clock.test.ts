@@ -92,8 +92,8 @@ describe('what aging never does', () => {
 
 describe('flood alert as the time to prepare arrives', () => {
   it('"before <time>" until that time, then "now"', () => {
-    expect(deriveAlert(byId('storm'))!.headline).toBe('Protect your driveway before 2 PM.');
-    const a = ageCard(byId('storm'), 5);                                // 2 PM
+    expect(deriveAlert(byId('storm'))!.headline).toBe('Protect your driveway before noon.');   // 2 h before heavy rain (v0.19)
+    const a = ageCard(byId('storm'), 3);                                // noon
     expect(validateScenario(a)).toEqual([]);
     expect(deriveAlert(a)!.headline).toBe('Protect your driveway now.');
   });

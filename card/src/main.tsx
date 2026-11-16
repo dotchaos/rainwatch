@@ -5,7 +5,7 @@ import type { Scenario } from './types';
 import { scenarios } from './data/scenarios';
 import { WeatherCard } from './components/WeatherCard';
 import { validateScenario } from './lib/rules';
-import { ageCard, elapsedHours } from './lib/derive';
+import { ageCard, elapsedHours, floodPotentials } from './lib/derive';
 import './styles.css';
 const CHIP:Record<string,string>={october:'Calm',rain:'Intermittent','rain-soon':'Starting soon',storm:'Extreme storm',heat:'Heatwave',incomplete:'Incomplete',upcoming:'Bigger storm ahead'};
 function Lab(){const [selected,setSelected]=useState(scenarios[0].id);
@@ -29,7 +29,14 @@ function Live(){
  if(!card)return <main className="live"><p className="muted">Loading the forecast…</p></main>;
  const shown=ageCard(card,elapsedHours(card,Date.now()));   // the card as of now on this device (v0.18)
  const errors=validateScenario(shown), gen=card.provenance.generated??'', stale=gen&&(Date.now()-new Date(gen).getTime())>45*60000;
- return <main className="live"><div className={`live-bar${stale?' stale':''}`}><span>{stale?`Late: last updated ${ago(gen)}`:''}</span><span><a href="details/">Details</a> · <a href="?lab">Scenario lab</a></span></div><WeatherCard scenario={shown} detailsHref="details/"/>{errors.length>0&&<div className="validation">Forecast data problem: {errors.join(', ')}</div>}</main>;
+ return <main className="live"><div className={`live-bar${stale?' stale':''}`}><span>{stale?`Late: last updated ${ago(gen)}`:''}</span><span><a href="details/">Details</a> · <a href="?lab">Scenario lab</a></span></div><WeatherCard scenario={shown} detailsHref="details/" potential="outline"/>{errors.length>0&&<div className="validation">Forecast data problem: {errors.join(', ')}</div>}</main>;
 }
+/** ?lab&potential: the flood-potential state (v0.19 exploration) on the Storm ahead fixture, three ways side by side. */
+function PotentialLab(){const s=scenarios.find(x=>x.id==='storm-ahead')!;const p=floodPotentials(s);
+ const yes=(b:boolean)=>b?'met':'not met';
+ return <main><header className="lab-header"><div><div className="eyebrow">SCENARIO LAB · FLOOD POTENTIAL (EXPLORATION)</div><h1>Between Boots and Sandbags.</h1><p>Storm ahead (live forecast, Mon Nov 16, 8 AM). Hero unchanged; only the graph differs.</p></div></header>
+ <div className="lab-compare">{([['Now (branch): Boots only',undefined],['A · dashed outline over Boots',"outline"],['B · range bar',"range"]] as const).map(([t,v])=><div key={t}><h3>{t}</h3><WeatherCard scenario={s} potential={v as any}/></div>)}</div>
+ <div className="lab-checks">{p.map(w=><p key={w.startHour}><b>{w.label}: flood potential {w.on?'shown':'not shown'}.</b> Agreement: {w.checks.agreement.systems} of {w.checks.agreement.of} model systems put 10%+ of their runs at the flood level in the window ({yes(w.checks.agreement.ok)}, needs 2). Sustained: {w.checks.sustained.hours} hours with 10%+ of all runs at the level ({yes(w.checks.sustained.ok)}, needs 2). Size: {Math.round(w.checks.size.pBehind*100)}% of runs reach the drains-falling-behind level at some hour of the window ({yes(w.checks.size.ok)}, needs half).</p>)}</div></main>}
 const lab=new URLSearchParams(location.search).has('lab');
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{lab?<Lab/>:<Live/>}</React.StrictMode>);
+const potentialLab=lab&&new URLSearchParams(location.search).has('potential');
+ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{potentialLab?<PotentialLab/>:lab?<Lab/>:<Live/>}</React.StrictMode>);

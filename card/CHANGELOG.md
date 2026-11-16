@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.19: one storm, evidence-based voice, potential flooding
+- **One storm, not fragments.** A storm is one rain event; inside it the card names four different times and never mixes them: the rain onset, the heavy period (Rain boots or higher), the intensity peaks (Sandbags hours; a gap of 2 hours or less does not split a peak, because the far-range data comes in 3-hour blocks), and the time to prepare (2 hours before the heavy period, never before the onset). The hero, the action line, the graph callouts and the graph's screen-reader text all come from the same storm. Live Nov 16: "Sandbags around Wed 4–5 AM and Wed 6–8 AM" becomes one peak, Wed 4–8 AM.
+- **Voice from evidence, not a clock.** Action ("Protect your driveway before …") only with an official NWS flood product, or when the local flood level is validated and likely. Heavy rain likely (half the runs or more): anticipation ("Heavy rain likely early Wednesday", with onset, heavy period, peak and deadline). Otherwise awareness ("Keep an eye on Wednesday morning", day parts only, no clock times). Being close never escalates by itself.
+- **Engine:** `evidence` on the card: per-hour heavy-hour and flood-level odds, `floodValidated` (config, false), and official NWS flood products as hour offsets. `alert.prepare`: softer advice for awareness and anticipation.
+- **Preparation deadline moves earlier on flood days:** 2 hours before the heavy rain, as the advice itself says ("before heavy rain arrives"), not 2 hours before Sandbags (Extreme storm fixture: before 2 PM → before noon).
+- **Hourly row fade:** no CSS mask (a mask on the scroller with sticky day labels can paint as a black box in WebKit and page captures); a white overlay that ignores taps.
+- **Sandbags is a recommendation, not a rain level (review, Nov 16).** The graph shows Sandbags (bars, red callout) only in a storm whose voice is action; elsewhere those hours show as Rain boots and the possible flooding is said in words. The screen-reader text follows the graph.
+- **Day words describe the expected rain:** "Heavy rain at times" only when most runs have a heavy hour that day; otherwise "Rain, heavy at times possible". "Intense rain" is gone (also from current conditions).
+- **Tighter flood hero (awareness):** the day is named once. "Around 1.5" of rain expected, with heavy bursts possible early on. Localized flooding is possible." Flood line without a time; note shortened to "Consider checking flood barriers before the storm. Local driveway risk isn't validated yet." The calibration story stays on the details page.
+- **Potential flooding (live):** between Boots and Sandbags, when 2+ model systems agree, 2+ hours are at the flood level and half the runs reach drains falling behind in the peak window. Drawn over the solid Boots bars as a warm-grey field with a dashed border; key "Potential flooding · Not yet a sandbag recommendation". Never escalated by the clock.
+- **Fixtures:** new "Storm ahead" (the live forecast of Nov 16, 8 AM); "Extreme storm" gets illustrative evidence and a Flood Watch, so it still shows the action state.
+
 ## v0.18.1: hourly row fix (iOS)
 - The v0.17 hourly row grouped hours by day and sized them in container units; on iOS (WebKit) the groups mis-measured and hours from 10 PM on overlapped. Back to a flat row with the original percentage widths; day labels are zero-width sticky markers (each covers the last), and without sticky support they just sit above each day's first hour. A test keeps the row flat.
 

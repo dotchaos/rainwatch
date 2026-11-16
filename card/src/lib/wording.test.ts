@@ -97,4 +97,12 @@ describe('sections', () => {
     expect(css).not.toMatch(/cqw|container-type/);
     expect(css).toMatch(/\.hour\{flex:0 0 calc\(\(100% \+ 0px\) \/ 6\.5\)/);
   });
+
+  it('no CSS mask anywhere (v0.19: a mask on the scroller with sticky day pins can paint as a black box); the fade is an overlay that ignores taps', () => {
+    const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+    expect(css).not.toMatch(/mask-image|mask:/);
+    expect(css).toMatch(/\.hours-fade::after\{[^}]*pointer-events:none/);
+    const h = renderToString(createElement(WeatherCard, { scenario: byId('upcoming') }));
+    expect(h).toContain('<div class="hours-fade"><div class="hours-scroll"');
+  });
 });

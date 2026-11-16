@@ -336,7 +336,7 @@ def test_live_card_contract_and_levels():
         r = rep["rows"][p["startHour"]]
         assert card.rain_level(r, cfg) == p["severity"]
     if c["hazard"] == "flood":
-        assert c["alert"]["context"] and "not yet validated" in c["alert"]["context"]
+        assert c["alert"]["context"] == "Local driveway risk isn't validated yet."
     # wet or dry follows the rain pipeline: an hour shows precipitation exactly when the chart has gear there
     from rainwatch.sources.conditions import PRECIP_ICONS
     gear = {h for p in (c.get("timeline") or {}).get("intervals", []) if p["severity"] > 0

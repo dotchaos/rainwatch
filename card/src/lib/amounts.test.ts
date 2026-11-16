@@ -86,7 +86,7 @@ describe('rain amounts', () => {
   });
 
   it('only the rain-starting-soon and bigger-storm-ahead fixtures carry amounts; the others read as before', () => {
-    for (const s of scenarios) if (s.id !== 'rain-soon' && s.id !== 'upcoming') expect(s.rainTotals, s.id).toBeUndefined();
+    for (const s of scenarios) if (s.id !== 'rain-soon' && s.id !== 'upcoming' && s.id !== 'storm-ahead') expect(s.rainTotals, s.id).toBeUndefined();
     expect(deriveInsight(scenarios.find(s => s.id === 'rain-soon')!)!.detail).toContain('About 0.6" of rain.');
   });
 });

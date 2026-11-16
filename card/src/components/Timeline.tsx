@@ -1,6 +1,6 @@
 import type { Scenario } from '../types';
 import { daysAt, intervalColor, layoutLabels, levelLabels, windowLabel } from '../lib/rules';
-import { chartBlocks, coverageNote, edgeNote, halfDayLabels, sandbagsCallouts } from '../lib/derive';
+import { chartBlocks, coverageNote, edgeNote, floodPotentials, halfDayLabels, sandbagsCallouts, shownRungs, storms } from '../lib/derive';
 
 /**
  * 3-day gear forecast: the compact graph of rain gear over the rolling 72 hours from now (v0.12.2; heading v0.15).
@@ -17,7 +17,15 @@ const x = (h: number) => x0 + (h / 72) * plotW;
 const dayLabelX = (a: number, b: number, today: boolean) => today && b - a < 12 ? x(a) + 2 : x((a + b) / 2);
 const SHORT_RAIN = ['No gear', 'Jacket', 'Boots', 'Sandbags'], SHORT_HEAT = ['Comfort', 'Hot', 'Very hot', 'Extreme'];
 
-export function Timeline({ scenario: s }: { scenario: Scenario }) {
+/** Lab-only drawings of the flood-potential state (v0.19 exploration). 'outline': a dotted box in the Sandbags hue
+ *  from the Boots rung up to the Sandbags rung over the window. 'range': a dotted line at the Sandbags rung with end
+ *  ticks down to Boots, like a range bar. Neither is filled, so neither reads as a forecast level. */
+export type PotentialStyle = 'outline' | 'range';
+/** State 2 of John's three-state spec (Nov 16 2026), taken from the mockup: a solid warm-grey field with a dashed
+ *  border in the Sandbags colour (3 on, 2 off). Opaque, never transparency. */
+const POTENTIAL_FILL = '#ede9e6', POTENTIAL_DASH = '3 2';
+
+export function Timeline({ scenario: s, potential }: { scenario: Scenario; potential?: PotentialStyle }) {
   if (!s.timeline) return null;
   const heat = s.hazard === 'heat', labels = heat ? SHORT_HEAT : SHORT_RAIN, full = levelLabels(s);
   const days = daysAt(s.startDay, s.startHourLocal);
@@ -25,12 +33,14 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
   const placed = layoutLabels(callouts, x0, x(72));
   const rows = placed.some(p => p.row === 1) ? 2 : callouts.length ? 1 : 0, top = rows * 24;
   const cov = coverageNote(s), edge = edgeNote(s);
+  const pots = potential ? floodPotentials(s).filter(p => p.on) : [];
   const title = heat ? 'Next 3 days' : '3-day gear forecast';
   return <section className="timeline-section" aria-label={title}>
     <div className="section-heading"><strong>{title}</strong></div>
     <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
-      aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
-      <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern></defs>
+      aria-label={`${heat ? 'Heat' : 'Rain gear'} forecast for the next 72 hours, in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${pots.length ? ` Potential flooding, not yet a sandbag recommendation: ${pots.map(p => p.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
+      <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern>
+</defs>
       {callouts.map((c, i) => {
         const { left, row } = placed[i], ty = (rows - 1 - row) * 24, color = intervalColor(s, 3);
         return <g key={c.label}>
@@ -53,9 +63,43 @@ export function Timeline({ scenario: s }: { scenario: Scenario }) {
             {b.shifting && <rect x={bx + .4} y={y + .4} width={w - .8} height={h - .4} rx="1.5" fill="none" stroke="currentColor" strokeOpacity=".42" strokeWidth=".8" strokeDasharray="2 1.8" />}
           </g>;
         })}
+        {pots.map(p => {
+          // drawn at the graph's own resolution: the whole 3-hour blocks the window touches
+          const blocks = chartBlocks(s).filter(k => k.end > p.startHour && k.start < p.endHour);
+          const a = x(blocks[0].start) + gap / 2, b = x(blocks[blocks.length - 1].end) - gap / 2, yS = base - 3 * step, yB = base - 2 * step, c = intervalColor(s, 3);
+          // outline: one dashed, pale-tinted box per graph block of the window, sitting on the solid Boots bars
+          return potential === 'outline'
+            ? <g key={`pot-${p.startHour}`} className="chart-potential">{blocks.map(k => {
+                const ka = x(k.start) + gap / 2, kb = x(k.end) - gap / 2;
+                return <rect key={k.start} x={ka + .5} y={yS + .5} width={kb - ka - 1} height={yB - yS - 1} rx="1.5" fill={POTENTIAL_FILL} stroke={c} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />;
+              })}</g>
+            : <g key={`pot-${p.startHour}`} className="chart-potential" stroke={c} strokeWidth="1.4" strokeLinecap="round">
+                <line x1={a} x2={b} y1={yS} y2={yS} strokeDasharray="1.5 2.6" />
+                <line x1={a} x2={a} y1={yS} y2={yB} /><line x1={b} x2={b} y1={yS} y2={yB} />
+              </g>;
+        })}
         {halfDayLabels(s).map(l => <text key={l.at} x={x(l.at)} y={base + 18} textAnchor="middle" className="chart-time">{l.text}</text>)}
       </g>
     </svg>
-    <ul className="sr-only">{s.timeline.intervals.filter(p => p.severity > 0).map((p, i) => <li key={i}>{`${windowLabel(s, p)}: ${full[p.severity]}, timing ${p.confidence === 'higher' ? 'more certain' : 'approximate'}`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
+    {pots.length > 0 && <p className="chart-potential-key"><svg width="22" height="10" aria-hidden>{potential === 'outline'
+      ? <rect x="1" y="1" width="20" height="8" rx="1.5" fill={POTENTIAL_FILL} stroke={intervalColor(s, 3)} strokeWidth="1.2" strokeDasharray={POTENTIAL_DASH} />
+      : <g stroke={intervalColor(s, 3)} strokeWidth="1.4" strokeLinecap="round"><line x1="1" x2="21" y1="1.5" y2="1.5" strokeDasharray="1.5 2.6" /><line x1="1" x2="1" y1="1.5" y2="9" /><line x1="21" x2="21" y1="1.5" y2="9" /></g>}</svg>Potential flooding · Not yet a sandbag recommendation</p>}
+    <ul className="sr-only">{srItems(s, full)}{pots.map(p => <li key={`pot-${p.startHour}`}>{`${p.label}: potential flooding, not yet a sandbag recommendation`}</li>)}{cov && <li>{cov}</li>}{edge && <li>{edge}</li>}</ul>
   </section>;
+}
+
+/** The graph in words. Rain: one item per storm (v0.19: never the per-hour fragments of a borderline hour), with its
+ *  heavy period and peaks. Heat: one item per interval, as before. */
+function srItems(s: Scenario, full: string[]) {
+  const timing = (sure: boolean) => `timing ${sure ? 'more certain' : 'approximate'}`;
+  if (s.hazard === 'heat') return s.timeline!.intervals.filter(p => p.severity > 0)
+    .map((p, i) => <li key={i}>{`${windowLabel(s, p)}: ${full[p.severity]}, ${timing(p.confidence === 'higher')}`}</li>);
+  const shown = shownRungs(s);
+  return storms(s).map(st => {
+    const top = shown(st.start, st.rung);                       // Sandbags only where the graph shows it
+    const parts = [`${windowLabel(s, { startHour: st.start, endHour: st.end })}: ${full[top]} at most`];
+    if (st.heavy) parts.push(`${full[2]}${top > 2 ? ' or more' : ''} ${windowLabel(s, { startHour: st.heavy.start, endHour: st.heavy.end })}`);
+    if (st.peaks.length && top === 3) parts.push(`${full[3]} ${st.peaks.map(p => p.label).join(' and ')}`);
+    return <li key={st.start}>{`${parts.join('; ')}, ${timing(st.sure)}`}</li>;
+  });
 }

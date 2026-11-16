@@ -22,7 +22,11 @@ from .sources.conditions import PRECIP_ICONS, Conditions, describe, precip_type
 HORIZON = 72
 RAIN_ANY_P, RAIN_BOOTS_P, SANDBAGS_P = 0.5, 0.20, 0.10
 HEAT_F = (80, 90, 100)
-RAIN_WORDS = {1: ("rain", "Rain"), 2: ("heavy-rain", "Heavy rain"), 3: ("heavy-rain", "Intense rain")}
+# v0.19: the top rung says nothing about intensity beyond heavy (it is a local flood level, not a rain type)
+RAIN_WORDS = {1: ("rain", "Rain"), 2: ("heavy-rain", "Heavy rain"), 3: ("heavy-rain", "Heavy rain")}
+# Share of model runs at or above which heavy rain is worded as expected rather than possible (v0.19). Runs are not
+# independent, calibrated probabilities: this is a wording convention, not a 50% chance. Same value as the card's LIKELY_P.
+LIKELY_P = 0.5
 TYPE_WORDS = {"snow": "Snow", "freezing-rain": "Freezing rain", "hail": "Hail"}
 HOURLY_N = 24    # the Next hours row: consecutive hours from the current one
 # Five-day rows (v0.13). Rain intensity is a separate scale from the gear rungs: light < 0.10"/h, moderate < the
@@ -472,6 +476,7 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
 
     local0 = t0.astimezone(tz)
     today = local0.date()
+    all_by_t = {r["t"]: r for r in report["rows"] + report.get("strip_rows", [])}
     st = strip(report, cond, cfg, t0, tz, rain, ens, parts)
     n_days = STRIP_DAYS if st else 3
     day_rows = []
@@ -495,7 +500,12 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         if dr:
             icon, _ = wet_icon(dr, dd.get("code"))
             t = precip_type(dd.get("code"))
-            words = f"{TYPE_WORDS[t]} at times" if t else {1: "Rain at times", 2: "Heavy rain at times", 3: "Intense rain"}[dr]
+            # v0.19: the day's words describe the expected rain, not the upper end. "Heavy rain at times" only when
+            # most runs have a heavy hour that day; otherwise heavy is a possibility, not the forecast.
+            src = hours if k < 3 else st["hours"]
+            ph = max(((all_by_t.get(src[i].isoformat()) or {}).get("p_heavy") or 0 for i in idx), default=0)
+            words = (f"{TYPE_WORDS[t]} at times" if t else "Rain at times" if dr == 1
+                     else "Heavy rain at times" if ph >= LIKELY_P else "Rain, heavy at times possible")
         elif dh:
             icon, words = "heat", HEAT_WORDS[dh]
         elif gap:
@@ -574,13 +584,13 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         if spans:
             card["rainTotals"] = spans
     if hazard in ("rain", "flood"):
-        # v0.19 evidence (recorded hourly to data/flood for scoring; this card version does not read it)
         card["evidence"] = evidence(rows, hours, by_t, report, cfg, parts, rain)
     if hazard == "flood":
         card["alert"] = {"actionTitle": f"Driveway · {cfg.site.card_location}",
                          "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
-                         "context": (f"Rated against levels from 4 past floods near {cfg.flood_site} (2012–2022); their "
-                                     f"relationship to driveway flooding at {cfg.site.card_location} is not yet validated.")}
+                         "prepare": "Consider checking flood barriers before the storm.",
+                         # the calibration story lives on the details page; the card keeps one short qualification
+                         "context": "Local driveway risk isn't validated yet."}
     elif hazard == "heat" and hmax == 3:
         card["alert"] = {"actionTitle": "Avoid the hottest hours",
                          "action": "Plan outdoor activity for mornings, keep your home cool, and arrange access to "
