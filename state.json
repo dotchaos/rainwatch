@@ -14,8 +14,8 @@
   "peak": "2026-11-16T08:00:00+00:00",
   "sent": "2026-11-16T07:46:08.307846+00:00"
  },
- "last_shading": "2026-11-16T12",
- "last_snapshot": "2026-11-16T12",
+ "last_shading": "2026-11-16T13",
+ "last_snapshot": "2026-11-16T13",
  "nws_seen": [
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.3",
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.2",
@@ -33,6 +33,7 @@
   "urn:oid:2.49.0.1.840.0.d7f3325e00075b39664041f9beaf8de79b928aa1.001.1",
   "urn:oid:2.49.0.1.840.0.2ed604e5221e5faae2f5d99c2ed4ceb6711c47ba.001.2",
   "urn:oid:2.49.0.1.840.0.2ed604e5221e5faae2f5d99c2ed4ceb6711c47ba.001.1",
-  "urn:oid:2.49.0.1.840.0.69f8a72cca4647dc8cfb28b46fa8ae8d6ac6ddf7.001.1"
+  "urn:oid:2.49.0.1.840.0.69f8a72cca4647dc8cfb28b46fa8ae8d6ac6ddf7.001.1",
+  "urn:oid:2.49.0.1.840.0.29246a42180bd270a5d4607abe8881795f06998e.001.1"
  ]
 }
