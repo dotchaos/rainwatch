@@ -1,4 +1,4 @@
-# Card now (2026-11-17 19:34 UTC)
+# Card now (2026-11-17 19:35 UTC)
 
 Errors: none
 
@@ -10,10 +10,29 @@ _peak_check:
 ```json
 {
  "ok": false,
- "systems": [],
+ "systems": [
+  {
+   "system": "ICON ensemble",
+   "in": 0.496,
+   "hour": 21,
+   "kind": "ensemble median of run peaks"
+  },
+  {
+   "system": "HRRR",
+   "in": 0.213,
+   "hour": 18,
+   "kind": "heaviest hour"
+  },
+  {
+   "system": "NBM",
+   "in": 0.402,
+   "hour": 21,
+   "kind": "heaviest hour"
+  }
+ ],
  "why": [
-  "the stretch runs past 48 h",
-  "0 genuinely hourly system(s) cover the stretch (needs 2)"
+  "heaviest hours 3 h apart (max 2)",
+  "values disagree beyond 1.5x"
  ]
 }
 ```

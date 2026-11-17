@@ -3,7 +3,7 @@
  "title": "Live",
  "season": "November",
  "location": "18th & Shotwell",
- "observedAt": "Tuesday \u00b7 11:34 AM",
+ "observedAt": "Tuesday \u00b7 11:35 AM",
  "startDay": "Tue",
  "startHourLocal": 11,
  "hazard": "flood",
@@ -604,7 +604,7 @@
   }
  ],
  "observedNow": {
-  "rainingNow": false,
+  "rainingNow": null,
   "recentRain": null
  },
  "rainHours": [
@@ -631,7 +631,7 @@
  ],
  "provenance": {
   "type": "live",
-  "generated": "2026-11-17T19:34:13.689768+00:00",
+  "generated": "2026-11-17T19:35:55.080506+00:00",
   "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
  },
  "timeline": {
@@ -909,10 +909,29 @@
  ],
  "_peak_check": {
   "ok": false,
-  "systems": [],
+  "systems": [
+   {
+    "system": "ICON ensemble",
+    "in": 0.496,
+    "hour": 21,
+    "kind": "ensemble median of run peaks"
+   },
+   {
+    "system": "HRRR",
+    "in": 0.213,
+    "hour": 18,
+    "kind": "heaviest hour"
+   },
+   {
+    "system": "NBM",
+    "in": 0.402,
+    "hour": 21,
+    "kind": "heaviest hour"
+   }
+  ],
   "why": [
-   "the stretch runs past 48 h",
-   "0 genuinely hourly system(s) cover the stretch (needs 2)"
+   "heaviest hours 3 h apart (max 2)",
+   "values disagree beyond 1.5x"
   ]
  },
  "evidence": {
