@@ -914,24 +914,28 @@
   "systems": [
    {
     "system": "ICON ensemble",
+    "family": "ens:icon_seamless",
     "in": 0.3,
     "hour": 3,
     "kind": "ensemble median of run peaks"
    },
    {
     "system": "HRRR",
+    "family": "NCEP high-resolution (HRRR/NBM)",
     "in": 0.22,
     "hour": 3,
     "kind": "heaviest hour"
    },
    {
     "system": "NBM",
+    "family": "NCEP high-resolution (HRRR/NBM)",
     "in": 0.22,
     "hour": 3,
     "kind": "heaviest hour"
    },
    {
     "system": "ECMWF",
+    "family": "ecmwf",
     "in": 0.22,
     "hour": 3,
     "kind": "heaviest hour"

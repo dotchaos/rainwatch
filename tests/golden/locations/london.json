@@ -838,12 +838,14 @@
   "systems": [
    {
     "system": "ICON ensemble",
+    "family": "ens:icon_seamless",
     "in": 0.3,
     "hour": 3,
     "kind": "ensemble median of run peaks"
    },
    {
     "system": "ECMWF",
+    "family": "ecmwf",
     "in": 0.22,
     "hour": 3,
     "kind": "heaviest hour"
