@@ -75,7 +75,9 @@ export interface Scenario {
    * runs' own totals over the interval; intervals are independent and NOT scaled to add up to a stretch's total.
    * `partial`: the forecast's block runs past now or the radar. Hours with no interval have no forecast amount.
    */
-  rainBlocks?: { startHour: number; endHour: number; in: number; res: 1 | 3 | 6; partial?: boolean }[];
+  rainBlocks?: { startHour: number; endHour: number; in: number; res: 1 | 3 | 6; partial?: boolean;
+    /** With `partial`: the whole block's hours (may start before hour 0 or end past the row), for drawing its bracket. */
+    blockStartHour?: number; blockEndHour?: number }[];
   /** Peak hourly rate (v0.26), only when two or more genuinely hourly systems agree (rainwatch/intervals.py). */
   peakRate?: { lo: number; hi: number; hour: number; systems: string[] };
   /**

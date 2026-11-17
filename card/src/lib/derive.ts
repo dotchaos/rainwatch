@@ -1011,7 +1011,8 @@ export function ageCard(s: Scenario, elapsedH: number): Scenario {
   if (c.unknownHours) c.unknownHours = clip(c.unknownHours);
   if (c.rainTotals) c.rainTotals = c.rainTotals.filter(x => x.startHour >= k);
   // a rain amount whose interval is partly past still describes the whole interval; keep it, marked partial (v0.26)
-  if (c.rainBlocks) c.rainBlocks = c.rainBlocks.filter(b => b.endHour > k).map(b => b.startHour < k ? { ...b, startHour: k, partial: true } : b);
+  if (c.rainBlocks) c.rainBlocks = c.rainBlocks.filter(b => b.endHour > k).map(b => b.startHour < k
+    ? { ...b, startHour: k, partial: true, blockStartHour: b.blockStartHour ?? b.startHour, blockEndHour: b.blockEndHour ?? b.endHour } : b);
   c.hourly = c.hourly.filter((h, i) => (h.hour ?? i) >= k);
   const nowHour = c.hourly[0];
   if (nowHour) c.current = { ...c.current, temperatureF: nowHour.temperatureF, icon: nowHour.icon, condition: ICON_WORDS[resolveIcon(nowHour.icon)] ?? c.current.condition };
@@ -1179,12 +1180,14 @@ export function hourAmounts(s: Scenario): Map<number, HourAmount> | null {
   if (!s.rainBlocks) return null;
   const out = new Map<number, HourAmount>();
   const wet = s.rainBlocks.filter(b => b.in >= 0.01);
-  const rate = (b: { in: number; startHour: number; endHour: number }) => b.in / (b.endHour - b.startHour);
+  const rate = (b: NonNullable<Scenario['rainBlocks']>[number]) => b.in / ((b.blockEndHour ?? b.endHour) - (b.blockStartHour ?? b.startHour));
   const top = wet.length ? wet.reduce((x, y) => rate(y) > rate(x) ? y : x) : null;
   for (const [i, h] of s.hourly.entries()) {
     const at = h.hour ?? i, b = s.rainBlocks.find(x => x.startHour <= at && at < x.endHour);
     if (!b || isUnknown(s, at)) { out.set(at, { text: '—', kind: 'missing', pos: 'solo', res: 1, top: false, partial: false }); continue; }
-    const len = b.endHour - b.startHour, idx = at - b.startHour, mid = Math.floor((len - 1) / 2);
+    // a cut block is drawn as part of its whole block: brackets by the whole block, the amount under the middle of what shows
+    const fs = b.blockStartHour ?? b.startHour, fe = b.blockEndHour ?? b.endHour;
+    const len = fe - fs, idx = at - fs, vis = b.endHour - b.startHour, mid = b.startHour - fs + Math.floor((vis - 1) / 2);
     const kind = b.in === 0 ? 'dry' : b.in < 0.01 ? 'trace' : 'amount';
     const pos = len === 1 ? 'solo' : idx === 0 ? 'start' : idx === len - 1 ? 'end' : 'mid';
     out.set(at, { text: kind === 'dry' || idx !== mid ? null : kind === 'trace' ? 'Trace' : fmtAmount(b.in), kind, pos, res: b.res,

@@ -5,7 +5,8 @@ pooled hour is therefore only genuinely hourly where every model in the pool is.
 interval it actually resolves:
   radar hours     1 hour, the radar nowcast's median (as the engine's row)
   model hours     a 3-hour UTC block (1 hour only where every pooled model is genuinely hourly), the median of the
-                  runs' own totals over that block (rainwatch/totals.py), the same statistic as every card total
+                  runs' own totals over that block (rainwatch/totals.py), the same statistic as every card total. A
+                  block cut by now, the radar or the row's end keeps its whole-block amount, marked `partial`
   NWS-only hours  the NWS 6-hour QPF period, as published
   no forecast     no interval (the card shows "—")
 Interval medians are independent: they are NOT scaled to add up to the event total (the median of each run's whole
@@ -13,8 +14,8 @@ total). When runs disagree on timing they add up to less; the card's details say
 blocks 2.14" vs event 2.62", tools/aggregation_compare.py). A single representative run was considered and rejected:
 the five runs nearest the median total put 0.21–1.24" in the same block.
 
-Peak hourly rate. Shown only when it is supported: at least two independent, genuinely hourly systems (the ICON
-ensemble, HRRR, NBM, radar) cover every hour of the heaviest stretch within PEAK_NEAR_H of now, put their heaviest
+Peak hourly rate. Shown only when it is supported: genuinely hourly systems from at least two independent families
+(the ICON ensemble; HRRR and NBM together, since NBM blends HRRR; radar) cover every hour of the heaviest stretch within PEAK_NEAR_H of now, put their heaviest
 hour within PEAK_HOURS_APART of each other, and agree within PEAK_RATIO. Each system's value: an ensemble's median
 over its runs of each run's heaviest hour; a deterministic model's heaviest hour. The range is the lowest to the
 highest of those values, to the nearest 0.05". Otherwise none (the card names the heaviest period without a rate).
@@ -31,6 +32,8 @@ PEAK_NEAR_H = 48
 PEAK_HOURS_APART = 2
 PEAK_RATIO = 1.5
 PEAK_MIN_SYSTEMS = 2
+# Independence: NBM blends HRRR (and other NCEP guidance), so the two count as one family.
+FAMILY = {"hrrr": "NCEP high-resolution (HRRR/NBM)", "nbm": "NCEP high-resolution (HRRR/NBM)"}
 NAMES = {"ens:icon_seamless": "ICON ensemble", "hrrr": "HRRR", "nbm": "NBM", "radar": "Radar nowcast",
          "ens:ecmwf_ifs025": "ECMWF ensemble", "ens:gfs_seamless": "GFS ensemble", "ecmwf": "ECMWF"}
 
@@ -87,14 +90,19 @@ def blocks(hours: list[datetime], rows: list[dict | None], parts: list) -> list[
             i = j
             continue
         if src == "ens":
-            w = totals.window(parts, None, hours[i:j])
+            # always the model's own amount for its whole block, even where only part of it is shown (now, the radar
+            # or the end of the row cut it): splitting a 3-hour amount by hours would invent hourly precision
+            full = [b0 + timedelta(hours=k) for k in range(size)]
+            w = totals.window(parts, None, full) or totals.window(parts, None, hours[i:j])
             amt = w["p50"] if w else None
         else:
             amt = sum(float(rows[k].get("mid") or 0.0) for k in range(i, j))
         if amt is not None:
             d = {"startHour": i, "endHour": j, "in": round(float(amt), 3), "res": size}
             if j - i < size:
-                d["partial"] = True                                     # the forecast's block runs past now or the radar
+                k0 = i - int((t - b0).total_seconds() // 3600)          # the whole block, in the same hour offsets
+                d.update(blockStartHour=k0, blockEndHour=k0 + size)
+                d["partial"] = True     # the block runs past what is shown (now, radar, the row's end); amount is the whole block's
             out.append(d)
         i = j
     return out
@@ -115,17 +123,19 @@ def peak_rate(hours: list[datetime], a: int, b: int, parts: list, det: list, rad
             continue
         X = np.array(cols, dtype=float).T
         mx, at = X.max(axis=1), X.argmax(axis=1)
-        systems.append({"system": NAMES.get(p.key, p.key), "in": round(float(np.median(mx)), 3),
+        systems.append({"system": NAMES.get(p.key, p.key), "family": FAMILY.get(p.key, p.key), "in": round(float(np.median(mx)), 3),
                         "hour": a + int(np.bincount(at).argmax()), "kind": "ensemble median of run peaks"})
     for d in det + ([radar] if radar is not None else []):
         v = [d.values.get(t) for t in W]
         if any(x is None for x in v) or first_flat(d) is not None and first_flat(d) <= W[-1]:
             continue
         j = int(np.argmax(v))
-        systems.append({"system": NAMES.get(d.key, d.key), "in": round(float(v[j]), 3), "hour": a + j,
+        systems.append({"system": NAMES.get(d.key, d.key), "family": FAMILY.get(d.key, d.key), "in": round(float(v[j]), 3), "hour": a + j,
                         "kind": "heaviest hour"})
-    if len(systems) < PEAK_MIN_SYSTEMS:
-        why.append(f"{len(systems)} genuinely hourly system(s) cover the stretch (needs {PEAK_MIN_SYSTEMS})")
+    fams = len({s["family"] for s in systems})
+    if fams < PEAK_MIN_SYSTEMS:
+        why.append(f"{len(systems)} genuinely hourly system(s) from {fams} independent family(ies) cover the stretch "
+                   f"(needs {PEAK_MIN_SYSTEMS} families)")
     else:
         hs, vs = [s["hour"] for s in systems], [s["in"] for s in systems]
         if max(hs) - min(hs) > PEAK_HOURS_APART:

@@ -630,6 +630,8 @@
    "endHour": 2,
    "in": 0.05,
    "res": 3,
+   "blockStartHour": -1,
+   "blockEndHour": 2,
    "partial": true
   },
   {

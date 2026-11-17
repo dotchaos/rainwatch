@@ -904,6 +904,8 @@
    "endHour": 109,
    "in": 0.0,
    "res": 3,
+   "blockStartHour": 107,
+   "blockEndHour": 110,
    "partial": true
   }
  ],

@@ -61,6 +61,8 @@ describe('event-first hero', () => {
     const s = stormWed(); s.peakRate = { lo: 0.4, hi: 0.45, hour: 21, systems: ['ICON ensemble', 'HRRR'] };
     expect(eventHero(s)!.rows[1].sub).toBe('Up to about .40–.45" an hour, around 8 AM tomorrow');
     expect(JSON.stringify(eventHero(stormWed()))).not.toMatch(/awaiting|placeholder|n\/a/i);
+    const off = stormWed(); off.peakRate = { lo: 0.4, hi: 0.45, hour: 40, systems: ['ICON ensemble', 'HRRR'] };
+    expect(eventHero(off)!.rows[1].sub).toBeUndefined();                     // a peak outside the heavy period is not shown
   });
   it('heatwave: duration, highest temperature, hottest hours, consequence', () => {
     const e = eventHero(byId('heat'))!;
@@ -96,6 +98,13 @@ describe('rain amounts in the hourly row', () => {
     expect(at(s, 5)).toMatchObject({ text: null, kind: 'dry' });
     expect(at(s, 0)).toMatchObject({ res: 1, pos: 'solo' });                       // radar hours are genuinely hourly
   });
+  it('a cut block keeps its whole-block amount and brackets as part of the whole block, never as an hourly value', () => {
+    const s = stormWed(); s.rainBlocks = [{ startHour: 0, endHour: 1, in: 0.3, res: 3, partial: true, blockStartHour: -2, blockEndHour: 1 },
+                                          ...s.rainBlocks!.filter(b => b.startHour >= 1)];
+    expect(hourAmounts(s)!.get(0)).toMatchObject({ text: '.30"', pos: 'end', res: 3, partial: true });
+    const last = s.rainBlocks![s.rainBlocks!.length - 1];
+    expect(last).toMatchObject({ startHour: 107, endHour: 109, partial: true });
+  });
   it('the strongest interval is marked (highest rate), once', () => {
     const m = hourAmounts(stormWed())!;
     expect([...m.entries()].filter(([, a]) => a.top).map(([h]) => h)).toEqual([20, 21, 22]);
@@ -114,7 +123,7 @@ describe('rain amounts in the hourly row', () => {
   });
   it('an aged card keeps a part-past interval, marked partial', () => {
     const a = ageCard(stormWed(), 3);
-    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, partial: true });
+    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, partial: true, blockStartHour: 2, blockEndHour: 5 });
     expect(validateScenario(a)).toEqual([]);
   });
 });

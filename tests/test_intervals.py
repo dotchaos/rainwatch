@@ -54,6 +54,7 @@ def test_radar_hours_are_hourly_nws_hours_6_hour_missing_hours_absent_and_partia
     assert b[0] == {"startHour": 0, "endHour": 1, "in": 0.12, "res": 1}
     assert b[1]["res"] == 1 and b[1]["in"] == 0.3
     assert b[2] == {**b[2], "startHour": 2, "endHour": 3, "res": 3, "partial": True}     # the rest of a block the radar began
+    assert b[2]["in"] == round(totals.window(parts, None, H[0:3])["p50"], 3)              # its whole-block amount, never a split
     assert (b[3]["startHour"], b[3]["endHour"], b[3]["res"]) == (3, 6, 3)
     assert not any(x["startHour"] <= 6 < x["endHour"] or x["startHour"] <= 7 < x["endHour"] for x in b)   # no forecast
     assert [(x["startHour"], x["endHour"], x["res"], x["in"]) for x in b[4:]] == [(8, 12, 6, 0.2)]
@@ -85,8 +86,14 @@ def test_peak_rate_needs_two_agreeing_hourly_systems():
     assert (ok["lo"], ok["hi"], ok["hour"]) == (0.4, 0.45, 2)       # ICON median of run peaks 0.46, HRRR 0.38
     one = intervals.peak_rate(H, 1, 5, [icon, gfs], [], None, now)
     assert not one["ok"] and "1 genuinely hourly" in one["why"][0]
+    ncep = intervals.peak_rate(H, 1, 5, [gfs], [hrrr, det("nbm", [0, 0.1, 0.4, 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0])], None, now)
+    assert not ncep["ok"] and "1 independent family" in ncep["why"][0]                # HRRR + NBM agree, but are one family
     far = intervals.peak_rate(H, 1, 5, [icon], [det("hrrr", [0, 0, 0, 0.2, 0.15, 0, 0, 0, 0, 0, 0, 0])], None, now)
     assert not far["ok"]                                             # 0.46 vs 0.20: no agreement
+    gap = intervals.peak_rate(H, 1, 5, [icon], [det("hrrr", [0, 0.1, 0.38, None, 0, 0, 0, 0, 0, 0, 0, 0])], None, now)
+    assert not gap["ok"] and [s["system"] for s in gap["systems"]] == ["ICON ensemble"]   # a system with a gap never counts
+    flat = intervals.peak_rate(H, 1, 5, [icon], [det("ecmwf", [0.1, 0.1, 0.1, 0.4, 0.4, 0.4, 0, 0, 0, 0, 0, 0])], None, now)
+    assert not flat["ok"]                                                              # 3-hourly deterministic data never counts
     late = intervals.peak_rate(H, 1, 5, [icon], [hrrr], None, now - timedelta(hours=60))
     assert not late["ok"] and "48 h" in late["why"][0]
 
