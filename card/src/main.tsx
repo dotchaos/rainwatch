@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { useEffect, useState } from 'react';
 import type { Scenario } from './types';
 import { scenarios } from './data/scenarios';
-import { WeatherCard } from './components/WeatherCard';
+import { NowAndNext, WeatherCard } from './components/WeatherCard';
+import { narrativeCases } from './lib/cases';
 import { Timeline } from './components/Timeline';
 import { validateScenario } from './lib/rules';
 import { ageCard, elapsedHours, floodPotentials } from './lib/derive';
@@ -50,7 +51,12 @@ function GraphLab(){
   <div><span className="muted">Current</span><article className="weather-card"><Timeline scenario={s} potential={pot?'outline':undefined}/></article></div>
   <div><span className="muted">Silhouette</span><article className="weather-card"><Timeline scenario={s} potential={pot?'outline':undefined} graph="silhouette"/></article></div></div></section>)}
  </main>}
+/** ?lab&narrative: the storm narrative (v0.25 review) across scenarios: hero only, at phone width. */
+function NarrativeLab(){
+ return <main><header className="lab-header"><div><div className="eyebrow">SCENARIO LAB · STORM NARRATIVE (V0.25 REVIEW)</div><h1>One story per storm.</h1><p>Hero only. Cases built from the live Mon 8 AM forecast and the fixtures; "timing more certain" cases are hypothetical (the live engine doesn't supply it yet).</p></div></header>
+ <div className="narrative-grid">{narrativeCases.map(c=><section key={c.id} className="narrative-case"><h3>{c.title}</h3><article className="weather-card"><NowAndNext s={c.s}/></article></section>)}</div></main>}
 const lab=new URLSearchParams(location.search).has('lab');
+const narrativeLab=lab&&new URLSearchParams(location.search).has('narrative');
 const graphLab=lab&&new URLSearchParams(location.search).has('graph');
 const potentialLab=lab&&new URLSearchParams(location.search).has('potential');
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{graphLab?<GraphLab/>:potentialLab?<PotentialLab/>:lab?<Lab/>:<Live/>}</React.StrictMode>);
+ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{narrativeLab?<NarrativeLab/>:graphLab?<GraphLab/>:potentialLab?<PotentialLab/>:lab?<Lab/>:<Live/>}</React.StrictMode>);

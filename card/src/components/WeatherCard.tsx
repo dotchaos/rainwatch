@@ -48,7 +48,7 @@ function Upcoming({ up, target }: { up: NonNullable<ReturnType<typeof upcomingEv
 }
 
 /** 1. Now & next: current conditions, then the headline, its detail and one actionable line. */
-function NowAndNext({ s }: { s: Scenario }) {
+export function NowAndNext({ s }: { s: Scenario }) {
   const n = nowNext(s), Icon = n?.action ? ACTION_ICON[n.action.icon] : null, up = upcomingEvent(s);
   return <section className="now-next">
     <div className="now"><WeatherIcon name={s.current.icon} size={34} /><span className="now-temp">{deg(s.current.temperatureF)}</span><span className="now-cond">{s.current.condition}</span></div>

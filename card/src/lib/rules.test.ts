@@ -18,9 +18,9 @@ describe('every timing statement is derived from the forecast', () => {
     const s = byId('storm');
     expect(criticalWindows(s).map(w => w.label)).toEqual(['Thu 4–9 PM', 'Fri 8 AM–4 PM']);
     // v0.19: one storm; onset, heavy period and peaks are separate facts; the deadline is 2 h before heavy rain
-    expect(deriveAlert(s)).toEqual({ level: 'SANDBAGS · DRIVEWAY FLOOD RISK', headline: 'Protect your driveway before noon.',
-      summary: 'Flood Watch from the National Weather Service. Rain now; heavy rain about 2 PM–Fri 9 PM. Around 2.1" today. '
-        + 'Worst Thu 4–9 PM and about Fri 8 AM–4 PM. Timing is approximate.' });
+    expect(deriveAlert(s)).toEqual({ level: 'SANDBAGS · DRIVEWAY FLOOD RISK', headline: 'Protect your driveway before this afternoon.',
+      summary: 'Flood Watch from the National Weather Service. Rain has started and is expected to be heaviest this afternoon. '
+        + 'Around 2.1" is expected today, with localized flooding possible.' });
     expect(deriveDaysSummary(s)).toBe('Worst today and tomorrow, easing Saturday');
   });
   it('heat: hottest period and outdoor window agree with the forecast', () => {
@@ -65,12 +65,13 @@ describe('every timing statement is derived from the forecast', () => {
   });
   it('calm: the fixture note is shown as written', () => expect(deriveInsight(byId('october'))?.headline).toBe('Great weather for getting outside'));
   it('moving the forecast moves the words', () => {
-    const s = byId('storm');
+    const s = byId('storm');   // timing marked more certain, so the words name hours (v0.25)
+    s.timeline!.intervals = s.timeline!.intervals.map(p => ({ ...p, confidence: 'higher' as const }));
     s.timeline!.intervals = s.timeline!.intervals.map(p => p.startHour === 7 ? { ...p, startHour: 9 } : p.endHour === 7 ? { ...p, endHour: 9 } : p);
     expect(criticalWindows(s)[0].label).toBe('Thu 6–9 PM');
-    expect(deriveAlert(s)!.headline).toBe('Protect your driveway before noon.');   // heavy rain still begins at 2 PM
+    expect(deriveAlert(s)!.headline).toBe('Protect your driveway before about noon.');   // heavy rain still begins at 2 PM
     s.timeline!.intervals = s.timeline!.intervals.map(p => p.startHour === 5 ? { ...p, startHour: 6 } : p.endHour === 5 ? { ...p, endHour: 6 } : p);
-    expect(deriveAlert(s)!.headline).toBe('Protect your driveway before 1 PM.');    // heavy rain from 3 PM moves the deadline
+    expect(deriveAlert(s)!.headline).toBe('Protect your driveway before about 1 PM.');    // heavy rain from 3 PM moves the deadline
   });
   it('no top-rung hours means no alert, even for a flood scenario', () => {
     const s = byId('storm'); s.timeline!.intervals = s.timeline!.intervals.map(p => ({ ...p, severity: Math.min(p.severity, 2) as 0 | 1 | 2 }));
