@@ -1,10 +1,10 @@
 {
  "storms": [
   {
-   "start": "2026-11-15T21:00:00+00:00",
-   "end": "2026-11-16T08:00:00+00:00",
+   "start": "2026-11-15T22:00:00+00:00",
+   "end": "2026-11-16T09:00:00+00:00",
    "total": 0.86,
-   "peak_t": "2026-11-15T22:00:00+00:00",
+   "peak_t": "2026-11-15T23:00:00+00:00",
    "peak": 0.25,
    "heavy": true,
    "missing_hours": 0,
@@ -13,7 +13,7 @@
     {
      "lead_h": 24,
      "status": "ok",
-     "issued": "2026-11-14T20:01:51.158480+00:00",
+     "issued": "2026-11-14T21:02:31.101171+00:00",
      "onset_err_h": null,
      "onset_called": false,
      "peak_err_h": null,
@@ -25,16 +25,16 @@
     {
      "lead_h": 12,
      "status": "ok",
-     "issued": "2026-11-15T08:07:44.542718+00:00",
-     "onset_err_h": -1.0,
+     "issued": "2026-11-15T09:08:16.206753+00:00",
+     "onset_err_h": -2.0,
      "onset_called": true,
-     "peak_err_h": 2.0,
+     "peak_err_h": 1.0,
      "peak_pred": 0.114,
      "total_pred": 0.696,
      "p_heavy": 0.066,
      "threshold": "missed",
      "inside": {
-      "onset": true,
+      "onset": false,
       "peak_t": true,
       "peak": false,
       "total": true
@@ -43,16 +43,16 @@
     {
      "lead_h": 6,
      "status": "ok",
-     "issued": "2026-11-15T14:02:34.467675+00:00",
-     "onset_err_h": 0.0,
+     "issued": "2026-11-15T15:03:13.808804+00:00",
+     "onset_err_h": -1.0,
      "onset_called": true,
-     "peak_err_h": 2.0,
+     "peak_err_h": 1.0,
      "peak_pred": 0.114,
      "total_pred": 0.698,
      "p_heavy": 0.074,
      "threshold": "missed",
      "inside": {
-      "onset": true,
+      "onset": false,
       "peak_t": true,
       "peak": false,
       "total": true
@@ -61,16 +61,16 @@
     {
      "lead_h": 3,
      "status": "ok",
-     "issued": "2026-11-15T17:00:27.644465+00:00",
-     "onset_err_h": 0.0,
+     "issued": "2026-11-15T18:01:11.409348+00:00",
+     "onset_err_h": -1.0,
      "onset_called": true,
-     "peak_err_h": 2.0,
-     "peak_pred": 0.114,
-     "total_pred": 0.698,
+     "peak_err_h": -1.0,
+     "peak_pred": 0.11,
+     "total_pred": 0.639,
      "p_heavy": 0.074,
      "threshold": "missed",
      "inside": {
-      "onset": true,
+      "onset": false,
       "peak_t": true,
       "peak": false,
       "total": true
@@ -79,16 +79,16 @@
     {
      "lead_h": 1,
      "status": "ok",
-     "issued": "2026-11-15T19:01:49.126503+00:00",
-     "onset_err_h": 0.0,
+     "issued": "2026-11-15T20:02:23.302710+00:00",
+     "onset_err_h": -2.0,
      "onset_called": true,
-     "peak_err_h": 0.0,
+     "peak_err_h": -1.0,
      "peak_pred": 0.11,
-     "total_pred": 0.639,
+     "total_pred": 0.627,
      "p_heavy": 0.074,
      "threshold": "missed",
      "inside": {
-      "onset": true,
+      "onset": null,
       "peak_t": true,
       "peak": false,
       "total": true
@@ -99,8 +99,8 @@
  ],
  "range_coverage": {
   "onset": [
-   4,
-   4
+   0,
+   3
   ],
   "peak_t": [
    4,
