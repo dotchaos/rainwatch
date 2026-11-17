@@ -12,14 +12,25 @@ export const intervalColor = (s: Scenario, level: number) => s.hazard === 'heat'
 export function validateScenario(s: Scenario): string[] {
   const errors: string[] = [];
   // Next hours: consecutive hours from the current one, none skipped, agreeing with the graph
-  if (s.hourly.length < 12 || s.hourly.length > 72) errors.push('Next hours needs 12–72 consecutive hours');
+  // v0.26: the hourly row may run on through the five-day rows' hours (at most five local days)
+  if (s.hourly.length < 12 || s.hourly.length > 120) errors.push('Next hours needs 12–120 consecutive hours');
   s.hourly.forEach((h, i) => { if (h.hour !== (s.nowOffset ?? 0) + i) errors.push(`Next hours must be consecutive from the current hour (item ${i} is hour ${h.hour})`); });
   const gearAt = (h: number) => (s.hazard === 'rain' || s.hazard === 'flood') && Boolean(s.timeline?.intervals.some(p => p.severity > 0 && p.startHour <= h && h < p.endHour));
   for (const h of s.hourly) {
     const at = h.hour ?? 0, icon = resolveIcon(h.icon);
     if (isUnknown(s, at)) { if (icon !== 'unknown') errors.push(`Hour ${at} has no forecast but shows "${icon}"`); continue; }
-    if (PRECIP.has(icon) !== gearAt(at)) errors.push(`Hour ${at} icon "${icon}" disagrees with the graph`);
+    // past the graph's 72 hours the icon follows the five-day rain hours
+    const wetHere = at < 72 ? gearAt(at) : (s.rainHours ?? []).some(r => r.startHour <= at && at < r.endHour);
+    if (PRECIP.has(icon) !== wetHere) errors.push(`Hour ${at} icon "${icon}" disagrees with the ${at < 72 ? 'graph' : 'five-day rain hours'}`);
   }
+  // Rain amounts (v0.26): non-overlapping intervals at a real resolution, never over hours with no forecast
+  const rb = [...(s.rainBlocks ?? [])].sort((a, b) => a.startHour - b.startHour);
+  rb.forEach((b, k) => {
+    if (!(b.endHour > b.startHour) || b.endHour - b.startHour > b.res) errors.push(`Rain amount ${b.startHour}–${b.endHour} is longer than its ${b.res}-hour resolution`);
+    if (!(b.in >= 0)) errors.push(`Rain amount ${b.startHour}–${b.endHour} is not a number of inches`);
+    if (k && b.startHour < rb[k - 1].endHour) errors.push(`Rain amounts overlap at hour ${b.startHour}`);
+    for (let h = b.startHour; h < b.endHour; h++) if (isUnknown(s, h)) { errors.push(`Rain amount covers hour ${h}, which has no forecast`); break; }
+  });
   // Daily rows: a day with gear shows precipitation; a fully forecast day without gear does not
   // With five-day rows, rain past the graph comes from rainHours (which must match the graph inside it, below)
   const end5 = 120 - s.startHourLocal, rainAt = (h: number) => (s.rainHours ?? []).some(r => r.startHour <= h && h < r.endHour);

@@ -134,6 +134,391 @@
    "hour": 23,
    "temperatureF": 53,
    "icon": "overcast"
+  },
+  {
+   "hour": 24,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 25,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 26,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 27,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 28,
+   "temperatureF": 60,
+   "icon": "overcast"
+  },
+  {
+   "hour": 29,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 30,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 31,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 32,
+   "temperatureF": 60,
+   "icon": "overcast"
+  },
+  {
+   "hour": 33,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 34,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 35,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 36,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 37,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 38,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 39,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 40,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 41,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 42,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 43,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 44,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 45,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 46,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 47,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 48,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 49,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 50,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 51,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 52,
+   "temperatureF": 60,
+   "icon": "overcast"
+  },
+  {
+   "hour": 53,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 54,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 55,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 56,
+   "temperatureF": 60,
+   "icon": "overcast"
+  },
+  {
+   "hour": 57,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 58,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 59,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 60,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 61,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 62,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 63,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 64,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 65,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 66,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 67,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 68,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 69,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 70,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 71,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 72,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 73,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 74,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 75,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 76,
+   "temperatureF": 60,
+   "icon": "overcast"
+  },
+  {
+   "hour": 77,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 78,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 79,
+   "temperatureF": 61,
+   "icon": "overcast"
+  },
+  {
+   "hour": 80,
+   "temperatureF": 60,
+   "icon": "overcast"
+  },
+  {
+   "hour": 81,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 82,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 83,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 84,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 85,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 86,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 87,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 88,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 89,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 90,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 91,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 92,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 93,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 94,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 95,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 96,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 97,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 98,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 99,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 100,
+   "temperatureF": 60,
+   "icon": "overcast"
   }
  ],
  "days": [
@@ -234,9 +619,252 @@
   {
    "startHour": 1,
    "endHour": 9,
-   "medianIn": 0.65
+   "medianIn": 0.65,
+   "fromHour": 0,
+   "toHour": 29
   }
  ],
+ "rainBlocks": [
+  {
+   "startHour": 0,
+   "endHour": 2,
+   "in": 0.05,
+   "res": 3,
+   "blockStartHour": -1,
+   "blockEndHour": 2,
+   "partial": true
+  },
+  {
+   "startHour": 2,
+   "endHour": 5,
+   "in": 0.4,
+   "res": 3
+  },
+  {
+   "startHour": 5,
+   "endHour": 8,
+   "in": 0.15,
+   "res": 3
+  },
+  {
+   "startHour": 8,
+   "endHour": 11,
+   "in": 0.05,
+   "res": 3
+  },
+  {
+   "startHour": 11,
+   "endHour": 14,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 14,
+   "endHour": 17,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 17,
+   "endHour": 20,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 20,
+   "endHour": 23,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 23,
+   "endHour": 26,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 26,
+   "endHour": 29,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 29,
+   "endHour": 32,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 32,
+   "endHour": 35,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 35,
+   "endHour": 38,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 38,
+   "endHour": 41,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 41,
+   "endHour": 44,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 44,
+   "endHour": 47,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 47,
+   "endHour": 50,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 50,
+   "endHour": 53,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 53,
+   "endHour": 56,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 56,
+   "endHour": 59,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 59,
+   "endHour": 62,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 62,
+   "endHour": 65,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 65,
+   "endHour": 68,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 68,
+   "endHour": 71,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 71,
+   "endHour": 74,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 74,
+   "endHour": 77,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 77,
+   "endHour": 80,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 80,
+   "endHour": 83,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 83,
+   "endHour": 86,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 86,
+   "endHour": 89,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 89,
+   "endHour": 92,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 92,
+   "endHour": 95,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 95,
+   "endHour": 98,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 98,
+   "endHour": 101,
+   "in": 0.0,
+   "res": 3
+  }
+ ],
+ "_peak_check": {
+  "ok": true,
+  "systems": [
+   {
+    "system": "ICON ensemble",
+    "family": "ens:icon_seamless",
+    "in": 0.3,
+    "hour": 3,
+    "kind": "ensemble median of run peaks"
+   },
+   {
+    "system": "ECMWF",
+    "family": "ecmwf",
+    "in": 0.22,
+    "hour": 3,
+    "kind": "heaviest hour"
+   }
+  ],
+  "why": [],
+  "lo": 0.2,
+  "hi": 0.3,
+  "hour": 3
+ },
+ "peakRate": {
+  "lo": 0.2,
+  "hi": 0.3,
+  "hour": 3,
+  "systems": [
+   "ICON ensemble",
+   "ECMWF"
+  ]
+ },
  "evidence": {
   "pHeavy": [
    0,

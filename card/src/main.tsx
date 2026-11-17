@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { useEffect, useState } from 'react';
 import type { Scenario } from './types';
 import { scenarios } from './data/scenarios';
-import { WeatherCard } from './components/WeatherCard';
+import { NowAndNext, WeatherCard } from './components/WeatherCard';
+import { narrativeCases, stormCut, stormWed } from './lib/cases';
 import { Timeline } from './components/Timeline';
 import { validateScenario } from './lib/rules';
 import { ageCard, elapsedHours, floodPotentials } from './lib/derive';
@@ -50,7 +51,29 @@ function GraphLab(){
   <div><span className="muted">Current</span><article className="weather-card"><Timeline scenario={s} potential={pot?'outline':undefined}/></article></div>
   <div><span className="muted">Silhouette</span><article className="weather-card"><Timeline scenario={s} potential={pot?'outline':undefined} graph="silhouette"/></article></div></div></section>)}
  </main>}
+/** ?lab&narrative: the storm narrative (v0.25 review) across scenarios: hero only, at phone width. */
+function NarrativeLab(){
+ return <main><header className="lab-header"><div><div className="eyebrow">SCENARIO LAB · STORM NARRATIVE (V0.25 REVIEW)</div><h1>One story per storm.</h1><p>Hero only. Cases built from the live Mon 8 AM forecast and the fixtures; "timing more certain" cases are hypothetical (the live engine doesn't supply it yet).</p></div></header>
+ <div className="narrative-grid">{narrativeCases.map(c=><section key={c.id} className="narrative-case"><h3>{c.title}</h3><article className="weather-card"><NowAndNext s={c.s}/></article></section>)}</div></main>}
+/** ?lab&event[&case=id]: the event-first hero and five-day hourly row (v0.26 review), whole cards at phone width. */
+const EVENT_CASES:[string,string,()=>Scenario][]=[
+ ['storm-wed','Wednesday storm (live forecast Tue 11:35 AM, v0.26 engine)',stormWed],
+ ['storm-cut','Storm running past the forecast: data stops Thu 3 AM',()=>stormCut(40)],
+ ['storm-peak','Display check only: the same storm IF two independent hourly systems agreed (hypothetical .40–.45")',()=>{const s=stormWed();s.peakRate={lo:0.4,hi:0.45,hour:21,systems:['ICON ensemble','HRRR']};return s;}],
+ ['storm-official','Extreme storm fixture (Flood Watch; no amounts in this fixture)',()=>structuredClone(scenarios.find(x=>x.id==='storm')!) as Scenario],
+ ['heat','Heatwave fixture',()=>structuredClone(scenarios.find(x=>x.id==='heat')!) as Scenario],
+ ['dry','Dry period (calm fixture)',()=>structuredClone(scenarios.find(x=>x.id==='october')!) as Scenario],
+ ['incomplete','Incomplete forecast fixture',()=>structuredClone(scenarios.find(x=>x.id==='incomplete')!) as Scenario],
+];
+function EventLab(){
+ const q=new URLSearchParams(location.search),id=q.get('case'),at=Number(q.get('at'));
+ // review aid: &at=N scrolls each hourly row so hour N is first in view
+ useEffect(()=>{if(!at)return;document.querySelectorAll('.hours-scroll').forEach(el=>{const items=el.querySelectorAll('.hour');const it=items[at] as HTMLElement|undefined;if(it)el.scrollLeft=it.offsetLeft-(el as HTMLElement).offsetLeft-19;});},[at]);
+ const rows=EVENT_CASES.filter(c=>!id||c[0]===id);
+ return <main className="event-lab">{rows.map(([k,t,f])=>{const s=f(),err=validateScenario(s);return <section key={k} className="event-case"><h3>{t}</h3><WeatherCard scenario={s} potential="outline"/>{err.length>0&&<div className="validation">{err.join('; ')}</div>}</section>})}</main>}
 const lab=new URLSearchParams(location.search).has('lab');
+const eventLab=lab&&new URLSearchParams(location.search).has('event');
+const narrativeLab=lab&&new URLSearchParams(location.search).has('narrative');
 const graphLab=lab&&new URLSearchParams(location.search).has('graph');
 const potentialLab=lab&&new URLSearchParams(location.search).has('potential');
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{graphLab?<GraphLab/>:potentialLab?<PotentialLab/>:lab?<Lab/>:<Live/>}</React.StrictMode>);
+ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode>{eventLab?<EventLab/>:narrativeLab?<NarrativeLab/>:graphLab?<GraphLab/>:potentialLab?<PotentialLab/>:lab?<Lab/>:<Live/>}</React.StrictMode>);

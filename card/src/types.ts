@@ -65,7 +65,21 @@ export interface Scenario {
    * Rain amount for each rain stretch on the chart (contiguous hours with gear), end exclusive:
    * the median of the model runs' own totals over exactly those hours.
    */
-  rainTotals?: { startHour: number; endHour: number; medianIn: number }[];
+  rainTotals?: { startHour: number; endHour: number; medianIn: number;
+    /** v0.26: the exact hours the total covers (the stretch's catchment: its wet hours plus forecast-dry hours around
+     *  them, up to halfway to the next stretch), end exclusive. The hero labels the total with them. */
+    fromHour?: number; toHour?: number }[];
+  /**
+   * Rain amounts for the hourly row (v0.26), at the forecast's own resolution, end exclusive: `res` 1 (radar, or every
+   * pooled model genuinely hourly), 3 (a 3-hour model block) or 6 (an NWS 6-hour period). `in` is the median of the
+   * runs' own totals over the interval; intervals are independent and NOT scaled to add up to a stretch's total.
+   * `partial`: the forecast's block runs past now or the radar. Hours with no interval have no forecast amount.
+   */
+  rainBlocks?: { startHour: number; endHour: number; in: number; res: 1 | 3 | 6; partial?: boolean;
+    /** With `partial`: the whole block's hours (may start before hour 0 or end past the row), for drawing its bracket. */
+    blockStartHour?: number; blockEndHour?: number }[];
+  /** Peak hourly rate (v0.26), only when two or more genuinely hourly systems agree (rainwatch/intervals.py). */
+  peakRate?: { lo: number; hi: number; hour: number; systems: string[] };
   /**
    * Rain for the five-day rows (hour offsets, end exclusive), up to the end of the fifth local day.
    * Which hours are wet is the engine's decision: within the graph's 72 hours, exactly the hours with rain gear.

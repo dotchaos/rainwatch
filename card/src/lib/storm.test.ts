@@ -10,6 +10,8 @@ import { chartBlocks, floodHero, floodPotentials, floodStorm, nowNext, peakWindo
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
 /** The live forecast of Mon Nov 16, 8 AM: dry until Wednesday's storm, heavy hours in 36% of runs, flood levels unvalidated. */
 const ahead = () => byId('storm-ahead');
+/** The same forecast with its timing marked more certain ('higher' confidence on every interval). */
+const sure = (s: Scenario) => { s.timeline!.intervals = s.timeline!.intervals.map(p => ({ ...p, confidence: 'higher' as const })); return s; };
 /** Shift a scenario's rain (intervals, rain hours, totals, evidence) `by` hours earlier. */
 function earlier(s: Scenario, by: number) {
   const mv = <T extends { startHour: number; endHour: number }>(xs?: T[]) =>
@@ -48,7 +50,7 @@ describe('voice follows consequence and confidence, not a clock (v0.19)', () => 
     // the day is named once (headline); the calibration story lives on the details page
     expect(nowNext(s)).toEqual({
       headline: 'Keep an eye on Wednesday morning',
-      detail: 'Around 1.5" of rain expected, with heavy bursts possible early on. Localized flooding is possible.',
+      detail: 'Rain arrives overnight, with heavy bursts possible. Around 1.5" could fall Wednesday, with localized flooding possible.',
       action: { icon: 'shield', text: 'Potential drainage flooding', risk: false },
       note: "Consider checking flood barriers before the storm. Local driveway risk isn't validated yet.",
     });
@@ -61,22 +63,35 @@ describe('voice follows consequence and confidence, not a clock (v0.19)', () => 
     expect(nowNext(s)!.headline).not.toMatch(/Protect/);
   });
   it('heavy rain likely: anticipation, with onset, heavy period, peak and deadline as four distinct facts', () => {
-    const s = ahead(); s.evidence!.pHeavy = s.evidence!.pHeavy.map(p => p && p >= 0.3 ? 0.6 : p);
+    const lk = () => { const s = ahead(); s.evidence!.pHeavy = s.evidence!.pHeavy.map(p => p && p >= 0.3 ? 0.6 : p); return s; };
+    const s = lk();
     expect(stormVoice(s, floodStorm(s)!)).toBe('anticipation');
+    // approximate timing (the live engine today): day parts, the approved copy of Tue Nov 17
     expect(nowNext(s)).toMatchObject({
-      headline: 'Heavy rain likely early Wednesday',
-      detail: 'Rain from about Wed 1 AM; heavy rain about Wed 4–10 AM. Around 1.5" Wednesday. Localized flooding is possible. Timing is approximate.',
+      headline: 'Heavy rain likely Wednesday morning',
+      detail: 'Rain arrives overnight and is expected to be heaviest Wednesday morning. Around 1.5" could fall Wednesday, with localized flooding possible.',
+      action: { text: 'Potential drainage flooding · Wednesday morning', risk: false },
+    });
+    expect(nowNext(s)!.note).toMatch(/^Consider checking flood barriers before the storm\. Best done before the rain arrives\./);
+    // the same storm with its timing marked more certain: hours, hedged with "about"
+    expect(nowNext(sure(lk()))).toMatchObject({
+      headline: 'Heavy rain likely Wednesday morning',
+      detail: 'Rain arrives about 1 AM Wednesday and is expected to be heaviest from about 4 AM. Around 1.5" could fall Wednesday, with localized flooding possible.',
       action: { text: 'Potential drainage flooding · Wed 4–8 AM', risk: false },
     });
-    expect(nowNext(s)!.note).toMatch(/^Consider checking flood barriers before the storm\. Best done before about Wed 2 AM\./);
+    expect(nowNext(sure(lk()))!.note).toMatch(/Best done before about 2 AM Wednesday\./);
   });
   it('an official flood product justifies action even two days out', () => {
     const s = ahead(); s.evidence!.official = [{ event: 'Flood Watch', startHour: 38, endHour: 60 }];
     expect(stormVoice(s, floodStorm(s)!)).toBe('action');
     const n = nowNext(s)!;
-    expect(n.headline).toBe('Protect your driveway before Wed 2 AM');
-    expect(n.detail).toMatch(/^Flood Watch from the National Weather Service\. Rain from about Wed 1 AM; heavy rain about Wed 4–10 AM\./);
-    expect(n.action).toEqual({ icon: 'shield', text: 'Sandbags · Wed 4–8 AM', risk: true });
+    expect(n.headline).toBe('Protect your driveway before the rain arrives');
+    expect(n.detail).toBe('Flood Watch from the National Weather Service. Rain arrives overnight and is expected to be heaviest Wednesday morning. '
+      + 'Around 1.5" is expected Wednesday, with localized flooding possible.');
+    expect(n.action).toEqual({ icon: 'shield', text: 'Sandbags · Wednesday morning', risk: true });
+    const o = sure(ahead()); o.evidence!.official = s.evidence!.official;
+    expect(nowNext(o)!.headline).toBe('Protect your driveway before about 2 AM Wednesday');
+    expect(nowNext(o)!.action).toEqual({ icon: 'shield', text: 'Sandbags · Wed 4–8 AM', risk: true });
   });
   it('model frequency alone never orders action while the local flood level is unvalidated', () => {
     const s = ahead(); s.evidence!.pHeavy = s.evidence!.pHeavy.map(p => p && 0.95); s.evidence!.pFlood = s.evidence!.pFlood!.map(p => p && 0.9);
@@ -91,7 +106,7 @@ describe('voice follows consequence and confidence, not a clock (v0.19)', () => 
     expect(stormVoice(s, floodStorm(s)!)).toBe('awareness');
   });
   it('one source for every time: hero, action line and graph all come from the same storm', () => {
-    for (const s of [ahead(), byId('storm')]) {
+    for (const s of [sure(ahead()), sure(byId('storm'))]) {
       const h = floodHero(s)!, st = h.storm;
       expect(sandbagsCallouts(s)).toEqual(h.voice === 'action' ? st.peaks : []);
       if (h.voice !== 'awareness') expect(h.action).toContain(st.peaks[0].label.replace(/^\w+ /, ''));
@@ -120,7 +135,7 @@ describe('one level of urgency across hero, graph and five-day row (v0.19 review
     const s = ahead(); s.evidence!.official = [{ event: 'Flood Watch', startHour: 38, endHour: 60 }];
     expect(top(s)).toBe(3);
     expect(sandbagsCallouts(s).map(p => p.label)).toEqual(['Wed 4–8 AM']);
-    expect(nowNext(s)!.action).toEqual({ icon: 'shield', text: 'Sandbags · Wed 4–8 AM', risk: true });
+    expect(nowNext(s)!.action).toEqual({ icon: 'shield', text: 'Sandbags · Wednesday morning', risk: true });
   });
   it('the Extreme storm fixture (official Flood Watch) keeps its Sandbags blocks and callouts', () => {
     expect(top(byId('storm'))).toBe(3);

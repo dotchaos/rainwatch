@@ -1,8 +1,8 @@
 import type React from 'react';
-import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight } from 'lucide-react';
+import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, Clock, CloudRain, Thermometer } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
-import { edgeNote, fiveDays, hourLabel, nowNext, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
+import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
 
@@ -48,7 +48,31 @@ function Upcoming({ up, target }: { up: NonNullable<ReturnType<typeof upcomingEv
 }
 
 /** 1. Now & next: current conditions, then the headline, its detail and one actionable line. */
-function NowAndNext({ s }: { s: Scenario }) {
+const ROW_ICON = { start: Clock, end: Clock, peak: CloudRain, heat: Thermometer };
+/** 1a. Event-first hero (v0.26 review): the consequential event, one dominant figure, start/end/peak, then the advisory. */
+function EventHeroView({ s, e }: { s: Scenario; e: EventHero }) {
+  const up = upcomingEvent(s), a = e.advisory, c = s.current;
+  return <section className="now-next event-hero">
+    <div className="now"><WeatherIcon name={c.icon} size={34} /><span className="now-temp">{deg(c.temperatureF)}</span><span className="now-cond">{c.condition}</span>
+      {(c.highF !== null || c.lowF !== null) && <span className="now-hilo" aria-label={`Today's high ${deg(c.highF)}, low ${deg(c.lowF)}`}>{deg(c.highF)} / {deg(c.lowF)}</span>}</div>
+    <div className="event-eyebrow">{e.eyebrow}</div>
+    <h2 className="headline">{e.headline}</h2>
+    {e.figure && <div className={`event-figure${e.kind === 'heat' ? ' heat' : ''}`}><WeatherIcon name={e.kind === 'heat' ? 'heat' : 'heavy-rain'} size={30} />
+      <strong>{e.figure.value}</strong><span>{e.figure.label}</span></div>}
+    <ul className="event-rows">{e.rows.map(r => { const I = ROW_ICON[r.icon]; return <li key={r.title}><I size={18} /><div><strong>{r.title}</strong>{r.sub && <small>{r.sub}</small>}</div></li>; })}</ul>
+    {a && <div className={`advisory${a.risk ? ' risk' : ''}${e.kind === 'heat' ? ' heat' : ''}`}>
+      {e.kind === 'heat' ? <Sun size={22} /> : <ShieldAlert size={22} />}
+      <div><strong>{a.title}</strong><p>{a.what}</p><p className="advisory-todo">{a.todo}</p>
+        {(a.support || a.caveat) && <p className="advisory-note">{[a.support, a.caveat].filter(Boolean).join(' ')}</p>}
+        {a.evidence.length > 0 && <details className="advisory-why"><summary>Why Rainwatch is concerned</summary>
+          <dl>{a.evidence.map(x => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl></details>}</div></div>}
+    {up && <Upcoming up={up} target={fiveDays(s) ? `five-day-${up.dayIndex}` : null} />}
+  </section>;
+}
+
+export function NowAndNext({ s }: { s: Scenario }) {
+  const e = eventHero(s);
+  if (e) return <EventHeroView s={s} e={e} />;
   const n = nowNext(s), Icon = n?.action ? ACTION_ICON[n.action.icon] : null, up = upcomingEvent(s);
   return <section className="now-next">
     <div className="now"><WeatherIcon name={s.current.icon} size={34} /><span className="now-temp">{deg(s.current.temperatureF)}</span><span className="now-cond">{s.current.condition}</span></div>
@@ -64,16 +88,26 @@ function NowAndNext({ s }: { s: Scenario }) {
  *  the row's left edge, the next day's label covering it as it arrives (v0.18.1). Without sticky support the labels
  *  simply sit above each day's first hour. */
 function Hourly({ s }: { s: Scenario }) {
-  const items: React.ReactNode[] = [];
+  const items: React.ReactNode[] = [], amts = hourAmounts(s);
   s.hourly.forEach((h, i) => {
-    const at = h.hour ?? i, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon;
+    const at = h.hour ?? i, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon, a = amts?.get(at);
     if (i === 0 || l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${at}`}>{i === 0 ? 'Today' : l.day}</em>);
-    items.push(<div className={`hour${l.day && i > 0 ? ' hour-midnight' : ''}`} role="listitem" key={at} aria-label={l.day ? `${l.day} ${l.text}` : undefined}>
+    const blk = a && a.kind !== 'dry' && a.kind !== 'missing' && a.pos !== 'solo' ? ` blk blk-${a.pos}` : '';
+    items.push(<div className={`hour${l.day && i > 0 ? ' hour-midnight' : ''}${a?.top ? ' hour-top' : ''}`} role="listitem" key={at}
+      aria-label={`${l.day ? `${l.day} ` : ''}${l.text}${a?.text && a.text !== '—' ? `, rain ${a.text}${a.res > 1 ? ` over ${a.res} hours` : ''}` : ''}`}>
       <span>{l.text}</span><WeatherIcon name={icon} size={24} label /><strong>{deg(h.temperatureF)}</strong>
+      {amts && <em className={`amt amt-${a?.kind ?? 'missing'}${blk}`}>{a?.text ?? ''}{a?.text && a.res > 1 && a.kind !== 'trace' ? <i>{a.res} hr</i> : null}</em>}
     </div>);
   });
+  const rec = amountsVsTotal(s);
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
-    <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div></section>;
+    <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div>
+    {amts && <details className="amounts-about"><summary>Rain amounts: typical model run, per hour or per bracketed 3-hour block</summary>
+      <p>Most of the models behind this forecast give rain in 3-hour amounts, so it is shown that way; an hourly amount appears only where every model is genuinely hourly (or radar).
+        Each amount is the median of the model runs for that interval on its own. "Trace" is under 0.01", "—" means no forecast for that hour.</p>
+      {rec && <p>{rec.exact ? 'These amounts' : 'The amounts fully inside that window'} add up to {fmtAmount(rec.blocksIn)} from {rec.from} through {rec.to}; the storm total above is {tenths(rec.totalIn)}" for the same hours.
+        {rec.blocksIn < rec.totalIn - 0.05 ? ' The difference is real, not rounding: the runs disagree on timing, so each interval\'s typical run is drier than a typical run\'s whole storm. The total is the better guide to how much rain; the intervals show when.' : ''}</p>}
+    </details>}</section>;
 }
 
 /** A day's rain amount, only when it is rain worth a number (see DISPLAY-RULES.md, Rain amounts). */
