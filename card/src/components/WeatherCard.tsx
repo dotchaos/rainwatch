@@ -2,7 +2,7 @@ import type React from 'react';
 import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
-import { amountsVsTotal, cap, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
+import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
 
@@ -48,17 +48,20 @@ function Upcoming({ up, target }: { up: NonNullable<ReturnType<typeof upcomingEv
 }
 
 /** 1. Now & next: current conditions, then the headline, its detail and one actionable line. */
-/** 1a. Event-first hero (v0.26, compact): the weather headline, the event total, one sentence, then one shield line. */
+/** 1a. Event-first hero (v0.26): "Next up" / "Now", the event, its amount and timing in one sentence, its duration,
+ *  then one shield line of preparation with the caveat and an evidence link under it. */
 function EventHeroView({ s, e }: { s: Scenario; e: EventHero }) {
   const up = upcomingEvent(s), a = e.advisory, c = s.current, Icon = e.kind === 'heat' ? Sun : ShieldAlert;
+  const rest = e.amount && e.sentence.startsWith(e.amount) ? e.sentence.slice(e.amount.length) : null;
   return <section className="now-next event-hero">
     <div className="now"><WeatherIcon name={c.icon} size={34} /><span className="now-temp">{deg(c.temperatureF)}</span><span className="now-cond">{c.condition}</span>
       {(c.highF !== null || c.lowF !== null) && <span className="now-hilo" aria-label={`Today's high ${deg(c.highF)}, low ${deg(c.lowF)}`}>{deg(c.highF)} / {deg(c.lowF)}</span>}</div>
+    <div className="event-label">{e.label}</div>
     <h2 className="headline">{e.headline}</h2>
-    {e.figure && <p className="event-total"><strong>{e.figure.value}</strong> <span>{e.figure.label}</span></p>}
-    <p className="headline-detail">{e.sentence}</p>
-    {a && <div className={`action-line${a.risk ? ' risk' : ''}`}><Icon size={19} />{a.title}{a.when ? ` · ${cap(a.when)}` : ''}</div>}
-    {a && <div className="action-note">{a.todo}{a.caveat ? ` ${a.caveat}` : ''}
+    <p className="headline-detail event-sentence">{rest !== null ? <><strong>{e.amount}</strong>{rest}</> : e.sentence}</p>
+    <p className="event-duration"><span>Duration:</span> {e.duration}</p>
+    {a && <div className={`action-line${a.risk ? ' risk' : ''}`}><Icon size={19} />{a.action}</div>}
+    {a && (a.caveat || a.evidence.length > 0) && <div className="action-note">{a.caveat}
       {a.evidence.length > 0 && <details className="event-evidence"><summary>Evidence</summary>
         <dl>{a.evidence.map(x => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl></details>}</div>}
     {up && <Upcoming up={up} target={fiveDays(s) ? `five-day-${up.dayIndex}` : null} />}

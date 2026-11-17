@@ -109,9 +109,10 @@
 .narrative-case h3{font-size:13px;font-weight:600;margin:0 0 8px;min-height:34px}
 /* Event-first hero (v0.26, compact): the existing hero's type scale; the total is the one large figure */
 .now-hilo{margin-left:auto;font-size:13px;color:#53636c;font-weight:600;white-space:nowrap}
-.event-total{margin:4px 0 8px;display:flex;align-items:center;gap:10px}
-.event-total strong{font-size:34px;font-weight:750;letter-spacing:-.04em;line-height:1;color:#1f4f6e;flex-shrink:0}
-.event-total span{font-size:13px;line-height:1.3;color:#7b8991}
+.event-label{margin-top:16px;font-size:12px;font-weight:700;color:#687883}
+.event-hero .headline{margin:2px 0 6px}
+.event-sentence strong{color:#26343d;font-weight:700}
+.event-duration{margin:6px 0 0;font-size:14px;color:#53636c}.event-duration span{color:#86939a}
 .event-hero .action-line{font-size:15px}
 .event-hero .action-note{display:block}
 .event-evidence{display:inline;margin-left:4px}.event-evidence summary{display:inline;cursor:pointer;color:#2f6f95;font-weight:600;list-style:none}

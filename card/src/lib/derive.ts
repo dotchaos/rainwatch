@@ -1038,29 +1038,40 @@ export function elapsedHours(s: Scenario, nowMs: number): number {
  *   Peak rate: only the engine's supported range (peakRate); otherwise the heaviest period, without a number.
  */
 export interface Advisory {
-  /** One shield line: the consequence and when ("Potential drainage flooding · tomorrow morning"), then one short line
-   *  of preparation (and the unvalidated caveat), with the evidence behind an expandable link. */
-  title: string; when?: string; risk: boolean; todo: string; caveat?: string;
+  /** The one preparation line beside the shield ("Prepare flood barriers before the rain arrives"); `risk` when it is a
+   *  driveway call (official product or validated level). The caveat and evidence sit under it, small. */
+  action: string; risk: boolean; caveat?: string;
   evidence: { label: string; value: string }[];
 }
 export interface EventHero {
   kind: 'storm' | 'heat';
-  /** Describes the weather, never the consequence (that is the advisory's). */
+  /** "Next up" before the event, "Now" once it has started. */
+  label: 'Next up' | 'Now';
+  /** The event and its consequence, once ("Heavy rain, with possible localized flooding"). */
   headline: string;
-  figure?: { value: string; label: string };
-  /** One sentence: onset, heaviest (and a supported peak rate), end — at the storm's timing precision. */
+  /** The amount (or highest temperature), shown bold at the start of the sentence: 'About 2.7"'. */
+  amount?: string;
+  /** Amount, onset and heaviest, at the storm's timing precision; starts with `amount` when there is one. */
   sentence: string;
+  /** "late Tuesday night through Thursday midday"; how the end is unknown when the storm outlasts the forecast. */
+  duration: string;
   advisory?: Advisory;
 }
 
-/** Coarse start: "overnight Tuesday" for the small hours (named by the evening before), else the day part. */
-function startCoarse(s: Scenario, h: number): string {
-  if (localHour(s, h) < 5 && dayIndexAt(s, h) > 0) {
-    const prev = relDay(s, h - localHour(s, h) - 1);
-    return prev === 'today' ? 'late tonight' : prev === 'tomorrow' ? 'late tomorrow night' : `overnight ${fullDay[prev]}`;
+/** A day part with the day named ("Wednesday morning", "Thursday midday"); today says "late tonight" / "this morning"
+ *  unless `named` (the duration line names every day: "late Tuesday night"). `end`: the small hours stay with their day. */
+function partNamed(s: Scenario, h: number, end = false, named = false, fold = false): string {
+  const L0 = localHour(s, h), L = fold && L0 < 5 ? 5 : L0, dayOf = (x: number) => fullDay[clockAt(s.startDay, s.startHourLocal, x).day];
+  if (L < 5 && !end && (dayIndexAt(s, h) > 0 || named)) {   // the small hours belong to the night before
+    return !named && dayIndexAt(s, h) === 1 ? 'late tonight' : `late ${dayOf(h - L - 1)} night`;
   }
-  return roughWhen(s, h);
+  const part = L < 5 ? 'early' : L < 11 ? 'morning' : L < 14 ? 'midday' : L < 17 ? 'afternoon' : L < 21 ? 'evening' : 'night';
+  if (dayIndexAt(s, h) === 0 && !named) return part === 'night' ? 'tonight' : part === 'midday' ? 'midday today' : part === 'early' ? 'early this morning' : `this ${part}`;
+  return part === 'early' ? `early ${dayOf(h)}` : `${dayOf(h)} ${part}`;
 }
+/** A precise time with its day named: "1 AM Wednesday", "11 AM today". */
+const atNamed = (s: Scenario, h: number) => `${clock(s, h)} ${dayIndexAt(s, h) === 0 ? 'today' : fullDay[clockAt(s.startDay, s.startHourLocal, h).day]}`;
+
 /** Where the storm's rain really stops: past the graph's 72 hours the five-day rain hours say (gaps under 3 h join). */
 function stormEnd(s: Scenario, st: Storm): { end: number; open: boolean } {
   let end = st.end;
@@ -1103,32 +1114,37 @@ export function eventHero(s: Scenario): EventHero | null {
   if (!st?.heavy) return null;
   const voice = stormVoice(s, st), lvl = timingLevel(s, st), heavy = st.heavy;
   const onsetNow = isNowAt(s, st.start), heavyNow = isNowAt(s, heavy.start);
-  const head = roughWhen(s, heavy.start, true), { end, open } = stormEnd(s, st);
-  const likely = (st.pHeavy ?? 0) >= LIKELY_P;
-  const headline = heavyNow ? (voice === 'awareness' ? 'Heavy bursts possible now' : 'Heavy rain now')
-    : voice === 'awareness' ? `Heavy bursts possible ${head}` : voice === 'anticipation' ? `Heavy rain ${likely ? 'likely' : 'possible'} ${head}` : `Heavy rain ${head}`;
+  const { end, open } = stormEnd(s, st);
+  const ev = s.evidence, official = [...new Set(st.official.map(o => o.event))];
+  const headline = voice === 'action'
+    ? (official.length ? `Heavy rain, with a ${joinAnd(official)} in effect` : 'Heavy rain, with localized flooding likely')
+    : voice === 'anticipation' ? 'Heavy rain, with possible localized flooding'
+    : 'Rain with heavy bursts, and possible localized flooding';
+
+  // amount (the storm's own total over its exact hours, else the v0.25 day or partial window), onset, heaviest
   const fig = stormFigure(s, st);
-
-  // one sentence, at the storm's timing precision (v0.25 levels): onset, heaviest (with a supported rate), end
-  const sameBucket = heavy.start - st.start < 2;
-  const arrival = onsetNow ? 'Rain has started' : sameBucket ? 'Rain' : lvl === 'coarse' ? `Rain arrives ${startCoarse(s, st.start)}`
-    : `Rain arrives ${lvl === 'near' ? 'around' : 'about'} ${atProse(s, st.start)}`;
+  const amount = fig ? `About ${tenths(fig.inches)}"` : undefined;
+  const win = fig?.label.replace(/^forecast /, '') ?? '';
+  const scope = !fig ? '' : fig.label.startsWith('the whole storm') ? ' of rain'
+    : win === 'tomorrow' ? ` of rain on ${fullDay[clockAt(s.startDay, s.startHourLocal, heavy.start).day]}` : ` of rain ${win}`;
+  const starting = onsetNow ? 'falling now' : lvl === 'coarse' ? `starting ${partNamed(s, st.start)}`
+    : `starting ${lvl === 'near' ? 'around' : 'about'} ${atNamed(s, st.start)}`;
   const pr = s.peakRate && s.peakRate.hour >= heavy.start - 1 && s.peakRate.hour < heavy.end + 1 ? s.peakRate : undefined;
-  const rate = pr ? `, up to about ${pr.lo === pr.hi ? fmtIn(pr.lo) : `${fmtIn(pr.lo).slice(0, -1)}–${fmtIn(pr.hi)}`} an hour around ${atProse(s, pr.hour)}` : '';
-  const heaviest = heavyNow ? 'is at its heaviest now'
-    : lvl === 'coarse' ? `is expected to be heaviest ${head}`
-    : lvl === 'about' || openEnd(s, heavy.end) || dayIndexAt(s, heavy.start) !== dayIndexAt(s, heavy.end - 1) ? `is expected to be heaviest from ${lvl === 'near' ? 'around' : 'about'} ${atProse(s, heavy.start, onsetNow || sameBucket ? undefined : st.start)}`
-    : `is expected to be heaviest ${spanProse(s, heavy.start, heavy.end, onsetNow || sameBucket ? undefined : st.start)}`;
-  const middle = voice === 'awareness' && !heavyNow ? `, with heavy bursts possible ${head}${rate}` : ` and ${heaviest}${rate}`;
-  const ending = open ? `, still falling at ${timeAt(s, end)}, where the forecast ends`
-    : lvl === 'coarse' ? `, easing ${roughWhen(s, end - 1)}` : `, ending about ${atProse(s, end)}`;
-  const sentence = `${arrival}${sameBucket && !onsetNow && voice !== 'awareness' ? ` ${heaviest}${rate}` : middle}${ending}.`;
+  const rate = pr ? `, up to about ${pr.lo === pr.hi ? fmtIn(pr.lo) : `${fmtIn(pr.lo).slice(0, -1)}–${fmtIn(pr.hi)}`} an hour around ${clock(s, pr.hour)}` : '';
+  const when = heavyNow ? 'now' : lvl === 'coarse' ? partNamed(s, heavy.start, false, false, true)
+    : lvl === 'near' && dayIndexAt(s, heavy.start) === dayIndexAt(s, heavy.end - 1) && !openEnd(s, heavy.end) ? `${span(s, heavy.start, heavy.end)}${dayIndexAt(s, heavy.start) ? ` ${fullDay[clockAt(s.startDay, s.startHourLocal, heavy.start).day]}` : ''}`
+    : `from ${lvl === 'near' ? 'around' : 'about'} ${atNamed(s, heavy.start)}`;
+  const heaviest = voice === 'awareness' ? `with heavy bursts possible ${when}` : `heaviest ${when}`;
+  const lead = amount ? `${amount}${scope}, ` : 'Rain ';
+  const sentence = `${lead}${starting} and ${heaviest}${rate}.`.replace(/^Rain falling now/, 'Rain falling now');
+  const from = onsetNow ? 'now' : lvl === 'coarse' ? partNamed(s, st.start, false, true) : `about ${atNamed(s, st.start)}`;
+  const duration = open ? `${from} into ${partNamed(s, end - 1, true, true)}, past where the forecast ends; end not known yet`
+    : `${from} through ${lvl === 'coarse' ? partNamed(s, end - 1, true, true) : `about ${atNamed(s, end)}`}`;
 
-  // the advisory: consequence and when, one line of preparation, evidence behind a link; a driveway call only with an
-  // official product or a validated local level (stormVoice 'action')
-  const ev = s.evidence, pot = floodPotentials(s).find(p => p.startHour < heavy.end && heavy.start < p.endHour);
+  // the shield line: preparation only (the consequence is in the headline); caveat and evidence small, under it
+  const pot = floodPotentials(s).find(p => p.startHour < heavy.end && heavy.start < p.endHour);
   const evidence: Advisory['evidence'] = [];
-  if (st.official.length) evidence.push({ label: 'National Weather Service', value: joinAnd([...new Set(st.official.map(o => o.event))]) });
+  if (official.length) evidence.push({ label: 'National Weather Service', value: joinAnd(official) });
   if (st.pHeavy !== null) evidence.push({ label: 'Heavy hour (0.20"+)', value: `in ${Math.round(st.pHeavy * 100)}% of model runs` });
   const rw = st.peaks[0] ? [st.peaks[0].startHour, st.peaks[0].endHour] : [heavy.start, heavy.end];
   evidence.push({ label: 'Risk window', value: `${lvl === 'coarse' ? 'about ' : ''}${windowShort(s, rw[0], rw[1])}` });
@@ -1140,15 +1156,12 @@ export function eventHero(s: Scenario): EventHero | null {
   else evidence.push({ label: 'Peak hourly rate', value: 'not shown: needs two genuinely hourly models that agree, within 48 hours' });
   evidence.push({ label: 'Local flood level', value: ev?.floodValidated ? 'validated at this address' : 'not yet validated at this address' });
   const prep = prepByFor(s, st, lvl);
-  const official = st.official.length ? `${joinAnd([...new Set(st.official.map(o => o.event))])} in effect. ` : '';
   const advisory: Advisory = {
-    title: voice === 'action' ? 'Driveway flood risk' : 'Potential drainage flooding', risk: voice === 'action',
-    when: heavyNow ? 'now' : lvl === 'coarse' ? head : windowShort(s, rw[0], rw[1]),
-    todo: official + (voice === 'action' ? `Put flood barriers in place${prep ? ` ${prep}` : ' now'}.`
-      : `${voice === 'awareness' ? 'Consider checking' : 'Prepare'} flood barriers${prep ? ` ${prep}` : ''}.`),
-    caveat: ev?.floodValidated ? undefined : s.alert.context, evidence,
+    action: voice === 'action' ? `Protect your driveway ${prep ?? 'now'}.`
+      : `${voice === 'awareness' ? 'Consider checking' : 'Prepare'} flood barriers${prep ? ` ${prep}` : ' now'}.`,
+    risk: voice === 'action', caveat: ev?.floodValidated ? undefined : s.alert.context, evidence,
   };
-  return { kind: 'storm', headline, figure: fig ? { value: `~${tenths(fig.inches)}"`, label: fig.label } : undefined, sentence, advisory };
+  return { kind: 'storm', label: onsetNow ? 'Now' : 'Next up', headline, amount, sentence, duration, advisory };
 }
 const fmtIn = (x: number) => `${x.toFixed(2).replace(/^0/, '')}"`;
 
@@ -1158,15 +1171,13 @@ function heatEvent(s: Scenario): EventHero | null {
   const a = Math.min(...iv.map(p => p.startHour)), b = Math.max(...iv.map(p => p.endHour));
   const hot = s.hourly.filter((h, i) => { const at = h.hour ?? i; return at >= a && at < b && h.temperatureF !== null; });
   const max = Math.max(...s.days.map(d => d.highF ?? -99), ...hot.map(h => h.temperatureF!));
-  const peak = hot.find(h => h.temperatureF === max);
   const lows = s.days.map(d => d.lowF).filter((v): v is number => v !== null), lo = lows.length ? Math.max(...lows) : 0;
-  const sentence = `${isNowAt(s, a) ? 'Hot now' : `Heat builds ${roughWhen(s, a)}`}, hottest ${windowList(wins)}`
-    + (openEnd(s, b) ? `, still hot at ${timeAt(s, 72)}, where this outlook ends.` : `, easing ${roughWhen(s, b)}.`)
-    + (lo >= 70 ? ` Lows near ${lo}° may offer little relief overnight.` : '');
-  const w0 = wins[0].startHour, w1 = wins[wins.length - 1].startHour;
-  return { kind: 'heat', headline: `Dangerous heat ${dayWord(s, w0)}${dayIndexAt(s, w1) !== dayIndexAt(s, w0) ? ` and ${dayWord(s, w1)}` : ''}`,
-           figure: { value: `${max}°`, label: peak ? `highest, ${roughWhen(s, peak.hour ?? 0)}` : 'highest forecast' },
-           sentence, advisory: { title: s.alert.actionTitle, risk: false, todo: s.alert.action, evidence: [] } };
+  const amount = `Highs near ${max}°`;
+  const sentence = `${amount}, hottest ${windowList(wins)}.` + (lo >= 70 ? ` Lows near ${lo}° may offer little relief overnight.` : '');
+  const from = isNowAt(s, a) ? 'now' : partNamed(s, a, false, true);
+  const duration = openEnd(s, b) ? `${from} into ${partNamed(s, 71, true, true)}, past where this outlook ends` : `${from} through ${partNamed(s, b - 1, true, true)}`;
+  return { kind: 'heat', label: isNowAt(s, a) ? 'Now' : 'Next up', headline: 'Dangerous heat', amount, sentence, duration,
+           advisory: { action: s.alert.action, risk: false, evidence: [] } };
 }
 
 /* ---------- Rain amounts in the hourly row (v0.26 review) ----------
