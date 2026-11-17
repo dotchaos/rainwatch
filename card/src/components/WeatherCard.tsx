@@ -56,7 +56,7 @@ function EventHeroView({ s, e }: { s: Scenario; e: EventHero }) {
   return <section className="now-next event-hero">
     <div className="now"><WeatherIcon name={c.icon} size={34} /><span className="now-temp">{deg(c.temperatureF)}</span><span className="now-cond">{c.condition}</span>
       {(c.highF !== null || c.lowF !== null) && <span className="now-hilo" aria-label={`Today's high ${deg(c.highF)}, low ${deg(c.lowF)}`}>{deg(c.highF)} / {deg(c.lowF)}</span>}</div>
-    <div className="event-label">{e.label === 'Now' && e.day === 'Today' ? 'Now' : `${e.label} · ${e.day}`}</div>
+    <div className="event-label">{e.section}</div>
     <h2 className="headline">{e.headline}</h2>
     <p className="headline-detail event-sentence">{rest !== null ? <><strong>{e.amount}</strong>{rest}</> : e.sentence}</p>
     <p className="event-duration"><span>Duration:</span> {e.duration}</p>

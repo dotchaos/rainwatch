@@ -47,7 +47,7 @@ describe('nothing that existed changes (v0.26 adds; it never recalculates)', () 
 describe('event-first hero ("Next up")', () => {
   it('Wednesday storm: label, event headline, amount and timing in one sentence, duration, preparation', () => {
     const e = eventHero(stormWed())!;
-    expect(e).toEqual({ kind: 'storm', label: 'Next up', day: 'Wednesday, Nov 18', headline: 'Heavy rain, with possible localized flooding', amount: 'About 2.7"',
+    expect(e).toEqual({ kind: 'storm', label: 'Next up', day: 'Wednesday, Nov 18', section: 'Upcoming storm · Wed–Thu', headline: 'Heavy rain, with possible localized flooding', amount: 'About 2.7"',
       sentence: 'About 2.7" of rain, starting late tonight and heaviest Wednesday morning.',
       duration: 'late Tuesday night through Thursday midday',
       advisory: expect.objectContaining({ action: 'Prepare flood barriers before the rain arrives.', risk: false, caveat: "Local driveway risk isn't validated yet." }) });
@@ -81,6 +81,11 @@ describe('event-first hero ("Next up")', () => {
     const s = stormWed(); delete s.startDate;
     expect(eventHero(s)!.day).toBe('Wednesday');
     expect(eventHero(byId('storm'))!.day).toBe('Today');
+  });
+  it('the section label adapts: upcoming, underway, outlasting the forecast, heat', () => {
+    expect(eventHero(byId('storm'))!.section).toMatch(/^Storm underway · Today–/);
+    expect(eventHero(stormCut(40))!.section).toBe('Upcoming storm · Wed onward');
+    expect(eventHero(byId('heat'))!.section).toMatch(/^Heat underway · Today/);
   });
   it('rain already falling: "Now"', () => {
     expect(eventHero(byId('storm'))!).toMatchObject({ label: 'Now', headline: 'Heavy rain, with a Flood Watch in effect',
