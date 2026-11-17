@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 import numpy as np
 from zoneinfo import ZoneInfo
 
-from . import shading
+from . import intervals, shading
 from .sources.conditions import PRECIP_ICONS, Conditions, describe, precip_type
 
 HORIZON = 72
@@ -29,6 +29,7 @@ RAIN_WORDS = {1: ("rain", "Rain"), 2: ("heavy-rain", "Heavy rain"), 3: ("heavy-r
 LIKELY_P = 0.5
 TYPE_WORDS = {"snow": "Snow", "freezing-rain": "Freezing rain", "hail": "Hail"}
 HOURLY_N = 24    # the Next hours row: consecutive hours from the current one
+HOURLY_EXT = True   # v0.26: ...extended through the five-day rows' hours, with rain amounts (rainwatch/intervals.py)
 # Five-day rows (v0.13). Rain intensity is a separate scale from the gear rungs: light < 0.10"/h, moderate < the
 # config's heavy hour (0.20"), heavy above. Breakpoints provisional (John, Nov 15 2026). Shading: hybrid B, a
 # controlled trial (John, Nov 15 2026): the engine decides which hours are wet; how hard each is comes from the
@@ -429,7 +430,7 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
 
 
 def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
-          used: list[str] | None = None, total_of=None, parts=None) -> dict:
+          used: list[str] | None = None, total_of=None, parts=None, det=None, radar=None) -> dict:
     """The card contract. `used` names the forecast sources behind it (see forecast.note_sources).
     `total_of(hours)` gives whole-run rain totals over those hours (rainwatch/totals.py)."""
     tz = ZoneInfo(cfg.tz)
@@ -527,6 +528,18 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
     for i in range(HOURLY_N):
         icon, _ = sky(i)
         hourly.append({"hour": i, "temperatureF": round(temps[i]) if temps[i] is not None else None, "icon": icon})
+    # v0.26: the hourly row runs on through the five-day rows' hours, same rules (the first HOURLY_N are unchanged)
+    if st and HOURLY_EXT:
+        for i in range(HOURLY_N, st["n"]):
+            if i < HORIZON:
+                icon, _ = sky(i)
+            else:
+                c = cond.hourly.get(st["hours"][i])
+                icon = (wet_icon(st["wet"][i], c["code"] if c else None)[0] if st["wet"][i]
+                        else "unknown" if st["classes"][i] == "unknown" else "overcast" if not c
+                        else (lambda d: "overcast" if d[0] in PRECIP_ICONS else d[0])(describe(c["code"], c["day"])))
+            tf = (cond.hourly.get(st["hours"][i]) or {}).get("temp")
+            hourly.append({"hour": i, "temperatureF": round(tf) if tf is not None else None, "icon": icon})
     icon0, words0 = sky(0)
     td = cond.daily.get(today.isoformat()) or {}
 
@@ -581,8 +594,19 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
             w = total_of(hrs_c[L:R]) if RECONCILE else total_of(hours[a:b])
             if w:
                 spans.append({"startHour": a, "endHour": b, "medianIn": round(w["p50"], 2)})
+                if HOURLY_EXT:   # v0.26: the exact hours the total covers (its catchment), for the hero's label
+                    spans[-1].update({"fromHour": L if RECONCILE else a, "toHour": R if RECONCILE else b})
         if spans:
             card["rainTotals"] = spans
+    if st and HOURLY_EXT and parts:
+        card["rainBlocks"] = intervals.blocks(st["hours"], st["rows"], parts)
+    if HOURLY_EXT and hazard in ("rain", "flood") and parts and card.get("rainTotals") and st:
+        top = max(card["rainTotals"], key=lambda x: x["medianIn"])
+        chk = intervals.peak_rate(st["hours"], top["startHour"], top["endHour"], parts, det or [], radar, now)
+        card["_peak_check"] = chk
+        if chk["ok"]:
+            card["peakRate"] = {"lo": chk["lo"], "hi": chk["hi"], "hour": chk["hour"],
+                                "systems": [s["system"] for s in chk["systems"]]}
     if hazard in ("rain", "flood"):
         card["evidence"] = evidence(rows, hours, by_t, report, cfg, parts, rain)
     if hazard == "flood":

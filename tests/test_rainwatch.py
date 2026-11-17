@@ -327,8 +327,8 @@ def test_live_card_contract_and_levels():
     rep, *_ = _full_report(cfg, FakeSession(NOW))
     assert len(rep["rows"]) >= 73
     c = card.build(rep, _cond_for(rep), cfg, NOW)
-    assert len(c["hourly"]) == card.HOURLY_N and len(c["days"]) == 5 and c["provenance"]["type"] == "live"
-    assert [h["hour"] for h in c["hourly"]] == list(range(card.HOURLY_N))   # consecutive, none skipped
+    assert len(c["hourly"]) >= card.HOURLY_N and len(c["days"]) == 5 and c["provenance"]["type"] == "live"
+    assert [h["hour"] for h in c["hourly"]] == list(range(len(c["hourly"])))   # consecutive, none skipped (v0.26: five days)
     iv = c["timeline"]["intervals"]
     assert all(p["confidence"] == "unknown" for p in iv)                    # nothing claims calibrated timing
     assert all(0 <= p["startHour"] < p["endHour"] <= 72 for p in iv)
@@ -380,8 +380,9 @@ def test_live_card_hourly_row_is_consecutive_and_never_dry_without_data():
     rep, *_ = _full_report(cfg, FakeSession(NOW))
     rows = [r if i < 10 else {"t": r["t"], "label": r["label"], "missing": True} for i, r in enumerate(rep["rows"])]
     c = card.build({**rep, "rows": rows}, _cond_for(rep), cfg, NOW)
-    assert [h["hour"] for h in c["hourly"]] == list(range(card.HOURLY_N))   # labels are derived by the card
-    assert all(h["icon"] == "unknown" for h in c["hourly"][10:])              # no data: never a sun or moon
+    assert [h["hour"] for h in c["hourly"]] == list(range(len(c["hourly"])))   # labels are derived by the card
+    assert all(h["icon"] == "unknown" for h in c["hourly"][10:len(rows)])     # no data: never a sun or moon
+    assert not any(b["startHour"] < len(rows) and b["endHour"] > 10 for b in c.get("rainBlocks", []))   # and no amount
 
 
 def test_rain_grouping_keeps_forecast_dry_breaks_and_never_invents_them():

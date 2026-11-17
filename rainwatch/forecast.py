@@ -103,7 +103,7 @@ def forecast_at(s, cfg, now: datetime, extras: Extras | None = None) -> Forecast
     try:
         radar = ex.nowcast.series if ex.nowcast else None
         live = card.build(report, cond, cfg, now, ens, used=note_sources(nb, ens_parts, det, ex.nowcast),
-                          total_of=lambda hs: totals.window(ens_parts, radar, hs), parts=ens_parts)
+                          total_of=lambda hs: totals.window(ens_parts, radar, hs), parts=ens_parts, det=det, radar=radar)
     except Exception as e:  # noqa: BLE001
         errors.append(f"live card: {e}")
     return Forecast(cfg=cfg, report=report, card=live, conditions=cond, nws=nb, ensemble=ens,
