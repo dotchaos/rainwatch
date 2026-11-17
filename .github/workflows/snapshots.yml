@@ -1,0 +1,31 @@
+name: snapshots
+# Timestamped forecast snapshots for scoring the Nov 18–19 2026 storm (tools/snapshot.py; read-only, no page or alerts).
+# Tue Nov 17 6 PM and 9 PM, Wed Nov 18 4 AM and 7 AM Pacific (UTC below). Remove after the storm.
+on:
+  schedule:
+    - cron: "0 2,5,12,15 18 11 *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Check out data branch
+        run: git fetch -q origin data && git worktree add -B data data origin/data
+      - run: python tools/snapshot.py > snapshot.md; cat snapshot.md
+      - name: Save to data branch
+        if: always()
+        run: |
+          git config --global user.name "rainwatch-bot"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p data/snapshots && cp snapshots/*.json data/snapshots/ 2>/dev/null || true
+          ts=$(date -u +%Y-%m-%dT%H%MZ); cp snapshot.md "data/snapshots/$ts.md" || true
+          cd data && git add -A && git commit -qm "snapshot $ts" || exit 0
+          for i in 1 2 3 4 5; do git push -q origin data && exit 0; git pull -q --rebase origin data; sleep 5; done; exit 1
