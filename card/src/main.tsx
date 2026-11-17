@@ -59,6 +59,7 @@ function NarrativeLab(){
 const EVENT_CASES:[string,string,()=>Scenario][]=[
  ['storm-wed','Wednesday storm (live forecast Tue 11:35 AM, v0.26 engine)',stormWed],
  ['storm-cut','Storm running past the forecast: data stops Thu 3 AM',()=>stormCut(40)],
+ ['storm-peak','Display check only: the same storm IF two independent hourly systems agreed (hypothetical .40–.45")',()=>{const s=stormWed();s.peakRate={lo:0.4,hi:0.45,hour:21,systems:['ICON ensemble','HRRR']};return s;}],
  ['storm-official','Extreme storm fixture (Flood Watch; no amounts in this fixture)',()=>structuredClone(scenarios.find(x=>x.id==='storm')!) as Scenario],
  ['heat','Heatwave fixture',()=>structuredClone(scenarios.find(x=>x.id==='heat')!) as Scenario],
  ['dry','Dry period (calm fixture)',()=>structuredClone(scenarios.find(x=>x.id==='october')!) as Scenario],
