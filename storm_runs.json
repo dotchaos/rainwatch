@@ -1,0 +1,355 @@
+{
+ "taken": "2026-11-17T23:57:21.720148+00:00",
+ "window": [
+  "Wed 12 AM",
+  "Fri 12 AM"
+ ],
+ "levels": {
+  "driveway_hour_in": 0.45,
+  "behind_3h_in": 0.6,
+  "driveway_3h_in": 0.8,
+  "heavy_in": 0.2,
+  "validated": false
+ },
+ "card_total": {
+  "startHour": 10,
+  "endHour": 43,
+  "medianIn": 2.56,
+  "fromHour": 9,
+  "toHour": 57
+ },
+ "all_runs": {
+  "runs": 122,
+  "cross_1h_driveway": 0.254,
+  "cross_3h_behind": 0.861,
+  "cross_3h_driveway": 0.664,
+  "max6_p10_p50_p90": [
+   0.86,
+   1.36,
+   1.84
+  ],
+  "heavy_longest_h_p10_p50_p90": [
+   0.0,
+   3.0,
+   6.0
+  ],
+  "heavy_hours_p10_p50_p90": [
+   0.0,
+   3.0,
+   6.0
+  ]
+ },
+ "by_family": {
+  "ECMWF": {
+   "runs": 51,
+   "cross_1h_driveway": 0.0,
+   "cross_3h_behind": 0.902,
+   "cross_3h_driveway": 0.529,
+   "max6_p10_p50_p90": [
+    1.01,
+    1.28,
+    1.51
+   ],
+   "heavy_longest_h_p10_p50_p90": [
+    3.0,
+    3.0,
+    6.0
+   ],
+   "heavy_hours_p10_p50_p90": [
+    3.0,
+    3.0,
+    6.0
+   ]
+  },
+  "GFS": {
+   "runs": 31,
+   "cross_1h_driveway": 0.129,
+   "cross_3h_behind": 0.613,
+   "cross_3h_driveway": 0.452,
+   "max6_p10_p50_p90": [
+    0.61,
+    1.23,
+    2.26
+   ],
+   "heavy_longest_h_p10_p50_p90": [
+    0.0,
+    3.0,
+    6.0
+   ],
+   "heavy_hours_p10_p50_p90": [
+    0.0,
+    3.0,
+    6.0
+   ]
+  },
+  "ICON": {
+   "runs": 40,
+   "cross_1h_driveway": 0.675,
+   "cross_3h_behind": 1.0,
+   "cross_3h_driveway": 1.0,
+   "max6_p10_p50_p90": [
+    1.18,
+    1.53,
+    1.92
+   ],
+   "heavy_longest_h_p10_p50_p90": [
+    2.0,
+    3.0,
+    5.0
+   ],
+   "heavy_hours_p10_p50_p90": [
+    2.0,
+    3.0,
+    5.0
+   ]
+  }
+ },
+ "family_balanced": {
+  "cross_1h_driveway": 0.268,
+  "cross_3h_behind": 0.838,
+  "cross_3h_driveway": 0.66
+ },
+ "card_per_hour_unchanged": [
+  {
+   "hour": "Wed 12 AM",
+   "pHeavy": 0.01,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 1 AM",
+   "pHeavy": 0.02,
+   "pFlood": 0.03
+  },
+  {
+   "hour": "Wed 2 AM",
+   "pHeavy": 0.02,
+   "pFlood": 0.03
+  },
+  {
+   "hour": "Wed 3 AM",
+   "pHeavy": 0.04,
+   "pFlood": 0.1
+  },
+  {
+   "hour": "Wed 4 AM",
+   "pHeavy": 0.34,
+   "pFlood": 0.24
+  },
+  {
+   "hour": "Wed 5 AM",
+   "pHeavy": 0.39,
+   "pFlood": 0.25
+  },
+  {
+   "hour": "Wed 6 AM",
+   "pHeavy": 0.41,
+   "pFlood": 0.28
+  },
+  {
+   "hour": "Wed 7 AM",
+   "pHeavy": 0.57,
+   "pFlood": 0.39
+  },
+  {
+   "hour": "Wed 8 AM",
+   "pHeavy": 0.57,
+   "pFlood": 0.22
+  },
+  {
+   "hour": "Wed 9 AM",
+   "pHeavy": 0.5,
+   "pFlood": 0.12
+  },
+  {
+   "hour": "Wed 10 AM",
+   "pHeavy": 0.17,
+   "pFlood": 0.09
+  },
+  {
+   "hour": "Wed 11 AM",
+   "pHeavy": 0.12,
+   "pFlood": 0.03
+  },
+  {
+   "hour": "Wed 12 PM",
+   "pHeavy": 0.11,
+   "pFlood": 0.02
+  },
+  {
+   "hour": "Wed 1 PM",
+   "pHeavy": 0.02,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 2 PM",
+   "pHeavy": 0.02,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 3 PM",
+   "pHeavy": 0.02,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 4 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 5 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 6 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 7 PM",
+   "pHeavy": 0.01,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 8 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 9 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 10 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Wed 11 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 12 AM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 1 AM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 2 AM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 3 AM",
+   "pHeavy": 0.01,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 4 AM",
+   "pHeavy": 0.01,
+   "pFlood": 0.01
+  },
+  {
+   "hour": "Thu 5 AM",
+   "pHeavy": 0.01,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 6 AM",
+   "pHeavy": 0.01,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 7 AM",
+   "pHeavy": 0.01,
+   "pFlood": 0.01
+  },
+  {
+   "hour": "Thu 8 AM",
+   "pHeavy": 0.01,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 9 AM",
+   "pHeavy": 0.01,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 10 AM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 11 AM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 12 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 1 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 2 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 3 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 4 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 5 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 6 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 7 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 8 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 9 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 10 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  },
+  {
+   "hour": "Thu 11 PM",
+   "pHeavy": 0,
+   "pFlood": 0
+  }
+ ],
+ "note": "Shares of model runs crossing provisional levels; not probabilities of flooding."
+}
