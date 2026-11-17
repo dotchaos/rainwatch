@@ -1,5 +1,5 @@
 import type React from 'react';
-import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, Clock, CloudRain, Thermometer } from 'lucide-react';
+import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
@@ -48,24 +48,22 @@ function Upcoming({ up, target }: { up: NonNullable<ReturnType<typeof upcomingEv
 }
 
 /** 1. Now & next: current conditions, then the headline, its detail and one actionable line. */
-const ROW_ICON = { start: Clock, end: Clock, peak: CloudRain, heat: Thermometer };
-/** 1a. Event-first hero (v0.26 review): the consequential event, one dominant figure, start/end/peak, then the advisory. */
+/** 1a. Event-first hero (v0.26): "Next up" / "Now", the event, its amount and timing in one sentence, its duration,
+ *  then one shield line of preparation with the caveat and an evidence link under it. */
 function EventHeroView({ s, e }: { s: Scenario; e: EventHero }) {
-  const up = upcomingEvent(s), a = e.advisory, c = s.current;
+  const up = upcomingEvent(s), a = e.advisory, c = s.current, Icon = e.kind === 'heat' ? Sun : ShieldAlert;
+  const rest = e.amount && e.sentence.startsWith(e.amount) ? e.sentence.slice(e.amount.length) : null;
   return <section className="now-next event-hero">
     <div className="now"><WeatherIcon name={c.icon} size={34} /><span className="now-temp">{deg(c.temperatureF)}</span><span className="now-cond">{c.condition}</span>
       {(c.highF !== null || c.lowF !== null) && <span className="now-hilo" aria-label={`Today's high ${deg(c.highF)}, low ${deg(c.lowF)}`}>{deg(c.highF)} / {deg(c.lowF)}</span>}</div>
-    <div className="event-eyebrow">{e.eyebrow}</div>
+    <div className="event-label">{e.label === 'Now' && e.day === 'Today' ? 'Now' : `${e.label} · ${e.day}`}</div>
     <h2 className="headline">{e.headline}</h2>
-    {e.figure && <div className={`event-figure${e.kind === 'heat' ? ' heat' : ''}`}><WeatherIcon name={e.kind === 'heat' ? 'heat' : 'heavy-rain'} size={30} />
-      <strong>{e.figure.value}</strong><span>{e.figure.label}</span></div>}
-    <ul className="event-rows">{e.rows.map(r => { const I = ROW_ICON[r.icon]; return <li key={r.title}><I size={18} /><div><strong>{r.title}</strong>{r.sub && <small>{r.sub}</small>}</div></li>; })}</ul>
-    {a && <div className={`advisory${a.risk ? ' risk' : ''}${e.kind === 'heat' ? ' heat' : ''}`}>
-      {e.kind === 'heat' ? <Sun size={22} /> : <ShieldAlert size={22} />}
-      <div><strong>{a.title}</strong><p>{a.what}</p><p className="advisory-todo">{a.todo}</p>
-        {(a.support || a.caveat) && <p className="advisory-note">{[a.support, a.caveat].filter(Boolean).join(' ')}</p>}
-        {a.evidence.length > 0 && <details className="advisory-why"><summary>Why Rainwatch is concerned</summary>
-          <dl>{a.evidence.map(x => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl></details>}</div></div>}
+    <p className="headline-detail event-sentence">{rest !== null ? <><strong>{e.amount}</strong>{rest}</> : e.sentence}</p>
+    <p className="event-duration"><span>Duration:</span> {e.duration}</p>
+    {a && <div className={`action-line${a.risk ? ' risk' : ''}`}><Icon size={19} />{a.action}</div>}
+    {a && (a.caveat || a.evidence.length > 0) && <div className="action-note">{a.caveat}
+      {a.evidence.length > 0 && <details className="event-evidence"><summary>Evidence</summary>
+        <dl>{a.evidence.map(x => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl></details>}</div>}
     {up && <Upcoming up={up} target={fiveDays(s) ? `five-day-${up.dayIndex}` : null} />}
   </section>;
 }

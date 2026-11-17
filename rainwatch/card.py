@@ -547,6 +547,7 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         "id": "live", "title": "Live", "season": local0.strftime("%B"),
         "location": cfg.site.card_location if cfg.site else cfg.name, "observedAt": now.astimezone(tz).strftime("%A · %-I:%M %p"),
         "startDay": local0.strftime("%a"), "startHourLocal": local0.hour, "hazard": hazard,
+        "startDate": local0.date().isoformat(),     # v0.26: the local date of hour 0, so the card can name event dates
         "current": {"temperatureF": round(temps[0]) if temps[0] is not None else None, "condition": words0,
                     "icon": icon0, "highF": round(td["hi"]) if td else None, "lowF": round(td["lo"]) if td else None},
         "hourly": hourly, "days": day_rows,
