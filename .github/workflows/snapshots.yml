@@ -20,12 +20,14 @@ jobs:
       - name: Check out data branch
         run: git fetch -q origin data && git worktree add -B data data origin/data
       - run: python tools/snapshot.py > snapshot.md; cat snapshot.md
+      - run: python tools/storm_runs.py > storm_runs.md; cat storm_runs.md
+        continue-on-error: true
       - name: Save to data branch
         if: always()
         run: |
           git config --global user.name "rainwatch-bot"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           mkdir -p data/snapshots && cp snapshots/*.json data/snapshots/ 2>/dev/null || true
-          ts=$(date -u +%Y-%m-%dT%H%MZ); cp snapshot.md "data/snapshots/$ts.md" || true
+          ts=$(date -u +%Y-%m-%dT%H%MZ); cp snapshot.md "data/snapshots/$ts.md" || true; cp storm_runs.md "data/snapshots/runs-$ts.md" || true
           cd data && git add -A && git commit -qm "snapshot $ts" || exit 0
           for i in 1 2 3 4 5; do git push -q origin data && exit 0; git pull -q --rebase origin data; sleep 5; done; exit 1
