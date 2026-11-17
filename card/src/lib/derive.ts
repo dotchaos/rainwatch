@@ -1049,6 +1049,9 @@ export interface EventHero {
   label: 'Next up' | 'Now';
   /** The event's day, spelled out: "Wednesday, Nov 18" (its heaviest or hottest day); "Today" when that is today. */
   day: string;
+  /** The section label: "Upcoming storm · Wed–Thu", "Storm underway · Today–Thu", "Upcoming heat · Fri–Sat"; the
+   *  span runs from the event's first day to its last, "Wed onward" when it outlasts the forecast. */
+  section: string;
   /** The event and its consequence, once ("Heavy rain, with possible localized flooding"). */
   headline: string;
   /** The amount (or highest temperature), shown bold at the start of the sentence: 'About 2.7"'. */
@@ -1079,6 +1082,12 @@ export function dayLabel(s: Scenario, h: number): string {
   if (!s.startDate) return name;
   const d = new Date(`${s.startDate}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + i);
   return `${name}, ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}`;
+}
+/** "Wed–Thu", "Today–Thu", "Wed", "Wed onward": the days an event spans. */
+function daySpan(s: Scenario, a: number, b: number, open: boolean): string {
+  const sh = (h: number) => dayIndexAt(s, h) === 0 ? 'Today' : clockAt(s.startDay, s.startHourLocal, h).day;
+  const x = sh(a), y = sh(Math.max(a, b - 1));
+  return open ? `${x} onward` : x === y ? x : `${x}–${y}`;
 }
 /** A precise time with its day named: "1 AM Wednesday", "11 AM today". */
 const atNamed = (s: Scenario, h: number) => `${clock(s, h)} ${dayIndexAt(s, h) === 0 ? 'today' : fullDay[clockAt(s.startDay, s.startHourLocal, h).day]}`;
@@ -1172,7 +1181,8 @@ export function eventHero(s: Scenario): EventHero | null {
       : `${voice === 'awareness' ? 'Consider checking' : 'Prepare'} flood barriers${prep ? ` ${prep}` : ' now'}.`,
     risk: voice === 'action', caveat: ev?.floodValidated ? undefined : s.alert.context, evidence,
   };
-  return { kind: 'storm', label: onsetNow ? 'Now' : 'Next up', day: dayLabel(s, heavy.start), headline, amount, sentence, duration, advisory };
+  return { kind: 'storm', label: onsetNow ? 'Now' : 'Next up', day: dayLabel(s, heavy.start),
+           section: `${onsetNow ? 'Storm underway' : 'Upcoming storm'} · ${daySpan(s, st.start, end, open)}`, headline, amount, sentence, duration, advisory };
 }
 const fmtIn = (x: number) => `${x.toFixed(2).replace(/^0/, '')}"`;
 
@@ -1187,7 +1197,8 @@ function heatEvent(s: Scenario): EventHero | null {
   const sentence = `${amount}, hottest ${windowList(wins)}.` + (lo >= 70 ? ` Lows near ${lo}° may offer little relief overnight.` : '');
   const from = isNowAt(s, a) ? 'now' : partNamed(s, a, false, true);
   const duration = openEnd(s, b) ? `${from} into ${partNamed(s, 71, true, true)}, past where this outlook ends` : `${from} through ${partNamed(s, b - 1, true, true)}`;
-  return { kind: 'heat', label: isNowAt(s, a) ? 'Now' : 'Next up', day: dayLabel(s, wins[0].startHour), headline: 'Dangerous heat', amount, sentence, duration,
+  return { kind: 'heat', label: isNowAt(s, a) ? 'Now' : 'Next up', day: dayLabel(s, wins[0].startHour),
+           section: `${isNowAt(s, a) ? 'Heat underway' : 'Upcoming heat'} · ${daySpan(s, a, b, openEnd(s, b))}`, headline: 'Dangerous heat', amount, sentence, duration,
            advisory: { action: s.alert.action, risk: false, evidence: [] } };
 }
 

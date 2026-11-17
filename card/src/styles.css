@@ -110,8 +110,8 @@
 /* Event-first hero (v0.26, compact): the existing hero's type scale; the total is the one large figure */
 .event-hero .now-cond{margin-left:4px}
 .now-hilo{margin-left:auto;font-size:13px;color:#53636c;font-weight:600;white-space:nowrap}
-.event-label{margin-top:16px;font-size:12px;font-weight:700;color:#687883}
-.event-hero .headline{margin:2px 0 6px}
+.event-label{margin-top:26px;font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#687883}
+.event-hero .headline{margin:8px 0 6px}
 .event-sentence strong{color:#26343d;font-weight:700}
 .event-duration{margin:6px 0 0;font-size:14px;color:#53636c}.event-duration span{color:#86939a}
 .event-hero .action-line{font-size:15px}
