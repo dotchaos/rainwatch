@@ -40,7 +40,7 @@ def main():
     last_obs = max(truth) + timedelta(hours=1) if truth else None
     street = [json.loads(x) for x in (D / "street" / "observations.jsonl").read_text().splitlines() if x.strip()] \
         if (D / "street" / "observations.jsonl").exists() else []
-    snaps = sorted((D / "snapshots").glob("*.json"))
+    snaps = sorted(p for p in (D / "snapshots").glob("*.json") if not p.name.startswith("runs-"))
     now = datetime.now(UTC)
     out = {"scored_at": now.isoformat(), "gauge_observed_through": last_obs and last_obs.isoformat(), "snapshots": []}
     md = [f"# Storm scorecard, {now.astimezone(TZ):%a %b %-d %-I:%M %p} (preliminary unless every line says complete)\n",
@@ -121,6 +121,44 @@ def main():
                "\n**Flood-risk windows** (gauge at 0.20\"+ an hour; street reports listed separately, not merged):"]
         md += [f"- {f['window']}: gauge {'—' if f['gauge_total'] is None else str(f['gauge_total']) + '\"'}, heavy hours {f['gauge_hours_0.20_plus'] or 'none'} — {f['coverage']}; "
                f"street: {len(f['street_observations_nearby'])} report(s)" for f in flood] or ["- none in this snapshot"]
+    # storm-wide run metrics (tools/storm_runs.py) vs the same metrics measured by the gauge over the same window
+    rsnaps = sorted((D / "snapshots").glob("runs-*.json"))
+    if rsnaps:
+        md += ["\n## Storm-wide run metrics vs the gauge\n",
+               "Shares of model runs that crossed each provisional level, against whether the gauge did. Not probabilities "
+               "of flooding; gauge crossing is not street flooding (that is the street log, below).\n"]
+    for p in rsnaps:
+        r = json.loads(p.read_text())
+        lv = r["levels"]
+        snap = r
+        # the window's hours, rebuilt from the card's total window and the snapshot's own clock
+        taken = datetime.fromisoformat(snap["taken"])
+        t0 = taken.replace(minute=0, second=0, microsecond=0)
+        L, R = snap["card_total"].get("fromHour", snap["card_total"]["startHour"]), snap["card_total"].get("toHour", snap["card_total"]["endHour"])
+        hrs = [t0 + timedelta(hours=k) for k in range(L, R)]
+        have = [truth.get(h) for h in hrs]
+        n = sum(v is not None for v in have)
+        x = [v or 0.0 for v in have]
+        roll = lambda k: max((sum(x[i:i + k]) for i in range(max(1, len(x) - k + 1))), default=0)  # noqa: E731
+        run = best = 0
+        for v in x:
+            run = run + 1 if v >= lv["heavy_in"] else 0
+            best = max(best, run)
+        g = {"cross_1h_driveway": max(x, default=0) >= lv["driveway_hour_in"], "cross_3h_behind": roll(3) >= lv["behind_3h_in"],
+             "cross_3h_driveway": roll(3) >= lv["driveway_3h_in"], "max6": round(roll(6), 2), "heavy_longest_h": best}
+        cov = mark(n, len(hrs))
+        md += [f"\n**Forecast {taken.astimezone(TZ):%a %-I:%M %p}** (window {r['window'][0]} – {r['window'][1]}; gauge {cov})\n",
+               "| | 1 h driveway | 3 h drains behind | 3 h driveway | Max 6 h | Longest heavy run |", "|---|---|---|---|---|---|"]
+        for name, a_ in [*r["by_family"].items(), ("All runs", r["all_runs"])]:
+            md.append(f"| {name} | {round(a_['cross_1h_driveway'] * 100)}% | {round(a_['cross_3h_behind'] * 100)}% | "
+                      f"{round(a_['cross_3h_driveway'] * 100)}% | {a_['max6_p10_p50_p90'][1]}\" (p50) | {a_['heavy_longest_h_p10_p50_p90'][1]} h (p50) |")
+        fb = r["family_balanced"]
+        md.append(f"| Family-balanced | {round(fb['cross_1h_driveway'] * 100)}% | {round(fb['cross_3h_behind'] * 100)}% | {round(fb['cross_3h_driveway'] * 100)}% | | |")
+        part = n < len(hrs)
+        yn = lambda v: "—" if n == 0 else ("yes" if v else ("no so far" if part else "no"))  # noqa: E731
+        md.append(f"| **Gauge** ({cov}) | {yn(g['cross_1h_driveway'])} | {yn(g['cross_3h_behind'])} | {yn(g['cross_3h_driveway'])} | "
+                  ("— | — |" if n == 0 else f"{g['max6']}\"{' so far' if part else ''} | {g['heavy_longest_h']} h{' so far' if part else ''} |"))
+        out.setdefault("run_metrics", []).append({"forecast": r["taken"], "gauge": g, "coverage": cov})
     md += ["\n## Street observations (as reported; never gauge data)\n"]
     md += [f"- {x['observed_at']}{' (approx.)' if x.get('approx') else ''} · {x['location']} · {x.get('level', 'unknown')} · "
            f"{x['what']} — {x.get('reporter', '')}" for x in street] or ["- none recorded yet"]
