@@ -157,7 +157,7 @@ def main():
         part = n < len(hrs)
         yn = lambda v: "—" if n == 0 else ("yes" if v else ("no so far" if part else "no"))  # noqa: E731
         md.append(f"| **Gauge** ({cov}) | {yn(g['cross_1h_driveway'])} | {yn(g['cross_3h_behind'])} | {yn(g['cross_3h_driveway'])} | "
-                  ("— | — |" if n == 0 else f"{g['max6']}\"{' so far' if part else ''} | {g['heavy_longest_h']} h{' so far' if part else ''} |"))
+                  + ("— | — |" if n == 0 else f"{g['max6']}\"{' so far' if part else ''} | {g['heavy_longest_h']} h{' so far' if part else ''} |"))
         out.setdefault("run_metrics", []).append({"forecast": r["taken"], "gauge": g, "coverage": cov})
     md += ["\n## Street observations (as reported; never gauge data)\n"]
     md += [f"- {x['observed_at']}{' (approx.)' if x.get('approx') else ''} · {x['location']} · {x.get('level', 'unknown')} · "
