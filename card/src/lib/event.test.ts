@@ -44,49 +44,58 @@ describe('nothing that existed changes (v0.26 adds; it never recalculates)', () 
   });
 });
 
-describe('event-first hero', () => {
-  it('Wednesday storm: event, exact window, start/end, heaviest period without a manufactured rate', () => {
+describe('event-first hero (compact)', () => {
+  it('Wednesday storm: weather headline, exact-window total, one sentence, one shield line', () => {
     const e = eventHero(stormWed())!;
-    expect(e).toMatchObject({ kind: 'storm', eyebrow: 'TOMORROW – THURSDAY', headline: 'Heavy rain with possible localized flooding',
-      figure: { value: '~2.7"', label: 'the whole storm, through the end of Thursday' } });
-    expect(e.rows).toEqual([{ icon: 'start', title: 'Starts late tonight', sub: 'Ends Thursday afternoon' },
-                            { icon: 'peak', title: 'Heaviest tomorrow morning', sub: undefined }]);   // models disagree: no rate
+    expect(e).toEqual({ kind: 'storm', headline: 'Heavy rain likely tomorrow morning',
+      figure: { value: '~2.7"', label: 'the whole storm, through the end of Thursday' },
+      sentence: 'Rain arrives late tonight and is expected to be heaviest tomorrow morning, easing Thursday afternoon.',
+      advisory: expect.objectContaining({ title: 'Potential drainage flooding', when: 'tomorrow morning', risk: false,
+        todo: 'Prepare flood barriers before the rain arrives.', caveat: "Local driveway risk isn't validated yet." }) });
   });
-  it('a storm running past the forecast is never called whole, and says its end is unknown', () => {
+  it('the headline describes the weather; flood risk appears once, in the shield line', () => {
+    for (const s of [stormWed(), stormCut(40), byId('storm'), byId('storm-ahead')]) {
+      const e = eventHero(s)!;
+      expect(e.headline, s.id).not.toMatch(/flood|driveway|sandbag/i);
+      expect(`${e.sentence}`, s.id).not.toMatch(/flood/i);
+    }
+  });
+  it('a storm running past the forecast is never called whole, and says it is still falling', () => {
     const e = eventHero(stormCut(40))!;
-    expect(e.figure).toEqual({ value: '~2.0"', label: 'forecast tomorrow' });   // Wednesday is complete; the storm isn't
-    expect(e.rows[0].sub).toBe('Continues past Thu 3 AM, where the forecast ends; end not known yet');
+    expect(e.figure).toEqual({ value: '~2.0"', label: 'forecast tomorrow' });
+    expect(e.sentence).toMatch(/still falling at Thu 3 AM, where the forecast ends\.$/);
+    // rain past the total's hours (five-day rows) is never "the whole storm"
+    expect(eventHero(byId('storm-ahead'))!.figure).toEqual({ value: '~2.2"', label: 'forecast through Thu 8 AM' });
   });
-  it('a supported peak rate shows its range and hour; otherwise nothing, never a placeholder', () => {
+  it('timing precision follows confidence (v0.25 levels)', () => {
+    const s = stormWed(); s.timeline!.intervals = s.timeline!.intervals.map(p => ({ ...p, confidence: 'higher' as const }));
+    expect(eventHero(s)!.sentence).toBe('Rain arrives about 1 AM tomorrow and is expected to be heaviest from about 3 AM, ending about 1 PM Thursday.');
+  });
+  it('a supported peak rate joins the sentence; otherwise no number and no placeholder', () => {
     const s = stormWed(); s.peakRate = { lo: 0.4, hi: 0.45, hour: 21, systems: ['ICON ensemble', 'HRRR'] };
-    expect(eventHero(s)!.rows[1].sub).toBe('Up to about .40–.45" an hour, around 8 AM tomorrow');
-    expect(JSON.stringify(eventHero(stormWed()))).not.toMatch(/awaiting|placeholder|n\/a/i);
+    expect(eventHero(s)!.sentence).toContain('heaviest tomorrow morning, up to about .40–.45" an hour around 8 AM tomorrow,');
+    expect(JSON.stringify(eventHero(stormWed()))).not.toMatch(/an hour around|awaiting|placeholder/i);
     const off = stormWed(); off.peakRate = { lo: 0.4, hi: 0.45, hour: 40, systems: ['ICON ensemble', 'HRRR'] };
-    expect(eventHero(off)!.rows[1].sub).toBeUndefined();                     // a peak outside the heavy period is not shown
+    expect(eventHero(off)!.sentence).not.toMatch(/an hour/);
   });
-  it('heatwave: duration, highest temperature, hottest hours, consequence', () => {
+  it('heatwave: same structure', () => {
     const e = eventHero(byId('heat'))!;
-    expect(e).toMatchObject({ kind: 'heat', headline: 'Dangerous heat', figure: { value: '104°' } });
-    expect(e.rows.map(r => r.title)).toEqual(['Hot now', 'Hottest around Fri 1–6 PM and Sat noon–7 PM']);
-    expect(e.advisory!.what).toBe('Lows near 75° may offer little relief overnight.');
+    expect(e).toMatchObject({ kind: 'heat', headline: 'Dangerous heat tomorrow and Saturday', figure: { value: '104°' } });
+    expect(e.sentence).toBe('Hot now, hottest around Fri 1–6 PM and Sat noon–7 PM, still hot at Sun 9 AM, where this outlook ends. Lows near 75° may offer little relief overnight.');
   });
   it('dry and ordinary days keep the existing hero', () => {
     for (const id of ['october', 'rain', 'rain-soon', 'incomplete']) expect(eventHero(byId(id)), id).toBeNull();
   });
 });
 
-describe('flood advisory: forecast and action kept apart; potential is never a sandbag call', () => {
-  it('potential flooding: consequence, supported agreement, risk window, preparation, the unvalidated caveat', () => {
+describe('flood advisory: one line, evidence behind a link; potential is never a sandbag call', () => {
+  it('evidence is inspectable and makes no unvalidated claims', () => {
     const a = eventHero(stormWed())!.advisory!;
-    expect(a).toMatchObject({ title: 'Potential drainage flooding', risk: false,
-      what: 'Heavy rain tomorrow morning could overwhelm local drains.', todo: 'Prepare flood barriers before the rain arrives.',
-      support: 'Supported by 3 of 3 model systems.', caveat: "Local driveway risk isn't validated yet." });
     expect(a.evidence.map(x => x.label)).toEqual(['Heavy hour (0.20"+)', 'Risk window', 'Model agreement', 'Sustained', 'Peak hourly rate', 'Local flood level']);
     expect(JSON.stringify(a)).not.toMatch(/sandbag|historical|20\d\d/i);
   });
   it('an official product is what makes it a driveway call', () => {
-    const a = eventHero(byId('storm'))!.advisory!;
-    expect(a).toMatchObject({ title: 'Driveway flood risk', risk: true, support: 'Flood Watch from the National Weather Service.' });
+    expect(eventHero(byId('storm'))!.advisory!).toMatchObject({ title: 'Driveway flood risk', risk: true, todo: expect.stringMatching(/^Flood Watch in effect\./) });
   });
 });
 
