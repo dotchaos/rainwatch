@@ -602,7 +602,10 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         card["rainBlocks"] = intervals.blocks(st["hours"], st["rows"], parts)
     if HOURLY_EXT and hazard in ("rain", "flood") and parts and card.get("rainTotals") and st:
         top = max(card["rainTotals"], key=lambda x: x["medianIn"])
-        chk = intervals.peak_rate(st["hours"], top["startHour"], top["endHour"], parts, det or [], radar, now)
+        # the peak is looked for over the stretch's heavy hours (Rain boots or higher), else the whole stretch
+        hv = [h for h in range(top["startHour"], min(top["endHour"], HORIZON)) if rain[h] >= 2]
+        pa, pb = (hv[0], hv[-1] + 1) if hv else (top["startHour"], top["endHour"])
+        chk = intervals.peak_rate(st["hours"], pa, pb, parts, det or [], radar, now)
         card["_peak_check"] = chk
         if chk["ok"]:
             card["peakRate"] = {"lo": chk["lo"], "hi": chk["hi"], "hour": chk["hour"],

@@ -907,10 +907,33 @@
   }
  ],
  "_peak_check": {
-  "ok": false,
-  "systems": [],
-  "why": [
-   "0 genuinely hourly system(s) cover the stretch (needs 2)"
+  "ok": true,
+  "systems": [
+   {
+    "system": "ICON ensemble",
+    "in": 0.3,
+    "hour": 3,
+    "kind": "ensemble median of run peaks"
+   },
+   {
+    "system": "ECMWF",
+    "in": 0.22,
+    "hour": 3,
+    "kind": "heaviest hour"
+   }
+  ],
+  "why": [],
+  "lo": 0.2,
+  "hi": 0.3,
+  "hour": 3
+ },
+ "peakRate": {
+  "lo": 0.2,
+  "hi": 0.3,
+  "hour": 3,
+  "systems": [
+   "ICON ensemble",
+   "ECMWF"
   ]
  },
  "evidence": {
