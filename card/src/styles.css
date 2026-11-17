@@ -108,6 +108,7 @@
 .narrative-case{width:390px}
 .narrative-case h3{font-size:13px;font-weight:600;margin:0 0 8px;min-height:34px}
 /* Event-first hero (v0.26, compact): the existing hero's type scale; the total is the one large figure */
+.event-hero .now-cond{margin-left:4px}
 .now-hilo{margin-left:auto;font-size:13px;color:#53636c;font-weight:600;white-space:nowrap}
 .event-label{margin-top:16px;font-size:12px;font-weight:700;color:#687883}
 .event-hero .headline{margin:2px 0 6px}
@@ -115,7 +116,7 @@
 .event-duration{margin:6px 0 0;font-size:14px;color:#53636c}.event-duration span{color:#86939a}
 .event-hero .action-line{font-size:15px}
 .event-hero .action-note{display:block}
-.event-evidence{display:inline;margin-left:4px}.event-evidence summary{display:inline;cursor:pointer;color:#2f6f95;font-weight:600;list-style:none}
+.event-evidence{display:inline;margin-left:4px}.event-evidence summary{display:inline;white-space:nowrap;cursor:pointer;color:#2f6f95;font-weight:600;list-style:none}
 .event-evidence summary::-webkit-details-marker{display:none}.event-evidence summary::after{content:' ›'}
 .event-evidence[open] summary::after{content:' ⌄'}
 .event-evidence dl{margin:6px 0 0;display:flex;flex-direction:column;gap:3px}.event-evidence dl div{display:grid;grid-template-columns:105px 1fr;gap:8px}

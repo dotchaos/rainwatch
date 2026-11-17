@@ -7,6 +7,7 @@
  "startDay": "Sat",
  "startHourLocal": 11,
  "hazard": "rain",
+ "startDate": "2026-11-14",
  "current": {
   "temperatureF": 55,
   "condition": "Cloudy",

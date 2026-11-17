@@ -1220,5 +1220,6 @@
   "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
   "prepare": "Consider checking flood barriers before the storm.",
   "context": "Local driveway risk isn't validated yet."
- }
+ },
+ "startDate": "2026-11-17"
 }

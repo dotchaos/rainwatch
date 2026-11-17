@@ -50,6 +50,8 @@ export interface Insight { headline: string; detail: string; }
 export interface Scenario {
   id: string; title: string; season: string; location: string; observedAt: string;
   startDay: string; startHourLocal: number; hazard: Hazard;
+  /** Local date of hour 0 (YYYY-MM-DD), v0.26; absent in older cards and fixtures (then events are named by weekday only). */
+  startDate?: string;
   current: { temperatureF: number | null; condition: string; icon: IconName; highF: number | null; lowF: number | null; };
   hourly: Hourly[]; days: Day[];
   /** Calm-day note only; rain and heat insights are derived from the forecast. */

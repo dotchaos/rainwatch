@@ -47,7 +47,7 @@ describe('nothing that existed changes (v0.26 adds; it never recalculates)', () 
 describe('event-first hero ("Next up")', () => {
   it('Wednesday storm: label, event headline, amount and timing in one sentence, duration, preparation', () => {
     const e = eventHero(stormWed())!;
-    expect(e).toEqual({ kind: 'storm', label: 'Next up', headline: 'Heavy rain, with possible localized flooding', amount: 'About 2.7"',
+    expect(e).toEqual({ kind: 'storm', label: 'Next up', day: 'Wednesday, Nov 18', headline: 'Heavy rain, with possible localized flooding', amount: 'About 2.7"',
       sentence: 'About 2.7" of rain, starting late tonight and heaviest Wednesday morning.',
       duration: 'late Tuesday night through Thursday midday',
       advisory: expect.objectContaining({ action: 'Prepare flood barriers before the rain arrives.', risk: false, caveat: "Local driveway risk isn't validated yet." }) });
@@ -76,6 +76,11 @@ describe('event-first hero ("Next up")', () => {
     expect(JSON.stringify(eventHero(stormWed()))).not.toMatch(/an hour around|awaiting|placeholder/i);
     const off = stormWed(); off.peakRate = { lo: 0.4, hi: 0.45, hour: 40, systems: ['ICON ensemble', 'HRRR'] };
     expect(eventHero(off)!.sentence).not.toMatch(/an hour/);
+  });
+  it('the event day is spelled out; weekday alone without a date; "Today" for today', () => {
+    const s = stormWed(); delete s.startDate;
+    expect(eventHero(s)!.day).toBe('Wednesday');
+    expect(eventHero(byId('storm'))!.day).toBe('Today');
   });
   it('rain already falling: "Now"', () => {
     expect(eventHero(byId('storm'))!).toMatchObject({ label: 'Now', headline: 'Heavy rain, with a Flood Watch in effect',
