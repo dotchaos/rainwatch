@@ -76,3 +76,27 @@ export const narrativeCases: { id: string; title: string; s: Scenario }[] = [
   { id: 'starts-heavy', title: 'Rain starts heavy: no separate arrival', s: (() => { const s = likelyHeavy(); s.timeline!.intervals = s.timeline!.intervals.filter(p => p.startHour >= 44); s.rainHours = s.rainHours?.filter(p => p.startHour >= 44); return s; })() },
   ...heroCases.filter(c => ['similar', 'warning', 'spike'].includes(c.id)).map(c => ({ ...c, title: `Hero case: ${c.title}` })),
 ];
+
+/* ---------- Event-first hero and five-day hourly row review cases (v0.26) ---------- */
+import stormWedJson from '../../scenarios/storm-wed.json';
+/** The live forecast of Tue Nov 17, 11:35 AM, as the v0.26 engine builds it (rain amounts, total window, peak check). */
+export const stormWed = () => structuredClone(stormWedJson) as unknown as Scenario;
+/** The same forecast with no data from hour `at` on (the models stop mid-storm): unknown hours, no amounts there, and
+ *  no total for a stretch that runs into them (the engine never totals across missing data); the day the cut falls in
+ *  loses its total. Wednesday is untouched, so its total stands. */
+export function stormCut(at: number): Scenario {
+  const s = stormWed(), n = s.hourly.length;
+  const clip = <T extends { startHour: number; endHour: number }>(xs?: T[]) =>
+    xs?.filter(x => x.startHour < at).map(x => ({ ...x, endHour: Math.min(x.endHour, at) }));
+  s.timeline!.intervals = clip(s.timeline!.intervals)!; s.rainHours = clip(s.rainHours);
+  s.rainTotals = s.rainTotals!.filter(t => (t.toHour ?? t.endHour) <= at);
+  s.rainBlocks = s.rainBlocks!.filter(b => b.endHour <= at);
+  s.unknownHours = [{ startHour: at, endHour: n }];
+  s.hourly = s.hourly.map((h, i) => i >= at ? { ...h, icon: 'unknown' } : h);
+  s.evidence!.pHeavy = s.evidence!.pHeavy.map((p, i) => i >= at ? null : p);
+  s.evidence!.pFlood = s.evidence!.pFlood!.map((p, i) => i >= at ? null : p);
+  s.evidence!.potential = clip(s.evidence!.potential);
+  s.days = s.days.map((d, k) => k < 2 ? d : d.icon.includes('rain') ? { ...d, rainIn: undefined }
+    : { ...d, rainIn: undefined, icon: 'unknown', description: 'Rain forecast incomplete' });
+  return s;
+}

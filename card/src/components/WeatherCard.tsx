@@ -105,7 +105,7 @@ function Hourly({ s }: { s: Scenario }) {
     {amts && <details className="amounts-about"><summary>Rain amounts: typical model run, per hour or per bracketed 3-hour block</summary>
       <p>Most of the models behind this forecast give rain in 3-hour amounts, so it is shown that way; an hourly amount appears only where every model is genuinely hourly (or radar).
         Each amount is the median of the model runs for that interval on its own. "Trace" is under 0.01", "—" means no forecast for that hour.</p>
-      {rec && <p>{rec.exact ? 'These amounts' : 'The amounts fully inside that window'} add up to {fmtAmount(rec.blocksIn)} for {rec.from}–{rec.to}; the storm total above is {tenths(rec.totalIn)}" for the same hours.
+      {rec && <p>{rec.exact ? 'These amounts' : 'The amounts fully inside that window'} add up to {fmtAmount(rec.blocksIn)} from {rec.from} through {rec.to}; the storm total above is {tenths(rec.totalIn)}" for the same hours.
         {rec.blocksIn < rec.totalIn - 0.05 ? ' The difference is real, not rounding: the runs disagree on timing, so each interval\'s typical run is drier than a typical run\'s whole storm. The total is the better guide to how much rain; the intervals show when.' : ''}</p>}
     </details>}</section>;
 }

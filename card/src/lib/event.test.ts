@@ -1,0 +1,120 @@
+/** v0.26 review: the event-first hero, the flood advisory and rain amounts in the hourly row. */
+import { describe, expect, it } from 'vitest';
+import { createElement } from 'react';
+import { renderToString } from 'react-dom/server';
+import { scenarios } from '../data/scenarios';
+import type { Scenario } from '../types';
+import { Timeline } from '../components/Timeline';
+import { stormCut, stormWed } from './cases';
+import { ageCard, amountsVsTotal, chartBlocks, deriveAlert, eventHero, fiveDays, hourAmounts, nowNext, storms } from './derive';
+import { validateScenario } from './rules';
+
+const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
+/** The card as the engine made it before v0.26: 24 hours, no amounts, no peak, no total windows. */
+function legacy(s: Scenario): Scenario {
+  const c = structuredClone(s);
+  c.hourly = c.hourly.slice(0, 24); delete c.rainBlocks; delete c.peakRate;
+  c.rainTotals = c.rainTotals?.map(({ fromHour: _a, toHour: _b, ...t }) => t);
+  return c;
+}
+
+describe('the review cases are valid cards', () => {
+  it('Wednesday storm, storm past the forecast, heatwave, dry, incomplete', () => {
+    for (const s of [stormWed(), stormCut(40), byId('heat'), byId('october'), byId('incomplete'), byId('storm')]) expect(validateScenario(s), s.id).toEqual([]);
+  });
+});
+
+describe('nothing that existed changes (v0.26 adds; it never recalculates)', () => {
+  it('storm selection, narrative, alert, Going out chart and five-day rows are identical with and without the additions', () => {
+    for (const s of [stormWed(), stormCut(40)]) {
+      const a = legacy(s);
+      expect(storms(s)).toEqual(storms(a));
+      expect(nowNext(s)).toEqual(nowNext(a));
+      expect(deriveAlert(s)).toEqual(deriveAlert(a));
+      expect(chartBlocks(s)).toEqual(chartBlocks(a));
+      expect(fiveDays(s)).toEqual(fiveDays(a));
+      expect(renderToString(createElement(Timeline, { scenario: s, potential: 'outline' })))
+        .toBe(renderToString(createElement(Timeline, { scenario: a, potential: 'outline' })));
+    }
+  });
+  it('the hero\'s figure is the engine\'s total, never a new calculation', () => {
+    const s = stormWed();
+    expect(eventHero(s)!.figure!.value).toBe('~2.7"');
+    expect(s.rainTotals).toEqual([{ startHour: 14, endHour: 50, medianIn: 2.65, fromHour: 13, toHour: 61 }]);
+  });
+});
+
+describe('event-first hero', () => {
+  it('Wednesday storm: event, exact window, start/end, heaviest period without a manufactured rate', () => {
+    const e = eventHero(stormWed())!;
+    expect(e).toMatchObject({ kind: 'storm', eyebrow: 'TOMORROW – THURSDAY', headline: 'Heavy rain with possible localized flooding',
+      figure: { value: '~2.7"', label: 'the whole storm, through the end of Thursday' } });
+    expect(e.rows).toEqual([{ icon: 'start', title: 'Starts late tonight', sub: 'Ends Thursday afternoon' },
+                            { icon: 'peak', title: 'Heaviest tomorrow morning', sub: undefined }]);   // models disagree: no rate
+  });
+  it('a storm running past the forecast is never called whole, and says its end is unknown', () => {
+    const e = eventHero(stormCut(40))!;
+    expect(e.figure).toEqual({ value: '~2.0"', label: 'forecast tomorrow' });   // Wednesday is complete; the storm isn't
+    expect(e.rows[0].sub).toBe('Continues past Thu 3 AM, where the forecast ends; end not known yet');
+  });
+  it('a supported peak rate shows its range and hour; otherwise nothing, never a placeholder', () => {
+    const s = stormWed(); s.peakRate = { lo: 0.4, hi: 0.45, hour: 21, systems: ['ICON ensemble', 'HRRR'] };
+    expect(eventHero(s)!.rows[1].sub).toBe('Up to about .40–.45" an hour, around 8 AM tomorrow');
+    expect(JSON.stringify(eventHero(stormWed()))).not.toMatch(/awaiting|placeholder|n\/a/i);
+  });
+  it('heatwave: duration, highest temperature, hottest hours, consequence', () => {
+    const e = eventHero(byId('heat'))!;
+    expect(e).toMatchObject({ kind: 'heat', headline: 'Dangerous heat', figure: { value: '104°' } });
+    expect(e.rows.map(r => r.title)).toEqual(['Hot now', 'Hottest around Fri 1–6 PM and Sat noon–7 PM']);
+    expect(e.advisory!.what).toBe('Lows near 75° may offer little relief overnight.');
+  });
+  it('dry and ordinary days keep the existing hero', () => {
+    for (const id of ['october', 'rain', 'rain-soon', 'incomplete']) expect(eventHero(byId(id)), id).toBeNull();
+  });
+});
+
+describe('flood advisory: forecast and action kept apart; potential is never a sandbag call', () => {
+  it('potential flooding: consequence, supported agreement, risk window, preparation, the unvalidated caveat', () => {
+    const a = eventHero(stormWed())!.advisory!;
+    expect(a).toMatchObject({ title: 'Potential drainage flooding', risk: false,
+      what: 'Heavy rain tomorrow morning could overwhelm local drains.', todo: 'Prepare flood barriers before the rain arrives.',
+      support: 'Supported by 3 of 3 model systems.', caveat: "Local driveway risk isn't validated yet." });
+    expect(a.evidence.map(x => x.label)).toEqual(['Heavy hour (0.20"+)', 'Risk window', 'Model agreement', 'Sustained', 'Peak hourly rate', 'Local flood level']);
+    expect(JSON.stringify(a)).not.toMatch(/sandbag|historical|20\d\d/i);
+  });
+  it('an official product is what makes it a driveway call', () => {
+    const a = eventHero(byId('storm'))!.advisory!;
+    expect(a).toMatchObject({ title: 'Driveway flood risk', risk: true, support: 'Flood Watch from the National Weather Service.' });
+  });
+});
+
+describe('rain amounts in the hourly row', () => {
+  const at = (s: Scenario, h: number) => hourAmounts(s)!.get(h)!;
+  it('3-hour blocks: the amount once, under the middle hour, bracketed; dry blank; no "hourly" precision made up', () => {
+    const s = stormWed();
+    expect([17, 18, 19].map(h => at(s, h))).toMatchObject([{ text: null, pos: 'start', res: 3 }, { text: '.43"', pos: 'mid' }, { text: null, pos: 'end' }]);
+    expect(at(s, 5)).toMatchObject({ text: null, kind: 'dry' });
+    expect(at(s, 0)).toMatchObject({ res: 1, pos: 'solo' });                       // radar hours are genuinely hourly
+  });
+  it('the strongest interval is marked (highest rate), once', () => {
+    const m = hourAmounts(stormWed())!;
+    expect([...m.entries()].filter(([, a]) => a.top).map(([h]) => h)).toEqual([20, 21, 22]);
+  });
+  it('trace, missing and no amounts at all are distinct', () => {
+    const s = stormWed(); s.rainBlocks = s.rainBlocks!.map(b => b.startHour === 101 ? { ...b, in: 0.004 } : b);
+    expect(at(s, 102)).toMatchObject({ text: 'Trace', kind: 'trace' });
+    expect(at(stormCut(40), 45)).toMatchObject({ text: '—', kind: 'missing' });
+    expect(hourAmounts(byId('rain'))).toBeNull();                                  // a card without amounts shows no row
+  });
+  it('interval amounts are not forced to add up to the total; the difference is surfaced', () => {
+    const r = amountsVsTotal(stormWed())!;
+    expect(r.totalIn).toBe(2.65);
+    expect(r.blocksIn).toBeCloseTo(2.14, 2);
+    expect(r).toMatchObject({ from: 'the start of tomorrow', to: 'the end of Thursday' });
+  });
+  it('an aged card keeps a part-past interval, marked partial', () => {
+    const a = ageCard(stormWed(), 3);
+    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, partial: true });
+    expect(validateScenario(a)).toEqual([]);
+  });
+});

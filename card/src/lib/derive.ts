@@ -1071,6 +1071,12 @@ function stormEnd(s: Scenario, st: Storm): { end: number; open: boolean } {
   }
   return { end, open: openEnd(s, end) };
 }
+/** A window edge in words: "Thu 4 PM", or "the end of Thursday" / "the start of Wednesday" at local midnight. */
+function edgeAt(s: Scenario, h: number, isEnd: boolean): string {
+  if (localHour(s, h) !== 0) return timeAt(s, h);
+  const d = isEnd ? h - 1 : h, w = relDay(s, d);
+  return `the ${isEnd ? 'end' : 'start'} of ${w === 'today' || w === 'tomorrow' ? w : fullDay[w]}`;
+}
 /** The total for the storm, when one rain stretch makes it, with the hours it covers. */
 export function stormFigure(s: Scenario, st: Storm): { inches: number; label: string } | null {
   const inside = (s.rainTotals ?? []).filter(t => t.startHour < st.end && st.start < t.endHour);
@@ -1078,7 +1084,7 @@ export function stormFigure(s: Scenario, st: Storm): { inches: number; label: st
   if (inside.length === 1) {
     const t = inside[0], to = t.toHour ?? t.endHour;
     const whole = !open && t.startHour <= st.start && t.endHour >= st.end;
-    return { inches: t.medianIn, label: whole ? `the whole storm, through ${timeAt(s, to)}` : `forecast through ${timeAt(s, to)}` };
+    return { inches: t.medianIn, label: whole ? `the whole storm, through ${edgeAt(s, to, true)}` : `forecast through ${edgeAt(s, to, true)}` };
   }
   const acc = stormAccumulation(s, st);
   return acc ? { inches: acc.inches, label: acc.window === 'through the storm' ? 'the whole storm' : acc.window.startsWith('by ') ? `forecast ${acc.window}` : `forecast ${acc.window}` } : null;
@@ -1111,7 +1117,7 @@ export function eventHero(s: Scenario): EventHero | null {
   const pr = s.peakRate && s.peakRate.hour >= heavy.start - 1 && s.peakRate.hour < heavy.end + 1 ? s.peakRate : undefined;
   const heaviest = heavyNow ? 'Heaviest now' : lvl === 'coarse' ? `Heaviest ${head}` : `Heaviest ${spanProse(s, heavy.start, heavy.end)}`;
   rows.push({ icon: 'peak', title: heaviest,
-    sub: pr ? `Up to about ${pr.lo === pr.hi ? fmtIn(pr.lo) : `${fmtIn(pr.lo)}–${fmtIn(pr.hi)}`} an hour, around ${atProse(s, pr.hour)}` : undefined });
+    sub: pr ? `Up to about ${pr.lo === pr.hi ? fmtIn(pr.lo) : `${fmtIn(pr.lo).slice(0, -1)}–${fmtIn(pr.hi)}`} an hour, around ${atProse(s, pr.hour)}` : undefined });
 
   // the advisory: consequence, evidence, action; never a confirmed sandbag call unless an official product or validation
   const ev = s.evidence, pot = floodPotentials(s).find(p => p.startHour < heavy.end && heavy.start < p.endHour);
@@ -1124,7 +1130,7 @@ export function eventHero(s: Scenario): EventHero | null {
     evidence.push({ label: 'Model agreement', value: `${pot.checks.agreement.systems} of ${pot.checks.agreement.of} model systems put 10%+ of their runs at the flood level` });
     evidence.push({ label: 'Sustained', value: `${pot.checks.sustained.hours} hour${pot.checks.sustained.hours === 1 ? '' : 's'} with 10%+ of runs at the flood level` });
   }
-  if (pr) evidence.push({ label: 'Peak hourly rate', value: `${fmtIn(pr.lo)}–${fmtIn(pr.hi)} from ${pr.systems.join(' and ')} (genuinely hourly models that agree)` });
+  if (pr) evidence.push({ label: 'Peak hourly rate', value: `${fmtIn(pr.lo).slice(0, -1)}–${fmtIn(pr.hi)} an hour, from ${pr.systems.join(' and ')} (genuinely hourly models that agree)` });
   else evidence.push({ label: 'Peak hourly rate', value: 'not shown: needs two genuinely hourly models that agree, within 48 hours' });
   evidence.push({ label: 'Local flood level', value: ev?.floodValidated ? 'validated at this address' : 'not yet validated at this address' });
   const support = st.official.length ? `${joinAnd([...new Set(st.official.map(o => o.event))])} from the National Weather Service.`
@@ -1150,11 +1156,10 @@ function heatEvent(s: Scenario): EventHero | null {
   const hot = s.hourly.filter((h, i) => { const at = h.hour ?? i; return at >= a && at < b && h.temperatureF !== null; });
   const max = Math.max(...s.days.map(d => d.highF ?? -99), ...hot.map(h => h.temperatureF!));
   const peak = hot.find(h => h.temperatureF === max);
-  const sure = wins.every(w => w.sure);
   const rows: EventRow[] = [
     { icon: 'start', title: isNowAt(s, a) ? 'Hot now' : `Heat builds ${roughWhen(s, a)}`,
       sub: openEnd(s, b) ? `Still hot at ${timeAt(s, 72)}, where this outlook ends` : `Eases ${roughWhen(s, b)}` },
-    { icon: 'heat', title: `Hottest ${windowList(wins)}`, sub: sure ? undefined : 'Hours may shift a little' },
+    { icon: 'heat', title: `Hottest ${windowList(wins)}` },
   ];
   return { kind: 'heat', eyebrow: eyebrowFor(s, a, b), headline: 'Dangerous heat',
            figure: { value: `${max}°`, label: peak ? `highest, ${roughWhen(s, peak.hour ?? 0)}` : 'highest forecast' },
@@ -1195,5 +1200,5 @@ export function amountsVsTotal(s: Scenario): { blocksIn: number; totalIn: number
   const from = t[0].fromHour ?? t[0].startHour, to = t[0].toHour ?? t[0].endHour;
   const inside = s.rainBlocks.filter(b => b.startHour >= from && b.endHour <= to);
   const covered = inside.reduce((n, b) => n + b.endHour - b.startHour, 0);
-  return { blocksIn: inside.reduce((n, b) => n + b.in, 0), totalIn: t[0].medianIn, from: timeAt(s, from), to: timeAt(s, to), exact: covered === to - from };
+  return { blocksIn: inside.reduce((n, b) => n + b.in, 0), totalIn: t[0].medianIn, from: edgeAt(s, from, false), to: edgeAt(s, to, true), exact: covered === to - from };
 }

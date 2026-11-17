@@ -133,3 +133,4 @@
 .hour .amt.blk-start::after{left:6px;border-left:1.5px solid #b9d0de;height:4px}.hour .amt.blk-end::after{right:6px;border-right:1.5px solid #b9d0de;height:4px}
 .hour-top .amt{color:#174a6b;font-weight:800}.hour-top .amt.blk::after{border-color:#2f6f95}
 .amounts-about{margin-top:10px;font-size:11px;color:#7b8991}.amounts-about summary{cursor:pointer}.amounts-about p{margin:6px 0 0;line-height:1.4}
+.event-lab{max-width:420px;padding:12px 15px 40px}.event-case h3{font-size:12px;font-weight:600;color:#53636c;margin:0 0 8px}.event-case{margin-bottom:28px}
