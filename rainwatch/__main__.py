@@ -96,15 +96,33 @@ def main(argv=None) -> int:
         arc.hrrr(now, det)
     except Exception as e:  # noqa: BLE001
         print(f"hrrr record: {e}")
+    try:    # other forecast signals (v0.24): NWS hourly chance of rain and the sky model's codes, archive only
+        arc.signals(now, nb, fc.conditions)
+    except Exception as e:  # noqa: BLE001
+        print(f"signals record: {e}")
     obs = arc.merge_obs(gs, now)
-    truth = archive.truth(obs, [cfg.site.hads_station] if cfg.site else [])   # scoring uses the nearby gauge only, never SFO
+    order = [cfg.site.hads_station] if cfg.site else []      # scoring uses the nearby gauge only, never SFO
+    truth, alignment = archive.truth(obs, order), "legacy"
+    try:    # verification hours from the gauge's raw readings (v0.24): each increment filed in the clock hour that
+            # holds most of its interval; the forecast never reads these
+        raw = arc.merge_raw(gs, now)
+        if cfg.site:
+            first = min((f["issued"] for f in arc.forecasts(now - timedelta(days=60))), default=None)
+            if first and arc.backfill_raw(cfg.site.hads_station, lambda st, a_, b_: gauges.fetch_hads_raw(s, st, a_, b_),
+                                          datetime.fromisoformat(first) - timedelta(hours=2), now):
+                raw = arc._read("obs_raw.json", {})
+        vt, _ = archive.verification_truth(raw, order)
+        if vt:
+            truth, alignment = vt, "raw"
+    except Exception as e:  # noqa: BLE001
+        print(f"verification truth: {e} (kept the earlier hour alignment)")
     scores = archive.score(arc.forecasts(now - timedelta(days=30)), truth, cfg.heavy_in, cfg.any_in)
     storm_card = storms.report(truth, arc.forecasts(now - timedelta(days=120)), now, cfg.any_in, cfg.heavy_in)
     (Path(a.data) / "storms.json").write_text(json.dumps(storm_card, default=str, indent=1))
     scores["_storms"] = storm_card
     try:    # lead-time scorecards (1–3 h, 3–6 h) against the Mint gauge; never blocks the update
         from . import scorecard
-        scorecard.leadtime(a.data, truth, cfg, now)
+        scorecard.leadtime(a.data, truth, cfg, now, alignment=alignment)
     except Exception as e:  # noqa: BLE001
         print(f"leadtime scorecard: {e}")
 
