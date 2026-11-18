@@ -1267,12 +1267,16 @@ export function amountWords(s: Scenario, a: HourAmount | undefined): string {
   if (a.kind === 'covered' && a.span) return `, rain; the ${spanText(s, a.span)} model amount overlaps the radar hours, listed under rain amounts`;
   return a.text && a.text !== '—' ? `, rain ${a.text}${a.res > 1 && a.span ? ` for ${spanText(s, a.span)}` : ''}${from(a.src)}` : '';
 }
-/** Every amount behind the row's tap, by source, through the next `hours` hours: radar hours, then each model or NWS
- *  interval with its whole span; a model block that overlaps radar hours says so (never to be added to them). */
-export function amountList(s: Scenario, hours = 24): { src: Src | undefined; span: string; text: string; overlap: boolean }[] {
-  const end = nowAt(s) + hours;
-  return (s.rainBlocks ?? []).filter(b => b.startHour < end && !(b.in === 0 && b.src !== 'radar')).map(b => ({
-    src: b.src, span: spanText(s, [bStart(b), bEnd(b)]), text: amountText(b.in), overlap: overlapsRadar(s, b) }));
+/** The one sentence behind the row's tap when a model block overlaps radar hours (John, Nov 18 2026): which hours the
+ *  radar is giving, and that the models' estimate for the block covers them, so it is left out. The full list of
+ *  intervals lives on the details page, not on the card. Null when nothing overlaps. */
+export function overlapNote(s: Scenario): string | null {
+  const o = (s.rainBlocks ?? []).find(b => overlapsRadar(s, b) && b.startHour >= nowAt(s));
+  if (!o) return null;
+  const radar = (s.rainBlocks ?? []).filter(r => r.src === 'radar' && r.startHour >= bStart(o) && r.startHour < o.startHour);
+  const rs = spanText(s, [radar[0].startHour, radar[radar.length - 1].endHour]);
+  const amt = o.in < 0.01 ? 'a trace' : `about ${fmtAmount(o.in)}`;
+  return `Radar is covering ${rs}. The models' estimate for ${spanText(s, [bStart(o), bEnd(o)])} (${amt}) includes those hours, so it isn't added to the radar amounts and isn't shown in the row.`;
 }
 /** How the hourly amounts relate to the hero's total over the same hours (shown in the row's explanation). */
 export function amountsVsTotal(s: Scenario): { blocksIn: number; totalIn: number; from: string; to: string; exact: boolean } | null {

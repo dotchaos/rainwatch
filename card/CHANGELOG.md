@@ -2,7 +2,7 @@
 
 ## Review branch radar-model-amounts (Nov 18 2026): nothing in the hourly row adds up wrongly
 - Radar hours show their own amounts (own hue). A model block that radar has partly taken over shows no number in the row: a dotted line marks its remaining hours. The next whole interval shows as before.
-- Tap the amounts (or the note under the row) for every interval: source, whole span, amount; an overlapping block is named "not in addition".
+- Tap the amounts (or the note under the row): one plain sentence explains an overlap. The full interval list (source, span, amount) moved to the details page.
 - "3 hr" labels dropped from the row (the bracket carries the span, the list the details); brackets made stronger.
 - Every amount carries its source (`src`: radar, model, nws) from the engine (`rainwatch/intervals.py`). Display only; flood trigger unchanged (audited, see DECISIONS).
 

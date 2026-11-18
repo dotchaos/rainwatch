@@ -134,7 +134,7 @@ def main(argv=None) -> int:
     # The card (built by the workflow from card/) is the front page; this detailed page lives at /details/.
     (out / "details").mkdir(exist_ok=True)
     ov_d = {**overlay, "img": "../" + overlay["img"]} if overlay else None
-    (out / "details" / "index.html").write_text(render.page(report, cfg, meta, scores, ov_d))
+    (out / "details" / "index.html").write_text(render.page(report, cfg, meta, scores, ov_d, fc.card))
     # Fallback front page: the workflow replaces it with the card; if the card build fails, people land on details.
     (out / "index.html").write_text('<!doctype html><meta charset=utf-8><meta http-equiv="refresh" content="0; url=details/">'
                                     '<a href="details/">Rain forecast details</a>')

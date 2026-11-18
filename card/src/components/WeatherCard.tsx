@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
-import { amountList, amountsVsTotal, amountWords, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
+import { amountsVsTotal, amountWords, overlapNote, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
 
@@ -99,15 +99,12 @@ function Hourly({ s }: { s: Scenario }) {
       {amts && <em className={`amt amt-${a?.kind ?? 'missing'}${blk}${a?.kind === 'covered' ? ` cov-${a.pos}` : ''}${radar ? ' amt-radar' : ''}`} onClick={() => setOpen(true)}>{a?.text ?? ''}</em>}
     </div>);
   });
-  const rec = amountsVsTotal(s), list = amts ? amountList(s) : [], anyRadar = list.some(x => x.src === 'radar'), anyOverlap = list.some(x => x.overlap);
+  const rec = amountsVsTotal(s), note = amts ? overlapNote(s) : null;
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
     <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div>
     {amts && <details className="amounts-about" open={open} onToggle={e => setOpen((e.currentTarget as HTMLDetailsElement).open)}>
-      <summary>Rain amounts{anyRadar ? <> · <span className="key-radar">radar</span> first, then typical model run</> : ': typical model run'}, per hour or per bracketed 3-hour block</summary>
-      {list.length > 0 && <table className="amount-list"><tbody>{list.map((x, k) => <tr key={k} className={x.overlap ? 'overlap' : undefined}>
-        <th>{x.src === 'radar' ? 'Radar' : x.src === 'nws' ? 'NWS' : x.src === 'model' ? 'Models' : ''}</th><td>{x.span}</td><td>{x.text}</td>
-        <td>{x.overlap ? 'overlaps the radar hours; not in addition' : ''}</td></tr>)}</tbody></table>}
-      {anyOverlap && <p>A dotted line marks hours of a model block that began in the radar hours. Its amount is another estimate of rain the radar already gives, so the row doesn't show it; it is listed above.</p>}
+      <summary>Rain amounts: {[...amts.values()].some(x => x.src === 'radar') ? <><span className="key-radar">radar</span> first, then </> : ''}typical model run, per hour or per bracketed 3-hour block</summary>
+      {note && <p className="overlap-note">{note}</p>}
       <p>Most of the models behind this forecast give rain in 3-hour amounts, so it is shown that way; an hourly amount appears only where every model is genuinely hourly (or radar).
         Each amount is the median of the model runs for that interval on its own. "Trace" is under 0.01", "—" means no forecast for that hour.</p>
       {rec && <p>{rec.exact ? 'These amounts' : 'The amounts fully inside that window'} add up to {fmtAmount(rec.blocksIn)} from {rec.from} through {rec.to}; the storm total above is {tenths(rec.totalIn)}" for the same hours.

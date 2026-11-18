@@ -115,7 +115,11 @@ def test_v026_adds_fields_and_changes_nothing_else():
     finally:
         c.HOURLY_EXT = True
     on = run()
-    assert on["latest.json"] == off["latest.json"] and on["details/index.html"] == off["details/index.html"]
+    # the details page lists the hourly row's amounts (Nov 18 2026); everything else on it is unchanged
+    import re
+    strip = lambda h: re.sub(r"<details><summary>Rain amounts by interval.*?</details>", "", h, flags=re.S)  # noqa: E731
+    assert "Rain amounts by interval" in on["details/index.html"] and "Rain amounts by interval" not in off["details/index.html"]
+    assert on["latest.json"] == off["latest.json"] and strip(on["details/index.html"]) == off["details/index.html"]
     a, b = json.loads(off["live.json"]), json.loads(on["live.json"])
     assert set(b) - set(a) <= {"rainBlocks", "peakRate", "_peak_check"} and set(a) <= set(b)
     assert b["hourly"][:len(a["hourly"])] == a["hourly"] and len(b["hourly"]) > len(a["hourly"])

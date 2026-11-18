@@ -4,7 +4,7 @@ from __future__ import annotations
 from .outlook import chance
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from html import escape as e
 from zoneinfo import ZoneInfo
 
@@ -340,7 +340,37 @@ document.getElementById('rrsave').onclick=()=>{const t=document.getElementById('
 </script>"""
 
 
-def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None) -> str:
+def _amounts_html(card, rows, tz) -> str:
+    """Every rain amount behind the card's hourly row (Nov 18 2026): source, whole span, amount, for the next 24 h. A
+    model block that radar has partly taken over is marked: another estimate of the radar's hours, never in addition.
+    The card itself shows only one plain sentence about such an overlap; the full list lives here."""
+    blocks = (card or {}).get("rainBlocks") or []
+    if not blocks or not rows:
+        return ""
+    t0 = datetime.fromisoformat(rows[0]["t"])
+    at = lambda h: _local((t0 + timedelta(hours=h)).isoformat(), tz, "%a %-I %p")   # noqa: E731
+    src = {"radar": "Radar nowcast", "model": "Models (typical run)", "nws": "NWS"}
+    out = []
+    for b in blocks:
+        if b["startHour"] >= 24 or (b.get("in", 0) == 0 and b.get("src") != "radar"):
+            continue
+        a0, a1 = b.get("blockStartHour", b["startHour"]), b.get("blockEndHour", b["endHour"])
+        over = b.get("src") != "radar" and a0 < b["startHour"] and any(
+            r.get("src") == "radar" and a0 <= r["startHour"] < b["startHour"] for r in blocks)
+        span = at(a0) if a1 - a0 == 1 else f"{at(a0)} – {at(a1)}"
+        amt = "dry" if b["in"] == 0 else "trace" if b["in"] < 0.01 else f'{b["in"]:.2f}"'
+        out.append(f"<tr><td>{e(src.get(b.get('src'), '—'))}</td><td>{e(span)}</td><td>{amt}</td>"
+                   f"<td class=sub>{'overlaps the radar hours: another estimate of the same rain, not in addition' if over else ''}</td></tr>")
+    if not out:
+        return ""
+    return ("<details><summary>Rain amounts by interval (the card's hourly row), next 24 h</summary><div class=scroll><table>"
+            "<tr><th>Source</th><th>Hours</th><th>Amount</th><th></th></tr>" + "".join(out) + "</table></div>"
+            "<p class=sub>Each amount is the median for its interval on its own; intervals are not scaled to add up to a total. "
+            "The models give 3-hour amounts on fixed blocks; where radar gives the first hours of a block, the card shows the "
+            "radar hours and leaves the block's amount out of the row.</p></details>")
+
+
+def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None, card: dict | None = None) -> str:
     tz = ZoneInfo(cfg.tz)
     repo = cfg.repo
     rerun_js = RERUN_JS.replace("__GEN__", json.dumps(report["generated"])).replace("__REPO__", json.dumps(repo))
@@ -434,6 +464,7 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
 
 {table}
 <details><summary>All {len(r['rows'])} hours</summary>{_rows_html(r['rows'], r['heavy_in'])}</details>
+{_amounts_html(card, r['rows'], tz)}
 
 <p><b>Total &amp; Confidence:</b> {tot['mid']:.2f}" expected (range {tot['lo']:.2f}"–{tot['hi']:.2f}", 10th–90th pct)
 through {e(tot['through'])} · Confidence: <span class=pill>{e(tot['confidence'])}</span>{nws_tot}</p>

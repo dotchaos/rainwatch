@@ -7,7 +7,7 @@ import type { Scenario } from '../types';
 import { Timeline } from '../components/Timeline';
 import { WeatherCard } from '../components/WeatherCard';
 import { stormCut, stormWed, stormWedNight } from './cases';
-import { ageCard, amountList, amountsVsTotal, amountWords, chartBlocks, deriveAlert, eventHero, fiveDays, hourAmounts, nowNext, storms } from './derive';
+import { ageCard, amountsVsTotal, amountWords, overlapNote, chartBlocks, deriveAlert, eventHero, fiveDays, hourAmounts, nowNext, storms } from './derive';
 import { validateScenario } from './rules';
 
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
@@ -164,10 +164,10 @@ describe('rain amounts in the hourly row', () => {
     expect([...m.values()].some(a => a.text === '.72"')).toBe(false);
     expect([...m.entries()].filter(([, a]) => a.top).map(([h]) => h)).not.toContain(2);         // a hidden block is never "the strongest"
   });
-  it('every interval is listed behind the tap, with its source and whole span; the overlap is named', () => {
-    const s = nov18(), l = amountList(s);
-    expect(l.slice(0, 4).map(x => [x.src, x.text, x.overlap])).toEqual([['radar', '.01"', false], ['radar', '.11"', false], ['model', '.72"', true], ['model', '.63"', false]]);
-    expect(l[2].span).toMatch(/ to /);
+  it('the tap gives one plain sentence about the overlap, not a table; spoken labels name source and hours', () => {
+    const s = nov18();
+    expect(overlapNote(s)).toMatch(/^Radar is covering .+\. The models' estimate for .+ to .+ \(about \.72"\) includes those hours, so it isn't added to the radar amounts and isn't shown in the row\.$/);
+    expect(overlapNote(stormWed())).toBeNull();
     expect(amountWords(s, hourAmounts(s)!.get(2))).toMatch(/model amount overlaps the radar hours/);
     expect(amountWords(s, hourAmounts(s)!.get(4))).toMatch(/rain \.63" for .+ to .+, typical model run$/);
   });
@@ -182,13 +182,14 @@ describe('rain amounts in the hourly row', () => {
     expect(m.get(5)).toMatchObject({ text: '.29"' });
     const html = renderToString(createElement(WeatherCard, { scenario: s }));
     expect(html).toContain('amt-covered');
-    expect(html).toContain('overlaps the radar hours; not in addition');
+    expect(html).toContain('overlap-note');
+    expect(html).not.toContain('<table');
     expect(validateScenario(s)).toEqual([]);
   });
   it('without radar overlap nothing is hidden and no overlap note appears', () => {
     const html = renderToString(createElement(WeatherCard, { scenario: stormWed() }));
     expect(html).not.toContain('amt-covered');
-    expect(html).not.toContain('not in addition');
+    expect(html).not.toContain('overlap-note');
   });
   it('an aged card keeps a part-past interval, marked partial', () => {
     const a = ageCard(stormWed(), 3);
