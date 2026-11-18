@@ -100,3 +100,7 @@
 - Going outside: Usual clothes / Umbrella or jacket / Rain gear from the same rungs as the Going out chart, which stays one tap away.
 - Looking ahead starts tomorrow (today is the Today section); every day keeps its own row.
 - Engine: rain blocks gain an additive `src` field; no amounts, thresholds or intervals change.
+- Interval amounts are not the storm total (accepted at merge, Nov 18). The rain chart's "Where these amounts come from" says
+  so with the numbers (Nov 18: intervals 2.14" vs total 2.7" over the same hours) and why: each interval is a typical run for
+  those hours alone, so when runs disagree on timing the intervals are drier than a typical run's whole storm. The total is the
+  guide to how much; the intervals show when. Tested in today.test.ts.
