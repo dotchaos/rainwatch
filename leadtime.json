@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-18T22:37:17.492404+00:00",
+ "generated": "2026-11-18T22:52:22.068781+00:00",
  "truth": "SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24)",
  "window_days": 60,
  "heavy_in": 0.2,
@@ -8,17 +8,17 @@
  "sources": {
   "radar": {
    "0\u20131 h": {
-    "n": 124,
-    "mae": 0.025,
-    "bias": -0.001,
+    "n": 125,
+    "mae": 0.026,
+    "bias": -0.0,
     "heavy": {
      "hits": 3,
      "misses": 1,
-     "false_alarms": 6,
+     "false_alarms": 7,
      "correct_negatives": 114,
      "pod": 0.75,
-     "far": 0.67,
-     "csi": 0.3,
+     "far": 0.7,
+     "csi": 0.27,
      "rule": "share of runs >= 20%"
     },
     "heavy_hours": [
@@ -62,6 +62,12 @@
        "observed": null
       },
       {
+       "bin": "0.20\u20130.50",
+       "n": 1,
+       "mean_p": 0.456,
+       "observed": null
+      },
+      {
        "bin": "0.50\u20130.80",
        "n": 7,
        "mean_p": 0.694,
@@ -101,9 +107,9 @@
       },
       {
        "bin": "0.80\u20131.00",
-       "n": 23,
+       "n": 24,
        "mean_p": 0.991,
-       "observed": 0.957
+       "observed": 0.958
       }
      ]
     }
@@ -111,14 +117,14 @@
   },
   "ens": {
    "0\u20131 h": {
-    "n": 124,
-    "mae": 0.022,
-    "bias": -0.008,
+    "n": 125,
+    "mae": 0.023,
+    "bias": -0.009,
     "heavy": {
      "hits": 3,
      "misses": 1,
      "false_alarms": 4,
-     "correct_negatives": 116,
+     "correct_negatives": 117,
      "pod": 0.75,
      "far": 0.57,
      "csi": 0.38,
@@ -154,7 +160,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 111,
+       "n": 112,
        "mean_p": 0.001,
        "observed": 0.009
       },
@@ -198,9 +204,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 12,
-       "mean_p": 0.613,
-       "observed": 0.75
+       "n": 13,
+       "mean_p": 0.615,
+       "observed": 0.769
       },
       {
        "bin": "0.80\u20131.00",
@@ -212,14 +218,14 @@
     }
    },
    "1\u20133 h": {
-    "n": 122,
+    "n": 123,
     "mae": 0.023,
-    "bias": -0.008,
+    "bias": -0.009,
     "heavy": {
      "hits": 3,
      "misses": 1,
      "false_alarms": 4,
-     "correct_negatives": 114,
+     "correct_negatives": 115,
      "pod": 0.75,
      "far": 0.57,
      "csi": 0.38,
@@ -255,7 +261,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 111,
+       "n": 112,
        "mean_p": 0.001,
        "observed": 0.009
       },
@@ -299,9 +305,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 12,
-       "mean_p": 0.591,
-       "observed": 0.667
+       "n": 13,
+       "mean_p": 0.595,
+       "observed": 0.692
       },
       {
        "bin": "0.80\u20131.00",
@@ -313,14 +319,14 @@
     }
    },
    "3\u20136 h": {
-    "n": 120,
-    "mae": 0.023,
+    "n": 121,
+    "mae": 0.024,
     "bias": -0.009,
     "heavy": {
      "hits": 3,
      "misses": 1,
      "false_alarms": 4,
-     "correct_negatives": 112,
+     "correct_negatives": 113,
      "pod": 0.75,
      "far": 0.57,
      "csi": 0.38,
@@ -356,7 +362,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 111,
+       "n": 112,
        "mean_p": 0.002,
        "observed": 0.009
       },
@@ -400,9 +406,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 10,
-       "mean_p": 0.58,
-       "observed": 0.6
+       "n": 11,
+       "mean_p": 0.585,
+       "observed": 0.636
       },
       {
        "bin": "0.80\u20131.00",
@@ -416,14 +422,14 @@
   },
   "hrrr": {
    "0\u20131 h": {
-    "n": 120,
+    "n": 121,
     "mae": 0.037,
-    "bias": -0.018,
+    "bias": -0.019,
     "heavy": {
      "hits": 0,
      "misses": 4,
      "false_alarms": 1,
-     "correct_negatives": 115,
+     "correct_negatives": 116,
      "pod": 0.0,
      "far": 1.0,
      "csi": 0.0,
@@ -458,14 +464,14 @@
     "calibration": {}
    },
    "1\u20133 h": {
-    "n": 118,
-    "mae": 0.029,
-    "bias": -0.008,
+    "n": 119,
+    "mae": 0.03,
+    "bias": -0.009,
     "heavy": {
      "hits": 1,
      "misses": 3,
      "false_alarms": 3,
-     "correct_negatives": 111,
+     "correct_negatives": 112,
      "pod": 0.25,
      "far": 0.75,
      "csi": 0.14,
@@ -500,14 +506,14 @@
     "calibration": {}
    },
    "3\u20136 h": {
-    "n": 119,
-    "mae": 0.025,
-    "bias": -0.01,
+    "n": 120,
+    "mae": 0.026,
+    "bias": -0.011,
     "heavy": {
      "hits": 2,
      "misses": 2,
      "false_alarms": 0,
-     "correct_negatives": 115,
+     "correct_negatives": 116,
      "pod": 0.5,
      "far": 0.0,
      "csi": 0.5,
@@ -544,14 +550,14 @@
   },
   "nbm": {
    "0\u20131 h": {
-    "n": 121,
+    "n": 122,
     "mae": 0.021,
     "bias": -0.01,
     "heavy": {
      "hits": 2,
      "misses": 2,
      "false_alarms": 1,
-     "correct_negatives": 116,
+     "correct_negatives": 117,
      "pod": 0.5,
      "far": 0.33,
      "csi": 0.4,
@@ -586,14 +592,14 @@
     "calibration": {}
    },
    "1\u20133 h": {
-    "n": 119,
+    "n": 120,
     "mae": 0.02,
-    "bias": -0.009,
+    "bias": -0.01,
     "heavy": {
      "hits": 2,
      "misses": 2,
      "false_alarms": 1,
-     "correct_negatives": 114,
+     "correct_negatives": 115,
      "pod": 0.5,
      "far": 0.33,
      "csi": 0.4,
@@ -628,14 +634,14 @@
     "calibration": {}
    },
    "3\u20136 h": {
-    "n": 120,
+    "n": 121,
     "mae": 0.022,
     "bias": -0.008,
     "heavy": {
      "hits": 2,
      "misses": 2,
      "false_alarms": 1,
-     "correct_negatives": 115,
+     "correct_negatives": 116,
      "pod": 0.5,
      "far": 0.33,
      "csi": 0.4,
@@ -672,14 +678,14 @@
   },
   "ecmwf": {
    "0\u20131 h": {
-    "n": 123,
-    "mae": 0.028,
-    "bias": -0.004,
+    "n": 124,
+    "mae": 0.029,
+    "bias": -0.005,
     "heavy": {
      "hits": 1,
      "misses": 3,
      "false_alarms": 3,
-     "correct_negatives": 116,
+     "correct_negatives": 117,
      "pod": 0.25,
      "far": 0.75,
      "csi": 0.14,
@@ -714,14 +720,14 @@
     "calibration": {}
    },
    "1\u20133 h": {
-    "n": 121,
+    "n": 122,
     "mae": 0.028,
-    "bias": -0.006,
+    "bias": -0.007,
     "heavy": {
      "hits": 1,
      "misses": 3,
      "false_alarms": 2,
-     "correct_negatives": 115,
+     "correct_negatives": 116,
      "pod": 0.25,
      "far": 0.67,
      "csi": 0.17,
@@ -756,14 +762,14 @@
     "calibration": {}
    },
    "3\u20136 h": {
-    "n": 120,
-    "mae": 0.027,
-    "bias": -0.005,
+    "n": 121,
+    "mae": 0.028,
+    "bias": -0.006,
     "heavy": {
      "hits": 1,
      "misses": 3,
      "false_alarms": 2,
-     "correct_negatives": 114,
+     "correct_negatives": 115,
      "pod": 0.25,
      "far": 0.67,
      "csi": 0.17,
@@ -800,14 +806,14 @@
   },
   "nws": {
    "0\u20131 h": {
-    "n": 124,
+    "n": 125,
     "mae": 0.032,
     "bias": -0.006,
     "heavy": {
      "hits": 0,
      "misses": 4,
      "false_alarms": 0,
-     "correct_negatives": 120,
+     "correct_negatives": 121,
      "pod": 0.0,
      "far": null,
      "csi": 0.0,
@@ -842,14 +848,14 @@
     "calibration": {}
    },
    "1\u20133 h": {
-    "n": 122,
+    "n": 123,
     "mae": 0.032,
     "bias": -0.006,
     "heavy": {
      "hits": 0,
      "misses": 4,
      "false_alarms": 0,
-     "correct_negatives": 118,
+     "correct_negatives": 119,
      "pod": 0.0,
      "far": null,
      "csi": 0.0,
@@ -884,14 +890,14 @@
     "calibration": {}
    },
    "3\u20136 h": {
-    "n": 120,
-    "mae": 0.031,
-    "bias": -0.006,
+    "n": 121,
+    "mae": 0.032,
+    "bias": -0.007,
     "heavy": {
      "hits": 0,
      "misses": 4,
      "false_alarms": 0,
-     "correct_negatives": 116,
+     "correct_negatives": 117,
      "pod": 0.0,
      "far": null,
      "csi": 0.0,
@@ -928,17 +934,17 @@
   },
   "rainwatch": {
    "0\u20131 h": {
-    "n": 124,
+    "n": 125,
     "mae": 0.025,
-    "bias": -0.001,
+    "bias": -0.0,
     "heavy": {
      "hits": 3,
      "misses": 1,
-     "false_alarms": 6,
+     "false_alarms": 7,
      "correct_negatives": 114,
      "pod": 0.75,
-     "far": 0.67,
-     "csi": 0.3,
+     "far": 0.7,
+     "csi": 0.27,
      "rule": "share of runs >= 20%"
     },
     "heavy_hours": [
@@ -982,6 +988,12 @@
        "observed": null
       },
       {
+       "bin": "0.20\u20130.50",
+       "n": 1,
+       "mean_p": 0.456,
+       "observed": null
+      },
+      {
        "bin": "0.50\u20130.80",
        "n": 7,
        "mean_p": 0.694,
@@ -1021,22 +1033,22 @@
       },
       {
        "bin": "0.80\u20131.00",
-       "n": 23,
-       "mean_p": 0.878,
-       "observed": 0.957
+       "n": 24,
+       "mean_p": 0.877,
+       "observed": 0.958
       }
      ]
     }
    },
    "1\u20133 h": {
-    "n": 122,
-    "mae": 0.022,
+    "n": 123,
+    "mae": 0.023,
     "bias": -0.009,
     "heavy": {
      "hits": 3,
      "misses": 1,
      "false_alarms": 4,
-     "correct_negatives": 114,
+     "correct_negatives": 115,
      "pod": 0.75,
      "far": 0.57,
      "csi": 0.38,
@@ -1072,7 +1084,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 111,
+       "n": 112,
        "mean_p": 0.001,
        "observed": 0.009
       },
@@ -1116,9 +1128,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 12,
-       "mean_p": 0.591,
-       "observed": 0.667
+       "n": 13,
+       "mean_p": 0.595,
+       "observed": 0.692
       },
       {
        "bin": "0.80\u20131.00",
@@ -1130,14 +1142,14 @@
     }
    },
    "3\u20136 h": {
-    "n": 120,
+    "n": 121,
     "mae": 0.023,
     "bias": -0.01,
     "heavy": {
      "hits": 3,
      "misses": 1,
      "false_alarms": 4,
-     "correct_negatives": 112,
+     "correct_negatives": 113,
      "pod": 0.75,
      "far": 0.57,
      "csi": 0.38,
@@ -1173,7 +1185,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 111,
+       "n": 112,
        "mean_p": 0.002,
        "observed": 0.009
       },
@@ -1217,9 +1229,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 10,
-       "mean_p": 0.58,
-       "observed": 0.6
+       "n": 11,
+       "mean_p": 0.585,
+       "observed": 0.636
       },
       {
        "bin": "0.80\u20131.00",
@@ -1234,9 +1246,9 @@
  },
  "card": {
   "0\u20131 h": {
-   "n": 49,
+   "n": 50,
    "exact": 44,
-   "over": 2,
+   "over": 3,
    "under": 3,
    "heavy_missed": [
     {
@@ -1252,6 +1264,11 @@
      "t": "2026-11-18T12:00:00+00:00",
      "obs_in": 0.07,
      "issued": "2026-11-18T12:02:12.158407+00:00"
+    },
+    {
+     "t": "2026-11-18T22:00:00+00:00",
+     "obs_in": 0.1,
+     "issued": "2026-11-18T22:07:30.522538+00:00"
     }
    ],
    "confusion": [
@@ -1275,15 +1292,15 @@
     ],
     [
      0,
-     1,
+     2,
      0,
      2
     ]
    ]
   },
   "1\u20133 h": {
-   "n": 47,
-   "exact": 42,
+   "n": 48,
+   "exact": 43,
    "over": 5,
    "under": 0,
    "heavy_missed": [],
@@ -1318,7 +1335,7 @@
     ],
     [
      0,
-     4,
+     5,
      0,
      0
     ],
@@ -1337,8 +1354,8 @@
    ]
   },
   "3\u20136 h": {
-   "n": 45,
-   "exact": 39,
+   "n": 46,
+   "exact": 40,
    "over": 6,
    "under": 0,
    "heavy_missed": [],
@@ -1373,7 +1390,7 @@
     ],
     [
      1,
-     4,
+     5,
      0,
      0
     ],
@@ -1395,17 +1412,17 @@
  "card_records": 50,
  "now_split": {
   "radar-corroborated": {
-   "n": 13,
-   "mae": 0.113,
-   "bias": -0.038,
+   "n": 14,
+   "mae": 0.111,
+   "bias": -0.029,
    "heavy": {
     "hits": 3,
     "misses": 0,
-    "false_alarms": 3,
+    "false_alarms": 4,
     "correct_negatives": 7,
     "pod": 1.0,
-    "far": 0.5,
-    "csi": 0.5,
+    "far": 0.57,
+    "csi": 0.43,
     "rule": "share of runs >= 20%"
    },
    "heavy_hours": [
@@ -1434,6 +1451,12 @@
       "bin": "0.00\u20130.05",
       "n": 7,
       "mean_p": 0.017,
+      "observed": null
+     },
+     {
+      "bin": "0.20\u20130.50",
+      "n": 1,
+      "mean_p": 0.456,
       "observed": null
      },
      {
@@ -1470,9 +1493,9 @@
      },
      {
       "bin": "0.80\u20131.00",
-      "n": 9,
-      "mean_p": 0.867,
-      "observed": null
+      "n": 10,
+      "mean_p": 0.865,
+      "observed": 1.0
      }
     ]
    }
