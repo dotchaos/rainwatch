@@ -742,7 +742,8 @@
    "startHour": 1,
    "endHour": 2,
    "in": 0.0,
-   "res": 1
+   "res": 1,
+   "src": "radar"
   },
   {
    "startHour": 2,
@@ -751,235 +752,274 @@
    "res": 3,
    "blockStartHour": 1,
    "blockEndHour": 4,
-   "partial": true
+   "partial": true,
+   "src": "model"
   },
   {
    "startHour": 4,
    "endHour": 7,
    "in": 0.294,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 7,
    "endHour": 10,
    "in": 0.826,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 10,
    "endHour": 13,
    "in": 0.454,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 13,
    "endHour": 16,
    "in": 0.066,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 16,
    "endHour": 19,
    "in": 0.024,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 19,
    "endHour": 22,
    "in": 0.06,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 22,
    "endHour": 25,
    "in": 0.093,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 25,
    "endHour": 28,
    "in": 0.151,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 28,
    "endHour": 31,
    "in": 0.232,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 31,
    "endHour": 34,
    "in": 0.129,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 34,
    "endHour": 37,
    "in": 0.048,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 37,
    "endHour": 40,
    "in": 0.012,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 40,
    "endHour": 43,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 43,
    "endHour": 46,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 46,
    "endHour": 49,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 49,
    "endHour": 52,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 52,
    "endHour": 55,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 55,
    "endHour": 58,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 58,
    "endHour": 61,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 61,
    "endHour": 64,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 64,
    "endHour": 67,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 67,
    "endHour": 70,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 70,
    "endHour": 73,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 73,
    "endHour": 76,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 76,
    "endHour": 79,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 79,
    "endHour": 82,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 82,
    "endHour": 85,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 85,
    "endHour": 88,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 88,
    "endHour": 91,
    "in": 0.012,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 91,
    "endHour": 94,
    "in": 0.012,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 94,
    "endHour": 97,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 97,
    "endHour": 100,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 100,
    "endHour": 103,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 103,
    "endHour": 106,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 106,
    "endHour": 109,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 109,
    "endHour": 112,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 112,
    "endHour": 115,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 115,
    "endHour": 118,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 118,
@@ -988,7 +1028,8 @@
    "res": 3,
    "blockStartHour": 118,
    "blockEndHour": 121,
-   "partial": true
+   "partial": true,
+   "src": "model"
   }
  ],
  "peakRate": {

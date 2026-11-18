@@ -1,5 +1,10 @@
 # Changelog
 
+## Review branch radar-model-amounts (Nov 18 2026): what each rain amount covers, and where it comes from
+- A model block that began in radar hours brackets all its hours: dashed under the radar amounts, solid under its own. Radar amounts carry a "radar" label; the row's note says the two are estimates of the same rain, not to be added.
+- Every amount carries its source (`src`: radar, model, nws) from the engine (`rainwatch/intervals.py`); spoken labels give source and hours.
+- Display only. The flood-potential trigger is unchanged (audited, see DECISIONS).
+
 ## v0.22 (review branch hero-priority): the hero leads with the most consequential storm
 - Event selection only (no engine, threshold or graph change). Among storms with flood-level hours: immediate danger first (official product or validated hazard, under way or past its time to prepare), then voice (action, anticipation, awareness), then accumulation in 0.5" steps, then hours of heavy rain, then the earlier storm.
 - A transient burst (under 2 hours of heavy rain, not actionable) never leads: the 11:39 AM radar spike no longer replaces Wednesday, and a spike appearing or vanishing leaves the headline where it was. Alone, it reads as an ordinary rain day (no flood hero).

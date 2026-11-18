@@ -5,8 +5,9 @@ import { renderToString } from 'react-dom/server';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { Timeline } from '../components/Timeline';
+import { WeatherCard } from '../components/WeatherCard';
 import { stormCut, stormWed, stormWedNight } from './cases';
-import { ageCard, amountsVsTotal, chartBlocks, deriveAlert, eventHero, fiveDays, hourAmounts, nowNext, storms } from './derive';
+import { ageCard, amountsVsTotal, amountWords, chartBlocks, deriveAlert, eventHero, fiveDays, hourAmounts, nowNext, storms } from './derive';
 import { validateScenario } from './rules';
 
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
@@ -148,9 +149,38 @@ describe('rain amounts in the hourly row', () => {
     expect(r.blocksIn).toBeCloseTo(2.14, 2);
     expect(r).toMatchObject({ from: 'the start of tomorrow', to: 'the end of Thursday' });
   });
+  // Nov 18 2026, 7:54 AM: radar gave 7 and 8 AM (.01", .11"); the models' 7–10 AM block (.72") showed only under 9 AM,
+  // so the row read as .01 + .11 + .72 and the bracket looked like one hour. The block's bracket now spans its hours.
+  const nov18 = () => { const s = stormWed(); s.rainBlocks = [
+    { startHour: 0, endHour: 1, in: 0.01, res: 1, src: 'radar' }, { startHour: 1, endHour: 2, in: 0.11, res: 1, src: 'radar' },
+    { startHour: 2, endHour: 3, in: 0.72, res: 3, src: 'model', partial: true, blockStartHour: 0, blockEndHour: 3 },
+    { startHour: 3, endHour: 6, in: 0.63, res: 3, src: 'model' }, ...s.rainBlocks!.filter(b => b.startHour >= 6)]; return s; };
+  it('a model block that began in radar hours brackets all its hours, under the radar amounts, never added to them', () => {
+    const m = hourAmounts(nov18())!;
+    expect(m.get(0)).toMatchObject({ text: '.01"', src: 'radar', under: { pos: 'start', text: '.72"', span: [0, 3] } });
+    expect(m.get(1)).toMatchObject({ text: '.11"', src: 'radar', under: { pos: 'mid' } });
+    expect(m.get(2)).toMatchObject({ text: '.72"', src: 'model', pos: 'end', res: 3, partial: true, span: [0, 3] });
+    expect(m.get(2)!.under).toBeUndefined();
+    expect(m.get(4)).toMatchObject({ text: '.63"', pos: 'mid', span: [3, 6] });
+    expect(m.get(3)!.under).toBeUndefined();                                         // a whole block needs no help
+  });
+  it('each amount says where it comes from and which hours it covers', () => {
+    const s = nov18(), m = hourAmounts(s)!;
+    expect(amountWords(s, m.get(1))).toMatch(/rain \.11", radar nowcast; \.72" for .+ to .+, typical model run covers this hour too, not in addition/);
+    expect(amountWords(s, m.get(2))).toMatch(/rain \.72" for .+ to .+, typical model run$/);
+    const html = renderToString(createElement(WeatherCard, { scenario: s }));
+    expect(html).toContain('blk-under blk-under-start');
+    expect(html).toContain('amt-radar');
+    expect(html).toContain('two estimates of the same rain, not to be added');
+  });
+  it('without radar overlap nothing changes: no dashed bracket, no radar label, no extra note', () => {
+    const html = renderToString(createElement(WeatherCard, { scenario: stormWed() }));
+    expect(html).not.toContain('blk-under');
+    expect(html).not.toContain('not to be added');
+  });
   it('an aged card keeps a part-past interval, marked partial', () => {
     const a = ageCard(stormWed(), 3);
-    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, partial: true, blockStartHour: 2, blockEndHour: 5 });
+    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, src: 'model', partial: true, blockStartHour: 2, blockEndHour: 5 });
     expect(validateScenario(a)).toEqual([]);
   });
 });

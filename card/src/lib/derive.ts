@@ -1214,7 +1214,13 @@ function heatEvent(s: Scenario): EventHero | null {
  * Each hour shows the amount of the interval it belongs to, at that interval's resolution: an hourly amount under its
  * hour; a 3- or 6-hour amount once, under the middle of a bracket spanning its hours. "Trace" under 0.01", nothing for a
  * forecast-dry interval, "—" for hours with no forecast. The interval with the highest rate is marked. */
-export interface HourAmount { text: string | null; kind: 'amount' | 'trace' | 'dry' | 'missing'; pos: 'solo' | 'start' | 'mid' | 'end'; res: number; top: boolean; partial: boolean }
+export type BracketPos = 'solo' | 'start' | 'mid' | 'end';
+/** `src` and `span` say where an amount comes from and which hours it covers (`span`: the whole interval, end exclusive,
+ *  set on the hour that shows the amount). `under`: a model block's bracket passing under this hour, where another
+ *  source (radar) gives the hour's own amount: drawn apart from it so the two never read as additive (Nov 18 2026). */
+export interface HourAmount { text: string | null; kind: 'amount' | 'trace' | 'dry' | 'missing'; pos: BracketPos; res: number; top: boolean; partial: boolean;
+  src?: 'radar' | 'model' | 'nws'; span?: [number, number];
+  under?: { pos: BracketPos; top: boolean; text: string | null; src?: 'radar' | 'model' | 'nws'; span: [number, number] } }
 export const fmtAmount = (x: number) => x >= 1 ? `${x.toFixed(2)}"` : `${x.toFixed(2).replace(/^0/, '')}"`;
 export function hourAmounts(s: Scenario): Map<number, HourAmount> | null {
   if (!s.rainBlocks) return null;
@@ -1230,10 +1236,29 @@ export function hourAmounts(s: Scenario): Map<number, HourAmount> | null {
     const len = fe - fs, idx = at - fs, vis = b.endHour - b.startHour, mid = b.startHour - fs + Math.floor((vis - 1) / 2);
     const kind = b.in === 0 ? 'dry' : b.in < 0.01 ? 'trace' : 'amount';
     const pos = len === 1 ? 'solo' : idx === 0 ? 'start' : idx === len - 1 ? 'end' : 'mid';
-    out.set(at, { text: kind === 'dry' || idx !== mid ? null : kind === 'trace' ? 'Trace' : fmtAmount(b.in), kind, pos, res: b.res,
-                  top: b === top && b.in >= 0.1, partial: Boolean(b.partial) });
+    const text = kind === 'dry' || idx !== mid ? null : kind === 'trace' ? 'Trace' : fmtAmount(b.in);
+    const a: HourAmount = { text, kind, pos, res: b.res, top: b === top && b.in >= 0.1, partial: Boolean(b.partial), src: b.src };
+    if (text) a.span = [fs, fe];
+    // a cut block's hours that another source covers (radar): its bracket runs under them too, kept apart
+    const o = len === 1 ? s.rainBlocks.find(x => x !== b && x.partial && x.in >= 0.01 && x.endHour - x.startHour < x.res
+      && (x.blockStartHour ?? x.startHour) <= at && at < (x.blockEndHour ?? x.endHour)) : undefined;
+    if (o) {
+      const os = o.blockStartHour ?? o.startHour, oe = o.blockEndHour ?? o.endHour, oi = at - os;
+      a.under = { pos: oi === 0 ? 'start' : oi === oe - os - 1 ? 'end' : 'mid', top: o === top && o.in >= 0.1,
+                  text: o.in < 0.01 ? 'Trace' : fmtAmount(o.in), src: o.src, span: [os, oe] };
+    }
+    out.set(at, a);
   }
   return out;
+}
+const SRC_WORDS = { radar: 'radar nowcast', model: 'typical model run', nws: 'National Weather Service' } as const;
+/** Spoken description of an hour's amount: what it is, which hours it covers, and where it comes from. */
+export function amountWords(s: Scenario, a: HourAmount | undefined): string {
+  if (!a) return '';
+  const span = (x: [number, number]) => `${clock(s, x[0])} to ${clock(s, x[1])}`, from = (x?: HourAmount['src']) => x ? `, ${SRC_WORDS[x]}` : '';
+  const own = a.text && a.text !== '—' ? `, rain ${a.text}${a.res > 1 && a.span ? ` for ${span(a.span)}` : ''}${from(a.src)}` : '';
+  const under = a.under?.text ? `; ${a.under.text} for ${span(a.under.span)}${from(a.under.src)} covers this hour too, not in addition` : '';
+  return own + under;
 }
 /** How the hourly amounts relate to the hero's total over the same hours (shown in the row's explanation). */
 export function amountsVsTotal(s: Scenario): { blocksIn: number; totalIn: number; from: string; to: string; exact: boolean } | null {

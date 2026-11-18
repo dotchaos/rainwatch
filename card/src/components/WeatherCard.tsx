@@ -2,7 +2,7 @@ import type React from 'react';
 import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
-import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
+import { amountsVsTotal, amountWords, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
 
@@ -90,19 +90,22 @@ function Hourly({ s }: { s: Scenario }) {
   s.hourly.forEach((h, i) => {
     const at = h.hour ?? i, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon, a = amts?.get(at);
     if (i === 0 || l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${at}`}>{i === 0 ? 'Today' : l.day}</em>);
-    const blk = a && a.kind !== 'dry' && a.kind !== 'missing' && a.pos !== 'solo' ? ` blk blk-${a.pos}` : '';
+    const blk = a && a.kind !== 'dry' && a.kind !== 'missing' && a.pos !== 'solo' ? ` blk blk-${a.pos}` : a?.under ? ` blk-under blk-under-${a.under.pos}${a.under.top ? ' under-top' : ''}` : '';
+    const radar = a?.src === 'radar' && (a.kind === 'amount' || a.kind === 'trace');
     items.push(<div className={`hour${l.day && i > 0 ? ' hour-midnight' : ''}${a?.top ? ' hour-top' : ''}`} role="listitem" key={at}
-      aria-label={`${l.day ? `${l.day} ` : ''}${l.text}${a?.text && a.text !== '—' ? `, rain ${a.text}${a.res > 1 ? ` over ${a.res} hours` : ''}` : ''}`}>
+      aria-label={`${l.day ? `${l.day} ` : ''}${l.text}${amountWords(s, a)}`}>
       <span>{l.text}</span><WeatherIcon name={icon} size={24} label /><strong>{deg(h.temperatureF)}</strong>
-      {amts && <em className={`amt amt-${a?.kind ?? 'missing'}${blk}`}>{a?.text ?? ''}{a?.text && a.res > 1 && a.kind !== 'trace' ? <i>{a.res} hr</i> : null}</em>}
+      {amts && <em className={`amt amt-${a?.kind ?? 'missing'}${blk}${radar ? ' amt-radar' : ''}`}>{a?.text ?? ''}{a?.text && a.res > 1 && a.kind !== 'trace' ? <i>{a.res} hr</i> : radar && a?.text ? <i>radar</i> : null}</em>}
     </div>);
   });
   const rec = amountsVsTotal(s);
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
     <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div>
-    {amts && <details className="amounts-about"><summary>Rain amounts: typical model run, per hour or per bracketed 3-hour block</summary>
+    {amts && <details className="amounts-about"><summary>Rain amounts: {[...amts.values()].some(x => x.src === 'radar') ? 'radar for the next hours, then ' : ''}typical model run, per hour or per bracketed 3-hour block</summary>
       <p>Most of the models behind this forecast give rain in 3-hour amounts, so it is shown that way; an hourly amount appears only where every model is genuinely hourly (or radar).
         Each amount is the median of the model runs for that interval on its own. "Trace" is under 0.01", "—" means no forecast for that hour.</p>
+      {[...amts.values()].some(x => x.under) && <p>Amounts marked radar are the radar nowcast for that hour. Where a model's 3-hour block began in those hours, its bracket is dashed under them:
+        the block's amount covers those hours too. The radar and model amounts are two estimates of the same rain, not to be added.</p>}
       {rec && <p>{rec.exact ? 'These amounts' : 'The amounts fully inside that window'} add up to {fmtAmount(rec.blocksIn)} from {rec.from} through {rec.to}; the storm total above is {tenths(rec.totalIn)}" for the same hours.
         {rec.blocksIn < rec.totalIn - 0.05 ? ' The difference is real, not rounding: the runs disagree on timing, so each interval\'s typical run is drier than a typical run\'s whole storm. The total is the better guide to how much rain; the intervals show when.' : ''}</p>}
     </details>}</section>;
