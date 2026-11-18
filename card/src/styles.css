@@ -267,3 +267,4 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .today-about{font-size:15px;color:#4f5e67}
 .today-about summary{cursor:pointer;color:#2f5f7d}
 .today-about p{margin:6px 0 0;line-height:1.45}
+.today-radar,.today-overlap{font-size:15px;color:#3f4d55;margin:0;line-height:1.4}

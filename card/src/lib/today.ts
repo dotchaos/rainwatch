@@ -78,6 +78,9 @@ export type Src = 'radar' | 'model' | 'nws';
 export interface TodayBar {
   /** The interval the amount covers: always the whole interval, never cut (an amount over 3 hours is drawn over 3 hours). */
   start: number; end: number;
+  /** The whole interval the amount covers, when it starts earlier than the bar: a model total whose first hours are
+   *  already shown by radar. The bar is drawn from where radar ends; the amount still covers the whole interval. */
+  coversFrom: number | null;
   in: number; src: Src; res: number;
   kind: 'dry' | 'trace' | 'rain'; intensity: 0 | 1 | 2 | 3;
 }
@@ -115,7 +118,10 @@ export function todayTimeline(s: Scenario): TodayTimeline | null {
     // the category is the existing intensity (rainHours) over the interval; it never comes from the amount
     const intensity = (s.rainHours ?? []).filter(q => q.startHour < x.end && x.start < q.endHour).reduce((m: number, q) => Math.max(m, q.intensity), 0);
     const kind = x.b.in >= 0.01 ? 'rain' : x.b.in > 0 ? 'trace' : 'dry';
-    bars.push({ start: x.start, end: x.end, in: x.b.in, src: SRC_OF(x.b), res: x.b.res, kind, intensity: kind === 'rain' ? Math.max(1, intensity) as 1 | 2 | 3 : 0 });
+    // a model interval that began under radar hours is drawn after them (never over them); its amount keeps its whole span
+    const prev = bars[bars.length - 1], start = prev && prev.end > x.start ? prev.end : x.start;
+    if (start >= x.end) continue;
+    bars.push({ start, end: x.end, coversFrom: start > x.start ? x.start : null, in: x.b.in, src: SRC_OF(x.b), res: x.b.res, kind, intensity: kind === 'rain' ? Math.max(1, intensity) as 1 | 2 | 3 : 0 });
   }
   const to = bars[bars.length - 1].end;
   const sources: TodayTimeline['sources'] = [];
@@ -153,7 +159,9 @@ export function sourcesCaption(t: TodayTimeline): string {
   const what = (x: TodayTimeline['sources'][number]) => x.src === 'radar' ? 'radar, hour by hour' : x.src === 'nws' ? 'National Weather Service 6-hour totals' : x.res === 1 ? 'model runs, hour by hour' : `${x.res}-hour model totals`;
   const merged = t.sources.filter((x, i) => i === 0 || x.src !== t.sources[i - 1].src || x.res !== t.sources[i - 1].res);
   const text = merged.map(what).join(', then ');
-  return `Each bar is one forecast interval: ${text}. Amounts are for that interval alone and aren't added together.`;
+  const ov = t.bars.find(b => b.coversFrom !== null && b.kind === 'rain');
+  return `Each bar is one forecast interval: ${text}. Amounts are for that interval alone and aren't added together.`
+    + (ov ? ` The first model amount covers its whole 3-hour interval, including hours radar already shows; the two are separate estimates.` : '');
 }
 export const barAmount = (b: TodayBar) => b.kind === 'rain' ? fmtAmount(b.in) : b.kind === 'trace' ? 'Trace' : '';
 /** "1 AM" today, "1 AM Wed" on a later day. */
@@ -162,7 +170,7 @@ export const hourText = (s: Scenario, h: number) => dayIndexAt(s, h) === 0 ? clo
 /** A time with its day: "2 PM today", "9 PM Friday", "midnight Thursday"→ "12 AM Thursday". */
 const atDay = (s: Scenario, h: number) => `${clockOf(s, h)} ${dayIndexAt(s, h) === 0 ? 'today' : fullDay[dayName(s, h)]}`;
 /** "3–10 AM", "11 AM–1 PM": a clock range on one day (end exclusive, as everywhere on the card). */
-function clockRange(s: Scenario, a: number, b: number) {
+export function clockRange(s: Scenario, a: number, b: number) {
   const x = clockOf(s, a), y = clockOf(s, b), [xn, xm] = x.split(' '), [, ym] = y.split(' ');
   return xm === ym && localHour(s, a) < localHour(s, b) ? `${xn}–${y}` : `${x}–${y}`;
 }
