@@ -104,3 +104,9 @@
   so with the numbers (Nov 18: intervals 2.14" vs total 2.7" over the same hours) and why: each interval is a typical run for
   those hours alone, so when runs disagree on timing the intervals are drier than a typical run's whole storm. The total is the
   guide to how much; the intervals show when. Tested in today.test.ts.
+
+## PR C — Forecast evidence (2026-11-18, under review)
+- Details renamed "Forecast evidence"; reorganised around questions: The short answer, Right now, How much and when,
+  Flooding, Do the sources agree?, Track record, About this forecast (#about). Every existing piece kept; no values change.
+- Scenario lab moves from the homepage's top bar to the last line of About this forecast.
+- Homepage gaps are listed in docs/pr-c/AUDIT.md as proposals, not implemented.

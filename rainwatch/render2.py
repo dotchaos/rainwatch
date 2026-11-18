@@ -139,12 +139,12 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
     bar = body[:bar_end]
     tail_scripts = body[body.index("</main>") + len("</main>"):]
     sect = lambda a, b: body[body.index(a):body.index(b)]
-    gauges_alerts = sect("<h2>Gauges &amp; Alerts</h2>", "<h2>Radar</h2>")
-    radar = sect("<h2>Radar</h2>", "<h2>Source comparison")
-    compare = sect("<h2>Source comparison", "<h2>Accuracy so far</h2>")
-    accuracy = sect("<h2>Accuracy so far</h2>", "<h2>Sources</h2>")
-    sources = body[body.index("<h2>Sources</h2>"):body.index("</main>")]
-    hourly = sect("<div class=scroll><table><tr><th>Hour</th>", "<p><b>Total &amp; Confidence")
+    gauges_alerts = sect("<h3>Rain gauges</h3>", "</section>\n\n<section id=when>")
+    radar = sect("<h3>Radar</h3>", "<h3>Every source")
+    compare = sect("<h3>Every source", "</section>\n\n<section id=accuracy>")
+    accuracy = sect("<h2>Track record</h2>", "</section>\n\n<section id=about>")
+    sources = body[body.index("<h2>About this forecast</h2>"):body.index("</main>")]
+    hourly = sect("<div class=scroll><table><tr><th>Hour</th>", "<details><summary>All ")
     claims = r1._claims_html(r, scores)
     top_alerts, other_alerts = _alerts_top(r)
     alert_note = (f"<p class=sub>{len(other_alerts)} other NWS alert{'s' if len(other_alerts) != 1 else ''} for this area "
@@ -171,9 +171,9 @@ def page(report: dict, cfg, meta: dict, scores: dict, radar_overlay: dict | None
 <h2>More detail</h2>
 {sec('Confidence by claim', claims)}
 {sec('Hour by hour', hourly)}
-{sec('Radar map and how the nowcast works', radar.replace('<h2>Radar</h2>', ''), 'radarsec')}
-{sec('Every model side by side', compare.replace('<h2>Source comparison (inches per hour)</h2>', ''))}
-{sec('Accuracy: storm report card', accuracy.replace('<h2>Accuracy so far</h2>', ''))}
-{sec('Gauges and NWS alerts', gauges_alerts.replace('<h2>Gauges &amp; Alerts</h2>', ''))}
-{sec('Sources, problems and method', sources.replace('<h2>Sources</h2>', ''))}
+{sec('Radar map and how the nowcast works', radar.replace('<h3>Radar</h3>', ''), 'radarsec')}
+{sec('Every model side by side', compare.replace('<h3>Every source, hour by hour (inches per hour)</h3>', ''))}
+{sec('Accuracy: storm report card', accuracy.replace('<h2>Track record</h2>', ''))}
+{sec('Gauges and NWS alerts', gauges_alerts)}
+{sec('Sources, problems and method', sources.replace('<h2>About this forecast</h2>', ''))}
 </main>{tail_scripts}"""

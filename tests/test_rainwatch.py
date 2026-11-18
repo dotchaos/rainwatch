@@ -162,7 +162,7 @@ def test_main_end_to_end(tmp_path, monkeypatch):
     rc = m.main(["--out", str(tmp_path / "site"), "--data", str(tmp_path / "data"), "--config", "/nonexistent"])
     assert rc == 0
     html = (tmp_path / "site" / "details" / "index.html").read_text()
-    assert "Bottom Line" in html and "Flood Advisory" in html and "L.imageOverlay" in html
+    assert "The short answer" in html and "Flood Advisory" in html and "L.imageOverlay" in html
     assert "id=days" in html and "__ROWS__" not in html
     assert "Refresh" in html and "actions/workflows/'+WF+'/dispatches" in html and "__GEN__" not in html
     assert (tmp_path / "site" / "radar.png").exists()
