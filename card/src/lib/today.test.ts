@@ -22,8 +22,7 @@ describe('Today First (PR B): one forecast state', () => {
   it('Nov 18 regression: heavy band, hero and flood row describe the same storm', () => {
     for (const s of [stormWed(), stormWedNight()]) {
       const st = floodStorm(s)!, t = todayTimeline(s)!, f = propertyFlood(s)!;
-      expect(t.heavy!.start).toBeLessThanOrEqual(st.heavy!.start);   // the hero's heavy period, widened to whole intervals
-      expect(t.heavy!.end).toBeGreaterThanOrEqual(Math.min(t.to, st.heavy!.end));
+      expect(Math.abs(t.heavy!.start - st.heavy!.start)).toBeLessThan(2);   // whole intervals around the hero's heavy period
       for (const e of [t.heavy!.start, t.heavy!.end]) expect(t.bars.some(b => b.start === e || b.end === e)).toBe(true);
       expect(f.state).toBe('potential');              // never "validated" without a validated local level
       expect(f.action).toBe(asOption(eventHero(s)!.advisory!.action));   // same timing, said as an option
@@ -91,5 +90,33 @@ describe('action timing in words (PR B review): same windows, plainer phrases', 
     expect(windowPhrase(s, 16, 23)).toBe('Wednesday 3–10 AM');
     expect(windowPhrase(s, 3, 22)).toBe('2 PM today until 9 AM Wednesday');
     expect(goingOutside(s).detail).toBe('Wednesday 3–10 AM');
+  });
+});
+
+describe('release check: one storm, one set of windows (Nov 18)', () => {
+  it('total, duration, chart outline and Going outside describe the same storm hours', async () => {
+    const { stormFigure, storms, actionWindow, asRainDay } = await import('./derive');
+    for (const s of [stormWed(), stormWedNight()]) {
+      const st = floodStorm(s)!, e = eventHero(s)!, t = todayTimeline(s)!, fig = stormFigure(s, st)!;
+      const tot = s.rainTotals!.filter(x => x.startHour < st.end && st.start < x.endHour);
+      // the total is the engine's one stretch total, and that stretch covers the whole storm
+      expect(tot).toHaveLength(1);
+      expect(fig.inches).toBe(tot[0].medianIn);
+      expect(tot[0].startHour).toBeLessThanOrEqual(st.start);
+      expect(tot[0].endHour).toBeGreaterThanOrEqual(st.end);
+      expect(e.sentence).toMatch(/^About \d\.\d" (of|more) rain,/);
+      // the duration runs from the storm's start to its end (the same storm the hero and chart use)
+      expect(storms(s)).toContainEqual(st);
+      // the outline: whole intervals, each mostly inside the heavy period, together covering its in-window hours
+      const h = st.heavy!, inWin = { start: Math.max(h.start, t.from), end: Math.min(h.end, t.to) };
+      const out = t.bars.filter(b => b.start >= t.heavy!.start && b.end <= t.heavy!.end);
+      for (const b of out) expect(Math.min(b.end, h.end) - Math.max(b.start, h.start)).toBeGreaterThanOrEqual((b.end - b.start) / 2);
+      expect(Math.abs(t.heavy!.start - inWin.start)).toBeLessThan(2);
+      expect(Math.abs(t.heavy!.end - inWin.end)).toBeLessThan(2);
+      // Going outside's rain-gear window is the action window of the same forecast, inside the storm
+      const aw = actionWindow(asRainDay(s))!;
+      expect(aw.startHour).toBeGreaterThanOrEqual(st.start);
+      expect(aw.endHour).toBeLessThanOrEqual(st.end);
+    }
   });
 });
