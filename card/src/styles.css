@@ -33,7 +33,7 @@
 .location small.updated{letter-spacing:0;font-size:12px}
 
 /* Five-day rows (lab, v0.13). Intensity blues step in lightness (readable in greyscale) and are not the gear-rung colours. */
-.five-days{--dry:#e3e7ea;--i1:#a9cbe7;--i2:#5f9bcf;--i3:#245d96;--strip-pad:10px}
+.five-days,.today-rain{--dry:#e3e7ea;--i1:#a9cbe7;--i2:#5f9bcf;--i3:#245d96;--strip-pad:10px}
 .five-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px}
 .five-head strong{font-size:13px}.five-head span{font-size:11px;color:#5c6b74}
 .strip-axis{position:relative;height:12px;margin:0 var(--strip-pad);font-size:10px;color:#5c6b74}
@@ -165,3 +165,63 @@
 .chart-day,.chart-label,.chart-time,.chart-legend,.chart-quiet,.chart-nodata{font-size:15px;opacity:1;fill:#4f5e67}
 .chart-window{font-size:15px}
 @media(max-width:420px){.hour span{font-size:14px}}
+
+/* ---------- PR B — Today First ---------- */
+.masthead{display:flex;flex-direction:column;gap:10px}
+.brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.brand strong{font-size:22px;letter-spacing:-.01em;color:#16232b}
+.brand span{font-size:15px;color:#5c6b74}
+.masthead .location{font-size:15px}
+.weather-card .section-title{font-size:19px;font-weight:700;color:#16232b;margin:0 0 10px}
+.weather-card .headline{font-size:29px;font-weight:700;line-height:1.15;margin:6px 0 4px;color:#16232b}
+.event-hero .event-label{margin-top:12px}
+/* Today's rain at source resolution */
+.today-rain{display:flex;flex-direction:column;gap:6px;margin-top:-6px}
+.today-rain-head{display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.heavy-key{font-size:14px;color:#4f5e67;display:flex;align-items:center;gap:6px}
+.heavy-key i{width:16px;height:10px;border:2px solid #b4541f;border-radius:3px;display:inline-block}
+.today-plot{position:relative;height:46px;background:var(--dry);border-radius:6px;margin-top:4px}
+.today-bar{position:absolute;top:0;bottom:0;border-right:2px solid white;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+.today-bar.bar-dry{background:var(--dry)}
+.today-bar.bar-trace{background:repeating-linear-gradient(90deg,#dbe6ee 0 4px,var(--dry) 4px 8px)}
+.today-bar.i1{background:var(--i1)}.today-bar.i2{background:var(--i2)}.today-bar.i3{background:var(--i3)}
+.today-bar em{font-style:normal;font-size:14px;font-weight:700;color:#16232b;font-variant-numeric:tabular-nums}
+.today-bar.i2 em,.today-bar.i3 em{color:white}
+.today-bar.partial{background-image:linear-gradient(90deg,#ffffff55 0 3px,transparent 3px)}
+.today-heavy{position:absolute;top:-5px;bottom:-5px;border:2.5px solid #b4541f;border-radius:7px;z-index:2;pointer-events:none}
+.src-split{position:absolute;top:-8px;bottom:-8px;border-left:2px dashed #4f5e67;z-index:3}
+.today-axis,.today-srcs{position:relative;height:20px;font-size:14px;color:#4f5e67}
+.today-axis span,.today-srcs span{position:absolute;white-space:nowrap;transform:translateX(0)}
+.today-axis span:not(:first-child){transform:translateX(-50%)}
+.today-axis span:last-child:not(:first-child){transform:translateX(-100%)}
+.today-axis b{font-weight:700;margin-right:4px;color:#16232b}
+.today-srcs{height:18px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#4d6e83}
+.today-srcs span{padding-left:4px}
+.today-note{font-size:14px;color:#5c6b74;margin:2px 0 0;line-height:1.4}
+/* Going outside / Flood risk */
+.todo-row{display:flex;align-items:flex-start;gap:12px;font-size:16px;color:#16232b}
+details.todo-row{display:block}
+details.todo-row summary{display:flex;align-items:flex-start;gap:12px;list-style:none;cursor:pointer;padding:12px 14px;background:#f3f6f8;border-radius:12px}
+details.todo-row summary::-webkit-details-marker{display:none}
+details.todo-row[open] .todo-chev{transform:rotate(90deg)}
+.todo-chev{margin-left:auto;margin-top:3px;color:#5c6b74;flex:none}
+.todo-text{display:flex;flex-direction:column;gap:3px}
+.todo-text strong{font-size:17px}
+.todo-text span{font-size:15px;color:#4f5e67}
+.todo-body{padding-top:12px}
+.todo-flood.quiet .todo-row{padding:0 2px}
+.flood-panel{border:2px solid #d98a2b;background:#fff7ec;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.alert-validated .flood-panel{border-color:#b4541f;background:#fff1e6}
+.flood-label{display:flex;align-items:center;gap:9px;font-size:18px;color:#7a3d10}
+.flood-action{font-size:16px;font-weight:600;color:#16232b;margin:0}
+.flood-caveat{font-size:14px;color:#4f5e67;margin:0;line-height:1.4}
+.flood-panel .event-evidence summary{font-size:14px}
+/* Hourly source tags */
+.hour .hour-src{display:block;min-height:16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#4d6e83}
+/* Looking ahead */
+.five-row-next strong{font-size:18px}
+.five-row-next{padding-bottom:6px}
+.more-links{display:flex;gap:18px;flex-wrap:wrap;align-items:baseline}
+.more-link{font-size:16px;font-weight:600}
+.more-link.quiet{font-weight:400;font-size:15px}
+.weather-card footer{font-size:13px}

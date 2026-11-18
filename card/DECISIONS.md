@@ -88,3 +88,15 @@
 - **Going out (Nov 16 2026, in review, v0.20):** the gear ladder becomes what to wear out (Usual clothes, Umbrella or jacket, Rain gear). Property risk is a separate signal on the same graph: potential flooding floats above, Sandbags appears only when recommended. Heat keeps its own rungs for now (a matching heat ladder is a later step).
 - **Going out silhouette (John, Nov 16 2026, final pass):** approved direction. One colour per hour (clothing levels don't stack); hourly precision, no aggregation or widening; flood signals are overlays in their own band (dashed potential, solid actionable), never part of the clothing shape.
 - **Hero event selection (Nov 16 2026, in review, v0.22):** the hero leads with the most consequential storm, not the current or earliest. Stateless: the ranking itself (transient bursts never lead) keeps the headline from thrashing between 15-minute updates; nothing is remembered between updates.
+
+## PR B — Today First homepage (2026-11-18, under review)
+- Masthead "Rainwatch · Weather when it matters"; plain headings: Today, Flood risk, Going outside, Hourly forecast, Looking ahead.
+- Hero headline is weather only ("Heavy rain Wednesday morning"); the flood consequence moves to the Flood risk row, which is
+  prominent and placed before Going outside when there is a signal, one quiet "No elevated signal" line otherwise, and absent
+  without a flood site. Model agreement is never shown as a calibrated chance of flooding.
+- Today's rain bars use the engine's rain blocks at source resolution (radar hourly, model 3-hour totals); a 3-hour total is one
+  bar. Colour is the existing intensity category; the heavy band is the hero storm's heavy period. Sources are named, never summed.
+- Once rain has started the hero figure is labelled "more rain" (remaining forecast); storm-to-date gauge totals are deferred.
+- Going outside: Usual clothes / Umbrella or jacket / Rain gear from the same rungs as the Going out chart, which stays one tap away.
+- Looking ahead starts tomorrow (today is the Today section); every day keeps its own row.
+- Engine: rain blocks gain an additive `src` field; no amounts, thresholds or intervals change.

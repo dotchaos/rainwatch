@@ -1136,10 +1136,8 @@ export function eventHero(s: Scenario): EventHero | null {
   const onsetNow = isNowAt(s, st.start), heavyNow = isNowAt(s, heavy.start);
   const { end, open } = stormEnd(s, st);
   const ev = s.evidence, official = [...new Set(st.official.map(o => o.event))];
-  const headline = voice === 'action'
-    ? (official.length ? `Heavy rain, with a ${joinAnd(official)} in effect` : 'Heavy rain, with localized flooding likely')
-    : voice === 'anticipation' ? 'Heavy rain, with possible localized flooding'
-    : 'Rain with heavy bursts, and possible localized flooding';
+  // weather only (PR B, Today First): the flood consequence lives in the Property flooding row, never in the headline
+  const headline = `${voice === 'awareness' ? 'Rain with heavy bursts' : 'Heavy rain'} ${heavyNow ? 'now' : partNamed(s, heavy.start, false, false, true)}`;
 
   // amount (the storm's own total over its exact hours, else the v0.25 day or partial window), onset, heaviest
   const fig = stormFigure(s, st);
@@ -1147,6 +1145,8 @@ export function eventHero(s: Scenario): EventHero | null {
   const win = fig?.label.replace(/^forecast /, '') ?? '';
   const scope = !fig ? '' : fig.label.startsWith('the whole storm') ? ' of rain'
     : win === 'tomorrow' ? ` of rain on ${fullDay[clockAt(s.startDay, s.startHourLocal, heavy.start).day]}` : ` of rain ${win}`;
+  // once the rain has started, the figure is what is still forecast to fall (storm-to-date gauge totals are not added)
+  const scopeNow = onsetNow ? scope.replace(/^ of rain/, ' more rain') : scope;
   const starting = onsetNow ? 'falling now' : lvl === 'coarse' ? `starting ${partNamed(s, st.start)}`
     : `starting ${lvl === 'near' ? 'around' : 'about'} ${atNamed(s, st.start)}`;
   const pr = s.peakRate && s.peakRate.hour >= heavy.start - 1 && s.peakRate.hour < heavy.end + 1 ? s.peakRate : undefined;
@@ -1157,7 +1157,7 @@ export function eventHero(s: Scenario): EventHero | null {
     : lvl === 'near' && dayIndexAt(s, heavy.start) === dayIndexAt(s, heavy.end - 1) && !openEnd(s, heavy.end) ? `${span(s, heavy.start, heavy.end)}${dayIndexAt(s, heavy.start) ? ` ${fullDay[clockAt(s.startDay, s.startHourLocal, heavy.start).day]}` : ''}`
     : `from ${lvl === 'near' ? 'around' : 'about'} ${atNamed(s, heavy.start)}`;
   const heaviest = voice === 'awareness' ? `with heavy bursts possible ${when}` : `heaviest ${when}`;
-  const lead = amount ? `${amount}${scope}, ` : 'Rain ';
+  const lead = amount ? `${amount}${scopeNow}, ` : 'Rain ';
   const sentence = `${lead}${starting} and ${heaviest}${rate}.`.replace(/^Rain falling now/, 'Rain falling now');
   const from = onsetNow ? 'now' : lvl === 'coarse' ? partNamed(s, st.start, false, true) : `about ${atNamed(s, st.start)}`;
   const duration = open ? `${from} into ${partNamed(s, end - 1, true, true)}, past where the forecast ends; end not known yet`
@@ -1245,3 +1245,6 @@ export function amountsVsTotal(s: Scenario): { blocksIn: number; totalIn: number
   const covered = inside.reduce((n, b) => n + b.endHour - b.startHour, 0);
   return { blocksIn: inside.reduce((n, b) => n + b.in, 0), totalIn: t[0].medianIn, from: edgeAt(s, from, false), to: edgeAt(s, to, true), exact: covered === to - from };
 }
+
+/** Internals the Today view composes from (PR B); exported so it reads the same derivations, never its own. */
+export { clock as clockOf, dayIndexAt, localHour, partNamed, fullDay };

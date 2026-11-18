@@ -71,7 +71,8 @@ describe('shared axis', () => {
         expect(Number(m[4])).toBeCloseTo(((Number(m[2]) - Number(m[1])) / 24) * 100, 6);
       }
       expect(h).not.toContain('class="tick"');   // continuous track: no internal hour boundaries (v0.13 review)
-      expect(h).toContain(`data-at="${s.startHourLocal}" style="left:${pct(s.startHourLocal)}"`);   // the now mark
+      // Today First (PR B): today's row moves up into the Today section, so Looking ahead starts tomorrow (no now mark)
+      expect(h).not.toContain('id="five-day-0"');
     }
   });
 });
@@ -93,7 +94,7 @@ describe('overnight continuity', () => {
     expect(rs[0].description).toBe('Heavy rain, wind · continues overnight');
     expect(rs[3].description).toBe('Showers ending');
     const h = fiveHtml(byId('storm'));
-    expect(h.match(/cont cont-out/g)).toHaveLength(3);
+    expect(h.match(/cont cont-out/g)).toHaveLength(2);   // today's row is in the Today section (PR B)
     expect(h.match(/cont cont-in/g)).toHaveLength(3);
   });
 
@@ -145,7 +146,7 @@ describe('dry-state hierarchy', () => {
 
   it('rendered: rain rows get the bold class, dry rows the quiet one', () => {
     const h = fiveHtml(byId('october'));
-    expect(h.match(/total total-dry/g)).toHaveLength(4);
+    expect(h.match(/total total-dry/g)).toHaveLength(3);   // today's row is in the Today section (PR B)
     expect(h.match(/total total-amount/g)).toHaveLength(1);   // Monday's showers
   });
 });
