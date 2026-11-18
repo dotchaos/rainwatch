@@ -98,11 +98,11 @@
   },
   {
    "start": "2026-11-18T10:00:00+00:00",
-   "end": "2026-11-18T16:00:00+00:00",
-   "total": 0.38,
-   "peak_t": "2026-11-18T16:00:00+00:00",
-   "peak": 0.14,
-   "heavy": false,
+   "end": "2026-11-18T17:00:00+00:00",
+   "total": 0.92,
+   "peak_t": "2026-11-18T17:00:00+00:00",
+   "peak": 0.54,
+   "heavy": true,
    "missing_hours": 0,
    "done": false,
    "leads": [
@@ -112,14 +112,14 @@
      "issued": "2026-11-17T09:02:57.059702+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
-     "peak_err_h": -1.0,
+     "peak_err_h": -2.0,
      "peak_pred": 0.285,
      "total_pred": 1.542,
      "p_heavy": 0.852,
-     "threshold": "false alarm",
+     "threshold": "hit",
      "inside": {
       "onset": true,
-      "peak_t": true,
+      "peak_t": false,
       "peak": false,
       "total": false
      }
@@ -130,11 +130,11 @@
      "issued": "2026-11-17T21:01:24.580763+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
-     "peak_err_h": -1.0,
+     "peak_err_h": -2.0,
      "peak_pred": 0.346,
      "total_pred": 2.244,
      "p_heavy": 0.885,
-     "threshold": "false alarm",
+     "threshold": "hit",
      "inside": {
       "onset": true,
       "peak_t": false,
@@ -148,14 +148,14 @@
      "issued": "2026-11-18T03:02:12.304019+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
-     "peak_err_h": -1.0,
+     "peak_err_h": -2.0,
      "peak_pred": 0.317,
      "total_pred": 1.997,
      "p_heavy": 0.861,
-     "threshold": "false alarm",
+     "threshold": "hit",
      "inside": {
       "onset": true,
-      "peak_t": true,
+      "peak_t": false,
       "peak": false,
       "total": false
      }
@@ -166,11 +166,11 @@
      "issued": "2026-11-18T06:12:40.757467+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
-     "peak_err_h": -1.0,
+     "peak_err_h": -2.0,
      "peak_pred": 0.348,
      "total_pred": 2.208,
      "p_heavy": 0.91,
-     "threshold": "false alarm",
+     "threshold": "hit",
      "inside": {
       "onset": true,
       "peak_t": true,
@@ -184,15 +184,15 @@
      "issued": "2026-11-18T08:14:09.525974+00:00",
      "onset_err_h": 0.0,
      "onset_called": true,
-     "peak_err_h": 0.0,
+     "peak_err_h": -1.0,
      "peak_pred": 0.335,
      "total_pred": 2.24,
      "p_heavy": 0.91,
-     "threshold": "false alarm",
+     "threshold": "hit",
      "inside": {
       "onset": true,
       "peak_t": true,
-      "peak": false,
+      "peak": true,
       "total": false
      }
     }
@@ -205,11 +205,11 @@
    8
   ],
   "peak_t": [
-   8,
+   6,
    9
   ],
   "peak": [
-   0,
+   1,
    9
   ],
   "total": [
