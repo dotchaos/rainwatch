@@ -83,7 +83,11 @@ def test_peak_rate_needs_two_agreeing_hourly_systems():
     now = T0
     ok = intervals.peak_rate(H, 1, 5, [icon, gfs], [hrrr], None, now)
     assert ok["ok"] and [s["system"] for s in ok["systems"]] == ["ICON ensemble", "HRRR"]   # GFS is not hourly here
-    assert (ok["lo"], ok["hi"], ok["hour"]) == (0.4, 0.45, 2)       # ICON median of run peaks 0.46, HRRR 0.38
+    assert (ok["lo"], ok["hi"], ok["hour"], ok["hourEnd"]) == (0.35, 0.5, 2, 2)   # ICON 0.46, HRRR 0.38: widened, never rounded away
+    # Nov 18 12:51 AM shape: ICON peaks 2 h before HRRR and NBM (one NCEP family) -> one hour per family, as a span
+    late = [0, 0, 0, 0.1, 0.38, 0.2, 0, 0, 0, 0, 0, 0]
+    span = intervals.peak_rate(H, 1, 6, [icon], [det("hrrr", late), det("nbm", late)], None, now)
+    assert span["ok"] and (span["hour"], span["hourEnd"]) == (2, 4)              # not the 3-vote median (4)
     one = intervals.peak_rate(H, 1, 5, [icon, gfs], [], None, now)
     assert not one["ok"] and "1 genuinely hourly" in one["why"][0]
     ncep = intervals.peak_rate(H, 1, 5, [gfs], [hrrr, det("nbm", [0, 0.1, 0.4, 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0])], None, now)

@@ -909,12 +909,14 @@
   "why": [],
   "lo": 0.2,
   "hi": 0.3,
-  "hour": 3
+  "hour": 3,
+  "hourEnd": 3
  },
  "peakRate": {
   "lo": 0.2,
   "hi": 0.3,
   "hour": 3,
+  "hourEnd": 3,
   "systems": [
    "ICON ensemble",
    "HRRR",

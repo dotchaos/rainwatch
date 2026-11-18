@@ -1,0 +1,1320 @@
+{
+ "id": "storm-wed-night",
+ "title": "Wednesday storm, 12:51 AM",
+ "season": "November",
+ "location": "18th & Shotwell",
+ "observedAt": "Wednesday \u00b7 12:51 AM",
+ "startDay": "Wed",
+ "startHourLocal": 0,
+ "hazard": "flood",
+ "startDate": "2026-11-18",
+ "current": {
+  "temperatureF": 51,
+  "condition": "Mostly clear",
+  "icon": "partly-night",
+  "highF": 57,
+  "lowF": 50
+ },
+ "hourly": [
+  {
+   "hour": 0,
+   "temperatureF": 51,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 1,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 2,
+   "temperatureF": 52,
+   "icon": "rain"
+  },
+  {
+   "hour": 3,
+   "temperatureF": 52,
+   "icon": "rain"
+  },
+  {
+   "hour": 4,
+   "temperatureF": 53,
+   "icon": "rain"
+  },
+  {
+   "hour": 5,
+   "temperatureF": 53,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 6,
+   "temperatureF": 53,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 7,
+   "temperatureF": 55,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 8,
+   "temperatureF": 56,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 9,
+   "temperatureF": 56,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 10,
+   "temperatureF": 56,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 11,
+   "temperatureF": 54,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 12,
+   "temperatureF": 51,
+   "icon": "heavy-rain"
+  },
+  {
+   "hour": 13,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 14,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 15,
+   "temperatureF": 52,
+   "icon": "rain"
+  },
+  {
+   "hour": 16,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 17,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 18,
+   "temperatureF": 50,
+   "icon": "rain"
+  },
+  {
+   "hour": 19,
+   "temperatureF": 50,
+   "icon": "rain"
+  },
+  {
+   "hour": 20,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 21,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 22,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 23,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 24,
+   "temperatureF": 50,
+   "icon": "rain"
+  },
+  {
+   "hour": 25,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 26,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 27,
+   "temperatureF": 50,
+   "icon": "rain"
+  },
+  {
+   "hour": 28,
+   "temperatureF": 49,
+   "icon": "rain"
+  },
+  {
+   "hour": 29,
+   "temperatureF": 50,
+   "icon": "rain"
+  },
+  {
+   "hour": 30,
+   "temperatureF": 50,
+   "icon": "rain"
+  },
+  {
+   "hour": 31,
+   "temperatureF": 50,
+   "icon": "rain"
+  },
+  {
+   "hour": 32,
+   "temperatureF": 51,
+   "icon": "rain"
+  },
+  {
+   "hour": 33,
+   "temperatureF": 52,
+   "icon": "rain"
+  },
+  {
+   "hour": 34,
+   "temperatureF": 53,
+   "icon": "rain"
+  },
+  {
+   "hour": 35,
+   "temperatureF": 55,
+   "icon": "rain"
+  },
+  {
+   "hour": 36,
+   "temperatureF": 55,
+   "icon": "rain"
+  },
+  {
+   "hour": 37,
+   "temperatureF": 51,
+   "icon": "overcast"
+  },
+  {
+   "hour": 38,
+   "temperatureF": 54,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 39,
+   "temperatureF": 55,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 40,
+   "temperatureF": 53,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 41,
+   "temperatureF": 51,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 42,
+   "temperatureF": 50,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 43,
+   "temperatureF": 49,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 44,
+   "temperatureF": 50,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 45,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 46,
+   "temperatureF": 54,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 47,
+   "temperatureF": 56,
+   "icon": "overcast"
+  },
+  {
+   "hour": 48,
+   "temperatureF": 56,
+   "icon": "overcast"
+  },
+  {
+   "hour": 49,
+   "temperatureF": 56,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 50,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 51,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 52,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 53,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 54,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 55,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 56,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 57,
+   "temperatureF": 55,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 58,
+   "temperatureF": 55,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 59,
+   "temperatureF": 56,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 60,
+   "temperatureF": 56,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 61,
+   "temperatureF": 57,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 62,
+   "temperatureF": 57,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 63,
+   "temperatureF": 57,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 64,
+   "temperatureF": 56,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 65,
+   "temperatureF": 54,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 66,
+   "temperatureF": 53,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 67,
+   "temperatureF": 53,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 68,
+   "temperatureF": 53,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 69,
+   "temperatureF": 52,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 70,
+   "temperatureF": 52,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 71,
+   "temperatureF": 51,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 72,
+   "temperatureF": 51,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 73,
+   "temperatureF": 51,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 74,
+   "temperatureF": 50,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 75,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 76,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 77,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 78,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 79,
+   "temperatureF": 49,
+   "icon": "overcast"
+  },
+  {
+   "hour": 80,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 81,
+   "temperatureF": 50,
+   "icon": "overcast"
+  },
+  {
+   "hour": 82,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 83,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 84,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 85,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 86,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 87,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 88,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 89,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 90,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 91,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 92,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 93,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 94,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 95,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 96,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 97,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 98,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 99,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 100,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 101,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 102,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 103,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 104,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 105,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 106,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 107,
+   "temperatureF": 56,
+   "icon": "overcast"
+  },
+  {
+   "hour": 108,
+   "temperatureF": 58,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 109,
+   "temperatureF": 59,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 110,
+   "temperatureF": 59,
+   "icon": "overcast"
+  },
+  {
+   "hour": 111,
+   "temperatureF": 58,
+   "icon": "overcast"
+  },
+  {
+   "hour": 112,
+   "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 113,
+   "temperatureF": 56,
+   "icon": "overcast"
+  },
+  {
+   "hour": 114,
+   "temperatureF": 56,
+   "icon": "overcast"
+  },
+  {
+   "hour": 115,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 116,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 117,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 118,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 119,
+   "temperatureF": 52,
+   "icon": "overcast"
+  }
+ ],
+ "days": [
+  {
+   "label": "Today",
+   "description": "Heavy rain at times",
+   "icon": "heavy-rain",
+   "lowF": 50,
+   "highF": 57,
+   "rainIn": 2.01
+  },
+  {
+   "label": "Tomorrow",
+   "description": "Rain at times",
+   "icon": "rain",
+   "lowF": 49,
+   "highF": 56,
+   "rainIn": 0.68
+  },
+  {
+   "label": "Friday",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 51,
+   "highF": 57,
+   "rainIn": 0.0
+  },
+  {
+   "label": "Saturday",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 49,
+   "highF": 58,
+   "rainIn": 0.12
+  },
+  {
+   "label": "Sunday",
+   "description": "Cloudy",
+   "icon": "overcast",
+   "lowF": 52,
+   "highF": 59,
+   "rainIn": 0.04
+  }
+ ],
+ "observedNow": {
+  "rainingNow": null,
+  "recentRain": null
+ },
+ "rainHours": [
+  {
+   "startHour": 2,
+   "endHour": 7,
+   "intensity": 1
+  },
+  {
+   "startHour": 7,
+   "endHour": 11,
+   "intensity": 3
+  },
+  {
+   "startHour": 11,
+   "endHour": 13,
+   "intensity": 2
+  },
+  {
+   "startHour": 13,
+   "endHour": 37,
+   "intensity": 1
+  }
+ ],
+ "provenance": {
+  "type": "illustrative",
+  "note": "The live forecast of Wed Nov 18, 12:51 AM (v0.26 engine). Not official guidance."
+ },
+ "timeline": {
+  "title": "Rain & flood outlook",
+  "intervals": [
+   {
+    "startHour": 2,
+    "endHour": 5,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 5,
+    "endHour": 11,
+    "severity": 3,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 11,
+    "endHour": 13,
+    "severity": 2,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   },
+   {
+    "startHour": 13,
+    "endHour": 37,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "intermittent"
+   }
+  ]
+ },
+ "rainTotals": [
+  {
+   "startHour": 2,
+   "endHour": 37,
+   "medianIn": 2.68,
+   "fromHour": 0,
+   "toHour": 48
+  }
+ ],
+ "rainBlocks": [
+  {
+   "startHour": 0,
+   "endHour": 1,
+   "in": 0.0,
+   "res": 1
+  },
+  {
+   "startHour": 1,
+   "endHour": 2,
+   "in": 0.0,
+   "res": 1
+  },
+  {
+   "startHour": 2,
+   "endHour": 4,
+   "in": 0.036,
+   "res": 3,
+   "blockStartHour": 1,
+   "blockEndHour": 4,
+   "partial": true
+  },
+  {
+   "startHour": 4,
+   "endHour": 7,
+   "in": 0.294,
+   "res": 3
+  },
+  {
+   "startHour": 7,
+   "endHour": 10,
+   "in": 0.826,
+   "res": 3
+  },
+  {
+   "startHour": 10,
+   "endHour": 13,
+   "in": 0.454,
+   "res": 3
+  },
+  {
+   "startHour": 13,
+   "endHour": 16,
+   "in": 0.066,
+   "res": 3
+  },
+  {
+   "startHour": 16,
+   "endHour": 19,
+   "in": 0.024,
+   "res": 3
+  },
+  {
+   "startHour": 19,
+   "endHour": 22,
+   "in": 0.06,
+   "res": 3
+  },
+  {
+   "startHour": 22,
+   "endHour": 25,
+   "in": 0.093,
+   "res": 3
+  },
+  {
+   "startHour": 25,
+   "endHour": 28,
+   "in": 0.151,
+   "res": 3
+  },
+  {
+   "startHour": 28,
+   "endHour": 31,
+   "in": 0.232,
+   "res": 3
+  },
+  {
+   "startHour": 31,
+   "endHour": 34,
+   "in": 0.129,
+   "res": 3
+  },
+  {
+   "startHour": 34,
+   "endHour": 37,
+   "in": 0.048,
+   "res": 3
+  },
+  {
+   "startHour": 37,
+   "endHour": 40,
+   "in": 0.012,
+   "res": 3
+  },
+  {
+   "startHour": 40,
+   "endHour": 43,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 43,
+   "endHour": 46,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 46,
+   "endHour": 49,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 49,
+   "endHour": 52,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 52,
+   "endHour": 55,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 55,
+   "endHour": 58,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 58,
+   "endHour": 61,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 61,
+   "endHour": 64,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 64,
+   "endHour": 67,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 67,
+   "endHour": 70,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 70,
+   "endHour": 73,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 73,
+   "endHour": 76,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 76,
+   "endHour": 79,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 79,
+   "endHour": 82,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 82,
+   "endHour": 85,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 85,
+   "endHour": 88,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 88,
+   "endHour": 91,
+   "in": 0.012,
+   "res": 3
+  },
+  {
+   "startHour": 91,
+   "endHour": 94,
+   "in": 0.012,
+   "res": 3
+  },
+  {
+   "startHour": 94,
+   "endHour": 97,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 97,
+   "endHour": 100,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 100,
+   "endHour": 103,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 103,
+   "endHour": 106,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 106,
+   "endHour": 109,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 109,
+   "endHour": 112,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 112,
+   "endHour": 115,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 115,
+   "endHour": 118,
+   "in": 0.0,
+   "res": 3
+  },
+  {
+   "startHour": 118,
+   "endHour": 120,
+   "in": 0.0,
+   "res": 3,
+   "blockStartHour": 118,
+   "blockEndHour": 121,
+   "partial": true
+  }
+ ],
+ "peakRate": {
+  "lo": 0.45,
+  "hi": 0.55,
+  "hour": 8,
+  "systems": [
+   "ICON ensemble",
+   "HRRR",
+   "NBM"
+  ],
+  "hourEnd": 10
+ },
+ "evidence": {
+  "pHeavy": [
+   0.02,
+   0.02,
+   0,
+   0,
+   0.09,
+   0.14,
+   0.23,
+   0.66,
+   0.68,
+   0.66,
+   0.48,
+   0.4,
+   0.34,
+   0.07,
+   0.07,
+   0.07,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0.01,
+   0,
+   0,
+   0,
+   0,
+   0.02,
+   0.01,
+   0.01,
+   0.01,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "floodValidated": false,
+  "pFlood": [
+   0,
+   0,
+   0,
+   0.02,
+   0.07,
+   0.14,
+   0.33,
+   0.53,
+   0.39,
+   0.27,
+   0.22,
+   0.1,
+   0.08,
+   0.03,
+   0.01,
+   0.01,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "pBehind": [
+   0,
+   0,
+   0,
+   0.04,
+   0.15,
+   0.39,
+   0.58,
+   0.7,
+   0.73,
+   0.5,
+   0.4,
+   0.35,
+   0.11,
+   0.07,
+   0.07,
+   0.01,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0.01,
+   0.01,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "potential": [
+   {
+    "startHour": 5,
+    "endHour": 11,
+    "pBehindAny": 0.9,
+    "pFloodAny": 0.71,
+    "systems": 3
+   }
+  ],
+  "floodSystems": [
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   3,
+   3,
+   3,
+   3,
+   3,
+   2,
+   1,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "systems": 3
+ },
+ "alert": {
+  "actionTitle": "Driveway \u00b7 18th & Shotwell",
+  "action": "Consider flood barriers and moving your car to higher ground before heavy rain arrives.",
+  "prepare": "Consider checking flood barriers before the storm.",
+  "context": "Local driveway risk isn't validated yet."
+ }
+}

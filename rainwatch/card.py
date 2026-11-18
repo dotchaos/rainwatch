@@ -609,7 +609,7 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         chk = intervals.peak_rate(st["hours"], pa, pb, parts, det or [], radar, now)
         card["_peak_check"] = chk
         if chk["ok"]:
-            card["peakRate"] = {"lo": chk["lo"], "hi": chk["hi"], "hour": chk["hour"],
+            card["peakRate"] = {"lo": chk["lo"], "hi": chk["hi"], "hour": chk["hour"], "hourEnd": chk["hourEnd"],
                                 "systems": [s["system"] for s in chk["systems"]]}
     if hazard in ("rain", "flood"):
         card["evidence"] = evidence(rows, hours, by_t, report, cfg, parts, rain)

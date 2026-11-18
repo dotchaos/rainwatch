@@ -5,7 +5,7 @@ import { renderToString } from 'react-dom/server';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { Timeline } from '../components/Timeline';
-import { stormCut, stormWed } from './cases';
+import { stormCut, stormWed, stormWedNight } from './cases';
 import { ageCard, amountsVsTotal, chartBlocks, deriveAlert, eventHero, fiveDays, hourAmounts, nowNext, storms } from './derive';
 import { validateScenario } from './rules';
 
@@ -77,6 +77,11 @@ describe('event-first hero ("Next up")', () => {
     const off = stormWed(); off.peakRate = { lo: 0.4, hi: 0.45, hour: 40, systems: ['ICON ensemble', 'HRRR'] };
     expect(eventHero(off)!.sentence).not.toMatch(/an hour/);
   });
+  it('Wed 12:51 AM: the step turns to now as the rain nears; the peak hour is one per model family', () => {
+    const e = eventHero(stormWedNight())!;
+    expect(e.advisory!.action).toBe('Check flood barriers now, ahead of the heaviest rain this morning.');
+    expect(e.sentence).toContain('up to about .45–.55" an hour between 8 AM and 10 AM');
+  });
   it('the event day is spelled out; weekday alone without a date; "Today" for today', () => {
     const s = stormWed(); delete s.startDate;
     expect(eventHero(s)!.day).toBe('Wednesday');
@@ -107,7 +112,7 @@ describe('flood advisory: one line, evidence behind a link; potential is never a
     expect(JSON.stringify(a)).not.toMatch(/sandbag|historical|20\d\d/i);
   });
   it('an official product is what makes it a driveway call', () => {
-    expect(eventHero(byId('storm'))!.advisory!).toMatchObject({ action: 'Protect your driveway before this afternoon.', risk: true });
+    expect(eventHero(byId('storm'))!.advisory!).toMatchObject({ action: 'Protect your driveway now, ahead of the heaviest rain this afternoon.', risk: true });
     expect(eventHero(stormWed())!.advisory!.risk).toBe(false);
   });
 });
