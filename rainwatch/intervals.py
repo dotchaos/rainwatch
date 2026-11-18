@@ -18,10 +18,12 @@ Peak hourly rate. Shown only when it is supported: genuinely hourly systems from
 (the ICON ensemble; HRRR and NBM together, since NBM blends HRRR; radar) cover every hour of the heaviest stretch within PEAK_NEAR_H of now, put their heaviest
 hour within PEAK_HOURS_APART of each other, and agree within PEAK_RATIO. Each system's value: an ensemble's median
 over its runs of each run's heaviest hour; a deterministic model's heaviest hour. The range is the lowest to the
-highest of those values, to the nearest 0.05". Otherwise none (the card names the heaviest period without a rate).
+highest of those values, widened to the 0.05" (low end down, high end up); the hour is one per independent family,
+shown as a span when the families differ. Otherwise none (the card names the heaviest period without a rate).
 """
 from __future__ import annotations
 
+import math
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -144,8 +146,13 @@ def peak_rate(hours: list[datetime], a: int, b: int, parts: list, det: list, rad
             why.append(f"values disagree beyond {PEAK_RATIO}x")
     out = {"ok": not why, "systems": systems, "why": why}
     if not why:
-        r = lambda x: round(round(x / 0.05) * 0.05, 2)  # noqa: E731
-        hs = sorted(s["hour"] for s in systems)
-        out.update({"lo": r(min(s["in"] for s in systems)), "hi": r(max(s["in"] for s in systems)),
-                    "hour": hs[len(hs) // 2]})
+        # the range covers every system: low end down, high end up, to the 0.05" (never rounding a system's value away)
+        lo = math.floor(min(s["in"] for s in systems) / 0.05 + 1e-9) * 0.05
+        hi = math.ceil(max(s["in"] for s in systems) / 0.05 - 1e-9) * 0.05
+        # the hour, one vote per independent family (HRRR and NBM are one): a span when the families differ
+        fam = {}
+        for s_ in systems:
+            fam.setdefault(s_["family"], []).append(s_["hour"])
+        fh = sorted(sorted(v)[len(v) // 2] for v in fam.values())
+        out.update({"lo": round(lo, 2), "hi": round(hi, 2), "hour": fh[0], "hourEnd": fh[-1]})
     return out

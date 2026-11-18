@@ -1150,7 +1150,9 @@ export function eventHero(s: Scenario): EventHero | null {
   const starting = onsetNow ? 'falling now' : lvl === 'coarse' ? `starting ${partNamed(s, st.start)}`
     : `starting ${lvl === 'near' ? 'around' : 'about'} ${atNamed(s, st.start)}`;
   const pr = s.peakRate && s.peakRate.hour >= heavy.start - 1 && s.peakRate.hour < heavy.end + 1 ? s.peakRate : undefined;
-  const rate = pr ? `, up to about ${pr.lo === pr.hi ? fmtIn(pr.lo) : `${fmtIn(pr.lo).slice(0, -1)}–${fmtIn(pr.hi)}`} an hour around ${clock(s, pr.hour)}` : '';
+  // one hour per independent model family; a span when they differ (Nov 18: ICON 8 AM, HRRR/NBM 10 AM)
+  const prWhen = pr ? (pr.hourEnd !== undefined && pr.hourEnd > pr.hour ? `between ${clock(s, pr.hour)} and ${clock(s, pr.hourEnd)}` : `around ${clock(s, pr.hour)}`) : '';
+  const rate = pr ? `, up to about ${pr.lo === pr.hi ? fmtIn(pr.lo) : `${fmtIn(pr.lo).slice(0, -1)}–${fmtIn(pr.hi)}`} an hour ${prWhen}` : '';
   const when = heavyNow ? 'now' : lvl === 'coarse' ? partNamed(s, heavy.start, false, false, true)
     : lvl === 'near' && dayIndexAt(s, heavy.start) === dayIndexAt(s, heavy.end - 1) && !openEnd(s, heavy.end) ? `${span(s, heavy.start, heavy.end)}${dayIndexAt(s, heavy.start) ? ` ${fullDay[clockAt(s.startDay, s.startHourLocal, heavy.start).day]}` : ''}`
     : `from ${lvl === 'near' ? 'around' : 'about'} ${atNamed(s, heavy.start)}`;
@@ -1176,9 +1178,15 @@ export function eventHero(s: Scenario): EventHero | null {
   else evidence.push({ label: 'Peak hourly rate', value: 'not shown: needs two genuinely hourly models that agree, within 48 hours' });
   evidence.push({ label: 'Local flood level', value: ev?.floodValidated ? 'validated at this address' : 'not yet validated at this address' });
   const prep = prepByFor(s, st, lvl);
+  // time-aware: within 3 h of the rain (or once it has started) the step is now, ahead of the heaviest rain
+  const soon = onsetNow || st.start - nowAt(s) <= 3 || !prep;
+  const ahead = `ahead of the heaviest rain ${partNamed(s, heavy.start, false, false, true)}`;
+  const action = heavyNow ? (voice === 'action' ? 'Keep your driveway protected; the heaviest rain is falling now.'
+      : 'Keep flood barriers in place; the heaviest rain is falling now.')
+    : soon ? `${voice === 'action' ? 'Protect your driveway' : voice === 'awareness' ? 'Consider checking flood barriers' : 'Check flood barriers'} now, ${ahead}.`
+    : voice === 'action' ? `Protect your driveway ${prep}.` : `${voice === 'awareness' ? 'Consider checking' : 'Prepare'} flood barriers ${prep}.`;
   const advisory: Advisory = {
-    action: voice === 'action' ? `Protect your driveway ${prep ?? 'now'}.`
-      : `${voice === 'awareness' ? 'Consider checking' : 'Prepare'} flood barriers${prep ? ` ${prep}` : ' now'}.`,
+    action,
     risk: voice === 'action', caveat: ev?.floodValidated ? undefined : s.alert.context, evidence,
   };
   return { kind: 'storm', label: onsetNow ? 'Now' : 'Next up', day: dayLabel(s, heavy.start),

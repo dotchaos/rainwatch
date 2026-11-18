@@ -81,7 +81,7 @@ export interface Scenario {
     /** With `partial`: the whole block's hours (may start before hour 0 or end past the row), for drawing its bracket. */
     blockStartHour?: number; blockEndHour?: number }[];
   /** Peak hourly rate (v0.26), only when two or more genuinely hourly systems agree (rainwatch/intervals.py). */
-  peakRate?: { lo: number; hi: number; hour: number; systems: string[] };
+  peakRate?: { lo: number; hi: number; hour: number; hourEnd?: number; systems: string[] };
   /**
    * Rain for the five-day rows (hour offsets, end exclusive), up to the end of the fifth local day.
    * Which hours are wet is the engine's decision: within the graph's 72 hours, exactly the hours with rain gear.

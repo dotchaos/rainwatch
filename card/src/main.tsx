@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import type { Scenario } from './types';
 import { scenarios } from './data/scenarios';
 import { NowAndNext, WeatherCard } from './components/WeatherCard';
-import { narrativeCases, stormCut, stormWed } from './lib/cases';
+import { narrativeCases, stormCut, stormWed, stormWedNight } from './lib/cases';
 import { Timeline } from './components/Timeline';
 import { validateScenario } from './lib/rules';
 import { ageCard, elapsedHours, floodPotentials } from './lib/derive';
@@ -58,6 +58,7 @@ function NarrativeLab(){
 /** ?lab&event[&case=id]: the event-first hero and five-day hourly row (v0.26 review), whole cards at phone width. */
 const EVENT_CASES:[string,string,()=>Scenario][]=[
  ['storm-wed','Wednesday storm (live forecast Tue 11:35 AM, v0.26 engine)',stormWed],
+ ['storm-night','Wednesday storm, live forecast Wed 12:51 AM',stormWedNight],
  ['storm-cut','Storm running past the forecast: data stops Thu 3 AM',()=>stormCut(40)],
  ['storm-peak','Display check only: the same storm IF two independent hourly systems agreed (hypothetical .40–.45")',()=>{const s=stormWed();s.peakRate={lo:0.4,hi:0.45,hour:21,systems:['ICON ensemble','HRRR']};return s;}],
  ['storm-official','Extreme storm fixture (Flood Watch; no amounts in this fixture)',()=>structuredClone(scenarios.find(x=>x.id==='storm')!) as Scenario],

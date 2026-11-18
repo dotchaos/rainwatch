@@ -79,8 +79,11 @@ export const narrativeCases: { id: string; title: string; s: Scenario }[] = [
 
 /* ---------- Event-first hero and five-day hourly row review cases (v0.26) ---------- */
 import stormWedJson from '../../scenarios/storm-wed.json';
+import stormWedNightJson from '../../scenarios/storm-wed-night.json';
 /** The live forecast of Tue Nov 17, 11:35 AM, as the v0.26 engine builds it (rain amounts, total window, peak check). */
 export const stormWed = () => structuredClone(stormWedJson) as unknown as Scenario;
+/** The live forecast of Wed Nov 18, 12:51 AM: rain from about 2 AM, heaviest 5–11 AM; peak re-derived by the v0.26.1 rule. */
+export const stormWedNight = () => structuredClone(stormWedNightJson) as unknown as Scenario;
 /** The same forecast with no data from hour `at` on (the models stop mid-storm): unknown hours, no amounts there, and
  *  no total for a stretch that runs into them (the engine never totals across missing data); the day the cut falls in
  *  loses its total. Wednesday is untouched, so its total stands. */
