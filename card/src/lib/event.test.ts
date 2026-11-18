@@ -47,7 +47,7 @@ describe('nothing that existed changes (v0.26 adds; it never recalculates)', () 
 describe('event-first hero ("Next up")', () => {
   it('Wednesday storm: label, event headline, amount and timing in one sentence, duration, preparation', () => {
     const e = eventHero(stormWed())!;
-    expect(e).toEqual({ kind: 'storm', label: 'Next up', day: 'Wednesday, Nov 18', section: 'Upcoming storm · Wed–Thu', headline: 'Heavy rain, with possible localized flooding', amount: 'About 2.7"',
+    expect(e).toEqual({ kind: 'storm', label: 'Next up', day: 'Wednesday, Nov 18', section: 'Upcoming storm · Wed–Thu', headline: 'Heavy rain Wednesday morning', amount: 'About 2.7"',
       sentence: 'About 2.7" of rain, starting late tonight and heaviest Wednesday morning.',
       duration: 'late Tuesday night through Thursday midday',
       advisory: expect.objectContaining({ action: 'Prepare flood barriers before the rain arrives.', risk: false, caveat: "Local driveway risk isn't validated yet." }) });
@@ -93,8 +93,8 @@ describe('event-first hero ("Next up")', () => {
     expect(eventHero(byId('heat'))!.section).toMatch(/^Heat underway · Today/);
   });
   it('rain already falling: "Now"', () => {
-    expect(eventHero(byId('storm'))!).toMatchObject({ label: 'Now', headline: 'Heavy rain, with a Flood Watch in effect',
-      sentence: 'About 2.1" of rain today, falling now and heaviest this afternoon.' });
+    expect(eventHero(byId('storm'))!).toMatchObject({ label: 'Now', headline: 'Heavy rain this afternoon',
+      sentence: 'About 2.1" more rain today, falling now and heaviest this afternoon.' });
   });
   it('heatwave: same structure', () => {
     expect(eventHero(byId('heat'))!).toMatchObject({ kind: 'heat', label: 'Now', headline: 'Dangerous heat', amount: 'Highs near 104°',
@@ -150,7 +150,7 @@ describe('rain amounts in the hourly row', () => {
   });
   it('an aged card keeps a part-past interval, marked partial', () => {
     const a = ageCard(stormWed(), 3);
-    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, partial: true, blockStartHour: 2, blockEndHour: 5 });
+    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, src: 'model', partial: true, blockStartHour: 2, blockEndHour: 5 });
     expect(validateScenario(a)).toEqual([]);
   });
 });

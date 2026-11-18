@@ -78,6 +78,8 @@ export interface Scenario {
    * `partial`: the forecast's block runs past now or the radar. Hours with no interval have no forecast amount.
    */
   rainBlocks?: { startHour: number; endHour: number; in: number; res: 1 | 3 | 6; partial?: boolean;
+    /** Where the amount comes from (PR B): radar nowcast, the model blend, or NWS QPF. */
+    src?: 'radar' | 'model' | 'nws';
     /** With `partial`: the whole block's hours (may start before hour 0 or end past the row), for drawing its bracket. */
     blockStartHour?: number; blockEndHour?: number }[];
   /** Peak hourly rate (v0.26), only when two or more genuinely hourly systems agree (rainwatch/intervals.py). */

@@ -51,7 +51,7 @@ def test_radar_hours_are_hourly_nws_hours_6_hour_missing_hours_absent_and_partia
     parts = [ens("ens:ecmwf_ifs025", WET, smoothed=True, spread3=True)]
     rows = [ROW("radar", 0.12), ROW("radar", 0.3)] + [ROW() for _ in range(4)] + [None, None] + [ROW("nws", 0.05)] * 4
     b = intervals.blocks(H, rows, parts)
-    assert b[0] == {"startHour": 0, "endHour": 1, "in": 0.12, "res": 1}
+    assert b[0] == {"startHour": 0, "endHour": 1, "in": 0.12, "res": 1, "src": "radar"}
     assert b[1]["res"] == 1 and b[1]["in"] == 0.3
     assert b[2] == {**b[2], "startHour": 2, "endHour": 3, "res": 3, "partial": True}     # the rest of a block the radar began
     assert b[2]["in"] == round(totals.window(parts, None, H[0:3])["p50"], 3)              # its whole-block amount, never a split

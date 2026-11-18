@@ -179,10 +179,10 @@ describe('headings and navigation (v0.15)', () => {
     }
   });
 
-  it('the daily forecast is just "Next 5 days"', () => {
+  it('the daily forecast is "Looking ahead" (PR B)', () => {
     for (const s of scenarios) {
       const h = html(s);
-      expect(h).toContain('<section class="more-info"><div class="section-heading"><strong>Next 5 days</strong></div>');   // the section heading (v0.17)
+      expect(h).toContain('<section class="more-info"><h2 class="section-title">Looking ahead</h2>');   // plain heading (PR B)
       expect(h).not.toContain('More information');
       expect(h).not.toContain('Rain · High / Low');
     }

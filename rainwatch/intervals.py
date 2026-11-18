@@ -9,6 +9,8 @@ interval it actually resolves:
                   block cut by now, the radar or the row's end keeps its whole-block amount, marked `partial`
   NWS-only hours  the NWS 6-hour QPF period, as published
   no forecast     no interval (the card shows "—")
+Each interval names its source (`src`: radar, model or nws), so overlaps between a radar hour and a model block
+that started before it can be shown for what they are and never added.
 Interval medians are independent: they are NOT scaled to add up to the event total (the median of each run's whole
 total). When runs disagree on timing they add up to less; the card's details say so (Nov 17 2026 comparison:
 blocks 2.14" vs event 2.62", tools/aggregation_compare.py). A single representative run was considered and rejected:
@@ -75,7 +77,7 @@ def blocks(hours: list[datetime], rows: list[dict | None], parts: list) -> list[
             continue
         src = r.get("primary")
         if src == "radar":
-            out.append({"startHour": i, "endHour": i + 1, "in": round(float(r.get("mid") or 0.0), 3), "res": 1})
+            out.append({"startHour": i, "endHour": i + 1, "in": round(float(r.get("mid") or 0.0), 3), "res": 1, "src": "radar"})
             i += 1
             continue
         size = 6 if src == "nws" else 3
@@ -88,7 +90,7 @@ def blocks(hours: list[datetime], rows: list[dict | None], parts: list) -> list[
             for k in range(i, j):                                       # every pooled model is genuinely hourly here
                 w = totals.window(parts, None, [hours[k]])
                 if w:
-                    out.append({"startHour": k, "endHour": k + 1, "in": round(w["p50"], 3), "res": 1})
+                    out.append({"startHour": k, "endHour": k + 1, "in": round(w["p50"], 3), "res": 1, "src": "model"})
             i = j
             continue
         if src == "ens":
@@ -100,7 +102,7 @@ def blocks(hours: list[datetime], rows: list[dict | None], parts: list) -> list[
         else:
             amt = sum(float(rows[k].get("mid") or 0.0) for k in range(i, j))
         if amt is not None:
-            d = {"startHour": i, "endHour": j, "in": round(float(amt), 3), "res": size}
+            d = {"startHour": i, "endHour": j, "in": round(float(amt), 3), "res": size, "src": "model" if src == "ens" else "nws"}
             if j - i < size:
                 k0 = i - int((t - b0).total_seconds() // 3600)          # the whole block, in the same hour offsets
                 d.update(blockStartHour=k0, blockEndHour=k0 + size)
