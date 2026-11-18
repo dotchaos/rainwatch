@@ -39,6 +39,11 @@ button.rr:disabled{opacity:.6;cursor:default}#rrmsg{font-size:13px;margin:4px 0 
 .thr button.on{border-color:var(--acc);background:var(--acc);color:var(--bg)}
 @media(max-width:420px){.days{gap:6px}.day{padding:8px}.win{font-size:14px}}
 #rrsetup input{width:100%;padding:8px;margin:6px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:13px monospace}a{color:var(--acc)}ul{padding-left:18px}li{margin:3px 0}.scroll{overflow-x:auto}pre{white-space:pre-wrap;font-size:12.5px;background:var(--card);padding:10px;border-radius:8px}
+
+/* PR A (Nov 18 2026): 16px body, 14px minimum for meaningful labels, 18-20px section headings */
+body{font-size:16px}h1{font-size:22px}h2{font-size:18px}.sub,.bar .age,#rrmsg,#rrsetup,.thr,.lvl,.day h3{font-size:14px}
+.tag,th,.pill,.legend,.dtot,.lc,tr.b td,.win small,.cf,.oneline,.chips,pre{font-size:14px}table{font-size:15px}.win{font-size:16px}
+@media(max-width:420px){.win{font-size:15px}}
 """
 
 

@@ -11,7 +11,7 @@ import { segmentPath, segments, silhouetteRuns } from './silhouette';
 
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
 const rainy = scenarios.filter(s => s.timeline && s.hazard !== 'heat').map(s => s.id);
-const X = (h: number) => 100 + h * 3, Y = (l: number) => 120 - l * 28 - 14, FLOOR = 120;
+const X = (h: number) => 100 + h * 3, Y = (l: number) => 120 - l * 36 - 14, FLOOR = 120;
 
 describe('level transitions', () => {
   it('every hour gets exactly the level the forecast gives it; a run changes only where the level does', () => {
@@ -68,7 +68,7 @@ describe('flood overlay', () => {
     expect(g[0]).toBeCloseTo(x(w.startHour) + .6, 1);
     expect(g[0] + g[1]).toBeCloseTo(x(w.endHour) - .6, 1);
     expect(g[2]).toBeGreaterThanOrEqual(20);                         // inside the flood row
-    expect(g[3]).toBe(132 - 3 * 28);                                // its floor is the Rain gear plateau: attached
+    expect(g[3]).toBe(164 - 3 * 36);                                // its floor is the Rain gear plateau: attached
     const outline = html.slice(html.indexOf('class="chart-potential"')).match(/<path d="([^"]+)" fill="none"/)![1];
     expect(outline.trim().endsWith('Z')).toBe(false);                // no dashed floor over the blue edge
     expect(html).toContain('Potential flooding, not yet a sandbag recommendation: Wed 4–8 AM.');
@@ -102,7 +102,7 @@ describe('the default graph (final pass)', () => {
       expect(o[k][0] + o[k][1]).toBeCloseTo(x(w[1]) - .6, 1);
     }
     expect(h).toContain('Sandbags · Preparation recommended');
-    for (const m of h.matchAll(/class="chart-actionable"[^>]*data-floor="([\d.]+)"/g)) expect(Number(m[1])).toBeLessThan(132 - 3 * 28);   // detached
+    for (const m of h.matchAll(/class="chart-actionable"[^>]*data-floor="([\d.]+)"/g)) expect(Number(m[1])).toBeLessThan(164 - 3 * 36);   // detached
     expect(h).toContain('>Thu 4–9 PM<');                               // the event labels stay
     expect(h).not.toContain('chart-potential"');                       // actionable replaces potential
   });
@@ -122,9 +122,9 @@ describe('bands fill (Nov 16 review)', () => {
   it('a level fills its band to the top: plateaus sit on band edges, labels at band centres', () => {
     const html = renderToString(createElement(WeatherCard, { scenario: byId('storm-ahead'), graph: 'silhouette' }));
     const tops = [...html.matchAll(/class="chart-sil-edge" x1="[\d.]+" x2="[\d.]+" y1="([\d.]+)"/g)].map(m => Number(m[1]));
-    expect(new Set(tops)).toEqual(new Set([132 - 2 * 28, 132 - 3 * 28]));     // Umbrella or jacket and Rain gear band tops
-    const labels = [...html.matchAll(/<text x="[\d.]+" y="([\d.]+)" text-anchor="end" class="chart-label">/g)].map(m => Number(m[1]));
-    expect(labels).toEqual([0, 1, 2, 3].map(i => 132 - (i + 0.5) * 28 + 3.5));
+    expect(new Set(tops)).toEqual(new Set([164 - 2 * 36, 164 - 3 * 36]));     // Umbrella or jacket and Rain gear band tops
+    const labels = [...html.matchAll(/<text x="[\d.]+" y="[\d.]+" data-center="([\d.]+)" text-anchor="end" class="chart-label">/g)].map(m => Number(m[1]));
+    expect(labels).toEqual([0, 1, 2, 3].map(i => 164 - (i + 0.5) * 36));    // centred in their bands (two-line labels too)
   });
 });
 
@@ -136,7 +136,7 @@ describe('one recommendation per hour (Nov 16 review)', () => {
       .map(m => ({ level: Number(m[1]), x: Number(m[2]), y: Number(m[3]), w: Number(m[4]), h: Number(m[5]), fill: m[6] }));
     const colour = new Map<number, string>();
     for (const r of rects) {
-      expect(r.y + r.h).toBe(132);                                      // every hour's colour reaches the baseline
+      expect(r.y + r.h).toBe(164);                                      // every hour's colour reaches the baseline
       if (colour.has(r.level)) expect(r.fill).toBe(colour.get(r.level)); else colour.set(r.level, r.fill);
     }
     expect(new Set(colour.values()).size).toBe(colour.size);             // each level its own colour
