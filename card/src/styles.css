@@ -256,3 +256,14 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .weather-card .edge-note{font-size:15px}
 .weather-card .upcoming p{font-size:16px}
 .weather-card footer{font-size:14px;color:#4f5e67}
+
+/* PR B final: the rain chart as a segmented intensity timeline (colour is intensity; every segment the same height) */
+.today-plot{height:20px;border-radius:10px;overflow:visible}
+.today-bar{border-right:1.5px solid white;border-radius:0}
+.today-plot .today-bar:first-child{border-radius:10px 0 0 10px}
+.today-plot .today-bar:nth-last-child(1 of .today-bar){border-radius:0 10px 10px 0;border-right:0}
+.today-heavy{top:-5px;bottom:-5px;border-radius:12px}
+.today-past{border-radius:10px 0 0 10px}
+.today-about{font-size:15px;color:#4f5e67}
+.today-about summary{cursor:pointer;color:#2f5f7d}
+.today-about p{margin:6px 0 0;line-height:1.45}

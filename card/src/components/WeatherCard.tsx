@@ -105,7 +105,8 @@ function TodayRain({ s, t }: { s: Scenario; t: TodayT }) {
     </div>
     <div className="today-legend" aria-hidden>{lvls.map(l => <span key={l}><i className={`sw i${l}`} />{['', 'Light', 'Moderate', 'Heavy'][l]}</span>)}
       {t.heavy && <span><i className="sw-heavy" />Heaviest rain falls in these intervals</span>}</div>
-    <p className="today-note">{sourcesCaption(t)}</p>
+    <p className="today-note">Darker blue means heavier rain. Each number is the rain expected in that stretch of time.</p>
+    <details className="today-about"><summary>Where these amounts come from</summary><p>{sourcesCaption(t)}</p></details>
   </div>;
 }
 
@@ -158,7 +159,10 @@ function Hourly({ s }: { s: Scenario }) {
   s.hourly.forEach((h, i) => {
     const at = h.hour ?? i, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon, a = amts?.get(at);
     if (i === 0 || l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${at}`}>{i === 0 ? 'Today' : l.day}</em>);
-    const src = srcOf(at), tag = src && src !== lastSrc ? (src === 'radar' ? 'Radar' : src === 'nws' ? 'NWS' : 'Models') : null; lastSrc = src ?? lastSrc;
+    // a source is named at the first hour of its run that shows an amount: dry intervals show no amount by design
+    // (DISPLAY-RULES, Rain amounts), so a label over an empty run would point at nothing
+    const shown = Boolean(a?.text && a.text !== '—'), src = shown ? srcOf(at) : undefined;
+    const tag = src && src !== lastSrc ? (src === 'radar' ? 'Radar' : src === 'nws' ? 'NWS' : 'Models') : null; if (src) lastSrc = src;
     const blk = a && a.kind !== 'dry' && a.kind !== 'missing' && a.pos !== 'solo' ? ` blk blk-${a.pos}` : '';
     items.push(<div className={`hour${l.day && i > 0 ? ' hour-midnight' : ''}${a?.top ? ' hour-top' : ''}`} role="listitem" key={at}
       aria-label={`${l.day ? `${l.day} ` : ''}${l.text}${a?.text && a.text !== '—' ? `, rain ${a.text}${a.res > 1 ? ` over ${a.res} hours` : ''}` : ''}`}>
