@@ -175,29 +175,31 @@
 .weather-card .section-title{font-size:19px;font-weight:700;color:#16232b;margin:0 0 10px}
 .weather-card .headline{font-size:29px;font-weight:700;line-height:1.15;margin:6px 0 4px;color:#16232b}
 .event-hero .event-label{margin-top:12px}
-/* Today's rain at source resolution */
-.today-rain{display:flex;flex-direction:column;gap:6px;margin-top:-6px}
-.today-rain-head{display:flex;justify-content:space-between;align-items:center;font-size:15px}
-.heavy-key{font-size:14px;color:#4f5e67;display:flex;align-items:center;gap:6px}
-.heavy-key i{width:16px;height:10px;border:2px solid #b4541f;border-radius:3px;display:inline-block}
-.today-plot{position:relative;height:46px;background:var(--dry);border-radius:6px;margin-top:4px}
-.today-bar{position:absolute;top:0;bottom:0;border-right:2px solid white;display:flex;align-items:center;justify-content:center;box-sizing:border-box}
+/* Today's rain: one bar per forecast interval */
+.today-rain{display:flex;flex-direction:column;gap:8px;margin:-4px -6px 0}
+.today-rain-head{display:flex;flex-direction:column;gap:2px;font-size:17px}
+.today-rain-head span{font-size:15px;color:#4f5e67}
+.today-chart{display:flex;flex-direction:column;gap:4px}
+.today-amts{position:relative;height:22px}
+.today-amts span{position:absolute;bottom:0;transform:translateX(-50%);font-size:15px;font-weight:700;color:#16232b;font-variant-numeric:tabular-nums;white-space:nowrap}
+.today-plot{position:relative;height:30px}
+.today-bar{position:absolute;top:0;bottom:0;border-right:2px solid white;box-sizing:border-box;border-radius:2px}
 .today-bar.bar-dry{background:var(--dry)}
-.today-bar.bar-trace{background:repeating-linear-gradient(90deg,#dbe6ee 0 4px,var(--dry) 4px 8px)}
+.today-bar.bar-trace{background:repeating-linear-gradient(90deg,#c6d9e8 0 3px,var(--dry) 3px 7px)}
 .today-bar.i1{background:var(--i1)}.today-bar.i2{background:var(--i2)}.today-bar.i3{background:var(--i3)}
-.today-bar em{font-style:normal;font-size:14px;font-weight:700;color:#16232b;font-variant-numeric:tabular-nums}
-.today-bar.i2 em,.today-bar.i3 em{color:white}
-.today-bar.partial{background-image:linear-gradient(90deg,#ffffff55 0 3px,transparent 3px)}
-.today-heavy{position:absolute;top:-5px;bottom:-5px;border:2.5px solid #b4541f;border-radius:7px;z-index:2;pointer-events:none}
-.src-split{position:absolute;top:-8px;bottom:-8px;border-left:2px dashed #4f5e67;z-index:3}
-.today-axis,.today-srcs{position:relative;height:20px;font-size:14px;color:#4f5e67}
-.today-axis span,.today-srcs span{position:absolute;white-space:nowrap;transform:translateX(0)}
-.today-axis span:not(:first-child){transform:translateX(-50%)}
-.today-axis span:last-child:not(:first-child){transform:translateX(-100%)}
-.today-axis b{font-weight:700;margin-right:4px;color:#16232b}
-.today-srcs{height:18px;font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#4d6e83}
-.today-srcs span{padding-left:4px}
-.today-note{font-size:14px;color:#5c6b74;margin:2px 0 0;line-height:1.4}
+.today-past{position:absolute;left:0;top:0;bottom:0;background:repeating-linear-gradient(135deg,#ffffffcc 0 3px,#ffffff66 3px 6px);z-index:1}
+.today-heavy{position:absolute;top:-4px;bottom:-4px;border:2.5px solid #16232b;border-radius:6px;z-index:2;pointer-events:none}
+.src-split{position:absolute;top:-6px;bottom:-6px;border-left:2px dashed #4f5e67;z-index:3}
+.today-axis{position:relative;height:42px;font-size:15px;color:#3f4d55}
+.today-axis span{position:absolute;top:2px;white-space:nowrap;transform:translateX(-50%)}
+.today-axis span.first{transform:none}
+.today-axis span{display:flex;flex-direction:column;align-items:center;line-height:1.25}.today-axis span.first{align-items:flex-start}.today-axis b{font-weight:700;color:#16232b}
+.today-legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:15px;color:#3f4d55}
+.today-legend span{display:flex;align-items:center;gap:6px}
+.today-legend .sw{width:16px;height:12px;border-radius:2px;display:inline-block}
+.today-rain .sw.i1{background:var(--i1)}.today-rain .sw.i2{background:var(--i2)}.today-rain .sw.i3{background:var(--i3)}
+.sw-heavy{width:16px;height:12px;border:2.5px solid #16232b;border-radius:4px;display:inline-block;box-sizing:border-box}
+.today-note{font-size:15px;color:#4f5e67;margin:0;line-height:1.4}
 /* Going outside / Flood risk */
 .todo-row{display:flex;align-items:flex-start;gap:12px;font-size:16px;color:#16232b}
 details.todo-row{display:block}
@@ -210,12 +212,16 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .todo-text span{font-size:15px;color:#4f5e67}
 .todo-body{padding-top:12px}
 .todo-flood.quiet .todo-row{padding:0 2px}
-.flood-panel{border:2px solid #d98a2b;background:#fff7ec;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:8px}
-.alert-validated .flood-panel{border-color:#b4541f;background:#fff1e6}
-.flood-label{display:flex;align-items:center;gap:9px;font-size:18px;color:#7a3d10}
-.flood-action{font-size:16px;font-weight:600;color:#16232b;margin:0}
-.flood-caveat{font-size:14px;color:#4f5e67;margin:0;line-height:1.4}
-.flood-panel .event-evidence summary{font-size:14px}
+.flood-panel{border-radius:12px;padding:14px 14px 12px;display:flex;flex-direction:column;gap:7px;background:#f4f6f7;border-left:5px solid #c98a2b}
+.fstate-validated .flood-panel,.fstate-official .flood-panel{border:2px solid #b4541f;background:#fff1e6}
+.flood-label{display:flex;align-items:center;gap:9px;font-size:18px;color:#16232b}
+.flood-label svg{color:#9a6418;flex:none}
+.fstate-validated .flood-label,.fstate-official .flood-label{color:#7a3d10}
+.fstate-validated .flood-label svg,.fstate-official .flood-label svg{color:#b4541f}
+.flood-source{font-size:14px;color:#4f5e67;margin:-3px 0 0 29px}
+.flood-action{font-size:16px;font-weight:600;color:#16232b;margin:2px 0 0;line-height:1.4}
+.flood-caveat{font-size:15px;color:#4f5e67;margin:0;line-height:1.4}
+.flood-panel .event-evidence summary{font-size:15px}
 /* Hourly source tags */
 .hour .hour-src{display:block;min-height:16px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:#4d6e83}
 /* Looking ahead */
@@ -225,3 +231,28 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .more-link{font-size:16px;font-weight:600}
 .more-link.quiet{font-weight:400;font-size:15px}
 .weather-card footer{font-size:13px}
+/* PR B review — legibility pass: nothing a reader needs under 14px; secondary text 15–16px; AA greys */
+.weather-card .headline-detail{font-size:17px;color:#3f4d55}
+.weather-card .event-label{font-size:14px;letter-spacing:.04em;color:#3f4d55}
+.weather-card .event-duration{font-size:16px;color:#3f4d55}
+.weather-card .now-hilo{font-size:16px;color:#3f4d55}
+.weather-card .now-cond{font-size:16px;color:#3f4d55}
+.masthead .location small{font-size:14px;letter-spacing:0;color:#4f5e67}
+.weather-card .section-heading span{font-size:14px;color:#4f5e67}
+.todo-text span{font-size:16px;color:#3f4d55}
+.hour .hour-src{font-size:14px;text-transform:none;letter-spacing:0;font-weight:600}
+.weather-card .amounts-about{font-size:15px;color:#4f5e67}
+.weather-card .amounts-about p{line-height:1.45}
+.weather-card .hour-pin{font-size:14px;color:#3f4d55}
+.five-days{--strip-pad:6px}
+.weather-card .strip-axis{font-size:14px;height:20px;color:#3f4d55}
+.weather-card .five-top strong{font-size:17px}
+.weather-card .five-row-next .five-top strong{font-size:19px}
+.weather-card .five-sub{font-size:15px;color:#3f4d55}
+.weather-card .five-temps{font-size:15px;color:#3f4d55}
+.weather-card .total-amount{font-size:17px}
+.weather-card .total-dry,.weather-card .total-quiet,.weather-card .total-incomplete{font-size:15px;color:#4f5e67}
+.weather-card .strip-legend{font-size:15px;color:#3f4d55}
+.weather-card .edge-note{font-size:15px}
+.weather-card .upcoming p{font-size:16px}
+.weather-card footer{font-size:14px;color:#4f5e67}

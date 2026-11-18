@@ -1,11 +1,11 @@
 import type React from 'react';
-import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, Umbrella, Shirt, Home } from 'lucide-react';
+import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, Umbrella, Shirt, Home, Droplets } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { barAmount, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { barAmount, hourText, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -79,22 +79,32 @@ export function NowAndNext({ s }: { s: Scenario }) {
 }
 
 
-/** Today's rain, bar by bar at the resolution its source reports (radar hourly, model 3-hour totals): a 3-hour total
- *  is one bar across its three hours, never three hourly bars. The colour is the existing intensity category; the
- *  heavy band is the hero's storm's heavy period. Sources are named; their amounts are never summed. */
-function TodayRain({ t }: { t: TodayT }) {
+/** Today's rain, one bar per forecast interval at the resolution its source reports (radar hourly, model 3-hour
+ *  totals): a 3-hour total is one bar across its three hours, never three hourly bars, and is never cut at the window's
+ *  edge. Colour is the existing intensity category; each amount sits above its own bar; the outline is the hero storm's
+ *  heavy period. A long dry lead-in is skipped and said in words, so the rain gets the room. */
+function TodayRain({ s, t }: { s: Scenario; t: TodayT }) {
   const n = t.to - t.from, x = (h: number) => `${((h - t.from) / n) * 100}%`, w = (a: number, b: number) => `${((b - a) / n) * 100}%`;
-  const words = t.bars.filter(b => b.kind === 'rain').map(b => `${barAmount(b)} ${b.res > 1 ? `over ${b.wholeEnd - b.wholeStart} hours` : 'in the hour'} from ${b.src === 'radar' ? 'radar' : 'models'}`);
+  const wet = t.bars.filter(b => b.kind === 'rain'), lvls = [...new Set(wet.map(b => b.intensity))].sort();
+  const words = wet.map(b => `${barAmount(b)} from ${hourText(s, b.start)} to ${hourText(s, b.end)} (${b.src === 'radar' ? 'radar' : 'models'})`);
+  const label = (b: TodayT['bars'][number]) => b.kind === 'rain' && (b.end - b.start >= 2 || b.in >= 0.05);
   return <div className="today-rain">
-    <div className="today-rain-head"><strong>Rain, next {n} hours</strong>{t.heavy && <span className="heavy-key"><i />Heaviest</span>}</div>
-    <div className="today-plot" role="img" aria-label={`Rain over the next ${n} hours: ${words.join('; ')}.`}>
-      {t.heavy && <span className="today-heavy" data-from={t.heavy.start} data-to={t.heavy.end} style={{ left: x(t.heavy.start), width: w(t.heavy.start, t.heavy.end) }} />}
-      {t.bars.map(b => <span key={b.start} className={`today-bar bar-${b.kind}${b.intensity ? ` i${b.intensity}` : ''} src-${b.src}${b.partial ? ' partial' : ''}`}
-        data-from={b.start} data-to={b.end} data-res={b.res} style={{ left: x(b.start), width: w(b.start, b.end) }}>
-        {b.kind !== 'dry' && b.end - b.start >= 2 && <em>{barAmount(b)}</em>}</span>)}
-      {t.sources.length > 1 && t.sources.slice(1).map(src => <i key={src.start} className="src-split" style={{ left: x(src.start) }} />)}
+    <div className="today-rain-head"><strong>Rain by forecast interval</strong>
+      {t.dryUntil !== null && <span>Dry until {hourText(s, t.dryUntil)}</span>}</div>
+    <div className="today-chart" role="img" aria-label={`${t.dryUntil !== null ? `Dry until ${hourText(s, t.dryUntil)}. ` : ''}Rain: ${words.join('; ')}.`}>
+      <div className="today-amts" aria-hidden>{t.bars.filter(label).map(b =>
+        <span key={b.start} style={{ left: x((b.start + b.end) / 2) }}>{barAmount(b)}</span>)}</div>
+      <div className="today-plot">
+        {t.bars.map(b => <span key={b.start} className={`today-bar bar-${b.kind}${b.intensity ? ` i${b.intensity}` : ''} src-${b.src}`}
+          data-from={b.start} data-to={b.end} data-res={b.res} style={{ left: x(b.start), width: w(b.start, b.end) }} />)}
+        {t.now > t.from && <span className="today-past" style={{ width: w(t.from, t.now) }} />}
+        {t.sources.slice(1).filter((q, i) => q.src !== t.sources[i].src).map(q => <i key={q.start} className="src-split" style={{ left: x(q.start) }} />)}
+        {t.heavy && <span className="today-heavy" data-from={t.heavy.start} data-to={t.heavy.end} style={{ left: x(t.heavy.start), width: w(t.heavy.start, t.heavy.end) }} />}
+      </div>
+      <div className="today-axis" aria-hidden>{t.ticks.map((k, i) => <span key={k.at} className={i === 0 ? 'first' : ''} style={{ left: x(k.at) }}>{k.text}{k.day && <b>{k.day}</b>}</span>)}</div>
     </div>
-    <div className="today-axis" aria-hidden>{t.ticks.map(k => <span key={k.at} style={{ left: x(k.at) }}>{k.day ? <b>{k.day}</b> : k.text}</span>)}</div>
+    <div className="today-legend" aria-hidden>{lvls.map(l => <span key={l}><i className={`sw i${l}`} />{['', 'Light', 'Moderate', 'Heavy'][l]}</span>)}
+      {t.heavy && <span><i className="sw-heavy" />Heaviest rain falls in these intervals</span>}</div>
     <p className="today-note">{sourcesCaption(t)}</p>
   </div>;
 }
@@ -121,10 +131,14 @@ function FloodRisk({ s }: { s: Scenario }) {
     <h2 className="section-title" id="flood-h">Flood risk</h2>
     <div className="todo-row"><Home size={20} aria-hidden /><span className="todo-text"><strong>{f.label}</strong><span>The forecast does not reach the rain rates watched for street flooding here.</span></span></div>
   </section>;
-  return <section className={`todo todo-flood alert-${f.state}`} aria-labelledby="flood-h">
+  // a model signal reads as information (neutral panel, accent rule, droplets); only an official product or a validated
+  // local level gets the shield and the warning panel
+  const Icon = f.state === 'potential' ? Droplets : ShieldAlert;
+  return <section className={`todo todo-flood fstate-${f.state}`} aria-labelledby="flood-h">
     <h2 className="section-title" id="flood-h">Flood risk</h2>
     <div className="flood-panel">
-      <div className="flood-label"><ShieldAlert size={20} aria-hidden /><strong>{f.label}</strong></div>
+      <div className="flood-label"><Icon size={20} aria-hidden /><strong>{f.label}</strong></div>
+      {f.source && <p className="flood-source">{f.source}</p>}
       {f.action && <p className="flood-action">{f.action}</p>}
       {f.caveat && <p className="flood-caveat">{f.caveat}</p>}
       {f.evidence.length > 0 && <details className="event-evidence"><summary>Why Rainwatch is flagging this</summary>
@@ -223,7 +237,7 @@ export function WeatherCard({ scenario: s, detailsHref, potential, graph }: { sc
   return <article className="weather-card">
     <Header s={s} />
     <NowAndNext s={s} />
-    {today && <TodayRain t={today} />}
+    {today && <TodayRain s={s} t={today} />}
     {urgent && <FloodRisk s={s} />}
     <GoingOutside s={s} potential={potential} graph={graph} />
     {!urgent && <FloodRisk s={s} />}
