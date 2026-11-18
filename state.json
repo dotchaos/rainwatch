@@ -16,7 +16,7 @@
  },
  "last_card": "2026-11-18T17",
  "last_flood": "2026-11-18T17",
- "last_hrrr": "2026-11-18T15:00:00+00:00",
+ "last_hrrr": "2026-11-18T16:00:00+00:00",
  "last_shading": "2026-11-18T17",
  "last_signals": "2026-11-18T17",
  "last_snapshot": "2026-11-18T17",
@@ -59,7 +59,8 @@
   "urn:oid:2.49.0.1.840.0.4a6ec8b7b956fba1e621adc0d1b3d7dc280a2f0d.001.1",
   "urn:oid:2.49.0.1.840.0.4a6ec8b7b956fba1e621adc0d1b3d7dc280a2f0d.001.2",
   "urn:oid:2.49.0.1.840.0.e2269aed337f859c7ed76b8f1be2498c9c0c273d.001.1",
-  "urn:oid:2.49.0.1.840.0.f94baad318afdec498153703d1bf7c00c06585bc.001.1"
+  "urn:oid:2.49.0.1.840.0.f94baad318afdec498153703d1bf7c00c06585bc.001.1",
+  "urn:oid:2.49.0.1.840.0.0218b8afe4b6a5c486b83363048313fd800d8325.001.1"
  ],
  "raw_backfill_SFOC1": "2026-11-17T17:38:06.552804+00:00"
 }
