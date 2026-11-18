@@ -48,6 +48,9 @@ body{font-size:16px}h1{font-size:22px}h2{font-size:18px}.sub,.bar .age,#rrmsg,#r
 h1{font-size:24px;margin-bottom:4px}section{margin-top:28px;padding-top:6px;border-top:1px solid var(--line)}
 section h2{font-size:20px;margin:14px 0 8px}section h3{font-size:16px;margin:16px 0 6px}
 .toc{font-size:15px;line-height:1.9;margin:12px 0 4px}.toc a{white-space:nowrap}
+@media(max-width:480px){.claims table,.claims tbody,.claims tr,.claims td{display:block;width:auto}.claims tr:first-child{display:none}
+.claims tr{padding:10px 0;border-top:1px solid var(--line)}.claims td{padding:2px 0;border:0}.claims td.n:last-child{margin-top:4px}
+.near .tag{display:block;min-width:0}}
 .bl{font-size:17px}details{margin:8px 0}details summary{cursor:pointer;font-size:15px}
 """
 
