@@ -1,6 +1,8 @@
 """Forecast/observation archive and source scoring.
 
 data/forecasts/YYYY-MM.jsonl  one snapshot per clock hour: every source's hourly values for the next 12 h
+data/live/YYYY-MM-DD/HHMMZ.json  the live card exactly as published (Nov 18 2026): every run while rain is in the
+                              next 24 h, otherwise once per clock hour; drop one into card/scenarios to test a real moment
 data/obs.json                 merged hourly gauge totals {station: {hour_iso: inches}}
 data/state.json               alert bookkeeping
 """
@@ -150,6 +152,28 @@ class Archive:
         st["last_flood"] = hour_key
         self.save_state(st)
         return True
+
+    WET_H = 24   # keep every run's card while rain is this close; one an hour otherwise
+
+    def live_card(self, now: datetime, card: dict | None) -> Path | None:
+        """data/live/YYYY-MM-DD/HHMMZ.json (Nov 18 2026): the published live card, unchanged, so a real moment (the 7:54 AM
+        radar/model overlap) can be replayed as a card scenario instead of rebuilt from swapped values. One small file per
+        card, never an appended month file, so the data branch doesn't re-store a growing blob on every run. Every run
+        while any rain amount of 0.01" or more starts within WET_H hours; otherwise at most once per clock hour."""
+        if not card or not card.get("provenance", {}).get("generated"):
+            return None
+        wet = any(b.get("in", 0) >= 0.01 and b.get("startHour", 99) < self.WET_H for b in card.get("rainBlocks") or [])
+        hour_key, st = now.astimezone(UTC).strftime("%Y-%m-%dT%H"), self.state()
+        if not wet and st.get("last_live") == hour_key:
+            return None
+        t = now.astimezone(UTC)
+        d = self.root / "live" / f"{t:%Y-%m-%d}"
+        d.mkdir(parents=True, exist_ok=True)
+        p = d / f"{t:%H%M}Z.json"
+        p.write_text(json.dumps(card, separators=(",", ":"), ensure_ascii=False) + "\n")
+        st["last_live"] = hour_key
+        self.save_state(st)
+        return p
 
     def forecasts(self, since: datetime) -> list[dict]:
         out = []

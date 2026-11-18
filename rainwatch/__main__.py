@@ -89,6 +89,10 @@ def main(argv=None) -> int:
         arc.flood(now, fc.card)
     except Exception as e:  # noqa: BLE001
         print(f"flood record: {e}")
+    try:    # the published live card, unchanged (Nov 18 2026): real moments become card test scenarios; never blocks the update
+        arc.live_card(now, fc.card)
+    except Exception as e:  # noqa: BLE001
+        print(f"live card record: {e}")
     try:    # HRRR archive (v0.23): each run once, with its own run time, for lead-time scoring; never blocks the update
         for d in det:     # the run Open-Meteo is serving (one extra call, scheduled job only)
             if d.key == "hrrr" and d.issued is None:
