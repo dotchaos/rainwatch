@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-18T20:58:22.749627+00:00",
+ "generated": "2026-11-18T21:28:38.968652+00:00",
  "truth": "SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24)",
  "window_days": 60,
  "heavy_in": 0.2,
@@ -1601,10 +1601,10 @@
    "HRRR": 3,
    "ECMWF": 7,
    "NBM": 5,
-   "Flood Advisory": 4,
+   "Flood Advisory": 6,
    "Mint gauge 0.54\" last hour": 1,
    "Mint gauge 0.93\" last hour": 1,
-   "Mint gauge 0.26\" last hour": 2
+   "Mint gauge 0.26\" last hour": 1
   },
   "inferred_hours": 76
  }
