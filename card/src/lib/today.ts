@@ -125,7 +125,10 @@ export function todayTimeline(s: Scenario): TodayTimeline | null {
   }
   const e = eventHero(s), st = e?.kind === 'storm' ? floodStorm(s) : null;
   // the heavy period, widened to the whole intervals it touches: the outline never cuts a 3-hour bar in two
-  const hv = st?.heavy && st.heavy.end > from && st.heavy.start < to ? bars.filter(b => b.start < st.heavy!.end && st.heavy!.start < b.end) : [];
+  // an interval counts when at least half of it lies in the heavy period, so a mostly-light edge interval is not
+  // outlined as "heaviest" (Nov 18: the 1–4 AM block touches the 3 AM start of the heavy period by one hour)
+  const inHeavy = (b: TodayBar) => Math.min(b.end, st!.heavy!.end) - Math.max(b.start, st!.heavy!.start) >= (b.end - b.start) / 2;
+  const hv = st?.heavy && st.heavy.end > from && st.heavy.start < to ? bars.filter(inHeavy) : [];
   const heavy = hv.length ? { start: hv[0].start, end: hv[hv.length - 1].end } : null;
   // ticks: interval edges about every 6 hours from the window's start (the model grid need not meet local 6 AM / noon);
   // the first tick after midnight names its day; a label too near the right edge is dropped rather than clipped
