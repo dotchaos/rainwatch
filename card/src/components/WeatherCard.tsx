@@ -84,6 +84,7 @@ export function NowAndNext({ s }: { s: Scenario }) {
  *  edge. Colour is the existing intensity category; each amount sits above its own bar; the outline is the hero storm's
  *  heavy period. A long dry lead-in is skipped and said in words, so the rain gets the room. */
 function TodayRain({ s, t }: { s: Scenario; t: TodayT }) {
+  const rec = amountsVsTotal(s);
   const n = t.to - t.from, x = (h: number) => `${((h - t.from) / n) * 100}%`, w = (a: number, b: number) => `${((b - a) / n) * 100}%`;
   const wet = t.bars.filter(b => b.kind === 'rain'), lvls = [...new Set(wet.map(b => b.intensity))].sort();
   const words = wet.map(b => `${barAmount(b)} from ${hourText(s, b.start)} to ${hourText(s, b.end)} (${b.src === 'radar' ? 'radar' : 'models'})`);
@@ -106,7 +107,9 @@ function TodayRain({ s, t }: { s: Scenario; t: TodayT }) {
     <div className="today-legend" aria-hidden>{lvls.map(l => <span key={l}><i className={`sw i${l}`} />{['', 'Light', 'Moderate', 'Heavy'][l]}</span>)}
       {t.heavy && <span><i className="sw-heavy" />Heaviest rain falls in these intervals</span>}</div>
     <p className="today-note">Darker blue means heavier rain. Each number is the rain expected in that stretch of time.</p>
-    <details className="today-about"><summary>Where these amounts come from</summary><p>{sourcesCaption(t)}</p></details>
+    <details className="today-about"><summary>Where these amounts come from</summary><p>{sourcesCaption(t)}</p>
+      {rec && <p className="today-total-note">The interval amounts are not the storm total. {rec.exact ? 'The intervals' : 'The intervals fully inside the storm window'} add up to {fmtAmount(rec.blocksIn)} from {rec.from} through {rec.to};
+        the storm total above is {tenths(rec.totalIn)}" for the same hours.{rec.blocksIn < rec.totalIn - 0.05 ? ' The difference is real, not rounding: each interval shows a typical model run for those hours alone, and the runs disagree on timing, so the intervals come out drier than a typical run\'s whole storm. The total is the better guide to how much rain; the intervals show when.' : ''}</p>}</details>
   </div>;
 }
 
