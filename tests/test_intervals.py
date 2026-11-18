@@ -51,13 +51,15 @@ def test_radar_hours_are_hourly_nws_hours_6_hour_missing_hours_absent_and_partia
     parts = [ens("ens:ecmwf_ifs025", WET, smoothed=True, spread3=True)]
     rows = [ROW("radar", 0.12), ROW("radar", 0.3)] + [ROW() for _ in range(4)] + [None, None] + [ROW("nws", 0.05)] * 4
     b = intervals.blocks(H, rows, parts)
-    assert b[0] == {"startHour": 0, "endHour": 1, "in": 0.12, "res": 1}
+    assert b[0] == {"startHour": 0, "endHour": 1, "in": 0.12, "res": 1, "src": "radar"}
     assert b[1]["res"] == 1 and b[1]["in"] == 0.3
     assert b[2] == {**b[2], "startHour": 2, "endHour": 3, "res": 3, "partial": True}     # the rest of a block the radar began
     assert b[2]["in"] == round(totals.window(parts, None, H[0:3])["p50"], 3)              # its whole-block amount, never a split
     assert (b[3]["startHour"], b[3]["endHour"], b[3]["res"]) == (3, 6, 3)
     assert not any(x["startHour"] <= 6 < x["endHour"] or x["startHour"] <= 7 < x["endHour"] for x in b)   # no forecast
     assert [(x["startHour"], x["endHour"], x["res"], x["in"]) for x in b[4:]] == [(8, 12, 6, 0.2)]
+    assert [x["src"] for x in b] == ["radar", "radar", "model", "model", "nws"]          # every amount names its source
+    assert (b[2]["blockStartHour"], b[2]["blockEndHour"]) == (0, 3)                     # the whole block, radar hours included
 
 
 def test_block_medians_are_not_scaled_to_the_event_total():
@@ -113,7 +115,11 @@ def test_v026_adds_fields_and_changes_nothing_else():
     finally:
         c.HOURLY_EXT = True
     on = run()
-    assert on["latest.json"] == off["latest.json"] and on["details/index.html"] == off["details/index.html"]
+    # the details page lists the hourly row's amounts (Nov 18 2026); everything else on it is unchanged
+    import re
+    strip = lambda h: re.sub(r"<details><summary>Rain amounts by interval.*?</details>", "", h, flags=re.S)  # noqa: E731
+    assert "Rain amounts by interval" in on["details/index.html"] and "Rain amounts by interval" not in off["details/index.html"]
+    assert on["latest.json"] == off["latest.json"] and strip(on["details/index.html"]) == off["details/index.html"]
     a, b = json.loads(off["live.json"]), json.loads(on["live.json"])
     assert set(b) - set(a) <= {"rainBlocks", "peakRate", "_peak_check"} and set(a) <= set(b)
     assert b["hourly"][:len(a["hourly"])] == a["hourly"] and len(b["hourly"]) > len(a["hourly"])

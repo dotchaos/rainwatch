@@ -5,8 +5,9 @@ import { renderToString } from 'react-dom/server';
 import { scenarios } from '../data/scenarios';
 import type { Scenario } from '../types';
 import { Timeline } from '../components/Timeline';
+import { WeatherCard } from '../components/WeatherCard';
 import { stormCut, stormWed, stormWedNight } from './cases';
-import { ageCard, amountsVsTotal, chartBlocks, deriveAlert, eventHero, fiveDays, hourAmounts, nowNext, storms } from './derive';
+import { ageCard, amountsVsTotal, amountWords, overlapNote, chartBlocks, deriveAlert, eventHero, fiveDays, hourAmounts, nowNext, storms } from './derive';
 import { validateScenario } from './rules';
 
 const byId = (id: string) => structuredClone(scenarios.find(s => s.id === id)!) as Scenario;
@@ -148,9 +149,51 @@ describe('rain amounts in the hourly row', () => {
     expect(r.blocksIn).toBeCloseTo(2.14, 2);
     expect(r).toMatchObject({ from: 'the start of tomorrow', to: 'the end of Thursday' });
   });
+  // Nov 18 2026, 7:54 AM: radar gave 7 and 8 AM (.01", .11"); the models' 7–10 AM block (.72") showed under 9 AM, so the
+  // row read .01 + .11 + .72 as three consecutive amounts. Single row (John): radar hours, then the next whole interval.
+  const nov18 = () => { const s = stormWed(); s.rainBlocks = [
+    { startHour: 0, endHour: 1, in: 0.01, res: 1, src: 'radar' }, { startHour: 1, endHour: 2, in: 0.11, res: 1, src: 'radar' },
+    { startHour: 2, endHour: 3, in: 0.72, res: 3, src: 'model', partial: true, blockStartHour: 0, blockEndHour: 3 },
+    { startHour: 3, endHour: 6, in: 0.63, res: 3, src: 'model' }, ...s.rainBlocks!.filter(b => b.startHour >= 6)]; return s; };
+  it('a model block that overlaps radar hours shows no number in the row; nothing shown can be added to an overlapping amount', () => {
+    const m = hourAmounts(nov18())!;
+    expect(m.get(0)).toMatchObject({ text: '.01"', src: 'radar' });
+    expect(m.get(1)).toMatchObject({ text: '.11"', src: 'radar' });
+    expect(m.get(2)).toMatchObject({ text: null, kind: 'covered', span: [0, 3], overlap: '.72"' });   // not dry, not an amount
+    expect(m.get(4)).toMatchObject({ text: '.63"', pos: 'mid', span: [3, 6] });
+    expect([...m.values()].some(a => a.text === '.72"')).toBe(false);
+    expect([...m.entries()].filter(([, a]) => a.top).map(([h]) => h)).not.toContain(2);         // a hidden block is never "the strongest"
+  });
+  it('the tap gives one plain sentence about the overlap, not a table; spoken labels name source and hours', () => {
+    const s = nov18();
+    expect(overlapNote(s)).toMatch(/^Radar is covering .+\. The models' estimate for .+ to .+ \(about \.72"\) includes those hours, so it isn't added to the radar amounts and isn't shown in the row\.$/);
+    expect(overlapNote(stormWed())).toBeNull();
+    expect(amountWords(s, hourAmounts(s)!.get(2))).toMatch(/model amount overlaps the radar hours/);
+    expect(amountWords(s, hourAmounts(s)!.get(4))).toMatch(/rain \.63" for .+ to .+, typical model run$/);
+  });
+  it('a block cut only by now (no radar) keeps its amount, as before', () => {
+    const a = hourAmounts(ageCard(stormWed(), 3))!;
+    expect(a.get(3)!.kind).not.toBe('covered');
+  });
+  it('the real 12:51 AM card renders the overlap coherently: radar hours, dotted covered hours, then the next block', () => {
+    const s = stormWedNight(), m = hourAmounts(s)!;
+    expect(m.get(1)).toMatchObject({ src: 'radar', kind: 'dry' });
+    expect([m.get(2)!.kind, m.get(3)!.kind]).toEqual(['covered', 'covered']);
+    expect(m.get(5)).toMatchObject({ text: '.29"' });
+    const html = renderToString(createElement(WeatherCard, { scenario: s }));
+    expect(html).toContain('amt-covered');
+    expect(html).toContain('overlap-note');
+    expect(html).not.toContain('<table');
+    expect(validateScenario(s)).toEqual([]);
+  });
+  it('without radar overlap nothing is hidden and no overlap note appears', () => {
+    const html = renderToString(createElement(WeatherCard, { scenario: stormWed() }));
+    expect(html).not.toContain('amt-covered');
+    expect(html).not.toContain('overlap-note');
+  });
   it('an aged card keeps a part-past interval, marked partial', () => {
     const a = ageCard(stormWed(), 3);
-    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, partial: true, blockStartHour: 2, blockEndHour: 5 });
+    expect(a.rainBlocks![0]).toEqual({ startHour: 3, endHour: 5, in: 0, res: 3, src: 'model', partial: true, blockStartHour: 2, blockEndHour: 5 });
     expect(validateScenario(a)).toEqual([]);
   });
 });

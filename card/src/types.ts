@@ -76,8 +76,10 @@ export interface Scenario {
    * pooled model genuinely hourly), 3 (a 3-hour model block) or 6 (an NWS 6-hour period). `in` is the median of the
    * runs' own totals over the interval; intervals are independent and NOT scaled to add up to a stretch's total.
    * `partial`: the forecast's block runs past now or the radar. Hours with no interval have no forecast amount.
+   * `src`: where the amount comes from (radar nowcast, model runs, NWS). A radar hour inside a model block is another
+   * estimate of part of the same hours, never an addition to it; the card keeps the two visibly apart (Nov 18 2026).
    */
-  rainBlocks?: { startHour: number; endHour: number; in: number; res: 1 | 3 | 6; partial?: boolean;
+  rainBlocks?: { startHour: number; endHour: number; in: number; res: 1 | 3 | 6; partial?: boolean; src?: 'radar' | 'model' | 'nws';
     /** With `partial`: the whole block's hours (may start before hour 0 or end past the row), for drawing its bracket. */
     blockStartHour?: number; blockEndHour?: number }[];
   /** Peak hourly rate (v0.26), only when two or more genuinely hourly systems agree (rainwatch/intervals.py). */

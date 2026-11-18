@@ -656,6 +656,7 @@
    "endHour": 2,
    "in": 0.05,
    "res": 3,
+   "src": "model",
    "blockStartHour": -1,
    "blockEndHour": 2,
    "partial": true
@@ -664,211 +665,246 @@
    "startHour": 2,
    "endHour": 5,
    "in": 0.4,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 5,
    "endHour": 8,
    "in": 0.15,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 8,
    "endHour": 11,
    "in": 0.05,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 11,
    "endHour": 14,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 14,
    "endHour": 17,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 17,
    "endHour": 20,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 20,
    "endHour": 23,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 23,
    "endHour": 26,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 26,
    "endHour": 29,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 29,
    "endHour": 32,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 32,
    "endHour": 35,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 35,
    "endHour": 38,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 38,
    "endHour": 41,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 41,
    "endHour": 44,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 44,
    "endHour": 47,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 47,
    "endHour": 50,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 50,
    "endHour": 53,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 53,
    "endHour": 56,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 56,
    "endHour": 59,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 59,
    "endHour": 62,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 62,
    "endHour": 65,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 65,
    "endHour": 68,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 68,
    "endHour": 71,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 71,
    "endHour": 74,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 74,
    "endHour": 77,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 77,
    "endHour": 80,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 80,
    "endHour": 83,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 83,
    "endHour": 86,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 86,
    "endHour": 89,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 89,
    "endHour": 92,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 92,
    "endHour": 95,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 95,
    "endHour": 98,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 98,
    "endHour": 101,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 101,
    "endHour": 104,
    "in": 0.0,
-   "res": 3
+   "res": 3,
+   "src": "model"
   },
   {
    "startHour": 104,
    "endHour": 106,
    "in": 0.0,
    "res": 3,
+   "src": "model",
    "blockStartHour": 104,
    "blockEndHour": 107,
    "partial": true

@@ -1,5 +1,11 @@
 # Changelog
 
+## Review branch radar-model-amounts (Nov 18 2026): nothing in the hourly row adds up wrongly
+- Radar hours show their own amounts (own hue). A model block that radar has partly taken over shows no number in the row: a dotted line marks its remaining hours. The next whole interval shows as before.
+- Tap the amounts (or the note under the row): one plain sentence explains an overlap. The full interval list (source, span, amount) moved to the details page.
+- "3 hr" labels dropped from the row (the bracket carries the span, the list the details); brackets made stronger.
+- Every amount carries its source (`src`: radar, model, nws) from the engine (`rainwatch/intervals.py`). Display only; flood trigger unchanged (audited, see DECISIONS).
+
 ## v0.22 (review branch hero-priority): the hero leads with the most consequential storm
 - Event selection only (no engine, threshold or graph change). Among storms with flood-level hours: immediate danger first (official product or validated hazard, under way or past its time to prepare), then voice (action, anticipation, awareness), then accumulation in 0.5" steps, then hours of heavy rain, then the earlier storm.
 - A transient burst (under 2 hours of heavy rain, not actionable) never leads: the 11:39 AM radar spike no longer replaces Wednesday, and a spike appearing or vanishing leaves the headline where it was. Alone, it reads as an ordinary rain day (no flood hero).

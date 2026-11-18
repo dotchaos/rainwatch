@@ -128,5 +128,11 @@
 .hour .amt.blk::after{content:'';position:absolute;left:0;right:0;bottom:-4px;border-bottom:1.5px solid #b9d0de}
 .hour .amt.blk-start::after{left:6px;border-left:1.5px solid #b9d0de;height:4px}.hour .amt.blk-end::after{right:6px;border-right:1.5px solid #b9d0de;height:4px}
 .hour-top .amt{color:#174a6b;font-weight:800}.hour-top .amt.blk::after{border-color:#2f6f95}
+/* Single row (Nov 18 2026): radar amounts in their own hue; a model block overlapping radar hours shows no number,
+   only a dotted line over its remaining hours; brackets strong enough to read as one interval */
+.hour .amt-radar,.key-radar{color:#2e7a6a}
+.hour .amt.blk::after{border-bottom-width:2px;border-color:#8fb2c6}.hour .amt.blk-start::after,.hour .amt.blk-end::after{border-left-width:2px;border-right-width:2px;height:5px}
+.hour .amt-covered::after{content:'';position:absolute;left:0;right:0;bottom:-4px;border-bottom:2px dotted #a3afb5}.hour .amt-covered.cov-start::after,.hour .amt-covered.cov-solo::after{left:6px}.hour .amt-covered.cov-end::after,.hour .amt-covered.cov-solo::after{right:6px}
+.amounts-about .overlap-note{color:#53636c}
 .amounts-about{margin-top:10px;font-size:11px;color:#7b8991}.amounts-about summary{cursor:pointer}.amounts-about p{margin:6px 0 0;line-height:1.4}
 .event-lab{max-width:420px;padding:12px 15px 40px}.event-case h3{font-size:12px;font-weight:600;color:#53636c;margin:0 0 8px}.event-case{margin-bottom:28px}
