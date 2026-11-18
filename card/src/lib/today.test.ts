@@ -141,3 +141,15 @@ describe('radar and an overlapping model interval (live, Nov 18 9:34 AM)', () =>
     expect(h).toContain('The .04" model amount is for 1–4 AM, overlapping the radar hours. It is a separate estimate, not added to them.');
   });
 });
+
+describe('rain chart labels never crowd at 390px', () => {
+  it('numbers sit only over whole intervals of 3+ hours (each at least ~40px at 390px)', () => {
+    for (const s of [stormWed(), stormWedNight()]) {
+      const t = todayTimeline(s)!, h = html(s).replace(/<!-- -->/g, '');
+      const amts = h.slice(h.indexOf('today-amts'), h.indexOf('today-plot'));
+      const shown = [...amts.matchAll(/left:([\d.]+)%/g)].map(m => Number(m[1]));
+      for (let i = 1; i < shown.length; i++) expect(shown[i] - shown[i - 1]).toBeGreaterThanOrEqual(300 / (t.to - t.from) - 1e-9);
+      expect(amts).not.toContain('.04"');                      // the overlapping model total is stated in words instead
+    }
+  });
+});

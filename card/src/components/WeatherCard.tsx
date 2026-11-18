@@ -90,7 +90,8 @@ function TodayRain({ s, t }: { s: Scenario; t: TodayT }) {
   const words = wet.map(b => `${barAmount(b)} from ${hourText(s, b.coversFrom ?? b.start)} to ${hourText(s, b.end)} (${b.src === 'radar' ? 'radar' : 'models'})`);
   // numbers only over bars at least 2 hours wide; radar hours are named in a line of their own (they are too narrow,
   // and an overlapping model total must not sit on top of them)
-  const label = (b: TodayT['bars'][number]) => b.kind === 'rain' && b.src !== 'radar' && b.end - b.start >= 2;
+  // (a model total drawn after radar hours is stated in its own line instead, so it never crowds its neighbour)
+  const label = (b: TodayT['bars'][number]) => b.kind === 'rain' && b.src !== 'radar' && b.coversFrom === null && b.end - b.start >= 2;
   const radar = t.bars.filter(b => b.src === 'radar' && b.start >= t.now);
   const over = t.bars.find(b => b.coversFrom !== null && b.kind === 'rain');
   return <div className="today-rain">
