@@ -5,7 +5,7 @@ import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { barAmount, hourText, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { barAmount, clockRange, hourText, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -87,11 +87,16 @@ function TodayRain({ s, t }: { s: Scenario; t: TodayT }) {
   const rec = amountsVsTotal(s);
   const n = t.to - t.from, x = (h: number) => `${((h - t.from) / n) * 100}%`, w = (a: number, b: number) => `${((b - a) / n) * 100}%`;
   const wet = t.bars.filter(b => b.kind === 'rain'), lvls = [...new Set(wet.map(b => b.intensity))].sort();
-  const words = wet.map(b => `${barAmount(b)} from ${hourText(s, b.start)} to ${hourText(s, b.end)} (${b.src === 'radar' ? 'radar' : 'models'})`);
-  const label = (b: TodayT['bars'][number]) => b.kind === 'rain' && (b.end - b.start >= 2 || b.in >= 0.05);
+  const words = wet.map(b => `${barAmount(b)} from ${hourText(s, b.coversFrom ?? b.start)} to ${hourText(s, b.end)} (${b.src === 'radar' ? 'radar' : 'models'})`);
+  // numbers only over bars at least 2 hours wide; radar hours are named in a line of their own (they are too narrow,
+  // and an overlapping model total must not sit on top of them)
+  const label = (b: TodayT['bars'][number]) => b.kind === 'rain' && b.src !== 'radar' && b.end - b.start >= 2;
+  const radar = t.bars.filter(b => b.src === 'radar' && b.start >= t.now);
+  const over = t.bars.find(b => b.coversFrom !== null && b.kind === 'rain');
   return <div className="today-rain">
     <div className="today-rain-head"><strong>Rain by forecast interval</strong>
       {t.dryUntil !== null && <span>Dry until {hourText(s, t.dryUntil)}</span>}</div>
+    {radar.some(b => b.kind !== 'dry') && <p className="today-radar">Radar, hour by hour: {radar.map(b => `${barAmount(b) || 'dry'} (${clockRange(s, b.start, b.end)})`).join(', then ')}</p>}
     <div className="today-chart" role="img" aria-label={`${t.dryUntil !== null ? `Dry until ${hourText(s, t.dryUntil)}. ` : ''}Rain: ${words.join('; ')}.`}>
       <div className="today-amts" aria-hidden>{t.bars.filter(label).map(b =>
         <span key={b.start} style={{ left: x((b.start + b.end) / 2) }}>{barAmount(b)}</span>)}</div>
@@ -104,6 +109,7 @@ function TodayRain({ s, t }: { s: Scenario; t: TodayT }) {
       </div>
       <div className="today-axis" aria-hidden>{t.ticks.map((k, i) => <span key={k.at} className={i === 0 ? 'first' : ''} style={{ left: x(k.at) }}>{k.text}{k.day && <b>{k.day}</b>}</span>)}</div>
     </div>
+    {over && <p className="today-overlap">The {barAmount(over)} model amount is for {clockRange(s, over.coversFrom!, over.end)}, overlapping the radar hours. It is a separate estimate, not added to them.</p>}
     <div className="today-legend" aria-hidden>{lvls.map(l => <span key={l}><i className={`sw i${l}`} />{['', 'Light', 'Moderate', 'Heavy'][l]}</span>)}
       {t.heavy && <span><i className="sw-heavy" />Heaviest rain falls in these intervals</span>}</div>
     <p className="today-note">Darker blue means heavier rain. Each number is the rain expected in that stretch of time.</p>

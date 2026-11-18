@@ -44,7 +44,7 @@ describe('Today First (PR B): one forecast state', () => {
   it('sources are named and never summed', () => {
     const t = todayTimeline(stormWedNight())!;
     expect(t.sources.map(x => x.src)).toEqual(['radar', 'model']);
-    expect(sourcesCaption(t)).toBe("Each bar is one forecast interval: radar, hour by hour, then 3-hour model totals. Amounts are for that interval alone and aren't added together.");
+    expect(sourcesCaption(t)).toBe("Each bar is one forecast interval: radar, hour by hour, then 3-hour model totals. Amounts are for that interval alone and aren't added together. The first model amount covers its whole 3-hour interval, including hours radar already shows; the two are separate estimates.");
     const d = todayTimeline(stormWed())!;            // a long dry lead-in is skipped and said, opening one interval early
     expect(d.dryUntil).toBe(14);
     expect(d.from).toBe(11);
@@ -128,5 +128,16 @@ describe('the rain chart never implies its intervals add up to the storm total',
     expect(chart).toContain('The interval amounts are not the storm total.');
     expect(chart).toMatch(/add up to 2\.14" from .* the storm total above is 2\.7"/);
     expect(chart).toContain('The total is the better guide to how much rain; the intervals show when.');
+  });
+});
+
+describe('radar and an overlapping model interval (live, Nov 18 9:34 AM)', () => {
+  it('the model bar starts where radar ends, keeps its whole-interval amount, and is labelled as overlapping', () => {
+    const s = stormWedNight(), t = todayTimeline(s)!;
+    for (let i = 1; i < t.bars.length; i++) expect(t.bars[i].start).toBeGreaterThanOrEqual(t.bars[i - 1].end);   // never drawn over
+    const m = t.bars.find(b => b.src === 'model')!;
+    expect(m).toMatchObject({ start: 2, end: 4, coversFrom: 1, in: 0.036 });
+    const h = html(s).replace(/<!-- -->/g, '').replace(/&quot;/g, '"');
+    expect(h).toContain('The .04" model amount is for 1–4 AM, overlapping the radar hours. It is a separate estimate, not added to them.');
   });
 });
