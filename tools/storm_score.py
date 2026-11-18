@@ -50,6 +50,12 @@ def main():
         have = [truth[h] for h in hours if h in truth]
         return (round(sum(have), 2) if have else None), len(have), len(hours)
 
+    md.append("\n# 1. Forecast: did the rain arrive as predicted?\n\nAccumulation, 3-hour amounts, peak intensity and timing, "
+              "per forecast snapshot, against the gauge.\n")
+    risk_md = ["\n# 2. Risk model: did the predicted flood-threshold exceedance occur?\n",
+               "The forecast's flood-potential windows and storm-wide threshold shares, against whether the gauge crossed the "
+               "same provisional levels. Gauge crossing is not street flooding.\n"]
+
     def mark(n, of):
         return "complete" if n == of else f"INCOMPLETE ({n}/{of} h observed)"
 
@@ -117,12 +123,13 @@ def main():
         pk = rec["peak"]
         md += [f"\n**Peak**: gauge {pk['gauge_wettest_hour'] or 'none yet'}; forecast wettest block {pk['forecast_wettest_block']}; "
                f"hourly systems {pk['hourly_systems'] or 'none'}; card showed a rate: {pk['card_showed_rate'] or 'no'} — {pk['coverage']}",
-               f"\n**Timing**: {json.dumps(rec['timing'])}",
-               "\n**Flood-risk windows** (gauge at 0.20\"+ an hour; street reports listed separately, not merged):"]
-        md += [f"- {f['window']}: gauge {'—' if f['gauge_total'] is None else str(f['gauge_total']) + '\"'}, heavy hours {f['gauge_hours_0.20_plus'] or 'none'} — {f['coverage']}; "
+               f"\n**Timing**: {json.dumps(rec['timing'])}"]
+        risk_md += [f"\n**Flood-potential windows, forecast {datetime.fromisoformat(s['taken']).astimezone(TZ):%a %-I:%M %p}** (gauge hours at 0.20\"+):"]
+        risk_md += [f"- {f['window']}: gauge {'—' if f['gauge_total'] is None else str(f['gauge_total']) + '\"'}, heavy hours {f['gauge_hours_0.20_plus'] or 'none'} — {f['coverage']}; "
                f"street: {len(f['street_observations_nearby'])} report(s)" for f in flood] or ["- none in this snapshot"]
     # storm-wide run metrics (tools/storm_runs.py) vs the same metrics measured by the gauge over the same window
     rsnaps = sorted((D / "snapshots").glob("runs-*.json"))
+    md += risk_md
     if rsnaps:
         md += ["\n## Storm-wide run metrics vs the gauge\n",
                "Shares of model runs that crossed each provisional level, against whether the gauge did. Not probabilities "
@@ -159,7 +166,9 @@ def main():
         md.append(f"| **Gauge** ({cov}) | {yn(g['cross_1h_driveway'])} | {yn(g['cross_3h_behind'])} | {yn(g['cross_3h_driveway'])} | "
                   + ("— | — |" if n == 0 else f"{g['max6']}\"{' so far' if part else ''} | {g['heavy_longest_h']} h{' so far' if part else ''} |"))
         out.setdefault("run_metrics", []).append({"forecast": r["taken"], "gauge": g, "coverage": cov})
-    md += ["\n## Street observations (as reported; never gauge data)\n"]
+    md += ["\n# 3. Local outcome: did flooding occur, where, when, how much?\n",
+           "Street observations as reported, never gauge data and never merged into it. These are what validate (or not) "
+           "the driveway threshold; the answers to 1, 2 and 3 can differ.\n"]
     md += [f"- {x['observed_at']}{' (approx.)' if x.get('approx') else ''} · {x['location']} · {x.get('level', 'unknown')} · "
            f"{x['what']} — {x.get('reporter', '')}" for x in street] or ["- none recorded yet"]
     Path("storm_score.json").write_text(json.dumps(out, indent=1, default=str))
