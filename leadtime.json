@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-18T16:09:54.018474+00:00",
+ "generated": "2026-11-18T16:25:11.841081+00:00",
  "truth": "SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24)",
  "window_days": 60,
  "heavy_in": 0.2,
@@ -1032,7 +1032,7 @@
    ]
   }
  },
- "card_records": 43,
+ "card_records": 44,
  "now_split": {
   "radar-corroborated": {
    "n": 7,
