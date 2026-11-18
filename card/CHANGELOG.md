@@ -1,9 +1,10 @@
 # Changelog
 
-## Review branch radar-model-amounts (Nov 18 2026): what each rain amount covers, and where it comes from
-- A model block that began in radar hours brackets all its hours: dashed under the radar amounts, solid under its own. Radar amounts carry a "radar" label; the row's note says the two are estimates of the same rain, not to be added.
-- Every amount carries its source (`src`: radar, model, nws) from the engine (`rainwatch/intervals.py`); spoken labels give source and hours.
-- Display only. The flood-potential trigger is unchanged (audited, see DECISIONS).
+## Review branch radar-model-amounts (Nov 18 2026): nothing in the hourly row adds up wrongly
+- Radar hours show their own amounts (own hue). A model block that radar has partly taken over shows no number in the row: a dotted line marks its remaining hours. The next whole interval shows as before.
+- Tap the amounts (or the note under the row) for every interval: source, whole span, amount; an overlapping block is named "not in addition".
+- "3 hr" labels dropped from the row (the bracket carries the span, the list the details); brackets made stronger.
+- Every amount carries its source (`src`: radar, model, nws) from the engine (`rainwatch/intervals.py`). Display only; flood trigger unchanged (audited, see DECISIONS).
 
 ## v0.22 (review branch hero-priority): the hero leads with the most consequential storm
 - Event selection only (no engine, threshold or graph change). Among storms with flood-level hours: immediate danger first (official product or validated hazard, under way or past its time to prepare), then voice (action, anticipation, awareness), then accumulation in 0.5" steps, then hours of heavy rain, then the earlier storm.

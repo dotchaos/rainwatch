@@ -1210,55 +1210,69 @@ function heatEvent(s: Scenario): EventHero | null {
            advisory: { action: s.alert.action, risk: false, evidence: [] } };
 }
 
-/* ---------- Rain amounts in the hourly row (v0.26 review) ----------
+/* ---------- Rain amounts in the hourly row (v0.26 review; single row, Nov 18 2026) ----------
  * Each hour shows the amount of the interval it belongs to, at that interval's resolution: an hourly amount under its
  * hour; a 3- or 6-hour amount once, under the middle of a bracket spanning its hours. "Trace" under 0.01", nothing for a
- * forecast-dry interval, "—" for hours with no forecast. The interval with the highest rate is marked. */
+ * forecast-dry interval, "—" for hours with no forecast. The interval with the highest rate is marked.
+ * Overlap (John, Nov 18 2026): a model block that radar has partly taken over is another estimate of the radar's hours,
+ * never an addition to them, so the row does not show its amount: its remaining hours are marked `covered` (no number,
+ * not dry) and the block is listed with every other interval behind a tap (`amountList`). The row reads radar hours,
+ * then the next whole interval; nothing in it may be added to something else that covers the same hours. */
 export type BracketPos = 'solo' | 'start' | 'mid' | 'end';
-/** `src` and `span` say where an amount comes from and which hours it covers (`span`: the whole interval, end exclusive,
- *  set on the hour that shows the amount). `under`: a model block's bracket passing under this hour, where another
- *  source (radar) gives the hour's own amount: drawn apart from it so the two never read as additive (Nov 18 2026). */
-export interface HourAmount { text: string | null; kind: 'amount' | 'trace' | 'dry' | 'missing'; pos: BracketPos; res: number; top: boolean; partial: boolean;
-  src?: 'radar' | 'model' | 'nws'; span?: [number, number];
-  under?: { pos: BracketPos; top: boolean; text: string | null; src?: 'radar' | 'model' | 'nws'; span: [number, number] } }
+type Src = 'radar' | 'model' | 'nws';
+/** `src` and `span`: where an amount comes from and the whole interval it covers (end exclusive; set where the amount is
+ *  shown, or on a covered hour). `covered`: the hour belongs to a model block that overlaps radar hours; no number. */
+export interface HourAmount { text: string | null; kind: 'amount' | 'trace' | 'dry' | 'missing' | 'covered'; pos: BracketPos; res: number; top: boolean; partial: boolean;
+  src?: Src; span?: [number, number]; overlap?: string }
+type Block = NonNullable<Scenario['rainBlocks']>[number];
+const bStart = (b: Block) => b.blockStartHour ?? b.startHour, bEnd = (b: Block) => b.blockEndHour ?? b.endHour;
+/** A block whose hours before its first shown hour are given by radar in this row: it overlaps the radar's estimate. */
+const overlapsRadar = (s: Scenario, b: Block) => b.src !== 'radar' && bStart(b) < b.startHour
+  && (s.rainBlocks ?? []).some(r => r.src === 'radar' && r.startHour >= bStart(b) && r.startHour < b.startHour);
 export const fmtAmount = (x: number) => x >= 1 ? `${x.toFixed(2)}"` : `${x.toFixed(2).replace(/^0/, '')}"`;
+const amountText = (x: number) => x === 0 ? 'Dry' : x < 0.01 ? 'Trace' : fmtAmount(x);
 export function hourAmounts(s: Scenario): Map<number, HourAmount> | null {
   if (!s.rainBlocks) return null;
   const out = new Map<number, HourAmount>();
-  const wet = s.rainBlocks.filter(b => b.in >= 0.01);
-  const rate = (b: NonNullable<Scenario['rainBlocks']>[number]) => b.in / ((b.blockEndHour ?? b.endHour) - (b.blockStartHour ?? b.startHour));
+  const shown = s.rainBlocks.filter(b => !overlapsRadar(s, b)), wet = shown.filter(b => b.in >= 0.01);
+  const rate = (b: Block) => b.in / (bEnd(b) - bStart(b));
   const top = wet.length ? wet.reduce((x, y) => rate(y) > rate(x) ? y : x) : null;
   for (const [i, h] of s.hourly.entries()) {
     const at = h.hour ?? i, b = s.rainBlocks.find(x => x.startHour <= at && at < x.endHour);
     if (!b || isUnknown(s, at)) { out.set(at, { text: '—', kind: 'missing', pos: 'solo', res: 1, top: false, partial: false }); continue; }
-    // a cut block is drawn as part of its whole block: brackets by the whole block, the amount under the middle of what shows
-    const fs = b.blockStartHour ?? b.startHour, fe = b.blockEndHour ?? b.endHour;
+    const fs = bStart(b), fe = bEnd(b);
+    if (overlapsRadar(s, b)) {
+      const vis = b.endHour - b.startHour, k = at - b.startHour;
+      out.set(at, { text: null, kind: 'covered', pos: vis === 1 ? 'solo' : k === 0 ? 'start' : k === vis - 1 ? 'end' : 'mid', res: b.res, top: false,
+                    partial: true, src: b.src, span: [fs, fe], overlap: amountText(b.in) });
+      continue;
+    }
+    // a block cut by now or the row's end is drawn as part of its whole block: brackets by the whole block, the amount under the middle of what shows
     const len = fe - fs, idx = at - fs, vis = b.endHour - b.startHour, mid = b.startHour - fs + Math.floor((vis - 1) / 2);
     const kind = b.in === 0 ? 'dry' : b.in < 0.01 ? 'trace' : 'amount';
     const pos = len === 1 ? 'solo' : idx === 0 ? 'start' : idx === len - 1 ? 'end' : 'mid';
     const text = kind === 'dry' || idx !== mid ? null : kind === 'trace' ? 'Trace' : fmtAmount(b.in);
     const a: HourAmount = { text, kind, pos, res: b.res, top: b === top && b.in >= 0.1, partial: Boolean(b.partial), src: b.src };
     if (text) a.span = [fs, fe];
-    // a cut block's hours that another source covers (radar): its bracket runs under them too, kept apart
-    const o = len === 1 ? s.rainBlocks.find(x => x !== b && x.partial && x.in >= 0.01 && x.endHour - x.startHour < x.res
-      && (x.blockStartHour ?? x.startHour) <= at && at < (x.blockEndHour ?? x.endHour)) : undefined;
-    if (o) {
-      const os = o.blockStartHour ?? o.startHour, oe = o.blockEndHour ?? o.endHour, oi = at - os;
-      a.under = { pos: oi === 0 ? 'start' : oi === oe - os - 1 ? 'end' : 'mid', top: o === top && o.in >= 0.1,
-                  text: o.in < 0.01 ? 'Trace' : fmtAmount(o.in), src: o.src, span: [os, oe] };
-    }
     out.set(at, a);
   }
   return out;
 }
 const SRC_WORDS = { radar: 'radar nowcast', model: 'typical model run', nws: 'National Weather Service' } as const;
+const spanText = (s: Scenario, x: [number, number]) => x[1] - x[0] === 1 ? clock(s, x[0]) : `${clock(s, x[0])} to ${clock(s, x[1])}`;
 /** Spoken description of an hour's amount: what it is, which hours it covers, and where it comes from. */
 export function amountWords(s: Scenario, a: HourAmount | undefined): string {
   if (!a) return '';
-  const span = (x: [number, number]) => `${clock(s, x[0])} to ${clock(s, x[1])}`, from = (x?: HourAmount['src']) => x ? `, ${SRC_WORDS[x]}` : '';
-  const own = a.text && a.text !== '—' ? `, rain ${a.text}${a.res > 1 && a.span ? ` for ${span(a.span)}` : ''}${from(a.src)}` : '';
-  const under = a.under?.text ? `; ${a.under.text} for ${span(a.under.span)}${from(a.under.src)} covers this hour too, not in addition` : '';
-  return own + under;
+  const from = (x?: Src) => x ? `, ${SRC_WORDS[x]}` : '';
+  if (a.kind === 'covered' && a.span) return `, rain; the ${spanText(s, a.span)} model amount overlaps the radar hours, listed under rain amounts`;
+  return a.text && a.text !== '—' ? `, rain ${a.text}${a.res > 1 && a.span ? ` for ${spanText(s, a.span)}` : ''}${from(a.src)}` : '';
+}
+/** Every amount behind the row's tap, by source, through the next `hours` hours: radar hours, then each model or NWS
+ *  interval with its whole span; a model block that overlaps radar hours says so (never to be added to them). */
+export function amountList(s: Scenario, hours = 24): { src: Src | undefined; span: string; text: string; overlap: boolean }[] {
+  const end = nowAt(s) + hours;
+  return (s.rainBlocks ?? []).filter(b => b.startHour < end && !(b.in === 0 && b.src !== 'radar')).map(b => ({
+    src: b.src, span: spanText(s, [bStart(b), bEnd(b)]), text: amountText(b.in), overlap: overlapsRadar(s, b) }));
 }
 /** How the hourly amounts relate to the hero's total over the same hours (shown in the row's explanation). */
 export function amountsVsTotal(s: Scenario): { blocksIn: number; totalIn: number; from: string; to: string; exact: boolean } | null {
