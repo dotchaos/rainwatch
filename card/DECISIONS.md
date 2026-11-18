@@ -100,3 +100,9 @@
 - Going outside: Usual clothes / Umbrella or jacket / Rain gear from the same rungs as the Going out chart, which stays one tap away.
 - Looking ahead starts tomorrow (today is the Today section); every day keeps its own row.
 - Engine: rain blocks gain an additive `src` field; no amounts, thresholds or intervals change.
+
+## PR C — Forecast evidence (2026-11-18, under review)
+- Details renamed "Forecast evidence"; reorganised around questions: The short answer, Right now, How much and when,
+  Flooding, Do the sources agree?, Track record, About this forecast (#about). Every existing piece kept; no values change.
+- Scenario lab moves from the homepage's top bar to the last line of About this forecast.
+- Homepage gaps are listed in docs/pr-c/AUDIT.md as proposals, not implemented.

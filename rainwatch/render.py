@@ -44,6 +44,11 @@ button.rr:disabled{opacity:.6;cursor:default}#rrmsg{font-size:13px;margin:4px 0 
 body{font-size:16px}h1{font-size:22px}h2{font-size:18px}.sub,.bar .age,#rrmsg,#rrsetup,.thr,.lvl,.day h3{font-size:14px}
 .tag,th,.pill,.legend,.dtot,.lc,tr.b td,.win small,.cf,.oneline,.chips,pre{font-size:14px}table{font-size:15px}.win{font-size:16px}
 @media(max-width:420px){.win{font-size:15px}}
+/* PR C (Nov 18 2026): Forecast evidence, organised by question */
+h1{font-size:24px;margin-bottom:4px}section{margin-top:28px;padding-top:6px;border-top:1px solid var(--line)}
+section h2{font-size:20px;margin:14px 0 8px}section h3{font-size:16px;margin:16px 0 6px}
+.toc{font-size:15px;line-height:1.9;margin:12px 0 4px}.toc a{white-space:nowrap}
+.bl{font-size:17px}details{margin:8px 0}details summary{cursor:pointer;font-size:15px}
 """
 
 
@@ -415,55 +420,59 @@ L.circleMarker([O.lat,O.lon],{{radius:6,color:'#000',weight:2,fillColor:'#fff',f
 
     return f"""<!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=refresh content=600>
-<title>Rain — {e(cfg.name)}</title><style>{CSS}</style></head><body><main>
-<div class=bar><div class=age id=age>Last checked <b>{upd}</b></div><button class=rr id=rr>Refresh</button></div>
-<div id=rrmsg class=sub></div>
-<div id=rrsetup>
-<b>One-time setup for one-tap reruns on this device</b><br>
-1. <a id=rrtok target=_blank rel=noopener>Create a GitHub token</a>: set Repository access to <i>Only select repositories → {e(repo)}</i>, and under Permissions set <i>Actions</i> to <i>Read and write</i>. Generate and copy it.<br>
-2. Paste it here (it stays in this browser only):
-<input id=rrkey type=password autocomplete=off placeholder="github_pat_...">
-<button class=rr id=rrsave>Save &amp; rerun</button> &nbsp;or&nbsp; <a href="https://github.com/{e(repo)}/actions/workflows/update.yml">rerun on GitHub instead</a>
-</div>
-<div class=sub><a href="../">← Simple view</a></div>
-<h1>Precision Rain Forecast — {e(cfg.name)}</h1>
-<div class=sub>Next 3 days · updates itself every 15 min</div>
+<title>Forecast evidence — {e(cfg.name)}</title><style>{CSS}</style></head><body><main>
+<div class=sub><a href="../">← Today</a></div>
+<h1>Forecast evidence</h1>
+<div class=sub>{e(cfg.name)} · <span class=age id=age>Last checked <b>{upd}</b></span> · updates itself every 15 min</div>
+<nav class=toc><a href="#answer">The short answer</a> · <a href="#now">Right now</a> · <a href="#when">How much, and when</a> · <a href="#flood">Flooding</a> · <a href="#agree">Do the sources agree?</a> · <a href="#accuracy">Track record</a> · <a href="#about">About this forecast</a></nav>
 
+<section id=answer>
+<h2>The short answer</h2>
+<div class=bl>{e(r['bottom_line'])}</div>
+<p><b>Total:</b> {tot['mid']:.2f}" expected through {e(tot['through'])}; most model runs fall between {tot['lo']:.2f}" and {tot['hi']:.2f}" (10th–90th percentile) · confidence <span class=pill>{e(tot['confidence'])}</span>{nws_tot}</p>
+{_claims_html(r, scores)}
+</section>
+
+<section id=now>
+<h2>Right now</h2>
+{_near_html(r.get('near')).replace('<h2>Now and the next 2 hours</h2>', '<h3>The next 2 hours</h3>')}
+<h3>Rain gauges</h3>
+<ul>{''.join(gl)}</ul>
+<h3>National Weather Service alerts</h3>
+<ul>{''.join(al)}</ul>
+</section>
+
+<section id=when>
+<h2>How much, and when</h2>
 <div class=thr>Heavy = at least <span id=thrbtns></span> in an hour · showing hours where it is at least possible</div>
 <div class=days id=days></div>
-
-<div class=bl><b>Bottom Line:</b> {e(r['bottom_line'])}</div>
-{_claims_html(r, scores)}
-{_near_html(r.get('near'))}
-{_flood_html(r, cfg)}
-
 {table}
 <details><summary>All {len(r['rows'])} hours</summary>{_rows_html(r['rows'], r['heavy_in'])}</details>
+</section>
 
-<p><b>Total &amp; Confidence:</b> {tot['mid']:.2f}" expected (range {tot['lo']:.2f}"–{tot['hi']:.2f}", 10th–90th pct)
-through {e(tot['through'])} · Confidence: <span class=pill>{e(tot['confidence'])}</span>{nws_tot}</p>
+<section id=flood>
+{_flood_html(r, cfg).replace('<h2>Flood risk · ', '<h2>Flooding at ') or '<h2>Flooding</h2><p class=sub>No flood site is set up for this location.</p>'}
+</section>
 
-<h2>Gauges &amp; Alerts</h2>
-<ul>{''.join(gl)}</ul>
-<ul>{''.join(al)}</ul>
-
-<h2>Radar</h2>
+<section id=agree>
+<h2>Do the sources agree?</h2>
+<h3>Radar</h3>
 <p class=sub>Frames (local): {e(frames)} · {e(dbz)} · {e(rd['status'])}</p>
 {map_html}
 <p class=sub>Dashed circles: where the rain reaching you in 30 / 60 / 120 min is now (the wider the circle, the less certain the timing).</p>
-
-<h2>Source comparison (inches per hour)</h2>
+<h3>Every source, hour by hour (inches per hour)</h3>
 <details><summary>Show every source side by side</summary>{_compare_html(r['rows'])}</details>
+{afd_html}
+</section>
 
-<h2>Accuracy so far</h2>
+<section id=accuracy>
+<h2>Track record</h2>
 {_storms_html((scores or {}).get('_storms'), tz, r['heavy_in'])}
 <details><summary>Hour-by-hour scores by source</summary>{_score_html({k: v for k, v in (scores or {}).items() if not k.startswith('_')})}</details>
+</section>
 
-{afd_html}
-
-<h2>Sources</h2>
-<ul>{srcs}</ul>
-<details><summary>Problems this run</summary><ul>{errs}</ul></details>
+<section id=about>
+<h2>About this forecast</h2>
 <details><summary>Method</summary><ul>
 <li>Intensity tiers: Light &lt;0.10"/hr · Moderate 0.10–0.20 · Heavy 0.20–0.50 · Very heavy &gt;0.50.</li>
 <li>Radar dBZ → rate with Marshall-Palmer (Z=200R<sup>1.6</sup>): 30 dBZ ≈ 0.11"/hr, 35 ≈ 0.22", 40 ≈ 0.45". Capped at 55 dBZ.</li>
@@ -472,4 +481,18 @@ through {e(tot['through'])} · Confidence: <span class=pill>{e(tot['confidence']
 <li>NWS gridded QPF arrives in 6-hour blocks and is shown spread evenly; it is a cross-check, not a timing source.</li>
 <li>Nothing is invented: a missing source is listed under Problems and its column shows —.</li>
 </ul></details>
+<details><summary>Sources</summary><ul>{srcs}</ul></details>
+<details><summary>Problems this run</summary><ul>{errs}</ul></details>
+<details><summary>Refresh now</summary>
+<div class=bar><button class=rr id=rr>Refresh</button></div>
+<div id=rrmsg class=sub></div>
+<div id=rrsetup>
+<b>One-time setup for one-tap reruns on this device</b><br>
+1. <a id=rrtok target=_blank rel=noopener>Create a GitHub token</a>: set Repository access to <i>Only select repositories → {e(repo)}</i>, and under Permissions set <i>Actions</i> to <i>Read and write</i>. Generate and copy it.<br>
+2. Paste it here (it stays in this browser only):
+<input id=rrkey type=password autocomplete=off placeholder="github_pat_...">
+<button class=rr id=rrsave>Save &amp; rerun</button> &nbsp;or&nbsp; <a href="https://github.com/{e(repo)}/actions/workflows/update.yml">rerun on GitHub instead</a>
+</div></details>
+<p class=sub><a href="../?lab">Scenario lab</a> — design fixtures for the homepage (not live weather).</p>
+</section>
 </main>{map_js}{rerun_js}{days_js}</body></html>"""
