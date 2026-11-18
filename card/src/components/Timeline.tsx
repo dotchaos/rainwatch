@@ -12,7 +12,8 @@ import { segmentPath, segments, silhouetteRuns } from '../lib/silhouette';
  * Flood days only: each Sandbags risk window gets a callout with its day and hours (the risk window itself,
  * never the preparation deadline). Other rungs carry no callouts.
  */
-const x0 = 106, plotW = 254, base = 132, step = 28, gap = 1.4;
+// PR A: taller bands for 14px+ labels set on two lines; the plot keeps its width
+const x0 = 106, plotW = 254, base = 164, step = 36, gap = 1.4;
 const x = (h: number) => x0 + (h / 72) * plotW;
 /** Day-name position: centred over the day; today is always named, starting at its left edge when its stretch is short. */
 const dayLabelX = (a: number, b: number, today: boolean) => today && b - a < 12 ? x(a) + 2 : x((a + b) / 2);
@@ -43,14 +44,24 @@ const f2 = (n: number) => Math.round(n * 100) / 100;
 const FLOOD_GAP = 4;   // space between a flood event and the clothing shape below it
 const CORNER = 9, EDGE = '#3f7395', EDGE_OPACITY = .85, SIL_DRY = '#f6f8f9', SIL_JACKET = '#7fafc6';
 
+/** A rung label at 14 px+ (PR A): one line when short, else two lines split at the space nearest the middle. */
+function ChartLabel({ text, y }: { text: string; y: number }) {
+  const words = text.split(' ');
+  if (text.length <= 10 || words.length < 2) return <text x={x0 - 8} y={y + 5} data-center={y} textAnchor="end" className="chart-label">{text}</text>;
+  let k = 1, best = 99;
+  for (let j = 1; j < words.length; j++) { const d = Math.abs(words.slice(0, j).join(' ').length - words.slice(j).join(' ').length); if (d < best) { best = d; k = j; } }
+  return <text x={x0 - 8} y={y - 3} data-center={y} textAnchor="end" className="chart-label">
+    <tspan x={x0 - 8}>{words.slice(0, k).join(' ')}</tspan><tspan x={x0 - 8} dy="16">{words.slice(k).join(' ')}</tspan></text>;
+}
+
 export function Timeline({ scenario: s, potential, graph = 'silhouette' }: { scenario: Scenario; potential?: PotentialStyle; graph?: GraphStyle }) {
   if (!s.timeline) return null;
   const sil = graph === 'silhouette' && s.hazard !== 'heat';
   const heat = s.hazard === 'heat', labels = heat ? SHORT_HEAT : SHORT_RAIN, full = levelLabels(s);
   const days = daysAt(s.startDay, s.startHourLocal);
-  const callouts = sandbagsCallouts(s).map(w => ({ ...w, center: x((w.startHour + w.endHour) / 2), width: Math.min(130, Math.max(70, w.label.length * 5.6 + 14)) }));
+  const callouts = sandbagsCallouts(s).map(w => ({ ...w, center: x((w.startHour + w.endHour) / 2), width: Math.min(190, Math.max(96, w.label.length * 8.4 + 18)) }));
   const placed = layoutLabels(callouts, x0, x(72));
-  const rows = placed.some(p => p.row === 1) ? 2 : callouts.length ? 1 : 0, top = rows * 24;
+  const rows = placed.some(p => p.row === 1) ? 2 : callouts.length ? 1 : 0, top = rows * 32;
   const cov = coverageNote(s), edge = edgeNote(s);
   const pots = potential ? floodPotentials(s).filter(p => p.on) : [];
   // v0.20: rain cards ask "Going out"; heat cards keep "Next 3 days" (their rungs are heat levels)
@@ -60,27 +71,27 @@ export function Timeline({ scenario: s, potential, graph = 'silhouette' }: { sce
   const sandbagsShown = blocks.some(b => b.level === 3);   // the same hours, whichever way they are drawn
   return <section className="timeline-section" aria-label={heat ? title : `${title}, next 3 days`}>
     <div className="section-heading"><strong>{title}</strong>{!heat && <span>Next 3 days</span>}</div>
-    <svg viewBox={`0 0 366 ${base + 34 + top}`} role="img"
+    <svg viewBox={`0 0 366 ${base + 40 + top}`} role="img"
       aria-label={`${heat ? 'Heat forecast' : 'What to wear going out'} for the next 72 hours, ${sil ? 'hour by hour. Solid edge: timing more certain; dashed edge: timing approximate.' : 'in 3-hour blocks. Solid blocks: timing more certain; dashed: timing approximate.'}${callouts.length ? ` Sandbags: ${callouts.map(c => c.label).join(', ')}.` : ''}${pots.length ? ` Potential flooding, not yet a sandbag recommendation: ${pots.map(p => p.label).join(', ')}.` : ''}${cov ? ` ${cov}` : ''}${edge ? ` ${edge}` : ''}`}>
       <defs><pattern id="nodata" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="currentColor" strokeOpacity=".22" strokeWidth="1.4" /></pattern>
 </defs>
       {callouts.map((c, i) => {
-        const { left, row } = placed[i], ty = (rows - 1 - row) * 24, color = intervalColor(s, 3);
+        const { left, row } = placed[i], ty = (rows - 1 - row) * 32, color = intervalColor(s, 3);
         return <g key={c.label}>
-          <line x1={c.center} x2={c.center} y1={ty + 20} y2={top + (sil ? plateau(3) : base - 3 * step)} stroke={color} strokeWidth="1.5" strokeDasharray={c.sure ? undefined : '2 2'} />
-          <rect x={left} y={ty} width={c.width} height="20" rx="4" fill={color} />
-          <text x={left + c.width / 2} y={ty + 13.5} className="chart-window" textAnchor="middle">{c.label}</text>
+          <line x1={c.center} x2={c.center} y1={ty + 26} y2={top + (sil ? plateau(3) : base - 3 * step)} stroke={color} strokeWidth="1.5" strokeDasharray={c.sure ? undefined : '2 2'} />
+          <rect x={left} y={ty} width={c.width} height="26" rx="5" fill={color} />
+          <text x={left + c.width / 2} y={ty + 18} className="chart-window" textAnchor="middle">{c.label}</text>
         </g>;
       })}
       <g transform={`translate(0 ${top})`}>
-        {days.map((d, i) => (i === 0 || d.end - d.start >= 12) && <text key={d.start} x={dayLabelX(d.start, d.end, i === 0)} y={12} textAnchor={i === 0 && d.end - d.start < 12 ? 'start' : 'middle'} className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
+        {days.map((d, i) => (i === 0 || d.end - d.start >= 12) && <text key={d.start} x={dayLabelX(d.start, d.end, i === 0)} y={14} textAnchor={i === 0 && d.end - d.start < 12 ? 'start' : 'middle'} className="chart-day chart-day-halo">{i === 0 ? 'TODAY' : d.label.toUpperCase()}</text>)}
         {sil ? <SilhouettePlot s={s} labels={labels} sandbagsShown={sandbagsShown} pots={pots} /> : <>
         {labels.map((l0, i) => { const l = !heat && i === 3 && !sandbagsShown ? 'Flood potential' : l0; const y = base - i * step;
           // each label sits centred in its own band (v0.20): Usual clothes on the pale dry band; Umbrella or jacket
           // between the dry band and its line; the others between their line and the one below. Heat: on the lines.
           const below = i === 1 ? base - DRY_H : y + step;
           const ly = heat ? y + 3 : i === 0 ? base - DRY_H / 2 + 3.5 : (y + below) / 2 + 3.5;
-          return <g key={l}><text x={x0 - 8} y={ly} textAnchor="end" className="chart-label">{l}</text>
+          return <g key={l}><ChartLabel text={l} y={ly - 3.5} />
             <line x1={x0} x2={x(72)} y1={y} y2={y} className={i === 0 ? 'chart-base' : 'chart-grid'} /></g>; })}
         {!heat && blocks.map(b => !b.unknown && <rect key={`dry-${b.start}`} x={x(b.start) + gap / 2} y={base - DRY_H} width={x(b.end) - x(b.start) - gap} height={DRY_H} rx="1.5" fill={DRY_FILL} />)}
         {days.slice(1).map(d => <line key={d.start} x1={x(d.start)} x2={x(d.start)} y1={22} y2={base} className="chart-midnight" />)}
@@ -111,7 +122,7 @@ export function Timeline({ scenario: s, potential, graph = 'silhouette' }: { sce
         })}
         </>}
         {sil && days.slice(1).map(d => <line key={`m-${d.start}`} x1={x(d.start)} x2={x(d.start)} y1={22} y2={base} className="chart-midnight" />)}
-        {halfDayLabels(s).map(l => <text key={l.at} x={x(l.at)} y={base + 18} textAnchor="middle" className="chart-time">{l.text}</text>)}
+        {halfDayLabels(s).map(l => <text key={l.at} x={x(l.at)} y={base + 22} textAnchor="middle" className="chart-time">{l.text}</text>)}
       </g>
     </svg>
     {pots.length > 0 && <p className="chart-potential-key"><svg width="22" height="10" aria-hidden>{potential === 'outline'
@@ -159,7 +170,7 @@ function SilhouettePlot({ s, labels, sandbagsShown, pots }: { s: Scenario; label
   return <>
     <defs>{segs.map((g, k) => <clipPath key={k} id={`sil-${s.id}-${k}`}><path d={segmentPath(g, x, plateau, base, CORNER)} /></clipPath>)}</defs>
     {labels.map((l0, i) => { const l = i === 3 && !sandbagsShown ? 'Flood potential' : l0;
-      return <text key={l} x={x0 - 8} y={labelY(i) + 3.5} textAnchor="end" className="chart-label">{l}</text>; })}
+      return <ChartLabel key={l} text={l} y={labelY(i)} />; })}
     {segs.map((g, k) => <g key={k} clipPath={`url(#sil-${s.id}-${k})`} className="chart-silhouette">
       {/* neighbours overlap by a fraction of a pixel so anti-aliasing leaves no seam; the shape still clips every edge */}
       {g.map((r, i) => <rect key={r.start} className="sil-hours" data-level={r.level} x={x(r.start)} y={bandTop(3)}

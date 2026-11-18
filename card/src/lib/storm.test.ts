@@ -183,7 +183,7 @@ describe('flood potential: between Boots and Sandbags (v0.19 exploration, lab on
 
 describe('Going out (v0.20)', () => {
   const html = (s: Scenario, p?: 'outline' | 'range') => renderToString(createElement(WeatherCard, { scenario: s, potential: p }));
-  const axis = (h: string) => [...h.matchAll(/class="chart-label"[^>]*>(.*?)<\/text>/g)].map(m => m[1].replace(/<[^>]+>/g, ''));
+  const axis = (h: string) => [...h.matchAll(/class="chart-label"[^>]*>(.*?)<\/text>/g)].map(m => m[1].replace(/<\/tspan><tspan[^>]*>/g, ' ').replace(/<[^>]+>/g, ''));
   it('the top rung is "Flood potential" unless Sandbags is recommended; the potential boxes sit on it', () => {
     const h = html(ahead(), 'outline');
     expect(axis(h)).toEqual(['Usual clothes', 'Umbrella or jacket', 'Rain gear', 'Flood potential']);
