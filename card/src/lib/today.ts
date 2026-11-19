@@ -1,6 +1,6 @@
 import type { Scenario } from '../types';
 import { isUnknown, knownUntil } from './rules';
-import { actionWindow, asRainDay, clockOf, isNowAt, fullDay, dayIndexAt, eventHero, floodStorm, fmtAmount, localHour, nowAt, nowNext, sevAt, type EventHero } from './derive';
+import { tenths, actionWindow, asRainDay, clockOf, isNowAt, fullDay, dayIndexAt, eventHero, floodStorm, fmtAmount, localHour, nowAt, nowNext, sevAt, type EventHero } from './derive';
 
 /**
  * Today First (PR B). The homepage is composed from one forecast state: every piece here reads the same derivations
@@ -184,4 +184,85 @@ export function windowPhrase(s: Scenario, a: number, b: number): string {
   if (isNowAt(s, a)) return `Now until ${sameDay && dayIndexAt(s, a) === 0 ? clockOf(s, b) : atDay(s, b)}`;
   if (sameDay) return dayIndexAt(s, a) === 0 ? `${clockRange(s, a, b)} today` : `${fullDay[dayName(s, a)]} ${clockRange(s, a, b)}`;
   return `${atDay(s, a)} until ${atDay(s, b)}`;
+}
+
+/* ---------- Option B (docs/spec-rainfall-timeline.md) ---------- */
+export const INTENSITY_NAME = ['', 'Light', 'Moderate', 'Heavy'] as const;
+/** The card's intensity scale (engine shading.intensity): three tiers. The evidence page's 0.50"/h "very heavy" is a
+ *  method note there, not a card category, so the legend shows these three (verified 2026-11-19). */
+export const INTENSITY_LEGEND = [
+  { level: 1, name: 'Light', range: 'under 0.10"/h' },
+  { level: 2, name: 'Moderate', range: '0.10–0.20"/h' },
+  { level: 3, name: 'Heavy', range: '0.20"/h and up' },
+] as const;
+export const SRC_LABEL: Record<Src, string> = { radar: 'Radar nowcast', model: 'Model forecast', nws: 'National Weather Service' };
+
+/** Bars that can be selected: rain, and not a model total shortened by radar hours (its amount is stated in words). */
+export const eligibleBars = (t: TodayTimeline) => t.bars.filter(b => b.kind === 'rain' && b.coversFrom === null);
+/** Initial selection: the heaviest eligible interval (intensity, then amount, then the earlier one). This drives the
+ *  detail card only; the heaviest PERIOD (annotation, outline) comes from the storm rule and may differ. */
+export function initialSelection(t: TodayTimeline): TodayBar | null {
+  return eligibleBars(t).reduce<TodayBar | null>((best, b) => !best || b.intensity > best.intensity
+    || (b.intensity === best.intensity && b.in > best.in) ? b : best, null);
+}
+/** "1–4 AM Thursday" (today's intervals say "today"). */
+export function intervalName(s: Scenario, b: { start: number; end: number }) {
+  const i = dayIndexAt(s, b.start);
+  return `${clockRange(s, b.start, b.end)} ${i === 0 ? 'today' : fullDay[dayName(s, b.start)]}`;
+}
+export function intervalDetail(s: Scenario, b: TodayBar) {
+  const h = b.end - b.start;
+  return { title: intervalName(s, b), amount: `${barAmount(b)} over ${h === 1 ? '1 hour' : `${h} hours`}`,
+           source: SRC_LABEL[b.src], intensity: `${INTENSITY_NAME[b.intensity]} rain` };
+}
+/** The heaviest-period annotation, from the storm rule (t.heavy, whole intervals mostly inside it). */
+export function heaviestNote(s: Scenario, t: TodayTimeline): string | null {
+  if (!t.heavy) return null;
+  const n = t.bars.filter(b => b.start >= t.heavy!.start && b.end <= t.heavy!.end).length;
+  const span = t.heavy.start <= t.now ? `now through about ${hourText(s, t.heavy.end)}` : `about ${clockRange(s, t.heavy.start, t.heavy.end)}${dayIndexAt(s, t.heavy.start) ? ` ${fullDay[dayName(s, t.heavy.start)]}` : ''}`;
+  return `Heaviest rain expected ${span}${n > 1 ? ` (${n === 2 ? 'two' : n === 3 ? 'three' : n} intervals)` : ''}.`;
+}
+
+/** The hours the hero's storm total covers: the one rainTotals stretch inside the hero storm (stormFigure's rule). */
+export function stormTotalWindow(s: Scenario): { from: number; to: number; inches: number } | null {
+  const e = eventHero(s), st = e?.kind === 'storm' ? floodStorm(s) : null;
+  if (!st) return null;
+  const inside = (s.rainTotals ?? []).filter(x => x.startHour < st.end && st.start < x.endHour);
+  if (inside.length !== 1) return null;
+  const x = inside[0];
+  return { from: x.fromHour ?? x.startHour, to: x.toHour ?? x.endHour, inches: x.medianIn };
+}
+/** Looking ahead: a day whose hours overlap the storm total's window is labelled as included in it. */
+export function dayInStormTotal(s: Scenario, dayIndex: number): string | null {
+  const w = stormTotalWindow(s);
+  if (!w || dayIndex < 1) return null;
+  const start = 24 - s.startHourLocal + (dayIndex - 1) * 24, end = start + 24;
+  return start < w.to && w.from < end ? `Included in ${tenths(w.inches)}" storm total` : null;
+}
+
+/** Hourly tiles at source resolution: radar/hourly blocks one per hour; model blocks one tile per block (temperature
+ *  at the block's start); a model block shortened by radar hours keeps its whole interval in the label. */
+export interface HourTile { at: number; end: number; label: string; temp: number | null; icon: string; amount: string; res: number; overlaps: boolean }
+export function hourTiles(s: Scenario): HourTile[] {
+  const out: HourTile[] = [];
+  const hours = s.hourly.map((h, i) => ({ at: h.hour ?? i, h }));
+  for (let k = 0; k < hours.length; k++) {
+    const { at, h } = hours[k];
+    const b = s.rainBlocks?.find(x => x.startHour <= at && at < x.endHour);
+    if (b && b.res > 1 && at === b.startHour) {
+      const ws = b.blockStartHour ?? b.startHour, we = b.blockEndHour ?? b.endHour;
+      out.push({ at, end: b.endHour, label: clockRange(s, ws, we), temp: h.temperatureF, icon: h.icon,
+                 amount: b.in >= 0.01 ? fmtAmount(b.in) : b.in > 0 ? 'Trace' : '', res: b.res, overlaps: ws < b.startHour });
+      k += b.endHour - at - 1;
+      continue;
+    }
+    out.push({ at, end: at + 1, label: '', temp: h.temperatureF, icon: h.icon,
+               amount: b ? (b.in >= 0.01 ? fmtAmount(b.in) : b.in > 0 ? 'Trace' : '') : '', res: 1, overlaps: false });
+  }
+  return out;
+}
+/** "Wed 12 AM": weekday and clock time, always explicit (no "midnight", "noon" or "today"). */
+export function dayClock(s: Scenario, h: number) {
+  const L = localHour(s, h), c = `${L % 12 === 0 ? 12 : L % 12} ${L < 12 ? 'AM' : 'PM'}`;
+  return `${dayName(s, h)} ${c}`;
 }

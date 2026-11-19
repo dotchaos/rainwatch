@@ -64,8 +64,8 @@ describe('shared axis', () => {
     const pct = (L: number) => `${(L / 24) * 100}%`;
     for (const s of scenarios) {
       const h = fiveHtml(s);
-      for (const [L, t] of [[0, '12 AM'], [6, '6 AM'], [12, 'Noon'], [18, '6 PM'], [24, '12 AM']] as const)
-        expect(h, s.id).toContain(`data-at="${L}" style="left:${pct(L)}">${t}</span>`);
+      // PR #12 refinement: the shared axis above the rows is removed (redundant); every row still uses hour / 24
+      expect(h, s.id).not.toContain('class="strip-axis"'); void pct;
       for (const m of h.matchAll(/data-from="(\d+)" data-to="(\d+)" style="left:([\d.]+)%;width:([\d.]+)%"/g)) {
         expect(Number(m[3])).toBeCloseTo((Number(m[1]) / 24) * 100, 6);
         expect(Number(m[4])).toBeCloseTo(((Number(m[2]) - Number(m[1])) / 24) * 100, 6);

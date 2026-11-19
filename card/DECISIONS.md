@@ -110,3 +110,12 @@
   Flooding, Do the sources agree?, Track record, About this forecast (#about). Every existing piece kept; no values change.
 - Scenario lab moves from the homepage's top bar to the last line of About this forecast.
 - Homepage gaps are listed in docs/pr-c/AUDIT.md as proposals, not implemented.
+
+## Option B rainfall timeline (2026-11-19, under review)
+Implements docs/spec-rainfall-timeline.md (PR #8, amended):
+- Fixed-height segments on a linear axis; width = duration, colour = existing three-tier intensity, text = amount.
+- Segments are a radio group, and selection is an outline only. The initial selection is the heaviest eligible interval, which drives the detail card. The heaviest-period outline and note come from the storm rule and need not match the selection.
+- The radar/model overlap is unchanged from production (PR #6/#7).
+- Hourly forecast at source resolution: one tile per model block, with the temperature at the block's start.
+- Looking ahead labels days inside the storm total's window. The hero states the total's window.
+- Order: Today, Flood risk (only when there is a signal), Going outside, Rainfall timeline, Flood risk (otherwise), Hourly, Looking ahead. Urgent flood guidance keeps its PR B prominence.
