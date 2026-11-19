@@ -301,6 +301,12 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
                 ([f"ensemble {ens_tot:.2f}\""] if ens_tot is not None else [])
                 + ([f"HRRR {hr_tot:.2f}\""] if hr_tot is not None else []))) if mods else "Models: no data for these hours",
             "agree": agree,
+            # structured form of the same comparison (additive, for the card's plain-language line): which way they
+            # disagree, over which hours, with the two amounts. No new thresholds: the 0.02" wet test and 3x rule above.
+            "agree_kind": (None if not r_rows else "radar_only" if rad_wet and not mod_wet else "models_only" if mod_wet and not rad_wet
+                           else "amount" if agree else "agree"),
+            "agree_hours": len(r_rows), "agree_radar_in": round(rad_tot, 2) if r_rows else None,
+            "agree_models_in": round(max(mods), 2) if mods else None,
             "quiet": (not rad_wet and not mod_wet and not agree and not (nc.dbz_now is not None and nc.dbz_now >= 15)),
         }
 

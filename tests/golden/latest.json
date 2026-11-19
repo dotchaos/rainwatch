@@ -2848,6 +2848,10 @@
   "radar": "Radar extrapolation, next 2 h: about 0.19\" \u00b7 moving toward E at 40 km/h (25 mph), high confidence",
   "models": "Models, same hours: ensemble 0.05\" \u00b7 HRRR 0.04\"",
   "agree": "Radar and models both show rain but differ by more than 3\u00d7 in amount.",
+  "agree_kind": "amount",
+  "agree_hours": 2,
+  "agree_radar_in": 0.19,
+  "agree_models_in": 0.05,
   "quiet": false
  },
  "total": {
