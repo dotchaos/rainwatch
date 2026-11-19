@@ -1,7 +1,7 @@
 # Archived live card
 
 - URL: https://dotchaos.github.io/rainwatch/live.json
-- generated: 2026-11-19T15:57:17.889044+00:00
-- observedAt: Thursday · 7:57 AM
-- sha256: 7c304ac19176aa983087f798f5736f691307a02abab8c2566c432d6164a8de1f
-- bytes: 19109
+- generated: 2026-11-19T16:29:10.536316+00:00
+- observedAt: Thursday · 8:29 AM
+- sha256: e7e047a840c348b3353e0c77b18f67142c1111f910034fff89b45cdecbbbec20
+- bytes: 15482
