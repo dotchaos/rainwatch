@@ -3,33 +3,33 @@
  "title": "Live",
  "season": "November",
  "location": "18th & Shotwell",
- "observedAt": "Thursday \u00b7 8:29 AM",
+ "observedAt": "Thursday \u00b7 1:35 PM",
  "startDay": "Thu",
- "startHourLocal": 8,
- "hazard": "none",
+ "startHourLocal": 13,
+ "hazard": "rain",
  "startDate": "2026-11-19",
  "current": {
-  "temperatureF": 49,
+  "temperatureF": 56,
   "condition": "Cloudy",
   "icon": "overcast",
-  "highF": 54,
+  "highF": 56,
   "lowF": 48
  },
  "hourly": [
   {
    "hour": 0,
-   "temperatureF": 49,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 1,
-   "temperatureF": 50,
-   "icon": "overcast"
+   "temperatureF": 56,
+   "icon": "rain"
   },
   {
    "hour": 2,
-   "temperatureF": 52,
-   "icon": "partly-day"
+   "temperatureF": 54,
+   "icon": "overcast"
   },
   {
    "hour": 3,
@@ -38,42 +38,42 @@
   },
   {
    "hour": 4,
-   "temperatureF": 54,
-   "icon": "overcast"
+   "temperatureF": 51,
+   "icon": "clear-night"
   },
   {
    "hour": 5,
-   "temperatureF": 54,
+   "temperatureF": 50,
    "icon": "overcast"
   },
   {
    "hour": 6,
-   "temperatureF": 52,
-   "icon": "overcast"
+   "temperatureF": 51,
+   "icon": "clear-night"
   },
   {
    "hour": 7,
-   "temperatureF": 54,
-   "icon": "partly-day"
+   "temperatureF": 50,
+   "icon": "clear-night"
   },
   {
    "hour": 8,
-   "temperatureF": 52,
-   "icon": "partly-day"
+   "temperatureF": 49,
+   "icon": "clear-night"
   },
   {
    "hour": 9,
-   "temperatureF": 50,
+   "temperatureF": 48,
    "icon": "clear-night"
   },
   {
    "hour": 10,
-   "temperatureF": 50,
+   "temperatureF": 48,
    "icon": "clear-night"
   },
   {
    "hour": 11,
-   "temperatureF": 49,
+   "temperatureF": 48,
    "icon": "clear-night"
   },
   {
@@ -88,138 +88,138 @@
   },
   {
    "hour": 14,
-   "temperatureF": 49,
-   "icon": "overcast"
+   "temperatureF": 48,
+   "icon": "partly-night"
   },
   {
    "hour": 15,
-   "temperatureF": 48,
-   "icon": "partly-night"
+   "temperatureF": 47,
+   "icon": "overcast"
   },
   {
    "hour": 16,
-   "temperatureF": 48,
-   "icon": "partly-night"
+   "temperatureF": 46,
+   "icon": "overcast"
   },
   {
    "hour": 17,
-   "temperatureF": 48,
+   "temperatureF": 47,
    "icon": "overcast"
   },
   {
    "hour": 18,
-   "temperatureF": 48,
-   "icon": "partly-night"
+   "temperatureF": 47,
+   "icon": "overcast"
   },
   {
    "hour": 19,
    "temperatureF": 48,
-   "icon": "overcast"
-  },
-  {
-   "hour": 20,
-   "temperatureF": 48,
-   "icon": "overcast"
-  },
-  {
-   "hour": 21,
-   "temperatureF": 47,
-   "icon": "partly-night"
-  },
-  {
-   "hour": 22,
-   "temperatureF": 48,
-   "icon": "overcast"
-  },
-  {
-   "hour": 23,
-   "temperatureF": 47,
    "icon": "partly-day"
   },
   {
+   "hour": 20,
+   "temperatureF": 51,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 21,
+   "temperatureF": 53,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 22,
+   "temperatureF": 55,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 23,
+   "temperatureF": 55,
+   "icon": "clear-day"
+  },
+  {
    "hour": 24,
-   "temperatureF": 49,
-   "icon": "overcast"
+   "temperatureF": 55,
+   "icon": "clear-day"
   },
   {
    "hour": 25,
-   "temperatureF": 52,
+   "temperatureF": 55,
    "icon": "clear-day"
   },
   {
    "hour": 26,
-   "temperatureF": 53,
-   "icon": "overcast"
+   "temperatureF": 55,
+   "icon": "clear-day"
   },
   {
    "hour": 27,
-   "temperatureF": 55,
+   "temperatureF": 52,
    "icon": "clear-day"
   },
   {
    "hour": 28,
-   "temperatureF": 56,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 29,
-   "temperatureF": 56,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 30,
-   "temperatureF": 56,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 31,
-   "temperatureF": 55,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 32,
-   "temperatureF": 53,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 33,
    "temperatureF": 50,
    "icon": "clear-night"
   },
   {
-   "hour": 34,
+   "hour": 29,
    "temperatureF": 49,
    "icon": "clear-night"
   },
   {
-   "hour": 35,
+   "hour": 30,
    "temperatureF": 48,
    "icon": "clear-night"
   },
   {
-   "hour": 36,
+   "hour": 31,
    "temperatureF": 48,
    "icon": "clear-night"
   },
   {
-   "hour": 37,
+   "hour": 32,
    "temperatureF": 47,
    "icon": "clear-night"
   },
   {
-   "hour": 38,
+   "hour": 33,
+   "temperatureF": 47,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 34,
    "temperatureF": 46,
    "icon": "clear-night"
+  },
+  {
+   "hour": 35,
+   "temperatureF": 45,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 36,
+   "temperatureF": 45,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 37,
+   "temperatureF": 45,
+   "icon": "overcast"
+  },
+  {
+   "hour": 38,
+   "temperatureF": 45,
+   "icon": "overcast"
   },
   {
    "hour": 39,
-   "temperatureF": 46,
-   "icon": "clear-night"
+   "temperatureF": 44,
+   "icon": "overcast"
   },
   {
    "hour": 40,
-   "temperatureF": 46,
-   "icon": "clear-night"
+   "temperatureF": 44,
+   "icon": "overcast"
   },
   {
    "hour": 41,
@@ -233,112 +233,112 @@
   },
   {
    "hour": 43,
-   "temperatureF": 46,
+   "temperatureF": 48,
    "icon": "overcast"
   },
   {
    "hour": 44,
-   "temperatureF": 47,
+   "temperatureF": 50,
    "icon": "overcast"
   },
   {
    "hour": 45,
-   "temperatureF": 48,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 46,
-   "temperatureF": 48,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 47,
-   "temperatureF": 48,
+   "temperatureF": 57,
    "icon": "overcast"
   },
   {
    "hour": 48,
-   "temperatureF": 48,
+   "temperatureF": 57,
    "icon": "overcast"
   },
   {
    "hour": 49,
-   "temperatureF": 49,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 50,
-   "temperatureF": 51,
+   "temperatureF": 55,
    "icon": "overcast"
   },
   {
    "hour": 51,
-   "temperatureF": 54,
+   "temperatureF": 55,
    "icon": "overcast"
   },
   {
    "hour": 52,
-   "temperatureF": 56,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 53,
-   "temperatureF": 56,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 54,
-   "temperatureF": 55,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 55,
-   "temperatureF": 55,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 56,
-   "temperatureF": 55,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 57,
-   "temperatureF": 54,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 58,
-   "temperatureF": 54,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 59,
-   "temperatureF": 54,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 60,
-   "temperatureF": 54,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 61,
-   "temperatureF": 54,
+   "temperatureF": 51,
    "icon": "overcast"
   },
   {
    "hour": 62,
-   "temperatureF": 53,
+   "temperatureF": 51,
    "icon": "overcast"
   },
   {
    "hour": 63,
-   "temperatureF": 53,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 64,
-   "temperatureF": 53,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
@@ -358,221 +358,196 @@
   },
   {
    "hour": 68,
-   "temperatureF": 52,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 69,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 70,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 71,
-   "temperatureF": 51,
+   "temperatureF": 55,
    "icon": "overcast"
   },
   {
    "hour": 72,
-   "temperatureF": 52,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 73,
-   "temperatureF": 53,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 74,
-   "temperatureF": 54,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 75,
-   "temperatureF": 55,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 76,
-   "temperatureF": 56,
+   "temperatureF": 55,
    "icon": "overcast"
   },
   {
    "hour": 77,
-   "temperatureF": 56,
-   "icon": "overcast"
+   "temperatureF": 54,
+   "icon": "clear-night"
   },
   {
    "hour": 78,
-   "temperatureF": 57,
-   "icon": "overcast"
+   "temperatureF": 54,
+   "icon": "partly-night"
   },
   {
    "hour": 79,
-   "temperatureF": 56,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 80,
-   "temperatureF": 56,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 81,
-   "temperatureF": 55,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 82,
-   "temperatureF": 55,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 83,
-   "temperatureF": 55,
-   "icon": "overcast"
+   "temperatureF": 52,
+   "icon": "partly-night"
   },
   {
    "hour": 84,
-   "temperatureF": 54,
-   "icon": "overcast"
-  },
-  {
-   "hour": 85,
-   "temperatureF": 53,
-   "icon": "overcast"
-  },
-  {
-   "hour": 86,
-   "temperatureF": 53,
-   "icon": "overcast"
-  },
-  {
-   "hour": 87,
-   "temperatureF": 53,
-   "icon": "overcast"
-  },
-  {
-   "hour": 88,
-   "temperatureF": 52,
-   "icon": "overcast"
-  },
-  {
-   "hour": 89,
    "temperatureF": 51,
    "icon": "partly-night"
   },
   {
-   "hour": 90,
+   "hour": 85,
    "temperatureF": 51,
    "icon": "clear-night"
+  },
+  {
+   "hour": 86,
+   "temperatureF": 50,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 87,
+   "temperatureF": 50,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 88,
+   "temperatureF": 49,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 89,
+   "temperatureF": 49,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 90,
+   "temperatureF": 49,
+   "icon": "clear-day"
   },
   {
    "hour": 91,
-   "temperatureF": 50,
-   "icon": "clear-night"
+   "temperatureF": 49,
+   "icon": "clear-day"
   },
   {
    "hour": 92,
-   "temperatureF": 50,
-   "icon": "clear-night"
-  },
-  {
-   "hour": 93,
-   "temperatureF": 50,
-   "icon": "clear-night"
-  },
-  {
-   "hour": 94,
-   "temperatureF": 49,
-   "icon": "clear-night"
-  },
-  {
-   "hour": 95,
-   "temperatureF": 49,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 96,
-   "temperatureF": 50,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 97,
    "temperatureF": 51,
    "icon": "clear-day"
   },
   {
-   "hour": 98,
-   "temperatureF": 53,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 99,
-   "temperatureF": 53,
-   "icon": "overcast"
-  },
-  {
-   "hour": 100,
-   "temperatureF": 54,
-   "icon": "overcast"
-  },
-  {
-   "hour": 101,
-   "temperatureF": 56,
-   "icon": "overcast"
-  },
-  {
-   "hour": 102,
-   "temperatureF": 56,
-   "icon": "overcast"
-  },
-  {
-   "hour": 103,
-   "temperatureF": 57,
-   "icon": "overcast"
-  },
-  {
-   "hour": 104,
-   "temperatureF": 57,
-   "icon": "partly-day"
-  },
-  {
-   "hour": 105,
-   "temperatureF": 56,
-   "icon": "overcast"
-  },
-  {
-   "hour": 106,
-   "temperatureF": 55,
-   "icon": "overcast"
-  },
-  {
-   "hour": 107,
-   "temperatureF": 54,
-   "icon": "overcast"
-  },
-  {
-   "hour": 108,
-   "temperatureF": 54,
-   "icon": "overcast"
-  },
-  {
-   "hour": 109,
-   "temperatureF": 53,
-   "icon": "overcast"
-  },
-  {
-   "hour": 110,
+   "hour": 93,
    "temperatureF": 52,
    "icon": "overcast"
   },
   {
-   "hour": 111,
+   "hour": 94,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 95,
+   "temperatureF": 54,
+   "icon": "overcast"
+  },
+  {
+   "hour": 96,
+   "temperatureF": 55,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 97,
+   "temperatureF": 56,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 98,
+   "temperatureF": 56,
+   "icon": "overcast"
+  },
+  {
+   "hour": 99,
+   "temperatureF": 57,
+   "icon": "partly-day"
+  },
+  {
+   "hour": 100,
+   "temperatureF": 56,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 101,
+   "temperatureF": 55,
+   "icon": "overcast"
+  },
+  {
+   "hour": 102,
+   "temperatureF": 54,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 103,
+   "temperatureF": 53,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 104,
+   "temperatureF": 53,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 105,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 106,
    "temperatureF": 52,
    "icon": "overcast"
   }
@@ -580,35 +555,35 @@
  "days": [
   {
    "label": "Today",
-   "description": "Cloudy",
-   "icon": "overcast",
+   "description": "Rain at times",
+   "icon": "rain",
    "lowF": 48,
-   "highF": 54,
-   "rainIn": 0.04
+   "highF": 56,
+   "rainIn": 0.03
   },
   {
    "label": "Tomorrow",
    "description": "Cloudy",
    "icon": "overcast",
-   "lowF": 46,
-   "highF": 56,
-   "rainIn": 0.05
+   "lowF": 45,
+   "highF": 55,
+   "rainIn": 0.08
   },
   {
    "label": "Saturday",
    "description": "Cloudy",
    "icon": "overcast",
-   "lowF": 45,
-   "highF": 56,
-   "rainIn": 0.07
+   "lowF": 44,
+   "highF": 57,
+   "rainIn": 0.08
   },
   {
    "label": "Sunday",
    "description": "Cloudy",
    "icon": "overcast",
    "lowF": 51,
-   "highF": 57,
-   "rainIn": 0.03
+   "highF": 56,
+   "rainIn": 0.04
   },
   {
    "label": "Monday",
@@ -621,14 +596,41 @@
  ],
  "observedNow": {
   "rainingNow": null,
-  "recentRain": true
+  "recentRain": null
  },
- "rainHours": [],
+ "rainHours": [
+  {
+   "startHour": 1,
+   "endHour": 2,
+   "intensity": 1
+  }
+ ],
  "provenance": {
   "type": "live",
-  "generated": "2026-11-19T16:29:10.536316+00:00",
+  "generated": "2026-11-19T21:35:54.835340+00:00",
   "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
  },
+ "timeline": {
+  "title": "Rain outlook",
+  "intervals": [
+   {
+    "startHour": 1,
+    "endHour": 2,
+    "severity": 1,
+    "confidence": "unknown",
+    "pattern": "steady"
+   }
+  ]
+ },
+ "rainTotals": [
+  {
+   "startHour": 1,
+   "endHour": 2,
+   "medianIn": 0.03,
+   "fromHour": 0,
+   "toHour": 11
+  }
+ ],
  "rainBlocks": [
   {
    "startHour": 0,
@@ -640,288 +642,1993 @@
   {
    "startHour": 1,
    "endHour": 2,
-   "in": 0.0,
+   "in": 0.02,
    "res": 1,
    "src": "radar"
   },
   {
    "startHour": 2,
-   "endHour": 5,
-   "in": 0.012,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 5,
-   "endHour": 8,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 8,
-   "endHour": 11,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 11,
-   "endHour": 14,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 14,
-   "endHour": 17,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 17,
-   "endHour": 20,
-   "in": 0.012,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 20,
-   "endHour": 23,
-   "in": 0.014,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 23,
-   "endHour": 26,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 26,
-   "endHour": 29,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 29,
-   "endHour": 32,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 32,
-   "endHour": 35,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 35,
-   "endHour": 38,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 38,
-   "endHour": 41,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 41,
-   "endHour": 44,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 44,
-   "endHour": 47,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 47,
-   "endHour": 50,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 50,
-   "endHour": 53,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 53,
-   "endHour": 56,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 56,
-   "endHour": 59,
-   "in": 0.012,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 59,
-   "endHour": 62,
-   "in": 0.018,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 62,
-   "endHour": 65,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 65,
-   "endHour": 68,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 68,
-   "endHour": 71,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 71,
-   "endHour": 74,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 74,
-   "endHour": 77,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 77,
-   "endHour": 80,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 80,
-   "endHour": 83,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 83,
-   "endHour": 86,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 86,
-   "endHour": 89,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 89,
-   "endHour": 92,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 92,
-   "endHour": 95,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 95,
-   "endHour": 98,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 98,
-   "endHour": 101,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 101,
-   "endHour": 104,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 104,
-   "endHour": 107,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 107,
-   "endHour": 110,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 110,
-   "endHour": 112,
+   "endHour": 3,
    "in": 0.0,
    "res": 3,
    "src": "model",
-   "blockStartHour": 110,
-   "blockEndHour": 113,
+   "blockStartHour": 0,
+   "blockEndHour": 3,
+   "partial": true
+  },
+  {
+   "startHour": 3,
+   "endHour": 6,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 6,
+   "endHour": 9,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 9,
+   "endHour": 12,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 12,
+   "endHour": 15,
+   "in": 0.012,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 15,
+   "endHour": 18,
+   "in": 0.024,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 18,
+   "endHour": 21,
+   "in": 0.012,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 21,
+   "endHour": 24,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 24,
+   "endHour": 27,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 27,
+   "endHour": 30,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 30,
+   "endHour": 33,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 33,
+   "endHour": 36,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 36,
+   "endHour": 39,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 39,
+   "endHour": 42,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 42,
+   "endHour": 45,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 45,
+   "endHour": 48,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 48,
+   "endHour": 51,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 51,
+   "endHour": 54,
+   "in": 0.012,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 54,
+   "endHour": 57,
+   "in": 0.012,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 57,
+   "endHour": 60,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 60,
+   "endHour": 63,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 63,
+   "endHour": 66,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 66,
+   "endHour": 69,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 69,
+   "endHour": 72,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 72,
+   "endHour": 75,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 75,
+   "endHour": 78,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 78,
+   "endHour": 81,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 81,
+   "endHour": 84,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 84,
+   "endHour": 87,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 87,
+   "endHour": 90,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 90,
+   "endHour": 93,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 93,
+   "endHour": 96,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 96,
+   "endHour": 99,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 99,
+   "endHour": 102,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 102,
+   "endHour": 105,
+   "in": 0.0,
+   "res": 3,
+   "src": "model"
+  },
+  {
+   "startHour": 105,
+   "endHour": 107,
+   "in": 0.0,
+   "res": 3,
+   "src": "model",
+   "blockStartHour": 105,
+   "blockEndHour": 108,
    "partial": true
   }
  ],
- "insight": {
-  "headline": "Only a slight chance of showers",
-  "detail": "Highs 54\u201357\u00b0."
+ "_peak_check": {
+  "ok": false,
+  "systems": [
+   {
+    "system": "ICON ensemble",
+    "family": "ens:icon_seamless",
+    "in": 0.0,
+    "hour": 1,
+    "kind": "ensemble median of run peaks"
+   },
+   {
+    "system": "HRRR",
+    "family": "NCEP high-resolution (HRRR/NBM)",
+    "in": 0.0,
+    "hour": 1,
+    "kind": "heaviest hour"
+   },
+   {
+    "system": "NBM",
+    "family": "NCEP high-resolution (HRRR/NBM)",
+    "in": 0.0,
+    "hour": 1,
+    "kind": "heaviest hour"
+   },
+   {
+    "system": "Radar nowcast",
+    "family": "radar",
+    "in": 0.022,
+    "hour": 1,
+    "kind": "heaviest hour"
+   }
+  ],
+  "why": [
+   "values disagree beyond 1.5x"
+  ]
+ },
+ "evidence": {
+  "pHeavy": [
+   0.02,
+   0.02,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "floodValidated": false,
+  "pFlood": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "pBehind": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "potential": [],
+  "floodSystems": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "systems": 3,
+  "alerts": [
+   {
+    "event": "Coastal Flood Advisory",
+    "startHour": 0,
+    "endHour": 46,
+    "flood": false,
+    "severity": "Minor",
+    "url": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.4d9fcaca5d239928ede605f4f5736c6c55ee00e1.001.2"
+   },
+   {
+    "event": "High Surf Advisory",
+    "startHour": 0,
+    "endHour": 15,
+    "flood": false,
+    "severity": "Minor",
+    "url": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.4d9fcaca5d239928ede605f4f5736c6c55ee00e1.001.3"
+   }
+  ],
+  "nearDisagree": {
+   "kind": "radar_only",
+   "hours": 2,
+   "radarIn": 0.02,
+   "modelsIn": 0.0
+  }
+ },
+ "rainSignals": {
+  "measurableIn": 0.01,
+  "dryP": 0.2,
+  "wetP": 0.5,
+  "radar": {
+   "rainingNow": null,
+   "dbz": null,
+   "frameTime": null,
+   "minDbz": 15.0,
+   "horizonHours": 2.0
+  },
+  "hours": [
+   {
+    "hour": 0,
+    "state": "dry",
+    "reasons": [],
+    "primary": "radar",
+    "signals": {
+     "radar": {
+      "pMeasurable": 0.037,
+      "medianIn": 0.001,
+      "window": "latest frame to end of hour"
+     },
+     "ensemble": {
+      "pMeasurable": 0.074,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.007,
+      "pop": 0.25,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 1,
+    "state": "measurable",
+    "reasons": [
+     "radar"
+    ],
+    "primary": "radar",
+    "signals": {
+     "radar": {
+      "pMeasurable": 0.833,
+      "medianIn": 0.022
+     },
+     "ensemble": {
+      "pMeasurable": 0.074,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.007,
+      "pop": 0.13,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 2,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.066,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.007,
+      "pop": 0.12,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 3,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.08,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 4,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.06,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 5,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.11,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 6,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.08,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 7,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.05,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 8,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.05,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 9,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.057,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.008,
+      "pop": 0.14,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 10,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.057,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.008,
+      "pop": 0.15,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 11,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.066,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.008,
+      "pop": 0.18,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 12,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.213,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.008,
+      "pop": 0.31,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 13,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.262,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.008,
+      "pop": 0.44,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 14,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.246,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.008,
+      "pop": 0.59,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 15,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.402,
+      "medianIn": 0.008
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.56,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 16,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.402,
+      "medianIn": 0.008
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.67,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 17,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.41,
+      "medianIn": 0.008
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.5,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 18,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.311,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.26,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 19,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.32,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.23,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 20,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.311,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.13,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 21,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.098,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.05,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 22,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.09,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.04,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 23,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.09,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.02,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 24,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.008,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 25,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.008,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 26,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.008,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 27,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 28,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 29,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 30,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 31,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 32,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 33,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 34,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 35,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 36,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 37,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.0,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 38,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.01,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 39,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.01,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 40,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.01,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 41,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.01,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 42,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.01,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 43,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.01,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 44,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.01,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 45,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.033,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.003,
+      "pop": 0.48,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 46,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.033,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.003,
+      "pop": 0.48,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 47,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.033,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.003,
+      "pop": 0.48,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 48,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.18,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.003,
+      "pop": 0.48,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 49,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.18,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.003,
+      "pop": 0.48,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 50,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.18,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.003,
+      "pop": 0.48,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 51,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.279,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.023,
+      "pop": 0.87,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 52,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.279,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.023,
+      "pop": 0.87,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 53,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.279,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.023,
+      "pop": 0.87,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 54,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.287,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.023,
+      "pop": 0.87,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 55,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.287,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.023,
+      "pop": 0.87,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 56,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.287,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.023,
+      "pop": 0.87,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 57,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.197,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.002,
+      "pop": 0.27,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 58,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.197,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.002,
+      "pop": 0.27,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 59,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.197,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.002,
+      "pop": 0.27,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 60,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.123,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.002,
+      "pop": 0.27,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 61,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.123,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.002,
+      "pop": 0.27,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 62,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.123,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.002,
+      "pop": 0.27,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 63,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.107,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.19,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 64,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.107,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.19,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 65,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.107,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.19,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 66,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.098,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.19,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 67,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.098,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.19,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 68,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.098,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.19,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 69,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.172,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.29,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 70,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.172,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.29,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 71,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.172,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.29,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   }
+  ],
+  "dryUntilHour": 1
  },
  "_strip_check": [
   {
    "date": "2026-11-19",
    "complete": true,
-   "wet_hours": 0,
-   "top_intensity": 0,
-   "total_p10": 0.0,
-   "total_p50": 0.036,
-   "total_p90": 0.122,
-   "sum_hourly_medians": 0,
-   "strip_sum": 0,
+   "wet_hours": 1,
+   "top_intensity": 1,
+   "total_p10": 0.023,
+   "total_p50": 0.027,
+   "total_p90": 0.043,
+   "sum_hourly_medians": 0.02,
+   "strip_sum": 0.02,
    "runs_in_wet_hours": null,
    "outside_wet_hours": null,
    "strip_heavy_hours": 0,
@@ -946,9 +2653,9 @@
    "wet_hours": 0,
    "top_intensity": 0,
    "total_p10": 0.0,
-   "total_p50": 0.048,
-   "total_p90": 0.184,
-   "sum_hourly_medians": 0,
+   "total_p50": 0.076,
+   "total_p90": 0.229,
+   "sum_hourly_medians": 0.03,
    "strip_sum": 0,
    "runs_in_wet_hours": null,
    "outside_wet_hours": null,
@@ -973,9 +2680,9 @@
    "wet_hours": 0,
    "top_intensity": 0,
    "total_p10": 0.0,
-   "total_p50": 0.072,
-   "total_p90": 0.219,
-   "sum_hourly_medians": 0.03,
+   "total_p50": 0.082,
+   "total_p90": 0.193,
+   "sum_hourly_medians": 0,
    "strip_sum": 0,
    "runs_in_wet_hours": null,
    "outside_wet_hours": null,
@@ -1000,8 +2707,8 @@
    "wet_hours": 0,
    "top_intensity": 0,
    "total_p10": 0.0,
-   "total_p50": 0.034,
-   "total_p90": 0.255,
+   "total_p50": 0.04,
+   "total_p90": 0.244,
    "sum_hourly_medians": 0,
    "strip_sum": 0,
    "runs_in_wet_hours": null,
@@ -1028,7 +2735,7 @@
    "top_intensity": 0,
    "total_p10": 0.0,
    "total_p50": 0.0,
-   "total_p90": 0.024,
+   "total_p90": 0.032,
    "sum_hourly_medians": 0,
    "strip_sum": 0,
    "runs_in_wet_hours": null,
@@ -1050,6 +2757,16 @@
   }
  ],
  "_diagnostics": {
-  "rain_periods": []
+  "rain_periods": [
+   {
+    "start": 1,
+    "end": 2,
+    "bridged": false,
+    "runs_with_break": null,
+    "pattern": "steady",
+    "start_local": "Thu 2 PM",
+    "end_local": "Thu 3 PM"
+   }
+  ]
  }
 }
