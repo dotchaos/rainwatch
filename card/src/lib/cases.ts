@@ -93,6 +93,7 @@ import stormWedJson from '../../scenarios/storm-wed.json';
 import stormWedNightJson from '../../scenarios/storm-wed-night.json';
 import liveThuJson from '../../scenarios/live-2026-11-19T1557Z.json';
 import liveThuLightJson from '../../scenarios/live-2026-11-19T1629Z.json';
+import liveThuRainJson from '../../scenarios/live-2026-11-19T2135Z.json';
 /** The live forecast of Tue Nov 17, 11:35 AM, as the v0.26 engine builds it (rain amounts, total window, peak check). */
 export const stormWed = () => structuredClone(stormWedJson) as unknown as Scenario;
 /** The live forecast of Wed Nov 18, 12:51 AM: rain from about 2 AM, heaviest 5–11 AM; peak re-derived by the v0.26.1 rule. */
@@ -101,6 +102,9 @@ export const stormWedNight = () => structuredClone(stormWedNightJson) as unknown
  *  two NWS advisories (one Coastal Flood Advisory in two periods), radar hours overlapping the 7–10 AM model block. */
 export const liveThu = () => structuredClone(liveThuJson) as unknown as Scenario;
 /** Archived published card, Thu Nov 19 8:29 AM: hazard none ("Only a slight chance of showers"), .01" model intervals. */
+/** Archived published card, Thu Nov 19 1:35 PM: rain 2–3 PM by radar, then hours the engine classifies possible
+ *  (Fri 1–9 AM). Sha256 b2cf63ec… (archive_live.md). */
+export const liveThuRain = () => structuredClone(liveThuRainJson) as unknown as Scenario;
 export const liveThuLight = () => structuredClone(liveThuLightJson) as unknown as Scenario;
 /** The same forecast with no data from hour `at` on (the models stop mid-storm): unknown hours, no amounts there, and
  *  no total for a stretch that runs into them (the engine never totals across missing data); the day the cut falls in
