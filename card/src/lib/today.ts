@@ -205,6 +205,20 @@ export function initialSelection(t: TodayTimeline): TodayBar | null {
   return eligibleBars(t).reduce<TodayBar | null>((best, b) => !best || b.intensity > best.intensity
     || (b.intensity === best.intensity && b.in > best.in) ? b : best, null);
 }
+/** The engine's rain event hours: its timeline intervals, i.e. the hours at "Umbrella or jacket" or higher that make
+ *  hazard 'rain' or 'flood' (the same stretches as rainTotals' startHour/endHour). Empty without a rain event. */
+export function rainEventHours(s: Scenario): { start: number; end: number }[] {
+  if (!rainEventExpected(s)) return [];
+  return (s.timeline?.intervals ?? []).filter(iv => iv.severity > 0).map(iv => ({ start: iv.startHour, end: iv.endHour }));
+}
+/** The default selection belongs to the rain event: the existing priority (initialSelection), applied only to eligible
+ *  intervals whose hours overlap the engine's event hours. None when no eligible interval covers the event (e.g. its
+ *  only interval is a radar-shortened model block), and none without a rain event. No rainfall threshold here. */
+export function defaultSelection(s: Scenario, t: TodayTimeline): TodayBar | null {
+  const ev = rainEventHours(s);
+  const inEvent = (b: TodayBar) => ev.some(e => b.start < e.end && e.start < b.end);
+  return initialSelection({ ...t, bars: eligibleBars(t).filter(inEvent) });
+}
 /** "1–4 AM Thursday" (today's intervals say "today"). */
 export function intervalName(s: Scenario, b: { start: number; end: number }) {
   const i = dayIndexAt(s, b.start);
@@ -329,7 +343,7 @@ export function absHour(s: Scenario, h: number): number {
 export const rainEventExpected = (s: Scenario) => s.hazard === 'rain' || s.hazard === 'flood';
 export function resolveSelection(s: Scenario, t: TodayTimeline, chosen: number | null): TodayBar | null {
   const el = eligibleBars(t);
-  return (chosen !== null && el.find(b => absHour(s, b.start) === chosen)) || (rainEventExpected(s) ? initialSelection(t) : null);
+  return (chosen !== null && el.find(b => absHour(s, b.start) === chosen)) || defaultSelection(s, t);
 }
 /** Hourly heading for the interval at hour h, in the forecast location's calendar (never the device's). */
 export function hourlyDayHeading(s: Scenario, h: number): string {

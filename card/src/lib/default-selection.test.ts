@@ -6,7 +6,7 @@ import { renderToString } from 'react-dom/server';
 import { WeatherCard } from '../components/WeatherCard';
 import type { Scenario } from '../types';
 import { liveThu, liveThuLight, stormWed, stormWedNight } from './cases';
-import { absHour, eligibleBars, initialSelection, intervalDetail, rainEventExpected, resolveSelection, todayTimeline } from './today';
+import { absHour, defaultSelection, eligibleBars, initialSelection, intervalDetail, rainEventExpected, rainEventHours, resolveSelection, todayTimeline } from './today';
 
 const html = (s: Scenario, selected?: number) => renderToString(createElement(WeatherCard, { scenario: s, selected }))
   .replace(/<!-- -->/g, '').replace(/&quot;/g, '"').replace(/&#x27;/g, "'");
@@ -34,18 +34,51 @@ describe('light rain only (archived Thu 8:29 AM card: "Only a slight chance of s
   });
 });
 
-describe('meaningful rain: the existing default priority is unchanged', () => {
-  for (const [name, mk] of [['Thu 7:57 AM (rain)', liveThu], ['Tue 11:35 AM (flood)', stormWed]] as const) {
-    it(name, () => {
-      const s = mk(), t = todayTimeline(s)!, sel = initialSelection(t)!;
-      expect(rainEventExpected(s)).toBe(true);
-      expect(resolveSelection(s, t, null)).toBe(sel);
-      const h = html(s), r = radios(h);
-      expect(r.filter(x => x.checked).map(x => x.from)).toEqual([sel.start]);
-      expect(r.filter(x => x.tab === 0).map(x => x.from)).toEqual([sel.start]);
+describe('rain event: the default belongs to the event', () => {
+  const overlaps = (b: { start: number; end: number }, ev: { start: number; end: number }[]) => ev.some(e => b.start < e.end && e.start < b.end);
+  it('event hours are the engine\'s own (timeline intervals, same stretches as rainTotals)', () => {
+    const s = liveThu();
+    expect(rainEventHours(s)).toEqual([{ start: 2, end: 3 }]);
+    expect(s.rainTotals!.map(x => [x.startHour, x.endHour])).toEqual([[2, 3]]);
+    expect(rainEventHours(liveThuLight())).toEqual([]);
+  });
+  it('Thu 7:57 AM: the event\'s only interval (7–10 AM, radar overlap) is not selectable, so nothing is selected', () => {
+    const s = liveThu(), t = todayTimeline(s)!;
+    expect(rainEventExpected(s)).toBe(true);
+    expect(initialSelection(t)).not.toBeNull();                 // the old fallback (Fri 4–7 AM, .01") ...
+    expect(overlaps(initialSelection(t)!, rainEventHours(s))).toBe(false);   // ... was outside the event
+    expect(resolveSelection(s, t, null)).toBeNull();
+    const h = html(s);
+    expect(h).not.toContain('interval-card');
+    expect(radios(h).some(r => r.checked)).toBe(false);
+    expect(radios(h).map(r => r.from)).toEqual(eligibleBars(t).map(b => b.start));   // all still interactive
+    expect(radios(h).filter(r => r.tab === 0)).toHaveLength(1);
+  });
+  for (const [name, mk] of [['Tue 11:35 AM (flood)', stormWed], ['Wed 12:51 AM (flood, overlap)', stormWedNight]] as const) {
+    it(`${name}: existing priority within the event; unchanged from before`, () => {
+      const s = mk(), t = todayTimeline(s)!, sel = resolveSelection(s, t, null)!;
+      expect(sel).toBe(initialSelection(t));                     // the storm defaults are unchanged
+      expect(overlaps(sel, rainEventHours(s))).toBe(true);
+      const h = html(s);
+      expect(radios(h).filter(x => x.checked).map(x => x.from)).toEqual([sel.start]);
       expect(h).toContain(`<strong>${intervalDetail(s, sel).title}</strong>`);
     });
   }
+  it('a heavier interval outside the event never wins the default', () => {
+    // same storm, but the engine's event is only 1–4 AM Wed (.07"): the .75" 7–10 AM interval is outside it
+    const s = stormWed(); s.timeline = { ...s.timeline!, intervals: [{ startHour: 14, endHour: 17, severity: 1, confidence: 'unknown' }] };
+    const t = todayTimeline(s)!, sel = defaultSelection(s, t)!;
+    expect([sel.start, sel.end, sel.in]).toEqual([14, 17, 0.072]);
+    expect(initialSelection(t)!.start).toBe(20);
+  });
+  it('the heaviest-period highlight is independent of the default selection', () => {
+    const s = stormWed(), t = todayTimeline(s)!;
+    const moved = { ...s, timeline: { ...s.timeline!, intervals: [{ startHour: 14, endHour: 17, severity: 1, confidence: 'unknown' as const }] } };
+    expect(t.heavy).toEqual({ start: 17, end: 23 });
+    expect(html(s)).toContain('class="today-heavy" data-from="17" data-to="23"');
+    expect(html(liveThu())).not.toContain('today-heavy');          // no heavy period, no highlight, selection or not
+    expect(defaultSelection(moved as Scenario, todayTimeline(moved as Scenario)!)!.start).not.toBe(t.heavy!.start);
+  });
 });
 
 describe('radar overlap', () => {
@@ -76,7 +109,12 @@ describe('manual selection', () => {
     expect(h).toContain(`<div class="ic-top"><strong>${d.title}</strong><span>${d.intensity} · Models</span></div>`);
   });
   it('on a rain-event card, a manual choice still wins over the default', () => {
-    const r = liveThu(), rt = todayTimeline(r)!, other = eligibleBars(rt).find(b => b !== initialSelection(rt))!;
+    const r = stormWed(), rt = todayTimeline(r)!, other = eligibleBars(rt).find(b => b !== initialSelection(rt))!;
     expect(resolveSelection(r, rt, absHour(r, other.start))).toBe(other);
+  });
+  it('Thu 7:57 AM: an interval outside the event can still be chosen manually and shows its details', () => {
+    const r = liveThu(), rt = todayTimeline(r)!, pick = eligibleBars(rt)[0];
+    expect(resolveSelection(r, rt, absHour(r, pick.start))).toBe(pick);
+    expect(html(r, pick.start)).toContain(`<strong>${intervalDetail(r, pick).title}</strong>`);
   });
 });
