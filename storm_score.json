@@ -1,0 +1,1596 @@
+{
+ "scored_at": "2026-11-19T17:01:04.398674+00:00",
+ "gauge_observed_through": "2026-11-19T17:00:00+00:00",
+ "snapshots": [
+  {
+   "snapshot": "2026-11-17T19:53:59.367586+00:00",
+   "window": [
+    "Wed 12 AM",
+    "Fri 12 AM"
+   ],
+   "total": {
+    "forecast_p10_p50_p90": [
+     1.841,
+     2.645,
+     3.398
+    ],
+    "card_shows": [
+     {
+      "startHour": 14,
+      "endHour": 50,
+      "medianIn": 2.65,
+      "fromHour": 13,
+      "toHour": 61
+     }
+    ],
+    "gauge": 3.18,
+    "coverage": "INCOMPLETE (33/48 h observed)",
+    "inside_p10_p90": null
+   },
+   "blocks": [
+    {
+     "block": "Tue 10 PM\u2013Wed 1 AM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.024,
+     "gauge": 0.0,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 1 AM\u2013Wed 4 AM",
+     "res": 3,
+     "forecast": 0.072,
+     "p10": 0.012,
+     "p90": 0.311,
+     "gauge": 0.12,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 AM\u2013Wed 7 AM",
+     "res": 3,
+     "forecast": 0.435,
+     "p10": 0.154,
+     "p90": 0.969,
+     "gauge": 0.1,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 AM\u2013Wed 10 AM",
+     "res": 3,
+     "forecast": 0.752,
+     "p10": 0.178,
+     "p90": 1.146,
+     "gauge": 0.7,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 AM\u2013Wed 1 PM",
+     "res": 3,
+     "forecast": 0.123,
+     "p10": 0.004,
+     "p90": 0.677,
+     "gauge": 1.22,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 1 PM\u2013Wed 4 PM",
+     "res": 3,
+     "forecast": 0.024,
+     "p10": 0.0,
+     "p90": 0.084,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 PM\u2013Wed 7 PM",
+     "res": 3,
+     "forecast": 0.024,
+     "p10": 0.0,
+     "p90": 0.118,
+     "gauge": 0.09,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 PM\u2013Wed 10 PM",
+     "res": 3,
+     "forecast": 0.1,
+     "p10": 0.024,
+     "p90": 0.237,
+     "gauge": 0.13,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 PM\u2013Thu 1 AM",
+     "res": 3,
+     "forecast": 0.093,
+     "p10": 0.012,
+     "p90": 0.236,
+     "gauge": 0.11,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 1 AM\u2013Thu 4 AM",
+     "res": 3,
+     "forecast": 0.165,
+     "p10": 0.036,
+     "p90": 0.361,
+     "gauge": 0.31,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 4 AM\u2013Thu 7 AM",
+     "res": 3,
+     "forecast": 0.183,
+     "p10": 0.06,
+     "p90": 0.388,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 7 AM\u2013Thu 10 AM",
+     "res": 3,
+     "forecast": 0.129,
+     "p10": 0.024,
+     "p90": 0.317,
+     "gauge": 0.06,
+     "coverage": "INCOMPLETE (2/3 h observed)"
+    },
+    {
+     "block": "Thu 10 AM\u2013Thu 1 PM",
+     "res": 3,
+     "forecast": 0.036,
+     "p10": 0.0,
+     "p90": 0.26,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 1 PM\u2013Thu 4 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.024,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 4 PM\u2013Thu 7 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.011,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 7 PM\u2013Thu 10 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.0,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 10 PM\u2013Fri 1 AM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.012,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    }
+   ],
+   "peak": {
+    "gauge_wettest_hour": {
+     "at": "Wed 10 AM",
+     "in": 0.93
+    },
+    "forecast_wettest_block": {
+     "block": "Wed 7 AM\u2013Wed 10 AM",
+     "in": 0.752
+    },
+    "hourly_systems": [
+     {
+      "system": "ICON ensemble",
+      "in": 0.496,
+      "at": "Wed 8 AM"
+     },
+     {
+      "system": "HRRR",
+      "in": 0.213,
+      "at": "Wed 5 AM"
+     },
+     {
+      "system": "NBM",
+      "in": 0.402,
+      "at": "Wed 8 AM"
+     }
+    ],
+    "card_showed_rate": null,
+    "coverage": "INCOMPLETE (33/48 h observed)"
+   },
+   "timing": {
+    "onset": {
+     "forecast": "Wed 1 AM",
+     "gauge": "Wed 2 AM"
+    },
+    "heavy": {
+     "forecast": [
+      "Wed 3 AM",
+      "Wed 10 AM"
+     ],
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM",
+      "Wed 11 AM",
+      "Thu 3 AM"
+     ]
+    },
+    "end": {
+     "forecast": "Thu 1 PM",
+     "gauge_last_wet_hour": "Thu 7 AM",
+     "note": "end not yet observable"
+    }
+   },
+   "flood": [
+    {
+     "window": "Wed 4 AM\u2013Wed 10 AM",
+     "pFloodAny": 0.73,
+     "systems": 3,
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM"
+     ],
+     "gauge_total": 0.8,
+     "coverage": "complete",
+     "street_observations_nearby": [
+      {
+       "observed_at": "2026-11-18T09:55:00-08:00",
+       "observed_until": "2026-11-18T10:25:00-08:00",
+       "approx": true,
+       "recorded_at": "2026-11-19T11:53:09+00:00",
+       "location": "18th Street / Folsom area, Mission District",
+       "what": "Significant street flooding. Photographs taken around 10:14 AM show substantial standing water around vehicles, reaching approximately wheel/bumper height in places. Water was affecting the roadway, not merely collecting at the curb.",
+       "level": "roadway",
+       "depth": "approximately wheel/bumper height in places (visually estimated, not measured)",
+       "evidence": "firsthand observation, confirmed; timing approximate",
+       "reporter": "John Bove",
+       "photo": "photographs ~10:14 AM, sent in chat 2026-11-19; not stored here (public branch)",
+       "supersedes": "2026-11-19 entry with unconfirmed location"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "snapshot": "2026-11-18T08:51:29.458020+00:00",
+   "window": [
+    "Wed 12 AM",
+    "Fri 12 AM"
+   ],
+   "total": {
+    "forecast_p10_p50_p90": [
+     1.871,
+     2.698,
+     3.606
+    ],
+    "card_shows": [
+     {
+      "startHour": 2,
+      "endHour": 37,
+      "medianIn": 2.68,
+      "fromHour": 0,
+      "toHour": 48
+     }
+    ],
+    "gauge": 3.18,
+    "coverage": "INCOMPLETE (33/48 h observed)",
+    "inside_p10_p90": null
+   },
+   "blocks": [
+    {
+     "block": "Wed 12 AM\u2013Wed 1 AM",
+     "res": 1,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.008,
+     "gauge": 0.0,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 1 AM\u2013Wed 2 AM",
+     "res": 1,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.047,
+     "gauge": 0.0,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 2 AM\u2013Wed 4 AM",
+     "res": 3,
+     "forecast": 0.036,
+     "p10": 0.0,
+     "p90": 0.177,
+     "gauge": 0.12,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 AM\u2013Wed 7 AM",
+     "res": 3,
+     "forecast": 0.294,
+     "p10": 0.109,
+     "p90": 0.703,
+     "gauge": 0.1,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 AM\u2013Wed 10 AM",
+     "res": 3,
+     "forecast": 0.826,
+     "p10": 0.312,
+     "p90": 1.227,
+     "gauge": 0.7,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 AM\u2013Wed 1 PM",
+     "res": 3,
+     "forecast": 0.454,
+     "p10": 0.024,
+     "p90": 1.015,
+     "gauge": 1.22,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 1 PM\u2013Wed 4 PM",
+     "res": 3,
+     "forecast": 0.066,
+     "p10": 0.0,
+     "p90": 0.317,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 PM\u2013Wed 7 PM",
+     "res": 3,
+     "forecast": 0.024,
+     "p10": 0.0,
+     "p90": 0.092,
+     "gauge": 0.09,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 PM\u2013Wed 10 PM",
+     "res": 3,
+     "forecast": 0.06,
+     "p10": 0.0,
+     "p90": 0.177,
+     "gauge": 0.13,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 PM\u2013Thu 1 AM",
+     "res": 3,
+     "forecast": 0.093,
+     "p10": 0.012,
+     "p90": 0.237,
+     "gauge": 0.11,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 1 AM\u2013Thu 4 AM",
+     "res": 3,
+     "forecast": 0.151,
+     "p10": 0.051,
+     "p90": 0.29,
+     "gauge": 0.31,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 4 AM\u2013Thu 7 AM",
+     "res": 3,
+     "forecast": 0.232,
+     "p10": 0.105,
+     "p90": 0.43,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 7 AM\u2013Thu 10 AM",
+     "res": 3,
+     "forecast": 0.129,
+     "p10": 0.036,
+     "p90": 0.282,
+     "gauge": 0.06,
+     "coverage": "INCOMPLETE (2/3 h observed)"
+    },
+    {
+     "block": "Thu 10 AM\u2013Thu 1 PM",
+     "res": 3,
+     "forecast": 0.048,
+     "p10": 0.008,
+     "p90": 0.16,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 1 PM\u2013Thu 4 PM",
+     "res": 3,
+     "forecast": 0.012,
+     "p10": 0.0,
+     "p90": 0.039,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 4 PM\u2013Thu 7 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.0,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 7 PM\u2013Thu 10 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.0,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 10 PM\u2013Fri 1 AM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.012,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    }
+   ],
+   "peak": {
+    "gauge_wettest_hour": {
+     "at": "Wed 10 AM",
+     "in": 0.93
+    },
+    "forecast_wettest_block": {
+     "block": "Wed 7 AM\u2013Wed 10 AM",
+     "in": 0.826
+    },
+    "hourly_systems": [
+     {
+      "system": "ICON ensemble",
+      "in": 0.516,
+      "at": "Wed 8 AM"
+     },
+     {
+      "system": "HRRR",
+      "in": 0.524,
+      "at": "Wed 10 AM"
+     },
+     {
+      "system": "NBM",
+      "in": 0.469,
+      "at": "Wed 10 AM"
+     }
+    ],
+    "card_showed_rate": {
+     "lo": 0.45,
+     "hi": 0.5,
+     "hour": 10,
+     "systems": [
+      "ICON ensemble",
+      "HRRR",
+      "NBM"
+     ]
+    },
+    "coverage": "INCOMPLETE (33/48 h observed)"
+   },
+   "timing": {
+    "onset": {
+     "forecast": "Wed 2 AM",
+     "gauge": "Wed 2 AM"
+    },
+    "heavy": {
+     "forecast": [
+      "Wed 5 AM",
+      "Wed 1 PM"
+     ],
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM",
+      "Wed 11 AM",
+      "Thu 3 AM"
+     ]
+    },
+    "end": {
+     "forecast": "Thu 1 PM",
+     "gauge_last_wet_hour": "Thu 7 AM",
+     "note": "end not yet observable"
+    }
+   },
+   "flood": [
+    {
+     "window": "Wed 5 AM\u2013Wed 11 AM",
+     "pFloodAny": 0.71,
+     "systems": 3,
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM"
+     ],
+     "gauge_total": 1.66,
+     "coverage": "complete",
+     "street_observations_nearby": [
+      {
+       "observed_at": "2026-11-18T09:55:00-08:00",
+       "observed_until": "2026-11-18T10:25:00-08:00",
+       "approx": true,
+       "recorded_at": "2026-11-19T11:53:09+00:00",
+       "location": "18th Street / Folsom area, Mission District",
+       "what": "Significant street flooding. Photographs taken around 10:14 AM show substantial standing water around vehicles, reaching approximately wheel/bumper height in places. Water was affecting the roadway, not merely collecting at the curb.",
+       "level": "roadway",
+       "depth": "approximately wheel/bumper height in places (visually estimated, not measured)",
+       "evidence": "firsthand observation, confirmed; timing approximate",
+       "reporter": "John Bove",
+       "photo": "photographs ~10:14 AM, sent in chat 2026-11-19; not stored here (public branch)",
+       "supersedes": "2026-11-19 entry with unconfirmed location"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "snapshot": "2026-11-18T09:17:56.203114+00:00",
+   "window": [
+    "Wed 1 AM",
+    "Fri 12 AM"
+   ],
+   "total": {
+    "forecast_p10_p50_p90": [
+     1.849,
+     2.698,
+     3.599
+    ],
+    "card_shows": [
+     {
+      "startHour": 2,
+      "endHour": 36,
+      "medianIn": 2.67,
+      "fromHour": 0,
+      "toHour": 47
+     }
+    ],
+    "gauge": 3.18,
+    "coverage": "INCOMPLETE (32/47 h observed)",
+    "inside_p10_p90": null
+   },
+   "blocks": [
+    {
+     "block": "Wed 1 AM\u2013Wed 2 AM",
+     "res": 1,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.047,
+     "gauge": 0.0,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 2 AM\u2013Wed 3 AM",
+     "res": 1,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.047,
+     "gauge": 0.01,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 3 AM\u2013Wed 4 AM",
+     "res": 3,
+     "forecast": 0.036,
+     "p10": 0.0,
+     "p90": 0.177,
+     "gauge": 0.11,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 AM\u2013Wed 7 AM",
+     "res": 3,
+     "forecast": 0.294,
+     "p10": 0.109,
+     "p90": 0.703,
+     "gauge": 0.1,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 AM\u2013Wed 10 AM",
+     "res": 3,
+     "forecast": 0.826,
+     "p10": 0.312,
+     "p90": 1.227,
+     "gauge": 0.7,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 AM\u2013Wed 1 PM",
+     "res": 3,
+     "forecast": 0.454,
+     "p10": 0.024,
+     "p90": 1.015,
+     "gauge": 1.22,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 1 PM\u2013Wed 4 PM",
+     "res": 3,
+     "forecast": 0.066,
+     "p10": 0.0,
+     "p90": 0.317,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 PM\u2013Wed 7 PM",
+     "res": 3,
+     "forecast": 0.024,
+     "p10": 0.0,
+     "p90": 0.092,
+     "gauge": 0.09,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 PM\u2013Wed 10 PM",
+     "res": 3,
+     "forecast": 0.06,
+     "p10": 0.0,
+     "p90": 0.177,
+     "gauge": 0.13,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 PM\u2013Thu 1 AM",
+     "res": 3,
+     "forecast": 0.093,
+     "p10": 0.012,
+     "p90": 0.237,
+     "gauge": 0.11,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 1 AM\u2013Thu 4 AM",
+     "res": 3,
+     "forecast": 0.151,
+     "p10": 0.051,
+     "p90": 0.29,
+     "gauge": 0.31,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 4 AM\u2013Thu 7 AM",
+     "res": 3,
+     "forecast": 0.232,
+     "p10": 0.105,
+     "p90": 0.43,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 7 AM\u2013Thu 10 AM",
+     "res": 3,
+     "forecast": 0.129,
+     "p10": 0.036,
+     "p90": 0.282,
+     "gauge": 0.06,
+     "coverage": "INCOMPLETE (2/3 h observed)"
+    },
+    {
+     "block": "Thu 10 AM\u2013Thu 1 PM",
+     "res": 3,
+     "forecast": 0.048,
+     "p10": 0.008,
+     "p90": 0.16,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 1 PM\u2013Thu 4 PM",
+     "res": 3,
+     "forecast": 0.012,
+     "p10": 0.0,
+     "p90": 0.039,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 4 PM\u2013Thu 7 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.0,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 7 PM\u2013Thu 10 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.0,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 10 PM\u2013Fri 1 AM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.012,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    }
+   ],
+   "peak": {
+    "gauge_wettest_hour": {
+     "at": "Wed 10 AM",
+     "in": 0.93
+    },
+    "forecast_wettest_block": {
+     "block": "Wed 7 AM\u2013Wed 10 AM",
+     "in": 0.826
+    },
+    "hourly_systems": [
+     {
+      "system": "ICON ensemble",
+      "in": 0.516,
+      "at": "Wed 8 AM"
+     }
+    ],
+    "card_showed_rate": null,
+    "coverage": "INCOMPLETE (32/47 h observed)"
+   },
+   "timing": {
+    "onset": {
+     "forecast": "Wed 3 AM",
+     "gauge": "Wed 2 AM"
+    },
+    "heavy": {
+     "forecast": [
+      "Wed 5 AM",
+      "Wed 1 PM"
+     ],
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM",
+      "Wed 11 AM",
+      "Thu 3 AM"
+     ]
+    },
+    "end": {
+     "forecast": "Thu 1 PM",
+     "gauge_last_wet_hour": "Thu 7 AM",
+     "note": "end not yet observable"
+    }
+   },
+   "flood": [
+    {
+     "window": "Wed 5 AM\u2013Wed 11 AM",
+     "pFloodAny": 0.71,
+     "systems": 3,
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM"
+     ],
+     "gauge_total": 1.66,
+     "coverage": "complete",
+     "street_observations_nearby": [
+      {
+       "observed_at": "2026-11-18T09:55:00-08:00",
+       "observed_until": "2026-11-18T10:25:00-08:00",
+       "approx": true,
+       "recorded_at": "2026-11-19T11:53:09+00:00",
+       "location": "18th Street / Folsom area, Mission District",
+       "what": "Significant street flooding. Photographs taken around 10:14 AM show substantial standing water around vehicles, reaching approximately wheel/bumper height in places. Water was affecting the roadway, not merely collecting at the curb.",
+       "level": "roadway",
+       "depth": "approximately wheel/bumper height in places (visually estimated, not measured)",
+       "evidence": "firsthand observation, confirmed; timing approximate",
+       "reporter": "John Bove",
+       "photo": "photographs ~10:14 AM, sent in chat 2026-11-19; not stored here (public branch)",
+       "supersedes": "2026-11-19 entry with unconfirmed location"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "snapshot": "2026-11-18T11:56:32.003082+00:00",
+   "window": [
+    "Wed 3 AM",
+    "Fri 12 AM"
+   ],
+   "total": {
+    "forecast_p10_p50_p90": [
+     1.845,
+     2.843,
+     3.737
+    ],
+    "card_shows": [
+     {
+      "startHour": 0,
+      "endHour": 34,
+      "medianIn": 3.31,
+      "fromHour": 0,
+      "toHour": 45
+     }
+    ],
+    "gauge": 3.17,
+    "coverage": "INCOMPLETE (30/45 h observed)",
+    "inside_p10_p90": null
+   },
+   "blocks": [
+    {
+     "block": "Wed 3 AM\u2013Wed 4 AM",
+     "res": 1,
+     "forecast": 0.02,
+     "p10": 0.004,
+     "p90": 0.067,
+     "gauge": 0.11,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 AM\u2013Wed 5 AM",
+     "res": 1,
+     "forecast": 0.58,
+     "p10": 0.02,
+     "p90": 0.181,
+     "gauge": 0.07,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 5 AM\u2013Wed 7 AM",
+     "res": 3,
+     "forecast": 0.306,
+     "p10": 0.095,
+     "p90": 0.7,
+     "gauge": 0.03,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 AM\u2013Wed 10 AM",
+     "res": 3,
+     "forecast": 0.816,
+     "p10": 0.403,
+     "p90": 1.225,
+     "gauge": 0.7,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 AM\u2013Wed 1 PM",
+     "res": 3,
+     "forecast": 0.543,
+     "p10": 0.059,
+     "p90": 1.084,
+     "gauge": 1.22,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 1 PM\u2013Wed 4 PM",
+     "res": 3,
+     "forecast": 0.066,
+     "p10": 0.0,
+     "p90": 0.467,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 PM\u2013Wed 7 PM",
+     "res": 3,
+     "forecast": 0.024,
+     "p10": 0.0,
+     "p90": 0.092,
+     "gauge": 0.09,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 PM\u2013Wed 10 PM",
+     "res": 3,
+     "forecast": 0.06,
+     "p10": 0.0,
+     "p90": 0.164,
+     "gauge": 0.13,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 PM\u2013Thu 1 AM",
+     "res": 3,
+     "forecast": 0.093,
+     "p10": 0.012,
+     "p90": 0.225,
+     "gauge": 0.11,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 1 AM\u2013Thu 4 AM",
+     "res": 3,
+     "forecast": 0.144,
+     "p10": 0.024,
+     "p90": 0.305,
+     "gauge": 0.31,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 4 AM\u2013Thu 7 AM",
+     "res": 3,
+     "forecast": 0.224,
+     "p10": 0.049,
+     "p90": 0.431,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 7 AM\u2013Thu 10 AM",
+     "res": 3,
+     "forecast": 0.146,
+     "p10": 0.048,
+     "p90": 0.33,
+     "gauge": 0.06,
+     "coverage": "INCOMPLETE (2/3 h observed)"
+    },
+    {
+     "block": "Thu 10 AM\u2013Thu 1 PM",
+     "res": 3,
+     "forecast": 0.055,
+     "p10": 0.0,
+     "p90": 0.203,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 1 PM\u2013Thu 4 PM",
+     "res": 3,
+     "forecast": 0.012,
+     "p10": 0.0,
+     "p90": 0.048,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 4 PM\u2013Thu 7 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.012,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 7 PM\u2013Thu 10 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.012,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 10 PM\u2013Fri 1 AM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.024,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    }
+   ],
+   "peak": {
+    "gauge_wettest_hour": {
+     "at": "Wed 10 AM",
+     "in": 0.93
+    },
+    "forecast_wettest_block": {
+     "block": "Wed 4 AM\u2013Wed 5 AM",
+     "in": 0.58
+    },
+    "hourly_systems": [
+     {
+      "system": "ICON ensemble",
+      "in": 0.516,
+      "at": "Wed 8 AM"
+     }
+    ],
+    "card_showed_rate": null,
+    "coverage": "INCOMPLETE (30/45 h observed)"
+   },
+   "timing": {
+    "onset": {
+     "forecast": "Wed 3 AM",
+     "gauge": "Wed 3 AM"
+    },
+    "heavy": {
+     "forecast": [
+      "Wed 4 AM",
+      "Wed 1 PM"
+     ],
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM",
+      "Wed 11 AM",
+      "Thu 3 AM"
+     ]
+    },
+    "end": {
+     "forecast": "Thu 1 PM",
+     "gauge_last_wet_hour": "Thu 7 AM",
+     "note": "end not yet observable"
+    }
+   },
+   "flood": [
+    {
+     "window": "Wed 4 AM\u2013Wed 12 PM",
+     "pFloodAny": 0.79,
+     "systems": 3,
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM",
+      "Wed 11 AM"
+     ],
+     "gauge_total": 1.99,
+     "coverage": "complete",
+     "street_observations_nearby": [
+      {
+       "observed_at": "2026-11-18T09:55:00-08:00",
+       "observed_until": "2026-11-18T10:25:00-08:00",
+       "approx": true,
+       "recorded_at": "2026-11-19T11:53:09+00:00",
+       "location": "18th Street / Folsom area, Mission District",
+       "what": "Significant street flooding. Photographs taken around 10:14 AM show substantial standing water around vehicles, reaching approximately wheel/bumper height in places. Water was affecting the roadway, not merely collecting at the curb.",
+       "level": "roadway",
+       "depth": "approximately wheel/bumper height in places (visually estimated, not measured)",
+       "evidence": "firsthand observation, confirmed; timing approximate",
+       "reporter": "John Bove",
+       "photo": "photographs ~10:14 AM, sent in chat 2026-11-19; not stored here (public branch)",
+       "supersedes": "2026-11-19 entry with unconfirmed location"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "snapshot": "2026-11-18T14:55:47.750175+00:00",
+   "window": [
+    "Wed 6 AM",
+    "Fri 12 AM"
+   ],
+   "total": {
+    "forecast_p10_p50_p90": [
+     1.591,
+     2.615,
+     3.497
+    ],
+    "card_shows": [
+     {
+      "startHour": 1,
+      "endHour": 31,
+      "medianIn": 2.2,
+      "fromHour": 0,
+      "toHour": 42
+     }
+    ],
+    "gauge": 2.97,
+    "coverage": "INCOMPLETE (27/42 h observed)",
+    "inside_p10_p90": null
+   },
+   "blocks": [
+    {
+     "block": "Wed 6 AM\u2013Wed 7 AM",
+     "res": 1,
+     "forecast": 0.0,
+     "p10": 0.031,
+     "p90": 0.294,
+     "gauge": 0.01,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 AM\u2013Wed 8 AM",
+     "res": 1,
+     "forecast": 0.02,
+     "p10": 0.13,
+     "p90": 0.409,
+     "gauge": 0.02,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 8 AM\u2013Wed 10 AM",
+     "res": 3,
+     "forecast": 0.816,
+     "p10": 0.403,
+     "p90": 1.225,
+     "gauge": 0.68,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 AM\u2013Wed 1 PM",
+     "res": 3,
+     "forecast": 0.543,
+     "p10": 0.059,
+     "p90": 1.084,
+     "gauge": 1.22,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 1 PM\u2013Wed 4 PM",
+     "res": 3,
+     "forecast": 0.066,
+     "p10": 0.0,
+     "p90": 0.467,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 PM\u2013Wed 7 PM",
+     "res": 3,
+     "forecast": 0.024,
+     "p10": 0.0,
+     "p90": 0.092,
+     "gauge": 0.09,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 PM\u2013Wed 10 PM",
+     "res": 3,
+     "forecast": 0.06,
+     "p10": 0.0,
+     "p90": 0.164,
+     "gauge": 0.13,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 PM\u2013Thu 1 AM",
+     "res": 3,
+     "forecast": 0.093,
+     "p10": 0.012,
+     "p90": 0.225,
+     "gauge": 0.11,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 1 AM\u2013Thu 4 AM",
+     "res": 3,
+     "forecast": 0.144,
+     "p10": 0.024,
+     "p90": 0.305,
+     "gauge": 0.31,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 4 AM\u2013Thu 7 AM",
+     "res": 3,
+     "forecast": 0.224,
+     "p10": 0.049,
+     "p90": 0.431,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 7 AM\u2013Thu 10 AM",
+     "res": 3,
+     "forecast": 0.146,
+     "p10": 0.048,
+     "p90": 0.33,
+     "gauge": 0.06,
+     "coverage": "INCOMPLETE (2/3 h observed)"
+    },
+    {
+     "block": "Thu 10 AM\u2013Thu 1 PM",
+     "res": 3,
+     "forecast": 0.055,
+     "p10": 0.0,
+     "p90": 0.203,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 1 PM\u2013Thu 4 PM",
+     "res": 3,
+     "forecast": 0.012,
+     "p10": 0.0,
+     "p90": 0.048,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 4 PM\u2013Thu 7 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.012,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 7 PM\u2013Thu 10 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.012,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 10 PM\u2013Fri 1 AM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.024,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    }
+   ],
+   "peak": {
+    "gauge_wettest_hour": {
+     "at": "Wed 10 AM",
+     "in": 0.93
+    },
+    "forecast_wettest_block": {
+     "block": "Wed 8 AM\u2013Wed 10 AM",
+     "in": 0.816
+    },
+    "hourly_systems": [
+     {
+      "system": "ICON ensemble",
+      "in": 0.474,
+      "at": "Wed 8 AM"
+     },
+     {
+      "system": "HRRR",
+      "in": 0.567,
+      "at": "Wed 10 AM"
+     },
+     {
+      "system": "NBM",
+      "in": 0.319,
+      "at": "Wed 9 AM"
+     }
+    ],
+    "card_showed_rate": null,
+    "coverage": "INCOMPLETE (27/42 h observed)"
+   },
+   "timing": {
+    "onset": {
+     "forecast": "Wed 7 AM",
+     "gauge": "Wed 6 AM"
+    },
+    "heavy": {
+     "forecast": [
+      "Wed 8 AM",
+      "Wed 1 PM"
+     ],
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM",
+      "Wed 11 AM",
+      "Thu 3 AM"
+     ]
+    },
+    "end": {
+     "forecast": "Thu 1 PM",
+     "gauge_last_wet_hour": "Thu 7 AM",
+     "note": "end not yet observable"
+    }
+   },
+   "flood": [
+    {
+     "window": "Wed 8 AM\u2013Wed 12 PM",
+     "pFloodAny": 0.62,
+     "systems": 3,
+     "gauge_hours_0.20_plus": [
+      "Wed 9 AM",
+      "Wed 10 AM",
+      "Wed 11 AM"
+     ],
+     "gauge_total": 1.87,
+     "coverage": "complete",
+     "street_observations_nearby": [
+      {
+       "observed_at": "2026-11-18T09:55:00-08:00",
+       "observed_until": "2026-11-18T10:25:00-08:00",
+       "approx": true,
+       "recorded_at": "2026-11-19T11:53:09+00:00",
+       "location": "18th Street / Folsom area, Mission District",
+       "what": "Significant street flooding. Photographs taken around 10:14 AM show substantial standing water around vehicles, reaching approximately wheel/bumper height in places. Water was affecting the roadway, not merely collecting at the curb.",
+       "level": "roadway",
+       "depth": "approximately wheel/bumper height in places (visually estimated, not measured)",
+       "evidence": "firsthand observation, confirmed; timing approximate",
+       "reporter": "John Bove",
+       "photo": "photographs ~10:14 AM, sent in chat 2026-11-19; not stored here (public branch)",
+       "supersedes": "2026-11-19 entry with unconfirmed location"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "snapshot": "2026-11-18T19:38:45.404366+00:00",
+   "window": [
+    "Wed 11 AM",
+    "Fri 12 AM"
+   ],
+   "total": {
+    "forecast_p10_p50_p90": [
+     0.678,
+     1.431,
+     2.186
+    ],
+    "card_shows": [
+     {
+      "startHour": 0,
+      "endHour": 26,
+      "medianIn": 1.15,
+      "fromHour": 0,
+      "toHour": 37
+     }
+    ],
+    "gauge": 1.33,
+    "coverage": "INCOMPLETE (22/37 h observed)",
+    "inside_p10_p90": null
+   },
+   "blocks": [
+    {
+     "block": "Wed 11 AM\u2013Wed 12 PM",
+     "res": 1,
+     "forecast": 0.08,
+     "p10": 0.031,
+     "p90": 0.377,
+     "gauge": 0.26,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 12 PM\u2013Wed 1 PM",
+     "res": 1,
+     "forecast": 0.04,
+     "p10": 0.0,
+     "p90": 0.345,
+     "gauge": 0.03,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 1 PM\u2013Wed 4 PM",
+     "res": 3,
+     "forecast": 0.07,
+     "p10": 0.0,
+     "p90": 0.411,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 4 PM\u2013Wed 7 PM",
+     "res": 3,
+     "forecast": 0.024,
+     "p10": 0.0,
+     "p90": 0.105,
+     "gauge": 0.09,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 7 PM\u2013Wed 10 PM",
+     "res": 3,
+     "forecast": 0.078,
+     "p10": 0.004,
+     "p90": 0.189,
+     "gauge": 0.13,
+     "coverage": "complete"
+    },
+    {
+     "block": "Wed 10 PM\u2013Thu 1 AM",
+     "res": 3,
+     "forecast": 0.105,
+     "p10": 0.024,
+     "p90": 0.237,
+     "gauge": 0.11,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 1 AM\u2013Thu 4 AM",
+     "res": 3,
+     "forecast": 0.165,
+     "p10": 0.052,
+     "p90": 0.329,
+     "gauge": 0.31,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 4 AM\u2013Thu 7 AM",
+     "res": 3,
+     "forecast": 0.195,
+     "p10": 0.084,
+     "p90": 0.377,
+     "gauge": 0.17,
+     "coverage": "complete"
+    },
+    {
+     "block": "Thu 7 AM\u2013Thu 10 AM",
+     "res": 3,
+     "forecast": 0.129,
+     "p10": 0.031,
+     "p90": 0.287,
+     "gauge": 0.06,
+     "coverage": "INCOMPLETE (2/3 h observed)"
+    },
+    {
+     "block": "Thu 10 AM\u2013Thu 1 PM",
+     "res": 3,
+     "forecast": 0.036,
+     "p10": 0.0,
+     "p90": 0.173,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 1 PM\u2013Thu 4 PM",
+     "res": 3,
+     "forecast": 0.008,
+     "p10": 0.0,
+     "p90": 0.048,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 4 PM\u2013Thu 7 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.012,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 7 PM\u2013Thu 10 PM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.004,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    },
+    {
+     "block": "Thu 10 PM\u2013Fri 1 AM",
+     "res": 3,
+     "forecast": 0.0,
+     "p10": 0.0,
+     "p90": 0.019,
+     "gauge": null,
+     "coverage": "INCOMPLETE (0/3 h observed)"
+    }
+   ],
+   "peak": {
+    "gauge_wettest_hour": {
+     "at": "Wed 11 AM",
+     "in": 0.26
+    },
+    "forecast_wettest_block": {
+     "block": "Wed 11 AM\u2013Wed 12 PM",
+     "in": 0.08
+    },
+    "hourly_systems": [
+     {
+      "system": "ICON ensemble",
+      "in": 0.171,
+      "at": "Wed 11 AM"
+     },
+     {
+      "system": "HRRR",
+      "in": 0.906,
+      "at": "Thu 3 AM"
+     },
+     {
+      "system": "NBM",
+      "in": 0.169,
+      "at": "Thu 2 AM"
+     }
+    ],
+    "card_showed_rate": null,
+    "coverage": "INCOMPLETE (22/37 h observed)"
+   },
+   "timing": {
+    "onset": {
+     "forecast": "Wed 11 AM",
+     "gauge": "Wed 11 AM"
+    },
+    "heavy": {
+     "forecast": [],
+     "gauge_hours_0.20_plus": [
+      "Wed 11 AM",
+      "Thu 3 AM"
+     ]
+    },
+    "end": {
+     "forecast": "Thu 1 PM",
+     "gauge_last_wet_hour": "Thu 7 AM",
+     "note": "end not yet observable"
+    }
+   },
+   "flood": []
+  }
+ ],
+ "run_metrics": [
+  {
+   "forecast": "2026-11-17T23:57:21.720148+00:00",
+   "gauge": {
+    "cross_1h_driveway": true,
+    "cross_3h_behind": true,
+    "cross_3h_driveway": true,
+    "max6": 1.94,
+    "heavy_longest_h": 3
+   },
+   "coverage": "INCOMPLETE (33/48 h observed)"
+  },
+  {
+   "forecast": "2026-11-18T08:51:37.611430+00:00",
+   "gauge": {
+    "cross_1h_driveway": true,
+    "cross_3h_behind": true,
+    "cross_3h_driveway": true,
+    "max6": 1.94,
+    "heavy_longest_h": 3
+   },
+   "coverage": "INCOMPLETE (33/48 h observed)"
+  },
+  {
+   "forecast": "2026-11-18T09:24:02.479963+00:00",
+   "gauge": {
+    "cross_1h_driveway": true,
+    "cross_3h_behind": true,
+    "cross_3h_driveway": true,
+    "max6": 1.94,
+    "heavy_longest_h": 3
+   },
+   "coverage": "INCOMPLETE (32/47 h observed)"
+  },
+  {
+   "forecast": "2026-11-18T12:04:04.863784+00:00",
+   "gauge": {
+    "cross_1h_driveway": true,
+    "cross_3h_behind": true,
+    "cross_3h_driveway": true,
+    "max6": 1.94,
+    "heavy_longest_h": 3
+   },
+   "coverage": "INCOMPLETE (29/44 h observed)"
+  },
+  {
+   "forecast": "2026-11-18T14:55:54.870337+00:00",
+   "gauge": {
+    "cross_1h_driveway": true,
+    "cross_3h_behind": true,
+    "cross_3h_driveway": true,
+    "max6": 1.94,
+    "heavy_longest_h": 3
+   },
+   "coverage": "INCOMPLETE (27/42 h observed)"
+  },
+  {
+   "forecast": "2026-11-18T19:38:53.574929+00:00",
+   "gauge": {
+    "cross_1h_driveway": false,
+    "cross_3h_behind": false,
+    "cross_3h_driveway": false,
+    "max6": 0.54,
+    "heavy_longest_h": 1
+   },
+   "coverage": "INCOMPLETE (22/37 h observed)"
+  },
+  {
+   "forecast": "2026-11-19T16:03:35.917799+00:00",
+   "gauge": {
+    "cross_1h_driveway": false,
+    "cross_3h_behind": false,
+    "cross_3h_driveway": false,
+    "max6": 0.0,
+    "heavy_longest_h": 0
+   },
+   "coverage": "INCOMPLETE (1/16 h observed)"
+  }
+ ]
+}
