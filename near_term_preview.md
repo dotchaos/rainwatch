@@ -2,18 +2,18 @@
 
 Exit code 0
 
-Generated 2026-11-19T21:19:13.021697+00:00 · hazard **none**
+Generated 2026-11-19T21:20:26.392725+00:00 · hazard **rain**
 
-Headline now: **Only a slight chance of showers** · previous rule would say: Only a slight chance of showers (primary max P 0.41)
+Headline now: **None** · previous rule would say: Only a slight chance of showers (primary max P 0.82)
 
 Radar now: {'rainingNow': None, 'dbz': None, 'frameTime': None, 'minDbz': 15.0, 'horizonHours': 2.0} · dryUntilHour None
 
-States over 72 h: {'measurable': 0, 'possible': 16, 'dry': 56, 'unknown': 0} 
+States over 72 h: {'measurable': 1, 'possible': 16, 'dry': 55, 'unknown': 0} 
 
 | hour | label | state | reasons | primary | radar P/med | ensemble P/med | previous class |
 |---|---|---|---|---|---|---|---|
-| 0 | Thu now–2 PM | possible | radar | radar | 0.25/0.003 | 0.07/0.0 | uncertain |
-| 1 | Thu 2 PM–3 PM | dry | — | radar | 0.15/0.001 | 0.07/0.0 | dry |
+| 0 | Thu now–2 PM | possible | radar | radar | 0.27/0.002 | 0.07/0.0 | uncertain |
+| 1 | Thu 2 PM–3 PM | measurable | radar | radar | 0.82/0.021 | 0.07/0.0 | wet |
 | 2 | Thu 3 PM–4 PM | dry | — | ens | — | 0.07/0.0 | dry |
 | 3 | Thu 4 PM–5 PM | dry | — | ens | — | 0.00/0.0 | dry |
 | 4 | Thu 5 PM–6 PM | dry | — | ens | — | 0.00/0.0 | dry |
@@ -24,3 +24,5 @@ States over 72 h: {'measurable': 0, 'possible': 16, 'dry': 56, 'unknown': 0}
 | 9 | Thu 10 PM–11 PM | dry | — | ens | — | 0.06/0.0 | dry |
 | 10 | Thu 11 PM–12 AM | dry | — | ens | — | 0.06/0.0 | dry |
 | 11 | Fri 12 AM–1 AM | dry | — | ens | — | 0.07/0.0 | dry |
+
+States (h0→71): pM..........ppppppppp..............................pppppp...............
