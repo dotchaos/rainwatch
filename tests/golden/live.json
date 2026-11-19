@@ -1304,7 +1304,21 @@
     "startHour": 0,
     "endHour": 5
    }
-  ]
+  ],
+  "alerts": [
+   {
+    "event": "Flood Advisory",
+    "startHour": 0,
+    "endHour": 5,
+    "flood": true
+   }
+  ],
+  "nearDisagree": {
+   "kind": "amount",
+   "hours": 2,
+   "radarIn": 0.19,
+   "modelsIn": 0.05
+  }
  },
  "_strip_check": [
   {

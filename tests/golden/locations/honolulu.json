@@ -1065,6 +1065,14 @@
     "startHour": 0,
     "endHour": 5
    }
+  ],
+  "alerts": [
+   {
+    "event": "Flood Advisory",
+    "startHour": 0,
+    "endHour": 5,
+    "flood": true
+   }
   ]
  },
  "_strip_check": [

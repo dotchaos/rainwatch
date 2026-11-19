@@ -426,6 +426,26 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
             off.append({"event": a["event"], "startHour": sh, "endHour": eh})
     if off:
         ev["official"] = off
+    # every active NWS alert (not only flood products), as hour offsets, for a separate "official alerts" line.
+    # Passed through as issued; Rainwatch's own signals stay in their own fields.
+    al = []
+    for a in report.get("alerts") or []:
+        try:
+            s = datetime.fromisoformat(a.get("onset") or t0.isoformat())
+            e = datetime.fromisoformat(a.get("ends") or a.get("expires"))
+        except (TypeError, ValueError):
+            continue
+        sh = max(0, int((s - t0).total_seconds() // 3600))
+        eh = min(HORIZON, int(-(-(e - t0).total_seconds() // 3600)))
+        if eh > sh and a.get("event"):
+            al.append({"event": a["event"], "startHour": sh, "endHour": eh, "flood": a["event"] in FLOOD_PRODUCTS,
+                       **({"severity": a["severity"]} if a.get("severity") else {})})
+    if al:
+        ev["alerts"] = al
+    n = report.get("near") or {}
+    if n.get("agree_kind") in ("radar_only", "models_only", "amount"):
+        ev["nearDisagree"] = {"kind": n["agree_kind"], "hours": n.get("agree_hours"),
+                              "radarIn": n.get("agree_radar_in"), "modelsIn": n.get("agree_models_in")}
     return ev
 
 
