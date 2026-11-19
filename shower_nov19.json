@@ -1,0 +1,801 @@
+{
+ "point": [
+  37.761,
+  -122.415
+ ],
+ "frames": [
+  {
+   "t": "2026-11-19T18:30:00+00:00",
+   "pst": "10:30 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.0,
+   "cov15_15": 0.049,
+   "cov25_15": 0.111,
+   "near_15": [
+    9.6,
+    172
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.0,
+   "cov15_20": 0.033,
+   "cov25_20": 0.075,
+   "near_20": [
+    10.7,
+    178
+   ]
+  },
+  {
+   "t": "2026-11-19T18:35:00+00:00",
+   "pst": "10:35 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.0,
+   "cov15_15": 0.043,
+   "cov25_15": 0.11,
+   "near_15": [
+    10.5,
+    155
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.0,
+   "cov15_20": 0.029,
+   "cov25_20": 0.077,
+   "near_20": [
+    11.8,
+    180
+   ]
+  },
+  {
+   "t": "2026-11-19T18:40:00+00:00",
+   "pst": "10:40 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.0,
+   "cov15_15": 0.057,
+   "cov25_15": 0.114,
+   "near_15": [
+    10.9,
+    168
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.0,
+   "cov15_20": 0.045,
+   "cov25_20": 0.078,
+   "near_20": [
+    11.8,
+    178
+   ]
+  },
+  {
+   "t": "2026-11-19T18:45:00+00:00",
+   "pst": "10:45 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.013,
+   "cov15_15": 0.046,
+   "cov25_15": 0.094,
+   "near_15": [
+    4.4,
+    44
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.005,
+   "cov15_20": 0.032,
+   "cov25_20": 0.071,
+   "near_20": [
+    4.9,
+    39
+   ]
+  },
+  {
+   "t": "2026-11-19T18:50:00+00:00",
+   "pst": "10:50 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.008,
+   "cov15_15": 0.046,
+   "cov25_15": 0.092,
+   "near_15": [
+    4.2,
+    25
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.004,
+   "cov15_20": 0.029,
+   "cov25_20": 0.065,
+   "near_20": [
+    4.2,
+    25
+   ]
+  },
+  {
+   "t": "2026-11-19T18:55:00+00:00",
+   "pst": "10:55 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.008,
+   "cov15_15": 0.034,
+   "cov25_15": 0.09,
+   "near_15": [
+    4.2,
+    25
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.004,
+   "cov15_20": 0.022,
+   "cov25_20": 0.063,
+   "near_20": [
+    4.2,
+    25
+   ]
+  },
+  {
+   "t": "2026-11-19T19:00:00+00:00",
+   "pst": "11:00 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.004,
+   "cov15_15": 0.019,
+   "cov25_15": 0.081,
+   "near_15": [
+    3.5,
+    39
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.001,
+   "cov15_20": 0.006,
+   "cov25_20": 0.051,
+   "near_20": [
+    4.8,
+    47
+   ]
+  },
+  {
+   "t": "2026-11-19T19:05:00+00:00",
+   "pst": "11:05 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.002,
+   "cov15_15": 0.013,
+   "cov25_15": 0.063,
+   "near_15": [
+    4.4,
+    44
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.0,
+   "cov15_20": 0.003,
+   "cov25_20": 0.036,
+   "near_20": [
+    12.4,
+    176
+   ]
+  },
+  {
+   "t": "2026-11-19T19:10:00+00:00",
+   "pst": "11:10 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.002,
+   "cov15_15": 0.011,
+   "cov25_15": 0.04,
+   "near_15": [
+    4.4,
+    44
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.0,
+   "cov15_20": 0.007,
+   "cov25_20": 0.025,
+   "near_20": [
+    12.4,
+    172
+   ]
+  },
+  {
+   "t": "2026-11-19T19:15:00+00:00",
+   "pst": "11:15 AM",
+   "point": null,
+   "max3": null,
+   "cov3_15": 0.0,
+   "cov8_15": 0.019,
+   "cov15_15": 0.029,
+   "cov25_15": 0.034,
+   "near_15": [
+    5.8,
+    258
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.007,
+   "cov15_20": 0.015,
+   "cov25_20": 0.02,
+   "near_20": [
+    6.6,
+    249
+   ]
+  },
+  {
+   "t": "2026-11-19T19:20:00+00:00",
+   "pst": "11:20 AM",
+   "point": null,
+   "max3": 20.5,
+   "cov3_15": 0.009,
+   "cov8_15": 0.02,
+   "cov15_15": 0.046,
+   "cov25_15": 0.03,
+   "near_15": [
+    2.5,
+    32
+   ],
+   "cov3_20": 0.009,
+   "cov8_20": 0.012,
+   "cov15_20": 0.022,
+   "cov25_20": 0.014,
+   "near_20": [
+    2.5,
+    32
+   ]
+  },
+  {
+   "t": "2026-11-19T19:25:00+00:00",
+   "pst": "11:25 AM",
+   "point": 18.5,
+   "max3": 20.5,
+   "cov3_15": 0.113,
+   "cov8_15": 0.146,
+   "cov15_15": 0.091,
+   "cov25_15": 0.05,
+   "near_15": [
+    0.7,
+    180
+   ],
+   "cov3_20": 0.017,
+   "cov8_20": 0.088,
+   "cov15_20": 0.046,
+   "cov25_20": 0.024,
+   "near_20": [
+    2.5,
+    32
+   ]
+  },
+  {
+   "t": "2026-11-19T19:30:00+00:00",
+   "pst": "11:30 AM",
+   "point": 18.5,
+   "max3": 34.0,
+   "cov3_15": 0.365,
+   "cov8_15": 0.133,
+   "cov15_15": 0.077,
+   "cov25_15": 0.041,
+   "near_15": [
+    0.9,
+    263
+   ],
+   "cov3_20": 0.235,
+   "cov8_20": 0.085,
+   "cov15_20": 0.044,
+   "cov25_20": 0.023,
+   "near_20": [
+    1.6,
+    344
+   ]
+  },
+  {
+   "t": "2026-11-19T19:35:00+00:00",
+   "pst": "11:35 AM",
+   "point": 26.0,
+   "max3": 29.0,
+   "cov3_15": 0.609,
+   "cov8_15": 0.122,
+   "cov15_15": 0.066,
+   "cov25_15": 0.038,
+   "near_15": [
+    0.4,
+    0
+   ],
+   "cov3_20": 0.287,
+   "cov8_20": 0.054,
+   "cov15_20": 0.035,
+   "cov25_20": 0.022,
+   "near_20": [
+    0.4,
+    0
+   ]
+  },
+  {
+   "t": "2026-11-19T19:40:00+00:00",
+   "pst": "11:40 AM",
+   "point": 24.0,
+   "max3": 30.0,
+   "cov3_15": 0.496,
+   "cov8_15": 0.126,
+   "cov15_15": 0.067,
+   "cov25_15": 0.04,
+   "near_15": [
+    0.4,
+    0
+   ],
+   "cov3_20": 0.174,
+   "cov8_20": 0.041,
+   "cov15_20": 0.037,
+   "cov25_20": 0.021,
+   "near_20": [
+    0.6,
+    45
+   ]
+  },
+  {
+   "t": "2026-11-19T19:45:00+00:00",
+   "pst": "11:45 AM",
+   "point": 13.0,
+   "max3": 19.0,
+   "cov3_15": 0.009,
+   "cov8_15": 0.076,
+   "cov15_15": 0.046,
+   "cov25_15": 0.025,
+   "near_15": [
+    2.9,
+    143
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.048,
+   "cov15_20": 0.035,
+   "cov25_20": 0.017,
+   "near_20": [
+    3.2,
+    155
+   ]
+  },
+  {
+   "t": "2026-11-19T19:50:00+00:00",
+   "pst": "11:50 AM",
+   "point": null,
+   "max3": -0.5,
+   "cov3_15": 0.0,
+   "cov8_15": 0.053,
+   "cov15_15": 0.048,
+   "cov25_15": 0.025,
+   "near_15": [
+    5.3,
+    97
+   ],
+   "cov3_20": 0.0,
+   "cov8_20": 0.029,
+   "cov15_20": 0.035,
+   "cov25_20": 0.018,
+   "near_20": [
+    5.6,
+    128
+   ]
+  }
+ ],
+ "replay": [
+  {
+   "update": "11:13 AM",
+   "frames": [
+    "10:50 AM",
+    "10:55 AM",
+    "11:00 AM",
+    "11:05 AM",
+    "11:10 AM"
+   ],
+   "dbz_now": null,
+   "coverage15": 0.2017,
+   "status": "moving toward NE at 15 km/h (9 mph), medium confidence",
+   "hours": [
+    {
+     "hour": "11:00 AM",
+     "median_in": 0.0,
+     "max_member_in": 0.0,
+     "p_any_0.01": 0.0,
+     "p_trace_0.001": 0.0,
+     "basis": "Radar: no echo on upstream track"
+    },
+    {
+     "hour": "12:00 PM",
+     "median_in": 0.0,
+     "max_member_in": 0.001,
+     "p_any_0.01": 0.0,
+     "p_trace_0.001": 0.0,
+     "basis": "Radar: no echo on upstream track"
+    }
+   ]
+  },
+  {
+   "update": "11:28 AM",
+   "frames": [
+    "11:05 AM",
+    "11:10 AM",
+    "11:15 AM",
+    "11:20 AM",
+    "11:25 AM"
+   ],
+   "dbz_now": 18.5,
+   "coverage15": 0.2071,
+   "status": "moving toward NE at 16 km/h (10 mph), medium confidence",
+   "hours": [
+    {
+     "hour": "11:00 AM",
+     "median_in": 0.0,
+     "max_member_in": 0.0115,
+     "p_any_0.01": 0.004,
+     "p_trace_0.001": 0.199,
+     "basis": "Radar: no echo on upstream track"
+    },
+    {
+     "hour": "12:00 PM",
+     "median_in": 0.0,
+     "max_member_in": 0.003,
+     "p_any_0.01": 0.0,
+     "p_trace_0.001": 0.06,
+     "basis": "Radar: no echo on upstream track"
+    }
+   ]
+  },
+  {
+   "update": "11:44 AM",
+   "frames": [
+    "11:20 AM",
+    "11:25 AM",
+    "11:30 AM",
+    "11:35 AM",
+    "11:40 AM"
+   ],
+   "dbz_now": 24.0,
+   "coverage15": 0.2136,
+   "status": "moving toward ENE at 36 km/h (22 mph), medium confidence",
+   "hours": [
+    {
+     "hour": "11:00 AM",
+     "median_in": 0.0,
+     "max_member_in": 0.0449,
+     "p_any_0.01": 0.054,
+     "p_trace_0.001": 0.453,
+     "basis": "Radar: 14 dBZ upstream, moving toward ENE at 36 km/h (22 mph)"
+    },
+    {
+     "hour": "12:00 PM",
+     "median_in": 0.0038,
+     "max_member_in": 0.1513,
+     "p_any_0.01": 0.284,
+     "p_trace_0.001": 0.786,
+     "basis": "Radar: 18\u201322 dBZ upstream, moving toward ENE at 36 km/h (22 mph)"
+    }
+   ]
+  }
+ ],
+ "errors": [
+  "19:55Z HTTP 422",
+  "20:00Z HTTP 422",
+  "20:05Z HTTP 422",
+  "20:10Z HTTP 422",
+  "20:15Z HTTP 422",
+  "20:20Z HTTP 422",
+  "20:25Z HTTP 422",
+  "20:30Z HTTP 422"
+ ],
+ "open_meteo": {
+  "best_match": [
+   {
+    "t": "2026-11-19T09:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 48,
+    "cloud_cover": 99
+   },
+   {
+    "t": "2026-11-19T10:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 35,
+    "cloud_cover": 100
+   },
+   {
+    "t": "2026-11-19T11:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 20,
+    "cloud_cover": 83
+   },
+   {
+    "t": "2026-11-19T12:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 13,
+    "cloud_cover": 100
+   },
+   {
+    "t": "2026-11-19T13:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 1,
+    "precipitation_probability": 14,
+    "cloud_cover": 47
+   }
+  ],
+  "ncep_hrrr_conus": [
+   {
+    "t": "2026-11-19T09:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 48,
+    "cloud_cover": 99
+   },
+   {
+    "t": "2026-11-19T10:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 35,
+    "cloud_cover": 100
+   },
+   {
+    "t": "2026-11-19T11:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 20,
+    "cloud_cover": 83
+   },
+   {
+    "t": "2026-11-19T12:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 13,
+    "cloud_cover": 100
+   },
+   {
+    "t": "2026-11-19T13:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 1,
+    "precipitation_probability": 14,
+    "cloud_cover": 47
+   }
+  ],
+  "ncep_nbm_conus": [
+   {
+    "t": "2026-11-19T09:00",
+    "precipitation": 0.5,
+    "rain": 0.5,
+    "showers": 0.0,
+    "weather_code": 53,
+    "precipitation_probability": 48,
+    "cloud_cover": 86
+   },
+   {
+    "t": "2026-11-19T10:00",
+    "precipitation": 0.5,
+    "rain": 0.5,
+    "showers": 0.0,
+    "weather_code": 53,
+    "precipitation_probability": 35,
+    "cloud_cover": 79
+   },
+   {
+    "t": "2026-11-19T11:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 2,
+    "precipitation_probability": 20,
+    "cloud_cover": 69
+   },
+   {
+    "t": "2026-11-19T12:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 2,
+    "precipitation_probability": 13,
+    "cloud_cover": 70
+   },
+   {
+    "t": "2026-11-19T13:00",
+    "precipitation": 0.5,
+    "rain": 0.5,
+    "showers": 0.0,
+    "weather_code": 53,
+    "precipitation_probability": 14,
+    "cloud_cover": 59
+   }
+  ],
+  "ecmwf_ifs025": [
+   {
+    "t": "2026-11-19T09:00",
+    "precipitation": 0.8,
+    "rain": 0.8,
+    "showers": 0.0,
+    "weather_code": 53,
+    "precipitation_probability": 100,
+    "cloud_cover": 93
+   },
+   {
+    "t": "2026-11-19T10:00",
+    "precipitation": 0.8,
+    "rain": 0.8,
+    "showers": 0.0,
+    "weather_code": 53,
+    "precipitation_probability": 100,
+    "cloud_cover": 91
+   },
+   {
+    "t": "2026-11-19T11:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 82,
+    "cloud_cover": 92
+   },
+   {
+    "t": "2026-11-19T12:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 57,
+    "cloud_cover": 94
+   },
+   {
+    "t": "2026-11-19T13:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 39,
+    "cloud_cover": 89
+   }
+  ],
+  "gfs_seamless": [
+   {
+    "t": "2026-11-19T09:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 48,
+    "cloud_cover": 99
+   },
+   {
+    "t": "2026-11-19T10:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 35,
+    "cloud_cover": 100
+   },
+   {
+    "t": "2026-11-19T11:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 20,
+    "cloud_cover": 83
+   },
+   {
+    "t": "2026-11-19T12:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3,
+    "precipitation_probability": 13,
+    "cloud_cover": 100
+   },
+   {
+    "t": "2026-11-19T13:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 1,
+    "precipitation_probability": 14,
+    "cloud_cover": 47
+   }
+  ],
+  "hrrr_15min": [
+   {
+    "t": "2026-11-19T10:30",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3
+   },
+   {
+    "t": "2026-11-19T10:45",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3
+   },
+   {
+    "t": "2026-11-19T11:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3
+   },
+   {
+    "t": "2026-11-19T11:15",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3
+   },
+   {
+    "t": "2026-11-19T11:30",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3
+   },
+   {
+    "t": "2026-11-19T11:45",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3
+   },
+   {
+    "t": "2026-11-19T12:00",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3
+   },
+   {
+    "t": "2026-11-19T12:15",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 3
+   },
+   {
+    "t": "2026-11-19T12:30",
+    "precipitation": 0.0,
+    "rain": 0.0,
+    "showers": 0.0,
+    "weather_code": 2
+   }
+  ]
+ },
+ "sfoc1_raw": [
+  "station,utc_valid,PCIRGZZ,TAIRGDZ,TAIRGFZ,TAIRGZZ,XRIRGZZ",
+  "SFOC1,2026-11-19 17:43:00,5.5,52.82,49.92,52.67,78.0",
+  "SFOC1,2026-11-19 18:43:00,5.5,53.26,50.88,52.6,78.0"
+ ],
+ "ksfo": [
+  "station,valid,p01i,wxcodes",
+  "SFO,2026-11-19 18:38,0.01,RA BR",
+  "SFO,2026-11-19 18:47,0.05,-RA BR",
+  "SFO,2026-11-19 18:56,0.05,M",
+  "SFO,2026-11-19 19:14,0.01,-RA"
+ ]
+}
