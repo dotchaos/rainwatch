@@ -337,3 +337,8 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .now-mark b{position:absolute;top:-17px;left:-12px;font-size:12px;font-weight:700;color:#16232b;background:#fff;padding:0 2px}
 .sw-now{width:2px;height:14px;background:#16232b;display:inline-block;margin:0 4px}
 .today-legend{flex-wrap:wrap}
+.now-mark{border-left:3px solid #16232b;top:-10px;bottom:-10px}
+.today-axis .now-label{font-weight:700;color:#16232b;transform:translateX(-50%)}
+.now-mark{top:-3px;bottom:-10px}
+/* the five-day strips have their own .now-mark (12px tick); the timeline's is a full-height line */
+.today-plot .now-mark{height:auto;width:0;background:none;margin-left:-1.5px;top:-3px;bottom:-8px;border-left:3px solid #16232b;z-index:6}

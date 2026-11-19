@@ -123,11 +123,12 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
         {t.sources.slice(1).filter((q, i) => q.src !== t.sources[i].src).map(q => <i key={q.start} className="src-split" style={{ left: x(q.start) }} />)}
         {t.heavy && <span className="today-heavy" data-from={t.heavy.start} data-to={t.heavy.end} style={{ left: x(t.heavy.start), width: w(t.heavy.start, t.heavy.end) }} />}
       </div>
-      <div className="today-axis" aria-hidden>{t.ticks.map((k, i) => <span key={k.at} className={i === 0 ? 'first' : ''} style={{ left: x(k.at) }}>{k.text}{k.day && <b>{k.day}</b>}</span>)}</div>
+      <div className="today-axis" aria-hidden>{t.ticks.filter(k => !(t.now > t.from && Math.abs(k.at - t.now) < 3)).map(k => <span key={k.at} className={k.at === t.from ? 'first' : ''} style={{ left: x(k.at) }}>{k.text}{k.day && <b>{k.day}</b>}</span>)}
+        {t.now > t.from && <span className="now-label" style={{ left: x(t.now) }}>Now</span>}</div>
     </div>
     <div className="today-legend" aria-label="Intensity">{INTENSITY_LEGEND.filter(l => lvls.has(l.level)).map(l =>
       <span key={l.level} title={l.range}><i className={`sw i${l.level}`} />{l.name}</span>)}
-      {t.heavy && <span className="legend-outline"><i className="sw-heavy" />Heaviest</span>}{over && <span className={t.heavy ? '' : 'legend-outline'}><i className="sw-over" />Overlap</span>}{t.now > t.from && <span><i className="sw-now" />Now</span>}</div>
+      {t.heavy && <span className="legend-outline"><i className="sw-heavy" />Heaviest</span>}{over && <span className={t.heavy ? '' : 'legend-outline'}><i className="sw-over" />Overlap</span>}</div>
     {det && <div className="interval-card" aria-live="polite">
       <strong>{det.title}</strong><span>{det.amount}</span><span>{det.source} · <b>{det.intensity}</b></span></div>}
     {note && <p className="heaviest-note">{note}</p>}
