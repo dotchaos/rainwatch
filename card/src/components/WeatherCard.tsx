@@ -6,7 +6,7 @@ import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { hourlyGrid, type RainBand, alertSummary, coastalFloodActive, absHour, firstVisibleTile, hourlyDayHeading, resolveSelection, barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, stormTotalWindow, heaviestNote, hourText, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { nearTermLead, hourlyGrid, type RainBand, alertSummary, coastalFloodActive, absHour, firstVisibleTile, hourlyDayHeading, resolveSelection, barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, stormTotalWindow, heaviestNote, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -87,6 +87,7 @@ export function NowAndNext({ s }: { s: Scenario }) {
  *  amount in words (production fix, PR #6/#7). Selecting a segment (outline only) drives the detail card; the heaviest
  *  PERIOD (outline + note) comes from the storm rule and need not match the selection. */
 function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?: number }) {
+  const lead = nearTermLead(s, t);
   const rec = amountsVsTotal(s), eligible = eligibleBars(t);
   // the reader's choice is kept as an absolute time (absHour), so a forecast refresh never re-points it at a different
   // interval; if that interval is gone or not selectable, the approved default applies
@@ -106,7 +107,7 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
   const note = heaviestNote(s, t);
   return <section className="today-rain" aria-labelledby="timeline-h">
     <h2 className="section-title" id="timeline-h">Rainfall timeline</h2>
-    {t.dryUntil !== null && <p className="today-dry">Dry until {hourText(s, t.dryUntil)}</p>}
+    {lead && <p className="today-dry">{lead}</p>}
     <div className="today-chart">
       {/* plain annotations, not tabs: the radar label starts over the radar hours, the models label ends at the
           chart's right edge over the model intervals, so neither is squeezed into a narrow region */}

@@ -81,6 +81,15 @@ export interface Scenario {
    * runs' own totals over the interval; intervals are independent and NOT scaled to add up to a stretch's total.
    * `partial`: the forecast's block runs past now or the radar. Hours with no interval have no forecast amount.
    */
+  /** Engine near-term rain states (v0.27, additive). Each hour classified from radar and the ensemble on their own;
+   *  the card reads `state` and `dryUntilHour` only and never compares probabilities itself. */
+  rainSignals?: {
+    measurableIn: number; dryP: number; wetP: number;
+    radar: { rainingNow: boolean | null; dbz: number | null; frameTime: string | null; minDbz: number | null; horizonHours: number };
+    hours: { hour: number; state: 'measurable' | 'possible' | 'dry' | 'unknown'; reasons: string[]; primary: string | null;
+             signals: Record<string, Record<string, unknown>>; unavailable: string[] }[];
+    dryUntilHour: number | null;
+  };
   rainBlocks?: { startHour: number; endHour: number; in: number; res: 1 | 3 | 6; partial?: boolean;
     /** Where the amount comes from (PR B): radar nowcast, the model blend, or NWS QPF. */
     src?: 'radar' | 'model' | 'nws';

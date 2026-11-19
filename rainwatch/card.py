@@ -107,6 +107,73 @@ def hour_class(row: dict | None) -> str:
     return "uncertain"
 
 
+SIGNAL_KEYS = ("radar", "ensemble")    # probabilistic signals that may classify an hour (NWS PoP and single runs: evidence only)
+
+
+def signal_state(row: dict | None, echo_now: bool, cfg) -> tuple[str, list[str]]:
+    """Near-term rain state of one hour (v0.27), from each probabilistic signal on its own. Thresholds are the
+    existing ones: any_in (measurable), RAIN_ANY_P (wet) and DRY_P (dry), as in rain_level and hour_class.
+      measurable  the primary source says wet (unchanged: the same test that sets gear)
+      possible    any available signal is not dry, or (current hour) radar shows rain over the point now
+      dry         every available signal is dry
+      unknown     no row, or no probabilistic signal covers the hour (a missing source is never read as zero)"""
+    if not row or row.get("missing"):
+        return "unknown", []
+    sig = {k: v for k, v in (row.get("sig") or {}).items() if k in SIGNAL_KEYS}
+    if row.get("primary") in ("radar", "ens") and (row.get("p_any") or 0) >= RAIN_ANY_P:
+        return "measurable", [row["primary"].replace("ens", "ensemble")]
+    reasons = [k for k, v in sig.items() if v["p"] > DRY_P or v["mid"] >= cfg.any_in]
+    if echo_now:
+        reasons.append("echoOverPoint")
+    if reasons:
+        return "possible", reasons
+    return ("dry", []) if sig else ("unknown", [])
+
+
+def rain_signals(rows_by_t: dict, hours: list, report: dict, cfg) -> dict:
+    """The additive `rainSignals` block: each hour's state with its reasons and per-signal figures, the radar's
+    'raining over the point now' check (engine.observed_now: ECHO_DBZ, RADAR_FRESH_MIN) and dryUntilHour."""
+    now_obs = report.get("now_obs") or {}
+    echo = bool(now_obs.get("raining_now"))
+    out_h, states = [], []
+    for i, t in enumerate(hours):
+        row = rows_by_t.get(t.isoformat())
+        st, why = signal_state(row, echo and i == 0, cfg)
+        states.append(st)
+        sig = {k: {"pMeasurable": v["p"], "medianIn": v["mid"]} for k, v in ((row or {}).get("sig") or {}).items()}
+        if "radar" in sig and i == 0:
+            sig["radar"]["window"] = "latest frame to end of hour"
+        nws = ((row or {}).get("sources") or {})
+        if "nws" in nws or "nws_pop" in nws:
+            sig["nws"] = {"qpfIn": nws.get("nws"), "pop": nws.get("nws_pop"), "classifies": False}
+        out_h.append({"hour": i, "state": st, "reasons": why,
+                      "primary": (row or {}).get("primary"), "signals": sig,
+                      "unavailable": (row or {}).get("sig_missing", [])})
+    # dry until the first hour that is not dry, claimed only when that hour holds possible or measurable rain
+    dry_until = None
+    if states and states[0] == "dry":
+        k = next((i for i, s in enumerate(states) if s != "dry"), None)
+        if k is not None and states[k] in ("possible", "measurable"):
+            dry_until = k
+    return {"measurableIn": cfg.any_in, "dryP": DRY_P, "wetP": RAIN_ANY_P,
+            "radar": {"rainingNow": now_obs.get("raining_now"), "dbz": now_obs.get("dbz"), "frameTime": now_obs.get("radar_at"),
+                      "minDbz": now_obs.get("echo_dbz"), "horizonHours": cfg.nowcast_max_h},
+            "hours": out_h, "dryUntilHour": dry_until}
+
+
+def none_headline(states: list[str], t0, tz) -> str:
+    """Headline for hazard 'none' (v0.27). 'Dry for the next 3 days' only with every hour covered and dry; an hour
+    the engine can't classify ends the claim there ('… through …', the incomplete-forecast wording)."""
+    k = next((i for i, s in enumerate(states) if s == "unknown"), len(states))
+    known = states[:k]
+    slight = any(s != "dry" for s in known)
+    if k >= len(states):
+        return "Only a slight chance of showers" if slight else "Dry for the next 3 days"
+    until = (t0 + timedelta(hours=max(k - 1, 0))).astimezone(tz)
+    return (f"Only a slight chance of showers through {until:%a} {clock_word(until)}" if slight
+            else f"Dry through {until:%a} {clock_word(until)}")
+
+
 def _has_break(flags: list[bool]) -> bool:
     """True if a run's wet/dry hours contain MIN_BREAK_H+ dry hours between two wet hours."""
     wet = [i for i, f in enumerate(flags) if f]
@@ -645,16 +712,15 @@ def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
         card["alert"] = {"actionTitle": "Avoid the hottest hours",
                          "action": "Plan outdoor activity for mornings, keep your home cool, and arrange access to "
                                    "air conditioning if needed."}
+    sigs = rain_signals(by_t, hours, report, cfg)
+    card["rainSignals"] = sigs
     if hazard == "none":
         his = [d["highF"] for d in day_rows if d["highF"] is not None]
-        anyp = max((r.get("p_any") or 0) for r in rows if not r.get("missing"))
-        card["insight"] = {"headline": "Dry for the next 3 days" if anyp < 0.2 else "Only a slight chance of showers",
-                           "detail": f"Highs {min(his)}–{max(his)}°." if his else ""}
-        if unknown:   # never promise three dry days on partial data
-            until = (t0 + timedelta(hours=max(known_until - 1, 0))).astimezone(tz)   # last hour with data
-            card["insight"] = {"headline": f"Dry through {until:%a} {clock_word(until)}" if anyp < 0.2
-                               else f"Only a slight chance of showers through {until:%a} {clock_word(until)}",
-                               "detail": "No forecast after that yet."}
+        states = [h["state"] for h in sigs["hours"]]
+        head = none_headline(states, t0, tz)
+        card["insight"] = {"headline": head, "detail": f"Highs {min(his)}–{max(his)}°." if his else ""}
+        if " through " in head:   # never promise three dry days on partial data
+            card["insight"]["detail"] = "No forecast after that yet."
     if st:
         card["_strip_check"] = strip_check(st, report.get("days5", []), tz, cfg.heavy_in, parts)
     card["_diagnostics"] = {"rain_periods": [{**d, "start_local": hours[d["start"]].astimezone(tz).strftime("%a %-I %p"),

@@ -167,6 +167,29 @@ export const barAmount = (b: TodayBar) => b.kind === 'rain' ? fmtAmount(b.in) : 
 /** "1 AM" today, "1 AM Wed" on a later day. */
 export const hourText = (s: Scenario, h: number) => dayIndexAt(s, h) === 0 ? clockOf(s, h) : `${clockOf(s, h)} ${dayName(s, h)}`;
 
+/** The rainfall timeline's lead line (v0.27), from the engine's hourly states only (rainSignals):
+ *   "Showers possible 11 AM–1 PM, then dry until 1 AM Fri"  the current or next hour is possible; the run of possible
+ *        hours, then (when the dry stretch after it lasts DRY_SKIP_H or more and ends in possible or measurable rain) its end
+ *   "Dry until 1 AM Fri"  the engine's dryUntilHour, at least DRY_SKIP_H away (as before)
+ *  Neither when measurable rain starts within DRY_SKIP_H: storm guidance stays as it was.
+ *  Whole hours only: the range is the classified hours, never minutes. Cards without rainSignals keep the old rule. */
+export function nearTermLead(s: Scenario, t: TodayTimeline): string | null {
+  const rs = s.rainSignals;
+  if (!rs) return t.dryUntil !== null ? `Dry until ${hourText(s, t.dryUntil)}` : null;
+  const st = (h: number) => rs.hours[h]?.state, now = nowAt(s);
+  // measurable rain inside the lead window: the timeline and the rain guidance already say what is coming (unchanged)
+  if ([...Array(DRY_SKIP_H).keys()].some(k => st(now + k) === 'measurable')) return null;
+  const a = [now, now + 1].find(h => st(h) === 'possible');
+  if (a !== undefined) {
+    let b = a; while (st(b) === 'possible') b++;
+    let T = b; while (st(T) === 'dry') T++;
+    const then = T - b >= DRY_SKIP_H && (st(T) === 'possible' || st(T) === 'measurable');
+    return `Showers possible ${clockRange(s, a, b)}${then ? `, then dry until ${hourText(s, T)}` : ''}`;
+  }
+  const T = rs.dryUntilHour;
+  return T !== null && st(now) === 'dry' && T - now >= DRY_SKIP_H ? `Dry until ${hourText(s, T)}` : null;
+}
+
 /** A time with its day: "2 PM today", "9 PM Friday", "midnight Thursday"→ "12 AM Thursday". */
 const atDay = (s: Scenario, h: number) => `${clockOf(s, h)} ${dayIndexAt(s, h) === 0 ? 'today' : fullDay[dayName(s, h)]}`;
 /** "3–10 AM", "11 AM–1 PM": a clock range on one day (end exclusive, as everywhere on the card). */
