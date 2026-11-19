@@ -268,3 +268,37 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .today-about summary{cursor:pointer;color:#2f5f7d}
 .today-about p{margin:6px 0 0;line-height:1.45}
 .today-radar,.today-overlap{font-size:15px;color:#3f4d55;margin:0;line-height:1.4}
+
+/* ---------- Option B: rainfall timeline (docs/spec-rainfall-timeline.md) ---------- */
+.today-rain{margin:0 -6px}
+.today-rain .section-title{margin-bottom:2px}
+.today-dry{margin:0;font-size:15px;color:#3f4d55}
+.today-bands{position:relative;height:24px}
+.today-bands .band{position:absolute;top:0;bottom:2px;border-radius:6px;font-size:13px;font-weight:600;line-height:22px;
+  padding:0 6px;white-space:nowrap;overflow:visible;box-sizing:border-box;color:#2f5f7d}
+.band-radar{background:#eef3f6;border:1px solid #c9d6de;color:#3f4d55}
+.band-model,.band-nws{background:#eaf2f8;text-align:right}
+.today-plot{height:30px;border-radius:8px}
+.today-plot button.today-bar{appearance:none;border:0;padding:0;margin:0;font:inherit;cursor:pointer;border-right:1.5px solid white}
+.today-plot button.today-bar::before{content:'';position:absolute;left:0;right:0;top:-7px;bottom:-7px}  /* 44px touch target */
+.today-plot .today-bar{border-radius:0}
+.today-plot .today-bar:first-child{border-radius:8px 0 0 8px}
+.today-plot .today-bar.sel{outline:3px solid #16232b;outline-offset:2px;z-index:4;border-radius:4px}   /* outline only: fill unchanged */
+.today-plot button.today-bar:focus-visible{outline:3px solid #2f5f7d;outline-offset:2px;z-index:5}
+.today-heavy{top:-5px;bottom:-5px;border:2.5px dashed #16232b;border-radius:10px}
+.sw-heavy{border-style:dashed}
+.today-legend b{font-weight:700;color:#16232b;margin-right:2px}
+.today-legend span{font-size:15px}
+.today-note{font-size:15px;color:#3f4d55}
+.interval-card{display:flex;flex-direction:column;gap:3px;border:1.5px solid #2f5f7d;border-radius:12px;padding:12px 14px;background:#f5f9fc}
+.interval-card strong{font-size:18px;color:#16232b}
+.interval-card span{font-size:16px;color:#3f4d55}
+.interval-card b{color:#16232b}
+.heaviest-note{margin:0;font-size:15px;color:#3f4d55}
+.total-window{margin-top:2px}
+.in-storm-total{margin:-2px 0 0;font-size:14px;color:#4f5e67;text-align:right}
+.hour.hour-block{flex-basis:calc(100% / 3.4);background:#f5f8fa;border-radius:10px}
+.hour .hour-res{display:block;font-size:13px;color:#4f5e67;margin-top:-2px}
+/* a narrow radar band (about 2 h of ~25 h) names itself over the model band's empty left edge, never clipped */
+.today-bands .band-radar{z-index:2;overflow:visible;min-width:0}
+.today-bands .band-model,.today-bands .band-nws{z-index:1}

@@ -68,11 +68,11 @@ const EVENT_CASES:[string,string,()=>Scenario][]=[
  ['incomplete','Incomplete forecast fixture',()=>structuredClone(scenarios.find(x=>x.id==='incomplete')!) as Scenario],
 ];
 function EventLab(){
- const q=new URLSearchParams(location.search),id=q.get('case'),at=Number(q.get('at'));
+ const q=new URLSearchParams(location.search),id=q.get('case'),at=Number(q.get('at'));const sel=q.get("sel")===null?undefined:Number(q.get("sel"));
  // review aid: &at=N scrolls each hourly row so hour N is first in view
  useEffect(()=>{if(!at)return;document.querySelectorAll('.hours-scroll').forEach(el=>{const items=el.querySelectorAll('.hour');const it=items[at] as HTMLElement|undefined;if(it)el.scrollLeft=it.offsetLeft-(el as HTMLElement).offsetLeft-19;});},[at]);
  const rows=EVENT_CASES.filter(c=>!id||c[0]===id);
- return <main className="event-lab">{rows.map(([k,t,f])=>{const s=f(),err=validateScenario(s);return <section key={k} className="event-case"><h3>{t}</h3><WeatherCard scenario={s} potential="outline"/>{err.length>0&&<div className="validation">{err.join('; ')}</div>}</section>})}</main>}
+ return <main className="event-lab">{rows.map(([k,t,f])=>{const s=f(),err=validateScenario(s);return <section key={k} className="event-case"><h3>{t}</h3><WeatherCard scenario={s} potential="outline" selected={sel}/>{err.length>0&&<div className="validation">{err.join('; ')}</div>}</section>})}</main>}
 const lab=new URLSearchParams(location.search).has('lab');
 const eventLab=lab&&new URLSearchParams(location.search).has('event');
 const narrativeLab=lab&&new URLSearchParams(location.search).has('narrative');
