@@ -14,12 +14,12 @@
   "peak": "2026-11-19T13:00:00+00:00",
   "sent": "2026-11-19T12:22:55.852924+00:00"
  },
- "last_card": "2026-11-19T13",
- "last_flood": "2026-11-19T13",
- "last_hrrr": "2026-11-19T11:00:00+00:00",
- "last_shading": "2026-11-19T13",
- "last_signals": "2026-11-19T13",
- "last_snapshot": "2026-11-19T13",
+ "last_card": "2026-11-19T14",
+ "last_flood": "2026-11-19T14",
+ "last_hrrr": "2026-11-19T12:00:00+00:00",
+ "last_shading": "2026-11-19T14",
+ "last_signals": "2026-11-19T14",
+ "last_snapshot": "2026-11-19T14",
  "nws_seen": [
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.3",
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.2",
@@ -73,7 +73,10 @@
   "urn:oid:2.49.0.1.840.0.28eab22caaa7a6d743c9199fd9e442bb3fdaf4ff.001.1",
   "urn:oid:2.49.0.1.840.0.00850eaf81fe951848de8990b10c0997a76b3033.001.1",
   "urn:oid:2.49.0.1.840.0.3793d5b7179546ab38222677aa50725e24bbd005.001.1",
-  "urn:oid:2.49.0.1.840.0.05f6c50e7f62557abb4f861778ba9d928cab6c79.001.1"
+  "urn:oid:2.49.0.1.840.0.05f6c50e7f62557abb4f861778ba9d928cab6c79.001.1",
+  "urn:oid:2.49.0.1.840.0.8edeba57cfbfabc987afd7865a68ffb5055bc08e.001.3",
+  "urn:oid:2.49.0.1.840.0.8edeba57cfbfabc987afd7865a68ffb5055bc08e.001.2",
+  "urn:oid:2.49.0.1.840.0.8edeba57cfbfabc987afd7865a68ffb5055bc08e.001.1"
  ],
  "raw_backfill_SFOC1": "2026-11-17T17:38:06.552804+00:00"
 }
