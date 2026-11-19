@@ -159,3 +159,13 @@ Forecast calculations, thresholds and the default selection are unchanged.
   on any eligible interval. The heaviest-period highlight is independent of the selection.
 - Keyboard: with nothing selected, Tab reaches the first eligible interval. Arrow keys move both the selection and
   the focus.
+## Hourly forecast empty states (2026-11-19, approved design)
+- A zero-precipitation interval has no visible rectangle: the track stays empty, with no 0.00", dash or placeholder.
+  The interval keeps its place on the hourly scale. The track has no fill or guides of its own.
+- Positive amounts, 3-hour spans, radar hours and the radar/model overlap treatment are unchanged.
+- An hour with no precipitation value (no source interval, or a missing-data hour) is a hatched track labelled
+  "No data", never shown as dry and never inferred as zero.
+- When the forecast data stops before 48 hours, the hourly scale runs on through the missing hours (as No data, up
+  to 48) instead of ending where the data ends. Fully covered forecasts keep their 48-hour ending on a complete
+  interval.
+- Row height is fixed (46px) across dry, rain and missing intervals.

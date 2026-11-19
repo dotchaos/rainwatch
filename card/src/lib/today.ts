@@ -374,10 +374,14 @@ export interface RainBand { start: number; end: number; wholeStart: number; whol
 /** Every hour gets one equal cell (temperature and condition are genuinely hourly). Rain is one band per actual source
  *  interval: a radar hour spans one cell, a model 3-hour total spans its three cells, shown once. The scale stops at
  *  48 hours, on the end of a complete interval. Missing hours stay missing (no interpolation). */
-export function hourlyGrid(s: Scenario): { hours: number; cells: HourCell[]; bands: RainBand[] } {
+export function hourlyGrid(s: Scenario): { hours: number; cells: HourCell[]; bands: RainBand[]; noData: { start: number; end: number }[] } {
   const blocks = [...(s.rainBlocks ?? [])].sort((a, b) => a.startHour - b.startHour);
   const last = [...blocks].reverse().find(b => b.startHour < HOURLY_MAX_H);
-  const hours = !last ? Math.min(HOURLY_MAX_H, s.hourly.length) : last.endHour <= HOURLY_MAX_H ? last.endHour : last.startHour;
+  let hours = !last ? Math.min(HOURLY_MAX_H, s.hourly.length) : last.endHour <= HOURLY_MAX_H ? last.endHour : last.startHour;
+  // when the forecast data stops before 48 hours, the scale runs on through the missing hours (shown as No data,
+  // never as dry) instead of ending where the data ends; still at most 48 hours
+  const next = blocks.find(b => b.startHour >= hours);
+  hours = Math.max(hours, Math.min(HOURLY_MAX_H, s.hourly.length, next ? next.startHour : Infinity));
   const byHour = new Map(s.hourly.map((h, i) => [h.hour ?? i, h]));
   const cells: HourCell[] = [];
   for (let at = 0; at < hours; at++) {
@@ -391,5 +395,13 @@ export function hourlyGrid(s: Scenario): { hours: number; cells: HourCell[]; ban
     return { start: b.startHour, end: Math.min(b.endHour, hours), wholeStart: ws, wholeEnd: we, res: b.res, src: SRC_OF(b),
              amount: kind === 'rain' ? fmtAmount(b.in) : kind === 'trace' ? 'Trace' : '', kind, shortened: ws < b.startHour };
   });
-  return { hours, cells, bands };
+  // hours with no precipitation value (no source interval, or a missing-data hour) are No data, never dry
+  const covered = (h: number) => bands.some(b => b.start <= h && h < b.end);
+  const noData: { start: number; end: number }[] = [];
+  for (let h = 0; h < hours; h++) {
+    if (covered(h)) continue;
+    const prev = noData[noData.length - 1];
+    if (prev && prev.end === h) prev.end = h + 1; else noData.push({ start: h, end: h + 1 });
+  }
+  return { hours, cells, bands, noData };
 }
