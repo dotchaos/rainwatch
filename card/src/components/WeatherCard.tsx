@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
 import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, Umbrella, Shirt, Waves, Droplets } from 'lucide-react';
 import type { Scenario } from '../types';
@@ -6,7 +6,7 @@ import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, initialSelection, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { absHour, firstVisibleTile, hourlyDayHeading, resolveSelection, barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -88,9 +88,12 @@ export function NowAndNext({ s }: { s: Scenario }) {
  *  PERIOD (outline + note) comes from the storm rule and need not match the selection. */
 function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?: number }) {
   const rec = amountsVsTotal(s), eligible = eligibleBars(t);
-  const first = (initial !== undefined && eligible.find(b => b.start === initial)) || initialSelection(t);
-  const [selAt, setSel] = useState<number | null>(first ? first.start : null);
-  const sel = eligible.find(b => b.start === selAt) ?? null, det = sel ? intervalDetail(s, sel) : null;
+  // the reader's choice is kept as an absolute time (absHour), so a forecast refresh never re-points it at a different
+  // interval; if that interval is gone or not selectable, the approved default applies
+  const lab = initial !== undefined ? eligible.find(b => b.start === initial) : undefined;
+  const [chosen, setChosen] = useState<number | null>(lab ? absHour(s, lab.start) : null);
+  const sel = resolveSelection(s, t, chosen), selAt = sel ? sel.start : null, det = sel ? intervalDetail(s, sel) : null;
+  const setSel = (start: number) => setChosen(absHour(s, start));
   const n = t.to - t.from, x = (h: number) => `${((h - t.from) / n) * 100}%`, w = (a: number, b: number) => `${((b - a) / n) * 100}%`;
   const label = (b: TodayT['bars'][number]) => b.kind === 'rain' && b.src !== 'radar' && b.coversFrom === null && b.end - b.start >= 2;
   const over = t.bars.find(b => b.coversFrom !== null && b.kind === 'rain');
@@ -201,13 +204,39 @@ function FloodRisk({ s }: { s: Scenario }) {
  *  widths (as rendered reliably on iOS); each day's label is a zero-width marker before its first hour that pins to
  *  the row's left edge, the next day's label covering it as it arrives (v0.18.1). Without sticky support the labels
  *  simply sit above each day's first hour. */
+
+/** The hourly row with a day heading that follows the scroll: the calendar day (forecast-local) of the first tile at
+ *  least half visible. Updated on scroll (touch and programmatic), on resize, and when the forecast changes. */
+function HourlyRow({ s, children }: { s: Scenario; children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [day, setDay] = useState(() => hourlyDayHeading(s, 0));
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const update = () => {
+      const tiles = [...el.querySelectorAll<HTMLElement>('[data-from]')];
+      const i = firstVisibleTile(tiles.map(n => ({ left: n.offsetLeft - el.offsetLeft, width: n.offsetWidth })), el.scrollLeft);
+      const at = tiles[i] ? Number(tiles[i].dataset.from) : 0;
+      setDay(hourlyDayHeading(s, at));
+    };
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(update) : null; ro?.observe(el);
+    return () => { el.removeEventListener('scroll', update); window.removeEventListener('resize', update); ro?.disconnect(); };
+  }, [s]);
+  return <>
+    <p className="hourly-day" aria-live="polite">{day}</p>
+    <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast" ref={ref}>{children}</div></div>
+  </>;
+}
+
 function Hourly({ s }: { s: Scenario }) {
   // Option B: tiles at source resolution. Radar / hourly blocks one per hour; a model 3-hour block is ONE tile with the
   // temperature at its start and the block amount once (never split into hourly values).
   const items: React.ReactNode[] = [], amts = hourAmounts(s), tiles = s.rainBlocks ? hourTiles(s) : null;
   if (tiles) tiles.forEach((g, i) => {
     const l = hourLabel(s, g.at), icon = isUnknown(s, g.at) ? 'unknown' : g.icon, span = g.end - g.at;
-    if (i === 0 || l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${g.at}`}>{i === 0 ? 'Today' : l.day}</em>);
+    if (i > 0 && l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${g.at}`}>{l.day}</em>);
     const top = g.res > 1 ? g.label : l.text;
     items.push(<div className={`hour hour-tile${span > 1 ? ' hour-3h' : ''}${l.day && i > 0 ? ' hour-midnight' : ''}`} role="listitem" key={g.at}
       data-from={g.at} data-to={g.end} data-res={g.res}
@@ -225,7 +254,7 @@ function Hourly({ s }: { s: Scenario }) {
   });
   const rec = amountsVsTotal(s);
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
-    <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div>
+    {tiles ? <HourlyRow s={s}>{items}</HourlyRow> : <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div>}
     {amts && <details className="amounts-about"><summary>Rain amounts: typical model run, per hour or per bracketed 3-hour block</summary>
       <p>Most of the models behind this forecast give rain in 3-hour amounts, so it is shown that way; an hourly amount appears only where every model is genuinely hourly (or radar).
         Each amount is the median of the model runs for that interval on its own. "Trace" is under 0.01", "—" means no forecast for that hour.</p>
