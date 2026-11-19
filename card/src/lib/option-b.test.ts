@@ -43,7 +43,7 @@ describe('Option B acceptance gate', () => {
       const tw = stormTotalWindow(s)!;
       const tot = s.rainTotals!.find(x => (x.fromHour ?? x.startHour) === tw.from)!;
       expect(tw.inches).toBe(tot.medianIn);                         // the hero's total window is the engine stretch
-      expect(h).toContain('Total covers:');
+      expect(h).toMatch(/Storm total:<\/span> (Sun|Mon|Tue|Wed|Thu|Fri|Sat) \d{1,2} (AM|PM) – (Sun|Mon|Tue|Wed|Thu|Fri|Sat) \d{1,2} (AM|PM)<\/p>/);
     });
     it(`${name}: selection is an outline only; initial selection is the heaviest eligible interval`, () => {
       const sel = initialSelection(t)!;
@@ -110,5 +110,19 @@ describe('PR #12 final refinement', () => {
       }
       expect(h).toContain(`Included in ${tenths(stormTotalWindow(s)!.inches)}" storm total`);
     }
+  });
+});
+
+describe('PR #12 design review corrections', () => {
+  it('the overlapping model tile reads "Model · 3h"; ordinary model tiles "3h"', () => {
+    const h = html(stormWedNight());
+    expect(h.match(/class="hour-res" aria-hidden="true">Model · 3h</g)).toHaveLength(1);
+    expect(h).toMatch(/class="hour-res" aria-hidden="true">3h</);
+  });
+  it('the storm-total window uses weekday and clock time', () => {
+    expect(html(stormWed())).toContain('Storm total:</span> Wed 12 AM – Fri 12 AM</p>');
+  });
+  it('the dashed Heaviest key is set apart from the intensity tiers', () => {
+    expect(html(stormWed())).toMatch(/<span class="legend-outline"><i class="sw-heavy"><\/i>Heaviest<\/span>/);
   });
 });

@@ -316,3 +316,9 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .hour.hour-3h{flex-basis:calc(100% / 5.25)}
 .hour .hour-res{display:block;font-size:13px;line-height:16px;color:#4f5e67;margin:0}
 .weather-card .strip-axis{display:none}
+
+/* PR #12 design review */
+.hour.hour-tile{padding:5px 2px;gap:2px}
+.hour.hour-tile .amt{min-height:18px;margin-top:0}
+.today-legend .legend-outline{border-left:1px solid #c9d3d9;padding-left:10px;margin-left:2px}
+.hour .hour-res{white-space:nowrap;font-size:12px;letter-spacing:-.01em}

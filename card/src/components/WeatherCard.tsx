@@ -6,7 +6,7 @@ import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { barAmount, clockRange, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, initialSelection, INTENSITY_LEGEND, intervalDetail, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { barAmount, clockRange, dayClock, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, initialSelection, INTENSITY_LEGEND, intervalDetail, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -64,7 +64,7 @@ function EventHeroView({ s, e }: { s: Scenario; e: EventHero }) {
     <p className="headline">{e.headline}</p>
     <p className="headline-detail event-sentence">{rest !== null ? <><strong>{e.amount}</strong>{rest}</> : e.sentence}</p>
     <p className="event-duration"><span>Duration:</span> {e.duration}</p>
-    {tw && <p className="event-duration total-window"><span>Total covers:</span> {hourText(s, tw.from)} – {hourText(s, tw.to)}</p>}
+    {tw && <p className="event-duration total-window"><span>Storm total:</span> {dayClock(s, tw.from)} – {dayClock(s, tw.to)}</p>}
     {up && <Upcoming up={up} target={fiveDays(s) ? `five-day-${up.dayIndex}` : null} />}
   </section>;
 }
@@ -126,7 +126,7 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
     </div>
     <div className="today-legend" aria-label="Intensity">{INTENSITY_LEGEND.filter(l => lvls.has(l.level)).map(l =>
       <span key={l.level} title={l.range}><i className={`sw i${l.level}`} />{l.name}</span>)}
-      {t.heavy && <span><i className="sw-heavy" />Heaviest</span>}{over && <span><i className="sw-over" />Overlap</span>}</div>
+      {t.heavy && <span className="legend-outline"><i className="sw-heavy" />Heaviest</span>}{over && <span className={t.heavy ? '' : 'legend-outline'}><i className="sw-over" />Overlap</span>}</div>
     {det && <div className="interval-card" aria-live="polite">
       <strong>{det.title}</strong><span>{det.amount}</span><span>{det.source} · <b>{det.intensity}</b></span></div>}
     {note && <p className="heaviest-note">{note}</p>}
@@ -192,7 +192,7 @@ function Hourly({ s }: { s: Scenario }) {
     items.push(<div className={`hour hour-tile${span > 1 ? ' hour-3h' : ''}${l.day && i > 0 ? ' hour-midnight' : ''}`} role="listitem" key={g.at}
       data-from={g.at} data-to={g.end} data-res={g.res}
       aria-label={`${top}${g.res > 1 ? ` (${g.res}-hour interval${g.overlaps ? ', overlaps radar hours' : ''})` : ''}, ${deg(g.temp)}${g.amount ? `, rain ${g.amount}` : ''}`}>
-      <span>{top}</span><small className="hour-res" aria-hidden>{g.res > 1 ? `${g.res}h` : '\u00a0'}</small>
+      <span>{top}</span><small className="hour-res" aria-hidden>{g.res > 1 ? `${g.overlaps ? 'Model · ' : ''}${g.res}h` : '\u00a0'}</small>
       <WeatherIcon name={icon} size={24} label /><strong>{deg(g.temp)}</strong>
       <em className={`amt amt-${g.amount ? 'rain' : 'dry'}`}>{g.amount}</em>
     </div>);

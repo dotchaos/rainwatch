@@ -261,3 +261,8 @@ export function hourTiles(s: Scenario): HourTile[] {
   }
   return out;
 }
+/** "Wed 12 AM": weekday and clock time, always explicit (no "midnight", "noon" or "today"). */
+export function dayClock(s: Scenario, h: number) {
+  const L = localHour(s, h), c = `${L % 12 === 0 ? 12 : L % 12} ${L < 12 ? 'AM' : 'PM'}`;
+  return `${dayName(s, h)} ${c}`;
+}
