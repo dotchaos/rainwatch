@@ -94,13 +94,15 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
   const [chosen, setChosen] = useState<number | null>(lab ? absHour(s, lab.start) : null);
   const sel = resolveSelection(s, t, chosen), selAt = sel ? sel.start : null, det = sel ? intervalDetail(s, sel) : null;
   const setSel = (start: number) => setChosen(absHour(s, start));
+  const plot = useRef<HTMLDivElement>(null);
   const n = t.to - t.from, x = (h: number) => `${((h - t.from) / n) * 100}%`, w = (a: number, b: number) => `${((b - a) / n) * 100}%`;
   const label = (b: TodayT['bars'][number]) => b.kind === 'rain' && b.src !== 'radar' && b.coversFrom === null && b.end - b.start >= 2;
   const over = t.bars.find(b => b.coversFrom !== null && b.kind === 'rain');
   const bands = t.sources.filter((q, i) => i === 0 || q.src !== t.sources[i - 1].src)
     .map((q, i, arr) => ({ ...q, end: (arr[i + 1]?.start ?? t.to) }));
   const lvls = new Set(t.bars.filter(b => b.kind === 'rain').map(b => b.intensity));
-  const move = (d: number) => { const i = eligible.findIndex(b => b.start === selAt), j = Math.min(eligible.length - 1, Math.max(0, i + d)); if (eligible[j]) setSel(eligible[j].start); };
+  const move = (d: number) => { const i = selAt === null ? 0 : eligible.findIndex(b => b.start === selAt), j = Math.min(eligible.length - 1, Math.max(0, i + d)); if (eligible[j]) { setSel(eligible[j].start);
+    requestAnimationFrame(() => plot.current?.querySelector<HTMLElement>(`[role="radio"][data-from="${eligible[j].start}"]`)?.focus()); } };
   const note = heaviestNote(s, t);
   return <section className="today-rain" aria-labelledby="timeline-h">
     <h2 className="section-title" id="timeline-h">Rainfall timeline</h2>
@@ -113,13 +115,14 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
         : <span key={q.start} className="srcl srcl-model">{q.src === 'nws' ? 'NWS · 6-hour intervals' : 'Models · 3-hour intervals'}</span>)}</div>
       <div className="today-amts" aria-hidden>{t.bars.filter(label).map(b =>
         <span key={b.start} style={{ left: x((b.start + b.end) / 2) }}>{barAmount(b)}</span>)}</div>
-      <div className="today-plot" role="radiogroup" aria-label="Rain by forecast interval"
+      <div className="today-plot" ref={plot} role="radiogroup" aria-label="Rain by forecast interval"
         onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); move(1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); move(-1); } }}>
         {t.bars.map(b => {
           const ok = eligible.includes(b), on = sel === b, d = ok ? intervalDetail(s, b) : null;
+          const focusable = on || (!sel && b === eligible[0]);   // with nothing selected, the group is still reachable by Tab
           const cls = `today-bar bar-${b.kind}${b.intensity ? ` i${b.intensity}` : ''} src-${b.src}${on ? ' sel' : ''}${b.coversFrom !== null ? ' over' : ''}`;
           const style = { left: x(b.start), width: w(b.start, b.end) };
-          return ok ? <button type="button" key={b.start} role="radio" aria-checked={on} tabIndex={on ? 0 : -1} className={cls}
+          return ok ? <button type="button" key={b.start} role="radio" aria-checked={on} tabIndex={focusable ? 0 : -1} className={cls}
               data-from={b.start} data-to={b.end} data-res={b.res} data-in={b.in} style={style} onClick={() => setSel(b.start)}
               aria-label={`${d!.title}, ${barAmount(b)}, ${d!.intensity.toLowerCase()}, ${d!.source.toLowerCase()}`} />
             : <span key={b.start} className={cls} data-from={b.start} data-to={b.end} data-res={b.res} data-in={b.in} style={style} aria-hidden />;
