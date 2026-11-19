@@ -446,7 +446,9 @@ def alert_spans(report: dict, t0: datetime) -> list[dict]:
         eh = HORIZON if e is None else min(HORIZON, int(-(-(e - t0).total_seconds() // 3600)))
         if eh > sh and a.get("event"):
             al.append({"event": a["event"], "startHour": sh, "endHour": eh, "flood": a["event"] in FLOOD_PRODUCTS,
-                       **({"severity": a["severity"]} if a.get("severity") else {})})
+                       **({"open": True} if e is None else {}),
+                       **({"severity": a["severity"]} if a.get("severity") else {}),
+                       **({"url": a["url"]} if isinstance(a.get("url"), str) and a["url"].startswith("https://api.weather.gov/alerts/") else {})})
     return al
 
 def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,

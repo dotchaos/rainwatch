@@ -347,3 +347,60 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .hourly-day{margin:0 0 4px;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#3f4d55}
 .coastal-note{margin:6px 0 0 24px;font-size:15px;color:#3f4d55}
 .todo-flood:not(.quiet) .coastal-note{margin-left:0}
+
+/* ---------- Presentation refinement (Nov 19) ---------- */
+/* NWS alerts: compact disclosure, same surface as Going outside */
+details.nws-alerts{border:0;border-radius:12px;background:#f3f6f8;padding:0}
+details.nws-alerts summary{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;list-style:none}
+details.nws-alerts summary::-webkit-details-marker{display:none}
+.nws-sum{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nws-sum strong{font-size:16px;color:#16232b}
+.nws-sum span{font-size:15px;color:#3f4d55}
+.nws-chev{margin-left:auto;flex:none;color:#4f5e67;transition:transform .15s}
+details.nws-alerts[open] .nws-chev{transform:rotate(180deg)}
+.nws-body{padding:0 14px 12px 46px}
+.nws-body .nws-issuer{margin:0 0 6px;font-size:13px}
+.nws-body ul{gap:8px}
+.nws-body li{display:flex;flex-direction:column;gap:1px}
+.nws-body li a{font-size:15px;color:#2f5f7d}
+details.nws-warning{background:#fff1e6;border:2px solid #b4541f}
+details.nws-warning summary svg:first-child{color:#b4541f}
+details.nws-watch{background:#fff7ec;border:1.5px solid #d98a2b}
+details.nws-advisory summary svg:first-child,details.nws-statement summary svg:first-child,details.nws-other summary svg:first-child{color:#4f5e67}
+/* selected interval: one readout */
+.interval-card{gap:2px}
+.interval-card .ic-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.interval-card .ic-top strong{font-size:17px}
+.interval-card .ic-top span{font-size:15px;color:#3f4d55;white-space:nowrap}
+.interval-card .ic-amt{display:flex;align-items:baseline;gap:6px}
+.interval-card .ic-amt b{font-size:26px;font-weight:700;color:#16232b;font-variant-numeric:tabular-nums;line-height:1.1}
+.interval-card .ic-amt span{font-size:15px;color:#4f5e67}
+/* source annotations: plain text, never tab-like */
+.today-srclabels{position:relative;height:18px}
+.today-srclabels .srcl{position:absolute;top:0;font-size:13px;color:#4f5e67;white-space:nowrap}
+.today-srclabels .srcl-model{right:0}
+.today-bands{display:none}
+/* hourly forecast: one continuous hourly scale; rain as one band per source interval */
+.next-hours{--hcell:54px}
+.hgrid{display:flex;flex-direction:column;gap:8px;flex:none}
+.hgrid-cells{display:flex}
+.hcell{flex:0 0 var(--hcell);display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;padding-bottom:2px}
+.hcell-time{font-size:14px;color:#4f5e67;white-space:nowrap}
+.hcell strong{font-size:15px}
+.hcell-midnight::before{content:'';position:absolute;left:0;top:0;bottom:-58px;border-left:1px dashed #b9c5cb}
+.hgrid-bands{position:relative;height:46px;
+  background:repeating-linear-gradient(90deg,transparent 0 calc(var(--hcell) - 1px),#e3e8eb calc(var(--hcell) - 1px) var(--hcell))}
+.hband{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  border-radius:7px;border:2px solid #fff;background-clip:padding-box;color:#16232b}
+.hband b{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+.hband small{font-size:12px;color:#3f4d55;white-space:nowrap}
+.hband-dry{background-color:#f1f4f6}
+.hband-trace{background-color:#e4eef6}
+.hband-rain{background-color:#cfe2f2}
+/* a 3-hour total spans its three hours: faint hour guides inside, one amount for the whole period */
+.hband-group{background-image:repeating-linear-gradient(90deg,transparent 0 calc(var(--hcell) - 3px),rgba(38,52,61,.12) calc(var(--hcell) - 3px) calc(var(--hcell) - 2px))}
+/* model period that starts before the radar hours end: same hatching as the timeline, original range and total kept */
+.hband-short{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.75) 0 3px,transparent 3px 7px);overflow:visible}
+.hourly-overlap{margin:10px 0 0;font-size:14px;color:#3f4d55;text-align:left}
+.hourly-overlap+.hourly-note{margin-top:4px}
+.hourly-note{margin:10px 0 0;font-size:14px;color:#4f5e67}

@@ -91,10 +91,14 @@ export const narrativeCases: { id: string; title: string; s: Scenario }[] = [
 /* ---------- Event-first hero and five-day hourly row review cases (v0.26) ---------- */
 import stormWedJson from '../../scenarios/storm-wed.json';
 import stormWedNightJson from '../../scenarios/storm-wed-night.json';
+import liveThuJson from '../../scenarios/live-2026-11-19T1557Z.json';
 /** The live forecast of Tue Nov 17, 11:35 AM, as the v0.26 engine builds it (rain amounts, total window, peak check). */
 export const stormWed = () => structuredClone(stormWedJson) as unknown as Scenario;
 /** The live forecast of Wed Nov 18, 12:51 AM: rain from about 2 AM, heaviest 5–11 AM; peak re-derived by the v0.26.1 rule. */
 export const stormWedNight = () => structuredClone(stormWedNightJson) as unknown as Scenario;
+/** The published live card of Thu Nov 19 7:57 AM, archived byte-for-byte from the site (tools/archive_live.py):
+ *  two NWS advisories (one Coastal Flood Advisory in two periods), radar hours overlapping the 7–10 AM model block. */
+export const liveThu = () => structuredClone(liveThuJson) as unknown as Scenario;
 /** The same forecast with no data from hour `at` on (the models stop mid-storm): unknown hours, no amounts there, and
  *  no total for a stretch that runs into them (the engine never totals across missing data); the day the cut falls in
  *  loses its total. Wednesday is untouched, so its total stands. */

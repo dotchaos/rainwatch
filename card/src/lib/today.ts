@@ -1,6 +1,6 @@
 import type { Scenario } from '../types';
 import { isUnknown, knownUntil } from './rules';
-import { tenths, actionWindow, asRainDay, clockOf, isNowAt, fullDay, dayIndexAt, eventHero, floodStorm, fmtAmount, localHour, nowAt, nowNext, sevAt, type EventHero } from './derive';
+import { hourLabel, tenths, actionWindow, asRainDay, clockOf, isNowAt, fullDay, dayIndexAt, eventHero, floodStorm, fmtAmount, localHour, nowAt, nowNext, sevAt, type EventHero } from './derive';
 
 /**
  * Today First (PR B). The homepage is composed from one forecast state: every piece here reads the same derivations
@@ -244,27 +244,6 @@ export function dayInStormTotal(s: Scenario, dayIndex: number): string | null {
   return start < w.to && w.from < end ? `Included in ${tenths(w.inches)}" storm total` : null;
 }
 
-/** Hourly tiles at source resolution: radar/hourly blocks one per hour; model blocks one tile per block (temperature
- *  at the block's start); a model block shortened by radar hours keeps its whole interval in the label. */
-export interface HourTile { at: number; end: number; label: string; temp: number | null; icon: string; amount: string; res: number; overlaps: boolean }
-export function hourTiles(s: Scenario): HourTile[] {
-  const out: HourTile[] = [];
-  const hours = s.hourly.map((h, i) => ({ at: h.hour ?? i, h }));
-  for (let k = 0; k < hours.length; k++) {
-    const { at, h } = hours[k];
-    const b = s.rainBlocks?.find(x => x.startHour <= at && at < x.endHour);
-    if (b && b.res > 1 && at === b.startHour) {
-      const ws = b.blockStartHour ?? b.startHour, we = b.blockEndHour ?? b.endHour;
-      out.push({ at, end: b.endHour, label: clockRange(s, ws, we), temp: h.temperatureF, icon: h.icon,
-                 amount: b.in >= 0.01 ? fmtAmount(b.in) : b.in > 0 ? 'Trace' : '', res: b.res, overlaps: ws < b.startHour });
-      k += b.endHour - at - 1;
-      continue;
-    }
-    out.push({ at, end: at + 1, label: '', temp: h.temperatureF, icon: h.icon,
-               amount: b ? (b.in >= 0.01 ? fmtAmount(b.in) : b.in > 0 ? 'Trace' : '') : '', res: 1, overlaps: false });
-  }
-  return out;
-}
 /** "Wed 12 AM": weekday and clock time, always explicit (no "midnight", "noon" or "today"). */
 export function dayClock(s: Scenario, h: number) {
   const L = localHour(s, h), c = `${L % 12 === 0 ? 12 : L % 12} ${L < 12 ? 'AM' : 'PM'}`;
@@ -272,17 +251,37 @@ export function dayClock(s: Scenario, h: number) {
 }
 
 /* ---------- Official NWS alerts (Nov 19): issued by the National Weather Service, shown apart from Rainwatch's signals ---------- */
-export interface OfficialAlert { event: string; when: string; now: boolean }
-/** Non-flood alerts in force or coming within the card's range. Flood products appear in Flood risk (official state),
- *  so they are not repeated here. Wording is the alert's own event name; timing from its own start/end hours. */
+export type AlertKind = 'warning' | 'watch' | 'advisory' | 'statement' | 'other';
+export interface OfficialAlert { event: string; kind: AlertKind; when: string; now: boolean; url?: string; severity?: string }
+/** The NWS product type, from the event name's own last word (never inferred from severity). */
+export const alertKind = (event: string): AlertKind => /Warning$/.test(event) ? 'warning' : /Watch$/.test(event) ? 'watch'
+  : /Advisory$/.test(event) ? 'advisory' : /Statement$/.test(event) ? 'statement' : 'other';
+/** Non-flood alerts in force or coming within the card's range. Flood products appear in Street flood risk (official
+ *  state), so they are not repeated here. Wording is the alert's own event name; timing from its own start/end hours;
+ *  "Until further notice" only when NWS gave no end or expiry time. */
 export function officialAlerts(s: Scenario): OfficialAlert[] {
   return (s.evidence?.alerts ?? []).filter(a => !a.flood).map(a => {
     const now = a.startHour <= nowAt(s) + 0.5;
-    const end = openEndHour(s, a.endHour) ? 'until further notice' : `until ${hourText(s, a.endHour)}`;
-    return { event: a.event, now, when: now ? `In effect ${end}` : `From ${hourText(s, a.startHour)} ${end}` };
+    const end = a.open ? 'until further notice' : `until ${hourText(s, a.endHour)}`;
+    const when = now ? `${end[0].toUpperCase()}${end.slice(1)}` : `From ${hourText(s, a.startHour)} ${end}`;
+    return { event: a.event, kind: alertKind(a.event), now, when, ...(a.url ? { url: a.url } : {}), ...(a.severity ? { severity: a.severity } : {}) };
   });
 }
-const openEndHour = (s: Scenario, h: number) => h >= 72 || isUnknown(s, h);
+const KIND_ORDER: AlertKind[] = ['warning', 'watch', 'advisory', 'statement', 'other'];
+const KIND_WORD: Record<AlertKind, [string, string]> = { warning: ['warning', 'warnings'], watch: ['watch', 'watches'],
+  advisory: ['advisory', 'advisories'], statement: ['statement', 'statements'], other: ['alert', 'alerts'] };
+/** Collapsed summary from the actual products: distinct events, counted by product type. One type: "2 weather
+ *  advisories"; mixed: "1 warning · 2 advisories" (most serious first). Names without the type word: "Coastal flood". */
+export function alertSummary(al: OfficialAlert[]): { label: string; names: string; top: AlertKind } | null {
+  const events = [...new Map(al.map(a => [a.event, a.kind])).entries()];
+  if (!events.length) return null;
+  const counts = KIND_ORDER.map(k => [k, events.filter(([, kk]) => kk === k).length] as const).filter(([, n]) => n);
+  const word = (k: AlertKind, n: number) => KIND_WORD[k][n === 1 ? 0 : 1];
+  const label = counts.length === 1 ? `${counts[0][1]} weather ${word(counts[0][0], counts[0][1])}` : counts.map(([k, n]) => `${n} ${word(k, n)}`).join(' · ');
+  const sorted = [...events].sort((x, y) => KIND_ORDER.indexOf(x[1]) - KIND_ORDER.indexOf(y[1]));
+  const names = sorted.map(([e]) => { const n = e.replace(/\s+(Warning|Watch|Advisory|Statement)$/, ''); return n[0] + n.slice(1).toLowerCase(); }).join(' · ');
+  return { label, names, top: counts[0][0] };
+}
 
 /* ---------- Radar vs models, next hours (Nov 19): the engine's existing comparison, in plain language ---------- */
 /** A disagreement is worth a line when it changes a near-term decision: one source says rain and the other says dry,
@@ -347,4 +346,32 @@ const DAY3 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 export function coastalFloodActive(s: Scenario): boolean {
   const now = nowAt(s);
   return (s.evidence?.alerts ?? []).some(a => /^Coastal Flood (Advisory|Watch|Warning|Statement)$/.test(a.event) && a.startHour <= now + 0.5 && now < a.endHour);
+}
+
+/* ---------- Hourly forecast: continuous hourly scale (presentation refinement, Nov 19) ---------- */
+export const HOURLY_MAX_H = 48;
+export interface HourCell { at: number; text: string; day: string | null; icon: string; temp: number | null; unknown: boolean }
+export interface RainBand { start: number; end: number; wholeStart: number; wholeEnd: number; res: number; src: Src;
+  amount: string; kind: 'rain' | 'trace' | 'dry'; shortened: boolean }
+/** Every hour gets one equal cell (temperature and condition are genuinely hourly). Rain is one band per actual source
+ *  interval: a radar hour spans one cell, a model 3-hour total spans its three cells, shown once. The scale stops at
+ *  48 hours, on the end of a complete interval. Missing hours stay missing (no interpolation). */
+export function hourlyGrid(s: Scenario): { hours: number; cells: HourCell[]; bands: RainBand[] } {
+  const blocks = [...(s.rainBlocks ?? [])].sort((a, b) => a.startHour - b.startHour);
+  const last = [...blocks].reverse().find(b => b.startHour < HOURLY_MAX_H);
+  const hours = !last ? Math.min(HOURLY_MAX_H, s.hourly.length) : last.endHour <= HOURLY_MAX_H ? last.endHour : last.startHour;
+  const byHour = new Map(s.hourly.map((h, i) => [h.hour ?? i, h]));
+  const cells: HourCell[] = [];
+  for (let at = 0; at < hours; at++) {
+    const h = byHour.get(at), unknown = isUnknown(s, at) || !h, l = hourLabel(s, at);
+    cells.push({ at, text: l.text, day: l.day,
+                 icon: unknown ? 'unknown' : h!.icon, temp: unknown ? null : h!.temperatureF, unknown });
+  }
+  const bands: RainBand[] = blocks.filter(b => b.startHour < hours && !isUnknown(s, b.startHour)).map(b => {
+    const ws = b.blockStartHour ?? b.startHour, we = b.blockEndHour ?? b.endHour;
+    const kind = b.in >= 0.01 ? 'rain' : b.in > 0 ? 'trace' : 'dry';
+    return { start: b.startHour, end: Math.min(b.endHour, hours), wholeStart: ws, wholeEnd: we, res: b.res, src: SRC_OF(b),
+             amount: kind === 'rain' ? fmtAmount(b.in) : kind === 'trace' ? 'Trace' : '', kind, shortened: ws < b.startHour };
+  });
+  return { hours, cells, bands };
 }
