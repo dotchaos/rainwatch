@@ -401,7 +401,6 @@ details.nws-advisory summary svg:first-child,details.nws-statement summary svg:f
 .hband-group{background-image:repeating-linear-gradient(90deg,transparent 0 calc(var(--hcell) - 3px),rgba(38,52,61,.12) calc(var(--hcell) - 3px) calc(var(--hcell) - 2px))}
 /* model period that starts before the radar hours end: same hatching as the timeline, original range and total kept */
 .hband-short{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.75) 0 3px,transparent 3px 7px);overflow:visible}
-.hband-short small{position:absolute;right:6px;bottom:-19px;background:#fff;padding-left:4px}
-.hband-short:has(small){margin-bottom:0}
-.hgrid-bands:has(.hband-short small){margin-bottom:18px}
+.hourly-overlap{margin:10px 0 0;font-size:14px;color:#3f4d55;text-align:left}
+.hourly-overlap+.hourly-note{margin-top:4px}
 .hourly-note{margin:10px 0 0;font-size:14px;color:#4f5e67}

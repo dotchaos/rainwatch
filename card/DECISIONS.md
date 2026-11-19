@@ -139,8 +139,8 @@ Forecast calculations, thresholds and the default selection are unchanged.
 - Hourly forecast: one continuous hourly scale with equal cells, each hour's own icon and temperature.
   - Rain is one band per actual radar or model interval. A 3-hour amount appears once, with "3h total" and faint
     hour guides, and is never repeated per hour.
-  - A model band shortened by radar hours keeps its original range and total ("7–10 AM · 3h total"), uses the
-    timeline's overlap hatching, and is not selectable.
+  - A model band shortened by radar hours keeps its amount, uses the
+    timeline's overlap hatching, and is not selectable. Its original range and total are stated in a left-aligned line beneath the grid: "Hatched model interval: 7–10 AM · 3h total (overlaps radar)" (range from the actual interval).
   - At most 48 hours, ending where a complete interval ends. The line under it reads: "Radar is hourly.
     Forecast amounts cover 3-hour periods."
   - This supersedes the Option B hourly tiles (one tile per model block).

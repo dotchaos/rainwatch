@@ -115,9 +115,10 @@ describe('PR #12 final refinement', () => {
 });
 
 describe('PR #12 design review corrections', () => {
-  it('(superseded Nov 19) the overlapping model band keeps its original range: "1–4 AM · 3h total"; others "3h total"', () => {
+  it('(superseded Nov 19) the overlapping model band is explained beneath the grid; ordinary model bands "3h total"', () => {
     const h = html(stormWedNight());
-    expect(h.match(/<small>1–4 AM · 3h total<\/small>/g)).toHaveLength(1);
+    expect(h).toContain('<p class="hourly-overlap">Hatched model interval: 1–4 AM · 3h total (overlaps radar)</p>');
+    expect(h).not.toMatch(/<small>1–4 AM/);
     expect(h).toMatch(/<small>3h total<\/small>/);
   });
   it('the storm-total window uses weekday and clock time', () => {

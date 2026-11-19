@@ -94,10 +94,16 @@ describe('hourly forecast: continuous hourly scale', () => {
     const s = liveThu(), b = hourlyGrid(s).bands.find(x => x.shortened)!;
     expect(b).toMatchObject({ start: 2, end: 3, wholeStart: 0, wholeEnd: 3, res: 3, amount: '.12"' });
     const h = html(s);
-    expect(h).toMatch(/class="hband hband-rain hband-model hband-group hband-short" data-from="2" data-to="3" data-res="3"[^>]*><b>.12"<\/b><small>7–10 AM · 3h total<\/small>/);
+    expect(h).toMatch(/class="hband hband-rain hband-model hband-group hband-short" data-from="2" data-to="3" data-res="3"[^>]*><b>.12"<\/b><\/div>/);
+    expect(h).toContain('<p class="hourly-overlap">Hatched model interval: 7–10 AM · 3h total (overlaps radar)</p><p class="hourly-note">');
     expect(between(h, 'hgrid-bands', 'hourly-note')).not.toMatch(/<button|role="radio"|tabindex/);
     const t = todayTimeline(s)!;
     expect(eligibleBars(t).some(x => x.coversFrom !== null)).toBe(false);
+  });
+  it('no overlap line when no shortened model interval is in the hourly window', () => {
+    const s = stormWed();
+    expect(hourlyGrid(s).bands.some(b => b.shortened)).toBe(false);
+    expect(html(s)).not.toContain('hourly-overlap');
   });
   it('supporting line replaces the amounts explainer', () => {
     const h = html(liveThu());

@@ -280,10 +280,12 @@ function HourlyGrid({ s }: { s: Scenario }) {
             className={`hband hband-${b.kind} hband-${b.src}${b.res > 1 ? ' hband-group' : ''}${b.shortened ? ' hband-short' : ''}`}
             data-from={b.start} data-to={b.end} data-res={b.res} style={{ left: at(b.start), width: at(b.end - b.start) }}>
             {b.amount && <b>{b.amount}</b>}
-            {b.res > 1 && (b.amount || b.shortened) && <small>{b.shortened ? `${clockRange(s, b.wholeStart, b.wholeEnd)} · ${b.res}h total` : `${b.res}h total`}</small>}
+            {b.res > 1 && b.amount && !b.shortened && <small>{b.res}h total</small>}
           </div>)}</div>
       </div>
     </HourlyRow>
+    {g.bands.filter(b => b.shortened).map(b =>
+      <p className="hourly-overlap" key={`ov-${b.start}`}>Hatched model interval: {clockRange(s, b.wholeStart, b.wholeEnd)} · {b.res}h total (overlaps radar)</p>)}
     <p className="hourly-note">Radar is hourly. Forecast amounts cover 3-hour periods.</p></section>;
 }
 
