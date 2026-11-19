@@ -126,3 +126,12 @@ describe('PR #12 design review corrections', () => {
     expect(html(stormWed())).toMatch(/<span class="legend-outline"><i class="sw-heavy"><\/i>Heaviest<\/span>/);
   });
 });
+
+describe('regression checklist', () => {
+  it('the overlapping 1–4 AM model tile shows its full 3-hour amount (not a share for the hours after radar)', () => {
+    const s = stormWedNight(), blk = s.rainBlocks!.find(b => b.blockStartHour !== undefined && b.blockStartHour < b.startHour)!;
+    const tile = hourTiles(s).find(g => g.overlaps)!;
+    expect(tile).toMatchObject({ at: blk.startHour, end: blk.endHour, label: '1–4 AM', res: 3, amount: '.04"' });
+    expect(blk.in).toBeCloseTo(0.036, 6);                         // the engine's whole-interval amount, unchanged
+  });
+});
