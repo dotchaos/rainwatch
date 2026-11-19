@@ -302,3 +302,17 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 /* a narrow radar band (about 2 h of ~25 h) names itself over the model band's empty left edge, never clipped */
 .today-bands .band-radar{z-index:2;overflow:visible;min-width:0}
 .today-bands .band-model,.today-bands .band-nws{z-index:1}
+
+/* PR #12 final refinement */
+.today-plot .today-bar.sel{outline:2px solid #16232b;outline-offset:2px}
+.today-heavy{border:1px dashed #16232b;top:-4px;bottom:-4px}
+.sw-heavy{border-width:1px;border-style:dashed}
+.today-plot .today-bar.over{background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.75) 0 3px,transparent 3px 7px)}
+.sw-over{width:16px;height:12px;border-radius:2px;display:inline-block;background:var(--i1) repeating-linear-gradient(135deg,rgba(255,255,255,.75) 0 3px,transparent 3px 7px)}
+.today-legend{flex-wrap:nowrap;gap:10px;font-size:14px;overflow-x:auto}
+.today-legend span{font-size:14px;white-space:nowrap;gap:5px}
+.interval-card{margin-top:2px}
+.hour.hour-tile{background:#f5f8fa;border-radius:10px;padding:8px 2px;flex-basis:calc(100% / 5.25)}
+.hour.hour-3h{flex-basis:calc(100% / 5.25)}
+.hour .hour-res{display:block;font-size:13px;line-height:16px;color:#4f5e67;margin:0}
+.weather-card .strip-axis{display:none}

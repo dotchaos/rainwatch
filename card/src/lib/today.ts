@@ -237,7 +237,7 @@ export function dayInStormTotal(s: Scenario, dayIndex: number): string | null {
   const w = stormTotalWindow(s);
   if (!w || dayIndex < 1) return null;
   const start = 24 - s.startHourLocal + (dayIndex - 1) * 24, end = start + 24;
-  return start < w.to && w.from < end ? `part of the ${tenths(w.inches)}" storm total` : null;
+  return start < w.to && w.from < end ? `Included in ${tenths(w.inches)}" storm total` : null;
 }
 
 /** Hourly tiles at source resolution: radar/hourly blocks one per hour; model blocks one tile per block (temperature

@@ -6,9 +6,10 @@ import { renderToString } from 'react-dom/server';
 import { WeatherCard } from '../components/WeatherCard';
 import type { Scenario } from '../types';
 import { stormWed, stormWedNight } from './cases';
+import { tenths } from './derive';
 import { eligibleBars, hourTiles, initialSelection, intervalDetail, stormTotalWindow, todayTimeline } from './today';
 
-const html = (s: Scenario, selected?: number) => renderToString(createElement(WeatherCard, { scenario: s, selected })).replace(/<!-- -->/g, '').replace(/&quot;/g, '"');
+const html = (s: Scenario, selected?: number) => renderToString(createElement(WeatherCard, { scenario: s, selected })).replace(/<!-- -->/g, '').replace(/&quot;/g, '"').replace(/&#x27;/g, "'");
 const bars = (h: string) => [...h.matchAll(/class="today-bar[^"]*"[^>]*?data-from="(\d+)" data-to="(\d+)" data-res="(\d+)" data-in="([\d.]+)" style="left:([\d.]+)%;width:([\d.]+)%"/g)]
   .map(m => ({ from: +m[1], to: +m[2], res: +m[3], in: +m[4], left: +m[5], width: +m[6] }));
 const CASES = [['Tue 11:35 AM', stormWed], ['Wed 12:51 AM (overlap)', stormWedNight]] as const;
@@ -66,5 +67,48 @@ describe('Option B acceptance gate', () => {
   it('a chosen model interval renders its own detail (deterministic selection)', () => {
     const s = stormWed(), h = html(s, 20);
     expect(h).toContain('<strong>7–10 AM Wednesday</strong><span>.75" over 3 hours</span>');
+  });
+});
+
+describe('PR #12 final refinement', () => {
+  const css = require('fs').readFileSync(require('path').join(__dirname, '../styles.css'), 'utf8') as string;
+  it('selection and heaviest-period outlines are distinct (2px solid vs 1px dashed)', () => {
+    const last = (sel: string) => [...css.matchAll(new RegExp(`${sel.replace(/\./g, '\\.')}\\{([^}]*)\\}`, 'g'))].pop()![1];
+    expect(last('.today-plot .today-bar.sel')).toMatch(/outline:2px solid/);
+    expect(last('.today-heavy')).toMatch(/border:1px dashed/);
+    const h = html(stormWed());
+    expect(h.match(/class="today-bar[^"]* sel/g)).toHaveLength(1);
+    expect(h.match(/class="today-heavy"/g)).toHaveLength(1);
+  });
+  it('timeline order: heading, chart, legend, detail, heaviest note, overlap note, evidence', () => {
+    const h = html(stormWedNight()), at = (x: string) => h.indexOf(x);
+    const order = ['id="timeline-h"', 'class="today-chart"', 'class="today-legend"', 'class="interval-card"', 'class="heaviest-note"', 'id="overlap-note"', 'class="today-about"'].map(at);
+    expect(order.every(i => i > 0)).toBe(true);
+    expect([...order].sort((a, b) => a - b)).toEqual(order);
+    expect(h).not.toContain('class="today-note"');                 // the not-the-total line lives in the evidence now
+    expect(h.slice(at('class="today-about"'))).toContain("Amounts are per interval and don't add up to the total.");
+    expect(h.match(/Heaviest rain expected/g)).toHaveLength(1);
+  });
+  it('the overlap explanation appears exactly once; the shortened bar is distinct and not selectable', () => {
+    const h = html(stormWedNight());
+    expect(h.match(/overlapping the radar hours/g)).toHaveLength(1);
+    expect(h).toMatch(/<span class="today-bar bar-rain i1 src-model over" data-from="2" data-to="4"[^>]*aria-hidden="true"/);
+  });
+  it('flood guidance stays above Going outside when elevated', () => {
+    for (const s of [stormWed(), stormWedNight()]) { const h = html(s); expect(h.indexOf('id="flood-h"')).toBeLessThan(h.indexOf('id="outside-h"')); }
+  });
+  it('Going outside keeps the existing supported windows', () => {
+    expect(html(stormWedNight())).toContain('<strong>Rain gear</strong><span>5 AM–1 PM today</span>');
+    expect(html(stormWed())).toContain('<strong>Rain gear</strong><span>Wednesday 3–10 AM</span>');
+  });
+  it('Looking ahead: relative day labels from the forecast timestamp; storm-total inclusion', () => {
+    const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], SHORT = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    for (const s of [stormWed(), stormWedNight()]) {
+      const h = html(s), d0 = SHORT.indexOf(s.startDay);
+      for (const m of h.matchAll(/id="five-day-(\d)"[^>]*><div class="five-top"><strong>([^<]+)<\/strong>/g)) {
+        const k = +m[1]; expect(m[2]).toBe(k === 1 ? 'Tomorrow' : DAYS[(d0 + k) % 7]);
+      }
+      expect(h).toContain(`Included in ${tenths(stormTotalWindow(s)!.inches)}" storm total`);
+    }
   });
 });

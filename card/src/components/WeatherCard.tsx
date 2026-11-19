@@ -93,7 +93,6 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
   const sel = eligible.find(b => b.start === selAt) ?? null, det = sel ? intervalDetail(s, sel) : null;
   const n = t.to - t.from, x = (h: number) => `${((h - t.from) / n) * 100}%`, w = (a: number, b: number) => `${((b - a) / n) * 100}%`;
   const label = (b: TodayT['bars'][number]) => b.kind === 'rain' && b.src !== 'radar' && b.coversFrom === null && b.end - b.start >= 2;
-  const radar = t.bars.filter(b => b.src === 'radar' && b.start >= t.now);
   const over = t.bars.find(b => b.coversFrom !== null && b.kind === 'rain');
   const bands = t.sources.filter((q, i) => i === 0 || q.src !== t.sources[i - 1].src)
     .map((q, i, arr) => ({ ...q, end: (arr[i + 1]?.start ?? t.to) }));
@@ -103,7 +102,6 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
   return <section className="today-rain" aria-labelledby="timeline-h">
     <h2 className="section-title" id="timeline-h">Rainfall timeline</h2>
     {t.dryUntil !== null && <p className="today-dry">Dry until {hourText(s, t.dryUntil)}</p>}
-    {radar.some(b => b.kind !== 'dry') && <p className="today-radar">Radar, hour by hour: {radar.map(b => `${barAmount(b) || 'dry'} (${clockRange(s, b.start, b.end)})`).join(', then ')}</p>}
     <div className="today-chart">
       <div className="today-bands" aria-hidden>{bands.map(q => <span key={q.start} className={`band band-${q.src}`} style={{ left: x(q.start), width: w(q.start, q.end) }}>
         {q.src === 'radar' ? 'Radar' : q.src === 'nws' ? 'NWS 6-hour totals' : 'Model forecast · 3-hour intervals'}</span>)}</div>
@@ -113,7 +111,7 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
         onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); move(1); } if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); move(-1); } }}>
         {t.bars.map(b => {
           const ok = eligible.includes(b), on = sel === b, d = ok ? intervalDetail(s, b) : null;
-          const cls = `today-bar bar-${b.kind}${b.intensity ? ` i${b.intensity}` : ''} src-${b.src}${on ? ' sel' : ''}`;
+          const cls = `today-bar bar-${b.kind}${b.intensity ? ` i${b.intensity}` : ''} src-${b.src}${on ? ' sel' : ''}${b.coversFrom !== null ? ' over' : ''}`;
           const style = { left: x(b.start), width: w(b.start, b.end) };
           return ok ? <button type="button" key={b.start} role="radio" aria-checked={on} tabIndex={on ? 0 : -1} className={cls}
               data-from={b.start} data-to={b.end} data-res={b.res} data-in={b.in} style={style} onClick={() => setSel(b.start)}
@@ -126,15 +124,16 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
       </div>
       <div className="today-axis" aria-hidden>{t.ticks.map((k, i) => <span key={k.at} className={i === 0 ? 'first' : ''} style={{ left: x(k.at) }}>{k.text}{k.day && <b>{k.day}</b>}</span>)}</div>
     </div>
-    {over && <p className="today-overlap">The {barAmount(over)} model amount is for {clockRange(s, over.coversFrom!, over.end)}, overlapping the radar hours. It is a separate estimate, not added to them.</p>}
     <div className="today-legend" aria-label="Intensity">{INTENSITY_LEGEND.filter(l => lvls.has(l.level)).map(l =>
-      <span key={l.level}><i className={`sw i${l.level}`} /><b>{l.name}</b> {l.range}</span>)}
-      {t.heavy && <span><i className="sw-heavy" />Heaviest period</span>}</div>
-    <p className="today-note">Amounts are per interval and don't add up to the total.</p>
+      <span key={l.level} title={l.range}><i className={`sw i${l.level}`} />{l.name}</span>)}
+      {t.heavy && <span><i className="sw-heavy" />Heaviest</span>}{over && <span><i className="sw-over" />Overlap</span>}</div>
     {det && <div className="interval-card" aria-live="polite">
       <strong>{det.title}</strong><span>{det.amount}</span><span>{det.source} · <b>{det.intensity}</b></span></div>}
     {note && <p className="heaviest-note">{note}</p>}
-    <details className="today-about"><summary>Where these amounts come from</summary><p>{sourcesCaption(t)}</p>
+    {over && <p className="today-overlap" id="overlap-note">The {barAmount(over)} model amount is for {clockRange(s, over.coversFrom!, over.end)}, overlapping the radar hours. It is a separate estimate, not added to them.</p>}
+    <details className="today-about"><summary>Forecast evidence for these amounts</summary><p>{sourcesCaption(t)}</p>
+      <p>Intensity: {INTENSITY_LEGEND.map(l => `${l.name} ${l.range}`).join(' · ')}.</p>
+      <p>Amounts are per interval and don't add up to the total.</p>
       {rec && <p className="today-total-note">The interval amounts are not the storm total. {rec.exact ? 'The intervals' : 'The intervals fully inside the storm window'} add up to {fmtAmount(rec.blocksIn)} from {rec.from} through {rec.to};
         the storm total above is {tenths(rec.totalIn)}" for the same hours.{rec.blocksIn < rec.totalIn - 0.05 ? ' The difference is real, not rounding: each interval shows a typical model run for those hours alone, and the runs disagree on timing, so the intervals come out drier than a typical run\'s whole storm. The total is the better guide to how much rain; the intervals show when.' : ''}</p>}</details>
   </section>;
@@ -190,10 +189,10 @@ function Hourly({ s }: { s: Scenario }) {
     const l = hourLabel(s, g.at), icon = isUnknown(s, g.at) ? 'unknown' : g.icon, span = g.end - g.at;
     if (i === 0 || l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${g.at}`}>{i === 0 ? 'Today' : l.day}</em>);
     const top = g.res > 1 ? g.label : l.text;
-    items.push(<div className={`hour${span > 1 ? ' hour-block' : ''}${l.day && i > 0 ? ' hour-midnight' : ''}`} role="listitem" key={g.at}
+    items.push(<div className={`hour hour-tile${span > 1 ? ' hour-3h' : ''}${l.day && i > 0 ? ' hour-midnight' : ''}`} role="listitem" key={g.at}
       data-from={g.at} data-to={g.end} data-res={g.res}
       aria-label={`${top}${g.res > 1 ? ` (${g.res}-hour interval${g.overlaps ? ', overlaps radar hours' : ''})` : ''}, ${deg(g.temp)}${g.amount ? `, rain ${g.amount}` : ''}`}>
-      <span>{top}</span>{g.res > 1 && <small className="hour-res">{g.res} h{g.overlaps ? ', overlaps radar' : ''}</small>}
+      <span>{top}</span><small className="hour-res" aria-hidden>{g.res > 1 ? `${g.res}h` : '\u00a0'}</small>
       <WeatherIcon name={icon} size={24} label /><strong>{deg(g.temp)}</strong>
       <em className={`amt amt-${g.amount ? 'rain' : 'dry'}`}>{g.amount}</em>
     </div>);
@@ -222,7 +221,6 @@ const dayAmount = (d: Scenario['days'][number]) => {
 };
 
 const pct = (L: number) => `${(L / 24) * 100}%`;
-const AXIS: [number, string][] = [[0, '12 AM'], [6, '6 AM'], [12, 'Noon'], [18, '6 PM'], [24, '12 AM']];
 
 /** One day's strip: local midnight to midnight on the shared axis (a continuous track; the axis above is the reference). Rain shows how hard it typically falls
  *  (light, moderate, heavy), not the gear rung; dry is one flat neutral; no forecast is hatched; today before now is empty. */
@@ -242,7 +240,6 @@ function Strip({ r }: { r: FiveDayRow }) {
 function FiveDays({ s, rows }: { s: Scenario; rows: FiveDayRow[] }) {
   const gap = rows.some(r => r.segs.some(g => g.kind === 'unknown')), wet = rows.some(r => r.segs.some(g => g.kind === 'rain')), note = stripCoverageNote(s);
   return <div className="five-days">
-    <div className="strip-axis" aria-hidden>{AXIS.map(([L, t]) => <span key={L} data-at={L} style={{ left: pct(L) }}>{t}</span>)}</div>
     <ol className="five-rows">{rows.map((r, k) => k === 0 && r.label === 'Today' ? null : <li className={`five-row${k === 1 ? ' five-row-next' : ''}`} key={r.label} id={`five-day-${k}`} tabIndex={-1}>
       <div className="five-top"><strong>{r.label}</strong><span className={`total total-${r.total.kind}`}>{r.total.text}</span></div>
       {r.total.kind === 'amount' && dayInStormTotal(s, k) && <p className="in-storm-total">{dayInStormTotal(s, k)}</p>}

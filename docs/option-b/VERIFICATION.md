@@ -56,3 +56,14 @@ Window midnight – 1 AM Thu (25 h). Expected width per hour: 4.000%.
 | Headline | eventHero | Heavy rain this morning | pass |
 | Going outside | Rain gear, 5 AM–1 PM today (actionWindow) | Rain gear · 5 AM–1 PM today | pass |
 | Flood guidance | state potential: Potential localized flooding (propertyFlood, unchanged) | Potential localized flooding · Rainwatch model signal · not an official warning · If you use flood barriers, check them now, ahead of the heaviest rain this morning. | pass |
+## Final refinement checks (PR #12, 2026-11-19)
+
+Enforced by `card/src/lib/option-b.test.ts` ("PR #12 final refinement"):
+
+- **Outlines stay distinct.** The selection is a 2px solid outline; the heaviest period is a 1px dashed outline. Exactly one of each is rendered.
+- **Timeline order.** Heading, chart, single-row legend, detail card, one heaviest-period note, the overlap note when present, then the evidence. The "not the total" line now sits inside the evidence.
+- **Overlap.** The explanation appears exactly once. The shortened 1–4 AM model segment is hatched, not selectable and hidden from screen readers; the note carries it for them.
+- **Flood risk.** It stays above Going outside when elevated, on both forecasts.
+- **Going outside.** "Rain gear · Wednesday 3–10 AM" (Tue) and "Rain gear · 5 AM–1 PM today" (Wed 12:51 AM). These are the existing action windows.
+- **Looking ahead.** Relative day labels are correct for the forecast's start day. The "Included in 2.7" storm total" label appears only where a day overlaps the total's window.
+- **Hourly tiles.** Unchanged source resolution: a 3-hour block is one tile marked "3h", and every tile has the same treatment.
