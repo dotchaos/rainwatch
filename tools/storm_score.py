@@ -35,7 +35,12 @@ def loc(t: datetime) -> str:
 
 def main():
     raw = json.loads((D / "obs_raw.json").read_text()).get("SFOC1")
-    truth, _ = verify.hourly(raw)
+    truth, meta = verify.hourly(raw)
+    # each verification hour holds ONE native gauge interval (SFOC1 reports at :43), filed whole under the clock hour
+    # that holds most of it (verify.hourly) -- not split proportionally. Keep the native span so every gauge figure
+    # below says which minutes it really covers.
+    span_of = {datetime.fromisoformat(k): (datetime.fromisoformat(v["from"]) if v.get("from") else None, datetime.fromisoformat(v["to"]))
+               for k, v in meta.items()}
     truth = {datetime.fromisoformat(k): v for k, v in truth.items()}
     last_obs = max(truth) + timedelta(hours=1) if truth else None
     street = [json.loads(x) for x in (D / "street" / "observations.jsonl").read_text().splitlines() if x.strip()] \
@@ -45,6 +50,13 @@ def main():
     out = {"scored_at": now.isoformat(), "gauge_observed_through": last_obs and last_obs.isoformat(), "snapshots": []}
     md = [f"# Storm scorecard, {now.astimezone(TZ):%a %b %-d %-I:%M %p} (preliminary unless every line says complete)\n",
           f"Gauge (SFOC1, verification alignment) observed through **{loc(last_obs) if last_obs else 'nothing yet'}**.\n"]
+
+    def native(hours):
+        sp = [span_of[h] for h in hours if h in span_of and span_of[h][0]]
+        if not sp:
+            return ""
+        a, b = min(x[0] for x in sp), max(x[1] for x in sp)
+        return f"{a.astimezone(TZ):%-I:%M}–{b.astimezone(TZ):%-I:%M %p}"
 
     def obs(hours):
         have = [truth[h] for h in hours if h in truth]
@@ -75,16 +87,29 @@ def main():
                "total": {"forecast_p10_p50_p90": [w["p10"], w["p50"], w["p90"]], "card_shows": c.get("rainTotals"),
                          "gauge": o, "coverage": mark(n, of), "inside_p10_p90": (w["p10"] <= o <= w["p90"]) if n == of else None}}
         blocks = []
-        for b in st["blocks"]:
-            hrs = [H(k) for k in range(b["startHour"], b["endHour"])]
+        for i, b in enumerate(st["blocks"]):
+            # the amount covers the block's WHOLE interval (a partial block keeps its whole-interval amount), so the
+            # gauge is summed over that whole interval too, never over the visible part only
+            ws, we = b.get("blockStartHour", b["startHour"]), b.get("blockEndHour", b["endHour"])
+            hrs = [H(k) for k in range(ws, we)]
             ob, nb, ofb = obs(hrs)
-            blocks.append({"block": b["label"], "res": b["res"], "forecast": b["in"], "p10": b.get("p10"), "p90": b.get("p90"),
-                           "gauge": ob, "coverage": mark(nb, ofb)})
+            # source: the engine's tag when present; older snapshots (before Nov 18 ~9:30 AM) predate it, where the
+            # leading hourly blocks are the radar nowcast (rainwatch/intervals.py)
+            lead = all(x["res"] == 1 for x in st["blocks"][:i + 1]) and b["startHour"] < 3
+            src = b.get("src") or ("radar (inferred)" if b["res"] == 1 and lead else "model")
+            blocks.append({"block": f"{loc(H(ws))}–{loc(H(we))}", "res": b["res"], "source": src, "forecast": b["in"],
+                           "p10": b.get("p10"), "p90": b.get("p90"), "partial": ws < b["startHour"],
+                           "gauge": ob, "gauge_native": native(hrs), "coverage": mark(nb, ofb)})
         rec["blocks"] = blocks
+        # consistency guard: a model row's amount is the median of the same runs whose p10-p90 is shown, so it must
+        # sit inside that range; anything else is a scoring bug, reported rather than hidden
+        bad = [b["block"] for b in blocks if b["source"] == "model" and b["p10"] is not None
+               and not (b["p10"] - 1e-6 <= b["forecast"] <= b["p90"] + 1e-6)]
+        rec["consistency"] = bad or "ok"
         seen = {h: truth[h] for h in win if h in truth}
         gpk = max(seen.items(), key=lambda x: x[1]) if seen else None
         fb = max(st["blocks"], key=lambda b: b["in"] / max(1, b["endHour"] - b["startHour"])) if st["blocks"] else None
-        rec["peak"] = {"gauge_wettest_hour": gpk and {"at": loc(gpk[0]), "in": gpk[1]},
+        rec["peak"] = {"gauge_wettest_hour": gpk and {"native": native([gpk[0]]), "in": gpk[1]},
                        "forecast_wettest_block": fb and {"block": fb["label"], "in": fb["in"]},
                        "hourly_systems": [{"system": x["system"], "in": x["in"], "at": loc(H(x["hour"]))}
                                           for x in (st.get("peak_check") or {}).get("systems", [])],
@@ -115,11 +140,20 @@ def main():
 
         md += [f"\n## Snapshot {datetime.fromisoformat(s['taken']).astimezone(TZ):%a %-I:%M %p}\n",
                f"**Total** {rec['window'][0]} – {rec['window'][1]}: forecast {w['p50']}\" (runs {w['p10']}–{w['p90']}\"), "
-               f"gauge {'not yet observed' if o is None else f'{o}\"'} — {rec['total']['coverage']}"
+               f"gauge {'not yet observed' if o is None else f'{o}\" so far' if n < of else f'{o}\"'} — {rec['total']['coverage']}"
+               + (" — **not yet comparable**: the forecast window runs past what the gauge has observed" if n < of else "")
                + ("" if n < of else f"; {'inside' if rec['total']['inside_p10_p90'] else 'OUTSIDE'} the 10–90% range"),
-               "\n| Block | Forecast (p10–p90) | Gauge | Coverage |\n|---|---|---|---|"]
-        md += [f"| {b['block']} | {b['forecast']:.2f}\" ({b['p10']}–{b['p90']}) | {'—' if b['gauge'] is None else f"{b['gauge']:.2f}\""} | {b['coverage']} |"
+               "\n_Forecast_ is the card's amount for the interval: radar extrapolation for radar rows, the median of the model "
+               "runs' own interval totals for model rows. _Model runs p10–p90_ is always the ensemble spread for the same hours, "
+               "so on radar rows it is a different estimate, not a range around the radar figure. _Gauge_ sums the native "
+               "SFOC1 intervals filed under these hours (each whole, by majority overlap; not split proportionally); "
+               "the minutes it really covers are shown.\n",
+               "\n| Interval | Source | Forecast | Model runs p10–p90 | Gauge (native minutes) | Coverage |\n|---|---|---|---|---|---|"]
+        md += [f"| {b['block']}{' *(whole interval; overlaps the radar rows)*' if b['partial'] else ''} | {b['source']} | {b['forecast']:.2f}\" | "
+               f"{b['p10']}–{b['p90']}\" | {'—' if b['gauge'] is None else f"{b['gauge']:.2f}\" ({b['gauge_native']})"} | {b['coverage']} |"
                for b in blocks if b["forecast"] >= 0.01 or (b["gauge"] or 0) >= 0.01]
+        if rec["consistency"] != "ok":
+            md.append(f"\n**SCORING CHECK FAILED**: model amounts outside their own run range in {rec['consistency']}")
         pk = rec["peak"]
         md += [f"\n**Peak**: gauge {pk['gauge_wettest_hour'] or 'none yet'}; forecast wettest block {pk['forecast_wettest_block']}; "
                f"hourly systems {pk['hourly_systems'] or 'none'}; card showed a rate: {pk['card_showed_rate'] or 'no'} — {pk['coverage']}",
