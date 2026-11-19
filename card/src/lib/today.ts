@@ -208,7 +208,8 @@ export function initialSelection(t: TodayTimeline): TodayBar | null {
 /** "1–4 AM Thursday" (today's intervals say "today"). */
 export function intervalName(s: Scenario, b: { start: number; end: number }) {
   const i = dayIndexAt(s, b.start);
-  return `${clockRange(s, b.start, b.end)} ${i === 0 ? 'today' : fullDay[dayName(s, b.start)]}`;
+  const r = clockRange(s, b.start, b.end);
+  return `${r[0].toUpperCase()}${r.slice(1)} ${i === 0 ? 'today' : fullDay[dayName(s, b.start)]}`;   // "Noon–3 PM today"
 }
 export function intervalDetail(s: Scenario, b: TodayBar) {
   const h = b.end - b.start;
@@ -219,6 +220,9 @@ export function intervalDetail(s: Scenario, b: TodayBar) {
 export function heaviestNote(s: Scenario, t: TodayTimeline): string | null {
   if (!t.heavy) return null;
   const n = t.bars.filter(b => b.start >= t.heavy!.start && b.end <= t.heavy!.end).length;
+  // the hero's own test for "heavy rain now" (the storm's heavy period, not the widened intervals), so the two never disagree
+  const st = floodStorm(s);
+  if ((st?.heavy && isNowAt(s, st.heavy.start)) || t.heavy.start <= t.now) return `Heaviest rain is underway, through about ${hourText(s, t.heavy.end)}${n > 1 ? ` (${n === 2 ? 'two' : n === 3 ? 'three' : n} intervals)` : ''}.`;
   const span = t.heavy.start <= t.now ? `now through about ${hourText(s, t.heavy.end)}` : `about ${clockRange(s, t.heavy.start, t.heavy.end)}${dayIndexAt(s, t.heavy.start) ? ` ${fullDay[dayName(s, t.heavy.start)]}` : ''}`;
   return `Heaviest rain expected ${span}${n > 1 ? ` (${n === 2 ? 'two' : n === 3 ? 'three' : n} intervals)` : ''}.`;
 }

@@ -56,3 +56,14 @@ describe('radar/model disagreement in plain words', () => {
     expect(nearDisagreement(s)).toBeNull();
   });
 });
+
+describe('heavy rain now: hero and timeline note agree', () => {
+  it('when the hero says the heaviest rain is underway, the timeline note says so too', async () => {
+    const { todayTimeline, heaviestNote } = await import('./today');
+    for (const k of [17, 18, 19, 20]) {
+      const s = shiftEarlier(stormWed(), k), e = eventHero(s)!;
+      if (!/Heaviest rain is underway/.test(e.sentence)) continue;
+      expect(heaviestNote(s, todayTimeline(s)!), String(k)).toMatch(/^Heaviest rain is underway, through about /);
+    }
+  });
+});

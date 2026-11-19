@@ -49,7 +49,9 @@ export function shiftEarlier(s: Scenario, by: number) {
   const mv = <T extends { startHour: number; endHour: number }>(xs?: T[]) =>
     xs?.map(x => ({ ...x, startHour: Math.max(0, x.startHour - by), endHour: x.endHour - by })).filter(x => x.endHour > 0);
   s.timeline!.intervals = mv(s.timeline!.intervals)!;
-  s.rainHours = mv(s.rainHours); s.rainTotals = mv(s.rainTotals);
+  s.rainHours = mv(s.rainHours);
+  s.rainTotals = mv(s.rainTotals)?.map(x => ({ ...x, ...(x.fromHour !== undefined ? { fromHour: Math.max(0, x.fromHour - by) } : {}),
+                                                 ...(x.toHour !== undefined ? { toHour: x.toHour - by } : {}) }));
   // rain blocks move too, keeping each amount's whole interval (a block cut at hour 0 keeps its earlier start)
   s.rainBlocks = s.rainBlocks?.filter(b => b.endHour - by > 0).map(b => {
     const ws = (b.blockStartHour ?? b.startHour) - by, we = (b.blockEndHour ?? b.endHour) - by, st = Math.max(0, b.startHour - by);
