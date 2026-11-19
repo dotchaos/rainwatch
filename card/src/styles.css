@@ -329,3 +329,11 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .nws-alerts li{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:16px;color:#16232b}
 .nws-alerts li span{color:#3f4d55;font-size:15px}
 .near-disagree{margin:-4px 0 0;font-size:15px;line-height:1.4;color:#3f4d55;border-left:3px solid #4d6e83;padding-left:10px}
+
+/* PR #11 review */
+.near-disagree strong{color:#16232b}
+.in-storm-total.coverage{text-align:left;color:#3f4d55}
+.now-mark{position:absolute;top:-8px;bottom:-8px;border-left:2px solid #16232b;z-index:6;pointer-events:none}
+.now-mark b{position:absolute;top:-17px;left:-12px;font-size:12px;font-weight:700;color:#16232b;background:#fff;padding:0 2px}
+.sw-now{width:2px;height:14px;background:#16232b;display:inline-block;margin:0 4px}
+.today-legend{flex-wrap:wrap}

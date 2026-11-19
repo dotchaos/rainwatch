@@ -50,10 +50,14 @@ export function shiftEarlier(s: Scenario, by: number) {
     xs?.map(x => ({ ...x, startHour: Math.max(0, x.startHour - by), endHour: x.endHour - by })).filter(x => x.endHour > 0);
   s.timeline!.intervals = mv(s.timeline!.intervals)!;
   s.rainHours = mv(s.rainHours);
+  // the hourly icons and temperatures move with the rain (they were left in place before Nov 19, which made the shifted
+  // lab cases show sunny icons under heavy rain: a fixture inconsistency the validator reported)
+  const hrs = s.hourly.map((h, i) => ({ ...h, hour: h.hour ?? i }));
+  s.hourly = hrs.map((h, i) => ({ ...h, ...(hrs[i + by] && i < 72 - by ? { icon: hrs[i + by].icon, temperatureF: hrs[i + by].temperatureF } : { icon: 'unknown' as const }) }));
   s.rainTotals = mv(s.rainTotals)?.map(x => ({ ...x, ...(x.fromHour !== undefined ? { fromHour: Math.max(0, x.fromHour - by) } : {}),
                                                  ...(x.toHour !== undefined ? { toHour: x.toHour - by } : {}) }));
   // rain blocks move too, keeping each amount's whole interval (a block cut at hour 0 keeps its earlier start)
-  s.rainBlocks = s.rainBlocks?.filter(b => b.endHour - by > 0).map(b => {
+  s.rainBlocks = s.rainBlocks?.filter(b => b.endHour - by > 0 && b.endHour - by <= 72 - by).map(b => {
     const ws = (b.blockStartHour ?? b.startHour) - by, we = (b.blockEndHour ?? b.endHour) - by, st = Math.max(0, b.startHour - by);
     return { ...b, startHour: st, endHour: b.endHour - by, ...(st > ws ? { partial: true, blockStartHour: ws, blockEndHour: we } : {}) };
   });

@@ -6,7 +6,7 @@ import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { barAmount, clockRange, dayClock, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, initialSelection, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, initialSelection, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -119,6 +119,7 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
             : <span key={b.start} className={cls} data-from={b.start} data-to={b.end} data-res={b.res} data-in={b.in} style={style} aria-hidden />;
         })}
         {t.now > t.from && <span className="today-past" style={{ width: w(t.from, t.now) }} />}
+        {t.now > t.from && <i className="now-mark" style={{ left: x(t.now) }} />}
         {t.sources.slice(1).filter((q, i) => q.src !== t.sources[i].src).map(q => <i key={q.start} className="src-split" style={{ left: x(q.start) }} />)}
         {t.heavy && <span className="today-heavy" data-from={t.heavy.start} data-to={t.heavy.end} style={{ left: x(t.heavy.start), width: w(t.heavy.start, t.heavy.end) }} />}
       </div>
@@ -126,7 +127,7 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
     </div>
     <div className="today-legend" aria-label="Intensity">{INTENSITY_LEGEND.filter(l => lvls.has(l.level)).map(l =>
       <span key={l.level} title={l.range}><i className={`sw i${l.level}`} />{l.name}</span>)}
-      {t.heavy && <span className="legend-outline"><i className="sw-heavy" />Heaviest</span>}{over && <span className={t.heavy ? '' : 'legend-outline'}><i className="sw-over" />Overlap</span>}</div>
+      {t.heavy && <span className="legend-outline"><i className="sw-heavy" />Heaviest</span>}{over && <span className={t.heavy ? '' : 'legend-outline'}><i className="sw-over" />Overlap</span>}{t.now > t.from && <span><i className="sw-now" />Now</span>}</div>
     {det && <div className="interval-card" aria-live="polite">
       <strong>{det.title}</strong><span>{det.amount}</span><span>{det.source} · <b>{det.intensity}</b></span></div>}
     {note && <p className="heaviest-note">{note}</p>}
@@ -154,7 +155,7 @@ function OfficialAlerts({ s }: { s: Scenario }) {
 /** The engine's next-hours radar/model comparison in plain words, only when it matters for a near-term decision. */
 function NearDisagreement({ s }: { s: Scenario }) {
   const t = nearDisagreement(s);
-  return t ? <p className="near-disagree" role="note">{t}</p> : null;
+  return t ? <p className="near-disagree" role="note"><strong>Radar and models differ.</strong> {t}</p> : null;
 }
 
 const OUTSIDE_ICON = { 0: Shirt, 1: Umbrella, 2: Footprints, heat: Sun } as const;
@@ -261,6 +262,7 @@ function FiveDays({ s, rows }: { s: Scenario; rows: FiveDayRow[] }) {
     <ol className="five-rows">{rows.map((r, k) => k === 0 && r.label === 'Today' ? null : <li className={`five-row${k === 1 ? ' five-row-next' : ''}`} key={r.label} id={`five-day-${k}`} tabIndex={-1}>
       <div className="five-top"><strong>{r.label}</strong><span className={`total total-${r.total.kind}`}>{r.total.text}</span></div>
       {r.total.kind === 'amount' && dayInStormTotal(s, k) && <p className="in-storm-total">{dayInStormTotal(s, k)}</p>}
+      {r.total.kind === 'incomplete' && dayCoverage(s, k) && <p className="in-storm-total coverage">{dayCoverage(s, k)}</p>}
       <div className="five-sub"><span className="five-desc">{r.description}</span><span className="five-temps">{deg(r.highF)} / {deg(r.lowF)}</span></div>
       <Strip r={r} />
     </li>)}</ol>

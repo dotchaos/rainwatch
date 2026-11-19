@@ -61,7 +61,7 @@ const EVENT_CASES:[string,string,()=>Scenario][]=[
  ['storm-night','Wednesday storm, live forecast Wed 12:51 AM',stormWedNight],
  ['storm-cut','Storm running past the forecast: data stops Thu 3 AM',()=>stormCut(40)],
  ['storm-peak','Display check only: the same storm IF two independent hourly systems agreed (hypothetical .40–.45")',()=>{const s=stormWed();s.peakRate={lo:0.4,hi:0.45,hour:21,systems:['ICON ensemble','HRRR']};return s;}],
- ['storm-now','Display check: Wednesday storm with heavy rain now, plus a hypothetical Wind Advisory and radar-only disagreement (illustrative)',()=>{const s=shiftEarlier(stormWed(),19);s.current={...s.current,condition:'Heavy rain',icon:'heavy-rain'};s.evidence={...s.evidence!,alerts:[{event:'Wind Advisory',startHour:0,endHour:8,flood:false}],nearDisagree:{kind:'radar_only',hours:2,radarIn:0.18,modelsIn:0}};return s;}],
+ ['storm-now','Display check: Wednesday storm with heavy rain now, plus a hypothetical Wind Advisory and radar-only disagreement (illustrative)',()=>{const s=shiftEarlier(stormWed(),19);s.current={...s.current,condition:'Heavy rain',icon:'heavy-rain'};s.days=[{...s.days[0],icon:s.days[1].icon,description:s.days[1].description},...s.days.slice(1)];s.evidence={...s.evidence!,alerts:[{event:'Wind Advisory',startHour:0,endHour:8,flood:false}],nearDisagree:{kind:'radar_only',hours:2,radarIn:0.18,modelsIn:0}};return s;}],
  ['storm-official','Extreme storm fixture (Flood Watch; no amounts in this fixture)',()=>structuredClone(scenarios.find(x=>x.id==='storm')!) as Scenario],
  ['heat','Heatwave fixture',()=>structuredClone(scenarios.find(x=>x.id==='heat')!) as Scenario],
  ['rain','Ordinary intermittent rain (rain fixture)',()=>structuredClone(scenarios.find(x=>x.id==='rain')!) as Scenario],

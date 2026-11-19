@@ -293,9 +293,22 @@ export function nearDisagreement(s: Scenario): string | null {
   const d = s.evidence?.nearDisagree;
   if (!d) return null;
   const h = `the next ${d.hours} hour${d.hours === 1 ? '' : 's'}`;
-  if (d.kind === 'radar_only') return `Radar shows rain arriving in ${h} that the models don't expect. Radar sees rain that is already on its way, so plan for it.`;
-  if (d.kind === 'models_only') return `Models expect rain in ${h}, but radar doesn't show any on the way yet. It may form nearby, or hold off.`;
+  if (d.kind === 'radar_only') return `Radar shows rain moving toward you in ${h}; the models don't have it.`;
+  if (d.kind === 'models_only') return `The models expect rain in ${h}; radar shows none on the way yet.`;
   const hi = Math.max(d.radarIn ?? 0, d.modelsIn ?? 0);
   if (hi < DISAGREE_SHOW_IN) return null;
-  return `Radar and models agree rain is coming in ${h} but not on how much. The amounts for these hours are less certain than usual.`;
+  return `Both show rain in ${h}, but not how much; amounts for these hours are less certain.`;
+}
+
+/** Looking ahead, a day the forecast only partly covers: name the hours with no data, so "Incomplete" is never read as dry. */
+export function dayCoverage(s: Scenario, dayIndex: number): string | null {
+  const start = dayIndex === 0 ? 0 : 24 - s.startHourLocal + (dayIndex - 1) * 24, end = dayIndex === 0 ? 24 - s.startHourLocal : start + 24;
+  const gaps: [number, number][] = [];
+  for (let h = start; h < end; h++) if (isUnknown(s, h)) {
+    const g = gaps[gaps.length - 1];
+    if (g && g[1] === h) g[1] = h + 1; else gaps.push([h, h + 1]);
+  }
+  if (!gaps.length) return null;
+  if (gaps.length === 1 && gaps[0][0] === start && gaps[0][1] === end) return 'No forecast data for this day yet';
+  return `No forecast data ${gaps.map(([a, b]) => clockRange(s, a, b)).join(' or ')}`;
 }
