@@ -186,3 +186,6 @@ Forecast calculations, thresholds and the default selection are unchanged.
   keeps the existing wordings: "Only a slight chance of showers", or "… through …" for incomplete coverage.
 - Possible showers never change amounts, gear, hazards, flood levels or the default selection. No trace (below 0.01")
   threshold.
+## "Next rain" heading (2026-11-19, approved)
+- The rainfall timeline section heading reads "Next rain" (was "Rainfall timeline"). The section's content, selection
+  and accessibility wiring (`aria-labelledby="timeline-h"`) are unchanged.

@@ -106,7 +106,7 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
     requestAnimationFrame(() => plot.current?.querySelector<HTMLElement>(`[role="radio"][data-from="${eligible[j].start}"]`)?.focus()); } };
   const note = heaviestNote(s, t);
   return <section className="today-rain" aria-labelledby="timeline-h">
-    <h2 className="section-title" id="timeline-h">Rainfall timeline</h2>
+    <h2 className="section-title" id="timeline-h">Next rain</h2>
     {lead && <p className="today-dry">{lead}</p>}
     <div className="today-chart">
       {/* plain annotations, not tabs: the radar label starts over the radar hours, the models label ends at the
