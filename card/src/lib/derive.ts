@@ -218,12 +218,12 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
         : (plan.sure ? '' : 'about ') + joinAnd(plan.events.map(e => openEnd(s, e.end) ? (isNowAt(s, e.start) ? 'now' : `from ${clock(s, e.start)}`)
           : isNowAt(s, e.start) ? `until ${clock(s, e.end)}` : span(s, e.start, e.end)));
       const head = `${isNowAt(s, first.start) ? 'Now' : cap(relDay(s, first.start))}: ${jacket}, ${times}`;
-      if (plan.kind === 'separate') notes.push('Dry in between.');
-      if (!isNowAt(s, first.start) && knownBefore(s, first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+      if (plan.kind === 'separate' && plan.events.slice(1).every((e, i) => dryRange(s, plan.events[i].end, e.start))) notes.push('Dry in between.');
+      if (!isNowAt(s, first.start) && knownBefore(s, first.start) && dryRange(s, nowAt(s), first.start)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
       else if (more >= 72) notes.push('Dry after that.');
       const later = laterRain(s, last.end);
       if (later) notes.push(later);                      // the next rain matters more than the next dry spell
-      else if (more < 72) { const dry = nextDry(s, last.end); if (dry) notes.push(`Then dry ${dry}.`); }
+      else if (more < 72 && !dryCut(s, last.end)) { const dry = nextDry(s, last.end); if (dry) notes.push(`Then dry ${dry}.`); }
       if (!plan.sure) notes.push(MAY_SHIFT);
       const cov = coverageNote(s); if (cov) notes.push(cov);
       return { headline: head, detail: notes.join(' ') };
@@ -233,12 +233,14 @@ export function deriveInsight(s: Scenario): { headline: string; detail: string }
     const notes: string[] = [];
     { const amt = amountNote(s, aw.eventStart, aw.eventEnd); if (amt) notes.push(amt); }
     const more = dryUntil(s, aw.eventEnd);
-    if (!isNowAt(s, aw.eventStart) && knownBefore(s, aw.eventStart)) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
+    const dryBefore = !isNowAt(s, aw.eventStart) && knownBefore(s, aw.eventStart) && dryRange(s, nowAt(s), aw.eventStart);
+    if (dryBefore) notes.push(more >= 72 ? 'Dry before and after.' : 'Dry until then.');
     if (aw.rung > 1 && (aw.eventStart < aw.startHour || aw.eventEnd > aw.endHour))
       notes.push(`${levelLabels(s)[1]} ${when(s, aw.eventStart, aw.eventEnd, aw.sure)}.`);
     const later = laterRain(s, aw.eventEnd);
-    const dry = more >= 72 || later ? null : nextDry(s, aw.eventEnd);
-    if (more >= 72 && isNowAt(s, aw.eventStart)) notes.push('Dry after that.');
+    const dry = more >= 72 || later || dryCut(s, aw.eventEnd) ? null : nextDry(s, aw.eventEnd);
+    // after-only sentence: when the rain is now, or (v0.28) when the hours before it are not all dry
+    if (more >= 72 && !dryBefore && (isNowAt(s, aw.eventStart) || knownBefore(s, aw.eventStart))) notes.push('Dry after that.');
     else if (later) notes.push(later);
     else if (dry) notes.push(`Then dry ${dry}.`);
     if (!aw.sure) notes.push(MAY_SHIFT);
@@ -271,9 +273,19 @@ export function edgeNote(s: Scenario): string | null {
 }
 
 /** First hour at or after `from` that is rain or has no forecast (72 if dry and known to the end). */
+/** The engine classifies hour h dry (rainSignals, v0.27). Cards without rainSignals keep the earlier wording. */
+const sigDry = (s: Scenario, h: number) => !s.rainSignals || s.rainSignals.hours[h]?.state === 'dry';
+/** Every hour in [a, b) is dry by the engine's states: the only basis for a categorical dry sentence (v0.28). */
+const dryRange = (s: Scenario, a: number, b: number) => { for (let h = a; h < b; h++) if (!sigDry(s, h)) return false; return true; };
 function dryUntil(s: Scenario, from: number) {
-  let h = from; while (h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h)) h++;
+  let h = from; while (h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h) && sigDry(s, h)) h++;
   return h;
+}
+/** The dry stretch was cut short only by hours the engine calls possible or unknown (no rain worth gear follows):
+ *  omit the dry sentence rather than substitute a shorter "Then dry …" (v0.28). */
+function dryCut(s: Scenario, from: number) {
+  let h = from; while (h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h)) h++;
+  return h >= 72 && dryUntil(s, from) < 72;
 }
 const knownBefore = (s: Scenario, h: number) => { for (let k = 0; k < h; k++) if (isUnknown(s, k)) return false; return true; };
 /** "Forecast only covers through Tue 11 PM." (the last hour with data) when the chart is not fully covered. */
@@ -292,13 +304,13 @@ function partialDry(s: Scenario) {
 function nextDry(s: Scenario, from: number): string | null {
   let a = -1;
   for (let h = from; h <= 72; h++) {
-    const ok = h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h) && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END
+    const ok = h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h) && sigDry(s, h) && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END
       && (a < 0 || dayIndexAt(s, h) === dayIndexAt(s, a));
     if (ok && a < 0) a = h;
     if (!ok && a >= 0) {
       // name the day unless the dry stretch is on the same day as the last rain hour (rain ending at midnight ends the day before)
       if (h - a >= DRY_MIN_H) return (dayIndexAt(s, a) === dayIndexAt(s, Math.max(0, from - 1)) ? '' : `${relDay(s, a)} `) + span(s, a, h);
-      a = (h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h) && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END) ? h : -1;
+      a = (h < 72 && sevAt(s, h) === 0 && !isUnknown(s, h) && sigDry(s, h) && localHour(s, h) >= DAY_START && localHour(s, h) < DAY_END) ? h : -1;
     }
   }
   return null;

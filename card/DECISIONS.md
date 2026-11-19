@@ -186,3 +186,14 @@ Forecast calculations, thresholds and the default selection are unchanged.
   keeps the existing wordings: "Only a slight chance of showers", or "… through …" for incomplete coverage.
 - Possible showers never change amounts, gear, hazards, flood levels or the default selection. No trace (below 0.01")
   threshold.
+## Rain-hazard dry wording follows the engine states (2026-11-19, approved)
+- A categorical dry sentence in the rain-hazard detail appears only when every hour of the period it names is `dry` in
+  `rainSignals`:
+  - "Dry after that." and the after half of "Dry before and after.": every hour to the end of the 72 hours;
+  - "Dry until then." and the before half: now until the rain;
+  - "Then dry …": the named stretch;
+  - "Dry in between.": the gaps between events.
+- Possible or unknown hours remove the sentence. Nothing replaces it: when the only thing cutting a dry stretch short is
+  possible or unknown hours, no shorter "Then dry …" is substituted.
+- The headline, gear, timing, amounts, probabilities, hazards and selection are unchanged. Cards without rainSignals
+  keep the earlier wording.
