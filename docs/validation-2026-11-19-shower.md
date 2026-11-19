@@ -1,5 +1,7 @@
 # Field observation: light shower, Thu Nov 19 2026 about 11:30 AM
 
+**Status: addressed** by PR #21 (near-term shower uncertainty, deployed Nov 19, 1:33 PM update). With the 11:28 AM forecast, the card now reads "Showers possible 11 AM–1 PM, then dry until 1 AM Fri" (`tests/test_near_term.py`, `card/src/lib/near-term.test.ts`). The observation (`street/observations.jsonl`) and the radar replay (`tools/shower_nov19.py`, `shower_nov19.md` on the data branch) are kept for future forecast validation.
+
 Evaluated separately from the Nov 18 storm. Nov 18 tests rainfall concentration and flooding. This tests detection of a
 short-lived shower and how the card communicates the next hour.
 
