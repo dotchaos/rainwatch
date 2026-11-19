@@ -169,3 +169,20 @@ Forecast calculations, thresholds and the default selection are unchanged.
   to 48) instead of ending where the data ends. Fully covered forecasts keep their 48-hour ending on a complete
   interval.
 - Row height is fixed (46px) across dry, rain and missing intervals.
+## Near-term shower uncertainty (2026-11-19, approved direction, PR #20)
+- The engine classifies each hour as measurable, possible, dry or unknown (`rainSignals`, additive). Radar and the
+  ensemble are each judged on their own with the existing thresholds and are never combined:
+  - measurable: the primary source is wet (P(≥0.01") ≥ 0.5), the same test that sets gear;
+  - dry: every available signal has P ≤ 0.2 and a median under 0.01";
+  - possible: otherwise, or radar shows rain over the point now (engine `observed_now`, 15 dBZ, frame ≤ 20 min old);
+  - unknown: no radar or ensemble covers the hour. A missing source is never read as zero; NWS PoP and single model
+    runs are evidence only.
+- The rainfall timeline lead reads the states only:
+  - "Showers possible A–B[, then dry until T]" when the current or next hour is possible;
+  - "Dry until T" from the engine's dryUntilHour;
+  - neither when measurable rain starts within 6 hours, so storm guidance is unchanged.
+  - Ranges are whole classified hours.
+- The hazard-none headline says "Dry for the next 3 days" only when all 72 hours are covered and dry. Otherwise it
+  keeps the existing wordings: "Only a slight chance of showers", or "… through …" for incomplete coverage.
+- Possible showers never change amounts, gear, hazards, flood levels or the default selection. No trace (below 0.01")
+  threshold.

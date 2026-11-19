@@ -50,7 +50,8 @@ def _truncated(cut: int, dry: bool = False):
         if i >= cut:
             r = {"t": r["t"], "label": r["label"], "missing": True}
         elif dry:
-            r = {**r, "p_any": 0.0, "p_heavy": 0.0, "mid": 0.0, "levels": {}}
+            r = {**r, "p_any": 0.0, "p_heavy": 0.0, "mid": 0.0, "levels": {},
+                 "sig": {k: {"p": 0.0, "mid": 0.0} for k in r.get("sig", {})}}   # dry in every signal (v0.27)
         rows.append(r)
     # the five-day strip's extra hours are cut the same way (the data stops once, for everything)
     strip = [{"t": r["t"], "label": r["label"], "missing": True} for r in rep["strip_rows"]]
