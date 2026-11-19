@@ -59,7 +59,10 @@ Where an image and this document disagree, this document wins.
   - Dry and trace keep their current treatment.
   - Colour is never derived from the amount.
 - **Text = amount.** The amount sits on or above each bar wide enough to hold it (≥ 3 h at 390 px; current rule). A bar too narrow gets no number. Its amount is still in the detail card, the accessible label and the hourly tiles.
-- **Legend on the card:** four swatches with thresholds.
+- **Legend on the card:** the card's intensity tiers with thresholds. **Amended 2026-11-19 (verified):** the card's
+  scale has three tiers, not four: Light under 0.10"/h, Moderate 0.10–0.20"/h, Heavy 0.20"/h and up (engine
+  `shading.intensity`, `heavy_in` 0.20"). The 0.50"/h "very heavy" figure appears only in the evidence page's method notes and is
+  not a card category. The legend shows the three existing tiers. No new tier is added in this work.
 
 ### Radar/model overlap (preserve the production fix, PR #6/#7)
 - Radar hours display separately: in the "Radar, hour by hour: …" line and as their own narrow bars.
@@ -140,7 +143,12 @@ Where an image and this document disagree, this document wins.
    - the live Nov 18 9:41 AM card, added as a fixture (radar 9–11 AM overlapping the 10 AM–1 PM model block).
 
    No overlapping or clipped labels at 390 px.
-7. Card and engine test suites pass. Engine JSON goldens are unchanged (no forecast logic change).
+7. **Expected rainfall vs a concentrated burst (added 2026-11-19, after the Nov 18 scorecard).**
+   - The interface must not imply that the per-interval amounts are the most rain a burst can bring.
+   - Nov 18: 10 AM–1 PM was forecast at 0.45–0.54"; the gauge recorded 1.22" (0.93" in 9:43–10:43 AM).
+   - The approved timeline shows *expected* amounts. Its copy must not describe them as a ceiling, and no single model's extreme value becomes the primary figure.
+   - Communicating the possibility of a much more intense localized burst is a **separate, later forecasting and communication feature**. It does not reopen this design. This gate only requires that nothing in Option B contradicts that later feature or invents precision in its place.
+8. Card and engine test suites pass. Engine JSON goldens are unchanged (no forecast logic change).
 
 ## Existing code to reuse
 - `card/src/lib/today.ts`:
