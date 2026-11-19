@@ -197,3 +197,6 @@ Forecast calculations, thresholds and the default selection are unchanged.
   possible or unknown hours, no shorter "Then dry …" is substituted.
 - The headline, gear, timing, amounts, probabilities, hazards and selection are unchanged. Cards without rainSignals
   keep the earlier wording.
+## "Next rain" heading (2026-11-19, approved)
+- The rainfall timeline section heading reads "Next rain" (was "Rainfall timeline"). The section's content, selection
+  and accessibility wiring (`aria-labelledby="timeline-h"`) are unchanged.
