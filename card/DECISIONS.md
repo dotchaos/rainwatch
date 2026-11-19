@@ -146,3 +146,12 @@ Forecast calculations, thresholds and the default selection are unchanged.
   - This supersedes the Option B hourly tiles (one tile per model block).
 - Screenshot fixture: the archived published card from Thu Nov 19, 7:57 AM (tools/archive_live.py; sha256 in
   the data branch's archive_live.md).
+## Default selection only for a rain event (2026-11-19, under review)
+- An interval is selected automatically only when the engine classifies a rain event: hazard 'rain' or 'flood'
+  (some hour in the 72-hour outlook reaches "Umbrella or jacket"). The card adds no rainfall threshold of its own.
+- With hazard 'none' ("Dry…" / "Only a slight chance of showers") nothing is selected and no detail card shows.
+  The timeline and every eligible interval stay interactive, and details show normally once the reader chooses.
+- When a rain event exists, the default priority is unchanged (heaviest intensity, then the largest amount, among
+  eligible intervals). The shortened overlap interval is never selectable.
+- Keyboard: with nothing selected, Tab reaches the first eligible interval. Arrow keys move both the selection and
+  the focus.
