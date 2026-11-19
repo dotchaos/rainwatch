@@ -169,8 +169,32 @@ def main():
     md += ["\n# 3. Local outcome: did flooding occur, where, when, how much?\n",
            "Street observations as reported, never gauge data and never merged into it. These are what validate (or not) "
            "the driveway threshold; the answers to 1, 2 and 3 can differ.\n"]
-    md += [f"- {x['observed_at']}{' (approx.)' if x.get('approx') else ''} · {x['location']} · {x.get('level', 'unknown')} · "
-           f"{x['what']} — {x.get('reporter', '')}" for x in street] or ["- none recorded yet"]
+    def when(x):
+        a = datetime.fromisoformat(x["observed_at"]).astimezone(TZ)
+        b = x.get("observed_until") and datetime.fromisoformat(x["observed_until"]).astimezone(TZ)
+        return f"{a:%a %b %-d} {a:%-I:%M}{f'–{b:%-I:%M %p}' if b else f' {a:%p}'}{' (approx.)' if x.get('approx') else ''}"
+    md += ["**Firsthand street observations** (confirmed; timing approximate; depth visually estimated, not measured):\n"]
+    md += [f"- {when(x)} · **{x['location']}** · level: {x.get('level', 'unknown')}"
+           + (f" · depth: {x['depth']}" if x.get("depth") else "") + f" · {x['what']} — {x.get('reporter', '')}"
+           for x in street] or ["- none recorded yet"]
+    ctx = D / "street" / "context.md"
+    if ctx.exists():
+        md += ["\n**Historical drainage context** (not observations of this storm; never scored):\n",
+               *[l for l in ctx.read_text().splitlines() if l.startswith("- ") or l.startswith("  ")]]
+    # Instrumental evidence, separate: the gauge in its own reporting windows (SFOC1 reports cumulative totals at :43),
+    # never re-assigned to clock hours here, and set beside the observations by overlap only.
+    rd = sorted((datetime.fromisoformat(k), v) for k, v in (raw.get("readings") or {}).items())
+    win = [(a, b, round(vb - va, 2)) for (a, va), (b, vb) in zip(rd, rd[1:]) if vb - va > 0.004]
+    md += ["\n**Instrumental evidence, separate** (Mint gauge SFOC1, in its native reporting windows; not merged with the "
+           "street observations):\n"]
+    for x in street:
+        a = datetime.fromisoformat(x["observed_at"]); b = datetime.fromisoformat(x.get("observed_until") or x["observed_at"])
+        hit = [w for w in win if w[0] < b and a < w[1]] or [w for w in win if w[0] <= a <= w[1]]
+        for s0, s1, v in hit:
+            md.append(f"- {s0.astimezone(TZ):%-I:%M}–{s1.astimezone(TZ):%-I:%M %p}: **{v:.2f}\"**, overlapping the "
+                      f"{x['location']} observation")
+    out["local_outcome"] = {"street": street, "gauge_native_windows": [
+        {"from": a.isoformat(), "to": b.isoformat(), "in": v} for a, b, v in win]}
     Path("storm_score.json").write_text(json.dumps(out, indent=1, default=str))
     print("\n".join(md))
 
