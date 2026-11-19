@@ -38,3 +38,5 @@ for h, row in zip(rs["hours"], rows):
     f = lambda k: (lambda v: f"{v['pMeasurable']:.2f}/{v['medianIn']}" if v else "—")(h["signals"].get(k))  # noqa: E731
     print(f"| {h['hour']} | {row.get('label','')} | {h['state']} | {', '.join(h['reasons']) or '—'} | {h['primary']} | "
           f"{f('radar')} | {f('ensemble')} | {old} |")
+Path("near_term_preview.json").write_text(json.dumps(live))
+print("\nStates (h0→71):", "".join({"dry": ".", "possible": "p", "measurable": "M", "unknown": "?"}[h["state"]] for h in rs["hours"]))
