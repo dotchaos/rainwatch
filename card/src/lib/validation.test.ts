@@ -59,3 +59,23 @@ describe('P1-5: Going outside disclosure', () => {
     expect(sec).toContain('class="todo-body"');
   });
 });
+
+describe('Street flood risk and coastal advisories (design decision, Nov 19)', () => {
+  it('heading is "Street flood risk"; the coastal note appears only with an active coastal product', async () => {
+    const { createElement } = await import('react');
+    const { renderToString } = await import('react-dom/server');
+    const { WeatherCard } = await import('../components/WeatherCard');
+    const base = stormWed();
+    const quiet = { ...base, evidence: { ...base.evidence!, potential: [], pFlood: base.evidence!.pFlood!.map(() => 0) } } as Scenario;
+    const html = (s: Scenario) => renderToString(createElement(WeatherCard, { scenario: s }));
+    const withCoastal = (s: Scenario, ev = 'Coastal Flood Advisory') => ({ ...s, evidence: { ...s.evidence!, alerts: [{ event: ev, startHour: 0, endHour: 29, flood: false }] } } as Scenario);
+    expect(html(base)).toContain('id="flood-h">Street flood risk</h2>');
+    expect(html(base)).not.toContain('Coastal flood advisories cover a different hazard.');
+    expect(html(withCoastal(base))).toContain('Coastal flood advisories cover a different hazard.');
+    expect(html(withCoastal(base, 'Coastal Flood Warning'))).toContain('Coastal flood advisories cover a different hazard.');
+    expect(html(withCoastal(base, 'High Surf Advisory'))).not.toContain('Coastal flood advisories cover a different hazard.');
+    // the alert line itself is untouched: the advisory is still listed as issued
+    expect(html(withCoastal(base))).toContain('<strong>Coastal Flood Advisory</strong>');
+    void quiet;
+  });
+});

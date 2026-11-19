@@ -6,7 +6,7 @@ import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { absHour, firstVisibleTile, hourlyDayHeading, resolveSelection, barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { coastalFloodActive, absHour, firstVisibleTile, hourlyDayHeading, resolveSelection, barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -180,15 +180,17 @@ function GoingOutside({ s, potential, graph }: { s: Scenario; potential?: Potent
 function FloodRisk({ s }: { s: Scenario }) {
   const f = propertyFlood(s);
   if (!f) return null;
+  const coastal = coastalFloodActive(s) ? <p className="coastal-note">Coastal flood advisories cover a different hazard.</p> : null;
   if (f.state === 'none') return <section className="todo todo-flood quiet" aria-labelledby="flood-h">
-    <h2 className="section-title" id="flood-h">Flood risk</h2>
+    <h2 className="section-title" id="flood-h">Street flood risk</h2>
     <div className="todo-row"><Waves size={20} aria-hidden /><span className="todo-text"><strong>{f.label}</strong><span>The forecast does not reach the rain rates watched for street flooding here.</span></span></div>
+    {coastal}
   </section>;
   // a model signal reads as information (neutral panel, accent rule, droplets); only an official product or a validated
   // local level gets the shield and the warning panel
   const Icon = f.state === 'potential' ? Droplets : ShieldAlert;
   return <section className={`todo todo-flood fstate-${f.state}`} aria-labelledby="flood-h">
-    <h2 className="section-title" id="flood-h">Flood risk</h2>
+    <h2 className="section-title" id="flood-h">Street flood risk</h2>
     <div className="flood-panel">
       <div className="flood-label"><Icon size={20} aria-hidden /><strong>{f.label}</strong></div>
       {f.source && <p className="flood-source">{f.source}</p>}
@@ -197,6 +199,7 @@ function FloodRisk({ s }: { s: Scenario }) {
       {f.evidence.length > 0 && <details className="event-evidence"><summary>Why Rainwatch is flagging this</summary>
         <dl>{f.evidence.map(x => <div key={x.label}><dt>{x.label}</dt><dd>{x.value}</dd></div>)}</dl></details>}
     </div>
+    {coastal}
   </section>;
 }
 
