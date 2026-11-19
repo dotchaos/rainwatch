@@ -24,3 +24,26 @@ def test_disagreement_is_the_report_comparison_restated():
         assert bool(n["agree"])                          # the text flag and the structured kind say the same thing
     else:
         assert d is None
+
+
+
+def test_alert_without_end_time_is_kept_until_further_notice():
+    """Validation handoff P2-6: an NWS alert with no ends/expires used to be dropped from the card."""
+    from datetime import datetime, timezone
+    from rainwatch import card
+    t0 = datetime(2026, 11, 19, 14, tzinfo=timezone.utc)
+    rep = {"alerts": [{"event": "Wind Advisory", "onset": t0.isoformat()},
+                      {"event": "Coastal Flood Advisory", "onset": t0.isoformat(), "ends": "2026-11-20T12:00:00+00:00"},
+                      {"event": "Flood Watch", "onset": t0.isoformat(), "expires": "2026-11-19T20:30:00+00:00"}]}
+    assert card.alert_spans(rep, t0) == [
+        {"event": "Wind Advisory", "startHour": 0, "endHour": card.HORIZON, "flood": False},
+        {"event": "Coastal Flood Advisory", "startHour": 0, "endHour": 22, "flood": False},   # coastal: not a rain flood product
+        {"event": "Flood Watch", "startHour": 0, "endHour": 7, "flood": True}]
+
+
+def test_official_flood_product_without_end_is_not_dropped():
+    from datetime import datetime, timezone
+    from rainwatch import card
+    t0 = datetime(2026, 11, 19, 14, tzinfo=timezone.utc)
+    spans = card.alert_spans({"alerts": [{"event": "Flood Advisory", "onset": t0.isoformat()}]}, t0)
+    assert [a for a in spans if a["flood"]] == [{"event": "Flood Advisory", "startHour": 0, "endHour": card.HORIZON, "flood": True}]

@@ -411,35 +411,15 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
                     n += bool(lv and lv["driveway"] >= FLOOD_FLOOR)
                 sysn.append(n)
             ev["floodSystems"], ev["systems"] = sysn, len(parts)
-    t0, off = hours[0], []
-    for a in report.get("alerts") or []:
-        if a.get("event") not in FLOOD_PRODUCTS:
-            continue
-        try:
-            s = datetime.fromisoformat(a.get("onset") or t0.isoformat())
-            e = datetime.fromisoformat(a.get("ends") or a.get("expires"))
-        except (TypeError, ValueError):
-            continue
-        sh = max(0, int((s - t0).total_seconds() // 3600))
-        eh = min(HORIZON, int(-(-(e - t0).total_seconds() // 3600)))
-        if eh > sh:
-            off.append({"event": a["event"], "startHour": sh, "endHour": eh})
+    t0 = hours[0]
+    # official flood products: the same spans as the alert line (one parser), so a flood product with no end time is
+    # kept until further notice instead of being dropped (Nov 19 fix)
+    off = [{"event": a["event"], "startHour": a["startHour"], "endHour": a["endHour"]} for a in alert_spans(report, t0) if a["flood"]]
     if off:
         ev["official"] = off
     # every active NWS alert (not only flood products), as hour offsets, for a separate "official alerts" line.
     # Passed through as issued; Rainwatch's own signals stay in their own fields.
-    al = []
-    for a in report.get("alerts") or []:
-        try:
-            s = datetime.fromisoformat(a.get("onset") or t0.isoformat())
-            e = datetime.fromisoformat(a.get("ends") or a.get("expires"))
-        except (TypeError, ValueError):
-            continue
-        sh = max(0, int((s - t0).total_seconds() // 3600))
-        eh = min(HORIZON, int(-(-(e - t0).total_seconds() // 3600)))
-        if eh > sh and a.get("event"):
-            al.append({"event": a["event"], "startHour": sh, "endHour": eh, "flood": a["event"] in FLOOD_PRODUCTS,
-                       **({"severity": a["severity"]} if a.get("severity") else {})})
+    al = alert_spans(report, t0)
     if al:
         ev["alerts"] = al
     n = report.get("near") or {}
@@ -448,6 +428,26 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
                               "radarIn": n.get("agree_radar_in"), "modelsIn": n.get("agree_models_in")}
     return ev
 
+
+
+def alert_spans(report: dict, t0: datetime) -> list[dict]:
+    """Every active NWS alert as hour offsets from t0, for the card's official-alerts line (passed through as issued).
+    An alert with no end or expiry time is in force until further notice and runs to the horizon (Nov 19 fix: these
+    were dropped before, which could suppress an active official alert)."""
+    al = []
+    for a in report.get("alerts") or []:
+        try:
+            s = datetime.fromisoformat(a.get("onset") or t0.isoformat())
+            end = a.get("ends") or a.get("expires")
+            e = datetime.fromisoformat(end) if end else None
+        except (TypeError, ValueError):
+            continue
+        sh = max(0, int((s - t0).total_seconds() // 3600))
+        eh = HORIZON if e is None else min(HORIZON, int(-(-(e - t0).total_seconds() // 3600)))
+        if eh > sh and a.get("event"):
+            al.append({"event": a["event"], "startHour": sh, "endHour": eh, "flood": a["event"] in FLOOD_PRODUCTS,
+                       **({"severity": a["severity"]} if a.get("severity") else {})})
+    return al
 
 def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,
           used: list[str] | None = None, total_of=None, parts=None, det=None, radar=None) -> dict:

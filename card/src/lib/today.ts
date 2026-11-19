@@ -312,3 +312,32 @@ export function dayCoverage(s: Scenario, dayIndex: number): string | null {
   if (gaps.length === 1 && gaps[0][0] === start && gaps[0][1] === end) return 'No forecast data for this day yet';
   return `No forecast data ${gaps.map(([a, b]) => clockRange(s, a, b)).join(' or ')}`;
 }
+
+/* ---------- Validation fixes (Nov 19) ---------- */
+/** An interval's absolute identity: hours since the epoch at its start, in forecast-local wall time. Hour offsets are
+ *  relative to each forecast's own start, so a selection kept as an offset points at a different time after the
+ *  5-minute refresh; keeping it as this key does not. Fixtures without a startDate fall back to the offset. */
+export function absHour(s: Scenario, h: number): number {
+  if (!s.startDate) return h;
+  const [y, m, d] = s.startDate.split('-').map(Number);
+  return Date.UTC(y, m - 1, d) / 3.6e6 + s.startHourLocal + h;
+}
+/** The selected interval for this forecast: the one the reader chose if it still exists and is selectable, else the
+ *  approved default (heaviest eligible). */
+export function resolveSelection(s: Scenario, t: TodayTimeline, chosen: number | null): TodayBar | null {
+  const el = eligibleBars(t);
+  return (chosen !== null && el.find(b => absHour(s, b.start) === chosen)) || initialSelection(t);
+}
+/** Hourly heading for the interval at hour h, in the forecast location's calendar (never the device's). */
+export function hourlyDayHeading(s: Scenario, h: number): string {
+  // calendar arithmetic from the forecast-local start (dayIndexAt only covers the five rows, and gave -1 past them)
+  const i = Math.floor((s.startHourLocal + h) / 24);
+  return i <= 0 ? 'Today' : i === 1 ? 'Tomorrow' : fullDay[DAY3[(DAY3.indexOf(s.startDay) + i) % 7]];
+}
+/** The first tile at least half visible in a horizontally scrolled row (offsets relative to the row's content). */
+export function firstVisibleTile(tiles: { left: number; width: number }[], scrollLeft: number): number {
+  const i = tiles.findIndex(r => r.left + r.width - scrollLeft >= r.width / 2);
+  return i < 0 ? Math.max(0, tiles.length - 1) : i;
+}
+
+const DAY3 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
