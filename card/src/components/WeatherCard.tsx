@@ -6,7 +6,7 @@ import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { barAmount, clockRange, dayClock, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, initialSelection, INTENSITY_LEGEND, intervalDetail, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, initialSelection, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -119,10 +119,12 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
             : <span key={b.start} className={cls} data-from={b.start} data-to={b.end} data-res={b.res} data-in={b.in} style={style} aria-hidden />;
         })}
         {t.now > t.from && <span className="today-past" style={{ width: w(t.from, t.now) }} />}
+        {t.now > t.from && <i className="now-mark" style={{ left: x(t.now) }} />}
         {t.sources.slice(1).filter((q, i) => q.src !== t.sources[i].src).map(q => <i key={q.start} className="src-split" style={{ left: x(q.start) }} />)}
         {t.heavy && <span className="today-heavy" data-from={t.heavy.start} data-to={t.heavy.end} style={{ left: x(t.heavy.start), width: w(t.heavy.start, t.heavy.end) }} />}
       </div>
-      <div className="today-axis" aria-hidden>{t.ticks.map((k, i) => <span key={k.at} className={i === 0 ? 'first' : ''} style={{ left: x(k.at) }}>{k.text}{k.day && <b>{k.day}</b>}</span>)}</div>
+      <div className="today-axis" aria-hidden>{t.ticks.filter(k => !(t.now > t.from && Math.abs(k.at - t.now) < 3)).map(k => <span key={k.at} className={k.at === t.from ? 'first' : ''} style={{ left: x(k.at) }}>{k.text}{k.day && <b>{k.day}</b>}</span>)}
+        {t.now > t.from && <span className="now-label" style={{ left: x(t.now) }}>Now</span>}</div>
     </div>
     <div className="today-legend" aria-label="Intensity">{INTENSITY_LEGEND.filter(l => lvls.has(l.level)).map(l =>
       <span key={l.level} title={l.range}><i className={`sw i${l.level}`} />{l.name}</span>)}
@@ -137,6 +139,24 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
       {rec && <p className="today-total-note">The interval amounts are not the storm total. {rec.exact ? 'The intervals' : 'The intervals fully inside the storm window'} add up to {fmtAmount(rec.blocksIn)} from {rec.from} through {rec.to};
         the storm total above is {tenths(rec.totalIn)}" for the same hours.{rec.blocksIn < rec.totalIn - 0.05 ? ' The difference is real, not rounding: each interval shows a typical model run for those hours alone, and the runs disagree on timing, so the intervals come out drier than a typical run\'s whole storm. The total is the better guide to how much rain; the intervals show when.' : ''}</p>}</details>
   </section>;
+}
+
+
+/** Official alerts from the National Weather Service, apart from Rainwatch's own signals: a neutral panel that names
+ *  the issuer first. Flood products are in Flood risk instead (official state), so they are not repeated here. */
+function OfficialAlerts({ s }: { s: Scenario }) {
+  const al = officialAlerts(s);
+  if (!al.length) return null;
+  return <section className="nws-alerts" aria-label="National Weather Service alerts">
+    <p className="nws-issuer">National Weather Service</p>
+    <ul>{al.map(a => <li key={a.event + a.when}><strong>{a.event}</strong><span>{a.when}</span></li>)}</ul>
+  </section>;
+}
+
+/** The engine's next-hours radar/model comparison in plain words, only when it matters for a near-term decision. */
+function NearDisagreement({ s }: { s: Scenario }) {
+  const t = nearDisagreement(s);
+  return t ? <p className="near-disagree" role="note"><strong>Radar and models differ.</strong> {t}</p> : null;
 }
 
 const OUTSIDE_ICON = { 0: Shirt, 1: Umbrella, 2: Footprints, heat: Sun } as const;
@@ -243,6 +263,7 @@ function FiveDays({ s, rows }: { s: Scenario; rows: FiveDayRow[] }) {
     <ol className="five-rows">{rows.map((r, k) => k === 0 && r.label === 'Today' ? null : <li className={`five-row${k === 1 ? ' five-row-next' : ''}`} key={r.label} id={`five-day-${k}`} tabIndex={-1}>
       <div className="five-top"><strong>{r.label}</strong><span className={`total total-${r.total.kind}`}>{r.total.text}</span></div>
       {r.total.kind === 'amount' && dayInStormTotal(s, k) && <p className="in-storm-total">{dayInStormTotal(s, k)}</p>}
+      {r.total.kind === 'incomplete' && dayCoverage(s, k) && <p className="in-storm-total coverage">{dayCoverage(s, k)}</p>}
       <div className="five-sub"><span className="five-desc">{r.description}</span><span className="five-temps">{deg(r.highF)} / {deg(r.lowF)}</span></div>
       <Strip r={r} />
     </li>)}</ol>
@@ -271,7 +292,9 @@ export function WeatherCard({ scenario: s, detailsHref, potential, graph, select
   const today = todayTimeline(s), flood = propertyFlood(s), urgent = flood && flood.state !== 'none';
   return <article className="weather-card">
     <Header s={s} />
+    <OfficialAlerts s={s} />
     <NowAndNext s={s} />
+    <NearDisagreement s={s} />
     {urgent && <FloodRisk s={s} />}
     <GoingOutside s={s} potential={potential} graph={graph} />
     {today && <RainfallTimeline s={s} t={today} initial={selected} />}

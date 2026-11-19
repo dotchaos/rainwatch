@@ -322,3 +322,23 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 .hour.hour-tile .amt{min-height:18px;margin-top:0}
 .today-legend .legend-outline{border-left:1px solid #c9d3d9;padding-left:10px;margin-left:2px}
 .hour .hour-res{white-space:nowrap;font-size:12px;letter-spacing:-.01em}
+/* Nov 19: official NWS alerts (issuer named, neutral; not Rainwatch's amber) and the radar/model line */
+.nws-alerts{border:1.5px solid #5c6b74;border-radius:12px;padding:10px 14px;background:#fff}
+.nws-issuer{margin:0 0 4px;font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#3f4d55}
+.nws-alerts ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.nws-alerts li{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:16px;color:#16232b}
+.nws-alerts li span{color:#3f4d55;font-size:15px}
+.near-disagree{margin:-4px 0 0;font-size:15px;line-height:1.4;color:#3f4d55;border-left:3px solid #4d6e83;padding-left:10px}
+
+/* PR #11 review */
+.near-disagree strong{color:#16232b}
+.in-storm-total.coverage{text-align:left;color:#3f4d55}
+.now-mark{position:absolute;top:-8px;bottom:-8px;border-left:2px solid #16232b;z-index:6;pointer-events:none}
+.now-mark b{position:absolute;top:-17px;left:-12px;font-size:12px;font-weight:700;color:#16232b;background:#fff;padding:0 2px}
+.sw-now{width:2px;height:14px;background:#16232b;display:inline-block;margin:0 4px}
+.today-legend{flex-wrap:wrap}
+.now-mark{border-left:3px solid #16232b;top:-10px;bottom:-10px}
+.today-axis .now-label{font-weight:700;color:#16232b;transform:translateX(-50%)}
+.now-mark{top:-3px;bottom:-10px}
+/* the five-day strips have their own .now-mark (12px tick); the timeline's is a full-height line */
+.today-plot .now-mark{height:auto;width:0;background:none;margin-left:-1.5px;top:-3px;bottom:-8px;border-left:3px solid #16232b;z-index:6}

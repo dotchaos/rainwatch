@@ -208,7 +208,8 @@ export function initialSelection(t: TodayTimeline): TodayBar | null {
 /** "1–4 AM Thursday" (today's intervals say "today"). */
 export function intervalName(s: Scenario, b: { start: number; end: number }) {
   const i = dayIndexAt(s, b.start);
-  return `${clockRange(s, b.start, b.end)} ${i === 0 ? 'today' : fullDay[dayName(s, b.start)]}`;
+  const r = clockRange(s, b.start, b.end);
+  return `${r[0].toUpperCase()}${r.slice(1)} ${i === 0 ? 'today' : fullDay[dayName(s, b.start)]}`;   // "Noon–3 PM today"
 }
 export function intervalDetail(s: Scenario, b: TodayBar) {
   const h = b.end - b.start;
@@ -219,6 +220,9 @@ export function intervalDetail(s: Scenario, b: TodayBar) {
 export function heaviestNote(s: Scenario, t: TodayTimeline): string | null {
   if (!t.heavy) return null;
   const n = t.bars.filter(b => b.start >= t.heavy!.start && b.end <= t.heavy!.end).length;
+  // the hero's own test for "heavy rain now" (the storm's heavy period, not the widened intervals), so the two never disagree
+  const st = floodStorm(s);
+  if ((st?.heavy && isNowAt(s, st.heavy.start)) || t.heavy.start <= t.now) return `Heaviest rain is underway, through about ${hourText(s, t.heavy.end)}${n > 1 ? ` (${n === 2 ? 'two' : n === 3 ? 'three' : n} intervals)` : ''}.`;
   const span = t.heavy.start <= t.now ? `now through about ${hourText(s, t.heavy.end)}` : `about ${clockRange(s, t.heavy.start, t.heavy.end)}${dayIndexAt(s, t.heavy.start) ? ` ${fullDay[dayName(s, t.heavy.start)]}` : ''}`;
   return `Heaviest rain expected ${span}${n > 1 ? ` (${n === 2 ? 'two' : n === 3 ? 'three' : n} intervals)` : ''}.`;
 }
@@ -265,4 +269,46 @@ export function hourTiles(s: Scenario): HourTile[] {
 export function dayClock(s: Scenario, h: number) {
   const L = localHour(s, h), c = `${L % 12 === 0 ? 12 : L % 12} ${L < 12 ? 'AM' : 'PM'}`;
   return `${dayName(s, h)} ${c}`;
+}
+
+/* ---------- Official NWS alerts (Nov 19): issued by the National Weather Service, shown apart from Rainwatch's signals ---------- */
+export interface OfficialAlert { event: string; when: string; now: boolean }
+/** Non-flood alerts in force or coming within the card's range. Flood products appear in Flood risk (official state),
+ *  so they are not repeated here. Wording is the alert's own event name; timing from its own start/end hours. */
+export function officialAlerts(s: Scenario): OfficialAlert[] {
+  return (s.evidence?.alerts ?? []).filter(a => !a.flood).map(a => {
+    const now = a.startHour <= nowAt(s) + 0.5;
+    const end = openEndHour(s, a.endHour) ? 'until further notice' : `until ${hourText(s, a.endHour)}`;
+    return { event: a.event, now, when: now ? `In effect ${end}` : `From ${hourText(s, a.startHour)} ${end}` };
+  });
+}
+const openEndHour = (s: Scenario, h: number) => h >= 72 || isUnknown(s, h);
+
+/* ---------- Radar vs models, next hours (Nov 19): the engine's existing comparison, in plain language ---------- */
+/** A disagreement is worth a line when it changes a near-term decision: one source says rain and the other says dry,
+ *  or both say rain but the larger amount reaches the Moderate tier for the period (0.10"), where gear changes.
+ *  The comparison itself (0.02" wet test, 3x rule) is the engine's; this only decides whether to say it. */
+export const DISAGREE_SHOW_IN = 0.10;
+export function nearDisagreement(s: Scenario): string | null {
+  const d = s.evidence?.nearDisagree;
+  if (!d) return null;
+  const h = `the next ${d.hours} hour${d.hours === 1 ? '' : 's'}`;
+  if (d.kind === 'radar_only') return `Radar shows rain moving toward you in ${h}; the models don't have it.`;
+  if (d.kind === 'models_only') return `The models expect rain in ${h}; radar shows none on the way yet.`;
+  const hi = Math.max(d.radarIn ?? 0, d.modelsIn ?? 0);
+  if (hi < DISAGREE_SHOW_IN) return null;
+  return `Both show rain in ${h}, but not how much; amounts for these hours are less certain.`;
+}
+
+/** Looking ahead, a day the forecast only partly covers: name the hours with no data, so "Incomplete" is never read as dry. */
+export function dayCoverage(s: Scenario, dayIndex: number): string | null {
+  const start = dayIndex === 0 ? 0 : 24 - s.startHourLocal + (dayIndex - 1) * 24, end = dayIndex === 0 ? 24 - s.startHourLocal : start + 24;
+  const gaps: [number, number][] = [];
+  for (let h = start; h < end; h++) if (isUnknown(s, h)) {
+    const g = gaps[gaps.length - 1];
+    if (g && g[1] === h) g[1] = h + 1; else gaps.push([h, h + 1]);
+  }
+  if (!gaps.length) return null;
+  if (gaps.length === 1 && gaps[0][0] === start && gaps[0][1] === end) return 'No forecast data for this day yet';
+  return `No forecast data ${gaps.map(([a, b]) => clockRange(s, a, b)).join(' or ')}`;
 }
