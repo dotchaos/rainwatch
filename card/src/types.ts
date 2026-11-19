@@ -46,7 +46,7 @@ export interface Evidence {
   /** Official NWS flood products in force (Flood Watch, Flash Flood Warning …), as hour offsets, end exclusive. */
   official?: { event: string; startHour: number; endHour: number }[];
   /** Every active NWS alert (flood and non-flood), as issued; shown apart from Rainwatch's own signals (Nov 19). */
-  alerts?: { event: string; startHour: number; endHour: number; flood: boolean; severity?: string }[];
+  alerts?: { event: string; startHour: number; endHour: number; flood: boolean; severity?: string; open?: boolean; url?: string }[];
   /** Radar vs models over the next hours, when they disagree (the engine's existing 0.02"/3x comparison). */
   nearDisagree?: { kind: 'radar_only' | 'models_only' | 'amount'; hours: number; radarIn: number | null; modelsIn: number | null };
 }

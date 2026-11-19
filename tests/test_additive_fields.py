@@ -36,7 +36,7 @@ def test_alert_without_end_time_is_kept_until_further_notice():
                       {"event": "Coastal Flood Advisory", "onset": t0.isoformat(), "ends": "2026-11-20T12:00:00+00:00"},
                       {"event": "Flood Watch", "onset": t0.isoformat(), "expires": "2026-11-19T20:30:00+00:00"}]}
     assert card.alert_spans(rep, t0) == [
-        {"event": "Wind Advisory", "startHour": 0, "endHour": card.HORIZON, "flood": False},
+        {"event": "Wind Advisory", "startHour": 0, "endHour": card.HORIZON, "flood": False, "open": True},
         {"event": "Coastal Flood Advisory", "startHour": 0, "endHour": 22, "flood": False},   # coastal: not a rain flood product
         {"event": "Flood Watch", "startHour": 0, "endHour": 7, "flood": True}]
 
@@ -46,4 +46,14 @@ def test_official_flood_product_without_end_is_not_dropped():
     from rainwatch import card
     t0 = datetime(2026, 11, 19, 14, tzinfo=timezone.utc)
     spans = card.alert_spans({"alerts": [{"event": "Flood Advisory", "onset": t0.isoformat()}]}, t0)
-    assert [a for a in spans if a["flood"]] == [{"event": "Flood Advisory", "startHour": 0, "endHour": card.HORIZON, "flood": True}]
+    assert [a for a in spans if a["flood"]] == [{"event": "Flood Advisory", "startHour": 0, "endHour": card.HORIZON, "flood": True, "open": True}]
+
+
+def test_alert_url_is_passed_through_only_when_it_is_an_nws_alert_address():
+    from datetime import datetime, timezone
+    from rainwatch import card
+    t0 = datetime(2026, 11, 19, 14, tzinfo=timezone.utc)
+    ok = "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.abc.001.1"
+    spans = card.alert_spans({"alerts": [{"event": "High Surf Advisory", "onset": t0.isoformat(), "url": ok},
+                                         {"event": "Wind Advisory", "onset": t0.isoformat(), "url": "https://example.com/x"}]}, t0)
+    assert spans[0]["url"] == ok and "url" not in spans[1]

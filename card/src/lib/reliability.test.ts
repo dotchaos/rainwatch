@@ -33,10 +33,10 @@ describe('official NWS alerts, apart from Rainwatch signals', () => {
   const s = withEv(stormWed(), { alerts: [{ event: 'Wind Advisory', startHour: 0, endHour: 9, flood: false },
                                           { event: 'Flood Watch', startHour: 12, endHour: 30, flood: true }] });
   it('lists non-flood alerts with the issuer named; flood products stay in Flood risk', () => {
-    expect(officialAlerts(s)).toEqual([{ event: 'Wind Advisory', now: true, when: 'In effect until 8 PM' }]);
+    expect(officialAlerts(s)).toEqual([{ event: 'Wind Advisory', kind: 'advisory', now: true, when: 'Until 8 PM' }]);
     const h = html(s);
-    expect(h).toContain('aria-label="National Weather Service alerts"');
-    expect(h.indexOf('National Weather Service alerts')).toBeLessThan(h.indexOf('id="today-h"'));
+    expect(h).toContain('<summary aria-label="National Weather Service: 1 weather advisory: Wind">');
+    expect(h.indexOf('nws-alerts')).toBeLessThan(h.indexOf('id="today-h"'));
     expect(h.slice(h.indexOf('nws-alerts'), h.indexOf('id="today-h"'))).not.toContain('Flood Watch');
   });
   it('no panel without alerts', () => { expect(html(stormWed())).not.toContain('nws-alerts'); });
@@ -71,11 +71,10 @@ describe('heavy rain now: hero and timeline note agree', () => {
 describe('heavy-rain-now display case is internally consistent', () => {
   it('shifted storm: no validator errors; hourly icons at the heavy hours show rain', async () => {
     const { validateScenario } = await import('./rules');
-    const { hourTiles } = await import('./today');
+    const { hourlyGrid } = await import('./today');
     const s = shiftEarlier(stormWed(), 19);
     s.days = [{ ...s.days[0], icon: s.days[1].icon, description: s.days[1].description }, ...s.days.slice(1)];
     expect(validateScenario(s)).toEqual([]);
-    const tile = hourTiles(s).find(g => g.at <= 1 && 1 < g.end)!;
-    expect(tile.icon).toMatch(/rain/);
+    expect(hourlyGrid(s).cells[1].icon).toMatch(/rain/);
   });
 });

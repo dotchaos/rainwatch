@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
-import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, Umbrella, Shirt, Waves, Droplets } from 'lucide-react';
+import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, ChevronDown, Umbrella, Shirt, Waves, Droplets, TriangleAlert, Info } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
-import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourAmounts, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
+import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
 import { WeatherIcon } from './WeatherIcon';
 import { Timeline, type GraphStyle, type PotentialStyle } from './Timeline';
-import { coastalFloodActive, absHour, firstVisibleTile, hourlyDayHeading, resolveSelection, barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, hourTiles, stormTotalWindow, heaviestNote, hourText, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
+import { hourlyGrid, type RainBand, alertSummary, coastalFloodActive, absHour, firstVisibleTile, hourlyDayHeading, resolveSelection, barAmount, clockRange, dayClock, dayCoverage, dayInStormTotal, eligibleBars, stormTotalWindow, heaviestNote, hourText, INTENSITY_LEGEND, intervalDetail, nearDisagreement, officialAlerts, goingOutside, propertyFlood, sourcesCaption, todayTimeline, type TodayTimeline as TodayT } from '../lib/today';
 
 /**
  * The integrated card (v0.12). One composition for every scenario:
@@ -106,8 +106,11 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
     <h2 className="section-title" id="timeline-h">Rainfall timeline</h2>
     {t.dryUntil !== null && <p className="today-dry">Dry until {hourText(s, t.dryUntil)}</p>}
     <div className="today-chart">
-      <div className="today-bands" aria-hidden>{bands.map(q => <span key={q.start} className={`band band-${q.src}`} style={{ left: x(q.start), width: w(q.start, q.end) }}>
-        {q.src === 'radar' ? 'Radar' : q.src === 'nws' ? 'NWS 6-hour totals' : 'Model forecast · 3-hour intervals'}</span>)}</div>
+      {/* plain annotations, not tabs: the radar label starts over the radar hours, the models label ends at the
+          chart's right edge over the model intervals, so neither is squeezed into a narrow region */}
+      <div className="today-srclabels" aria-hidden>{bands.map(q => q.src === 'radar'
+        ? <span key={q.start} className="srcl srcl-radar" style={{ left: x(q.start) }}>Radar · hourly</span>
+        : <span key={q.start} className="srcl srcl-model">{q.src === 'nws' ? 'NWS · 6-hour intervals' : 'Models · 3-hour intervals'}</span>)}</div>
       <div className="today-amts" aria-hidden>{t.bars.filter(label).map(b =>
         <span key={b.start} style={{ left: x((b.start + b.end) / 2) }}>{barAmount(b)}</span>)}</div>
       <div className="today-plot" role="radiogroup" aria-label="Rain by forecast interval"
@@ -132,8 +135,9 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
     <div className="today-legend" aria-label="Intensity">{INTENSITY_LEGEND.filter(l => lvls.has(l.level)).map(l =>
       <span key={l.level} title={l.range}><i className={`sw i${l.level}`} />{l.name}</span>)}
       {t.heavy && <span className="legend-outline"><i className="sw-heavy" />Heaviest</span>}{over && <span className={t.heavy ? '' : 'legend-outline'}><i className="sw-over" />Overlap</span>}</div>
-    {det && <div className="interval-card" aria-live="polite">
-      <strong>{det.title}</strong><span>{det.amount}</span><span>{det.source} · <b>{det.intensity}</b></span></div>}
+    {det && sel && <div className="interval-card" aria-live="polite">
+      <div className="ic-top"><strong>{det.title}</strong><span>{det.intensity} · {sel.src === 'radar' ? 'Radar' : sel.src === 'nws' ? 'NWS' : 'Models'}</span></div>
+      <div className="ic-amt"><b>{barAmount(sel)}</b><span>over {sel.end - sel.start === 1 ? '1 hour' : `${sel.end - sel.start} hours`}</span></div></div>}
     {note && <p className="heaviest-note">{note}</p>}
     {over && <p className="today-overlap" id="overlap-note">The {barAmount(over)} model amount is for {clockRange(s, over.coversFrom!, over.end)}, overlapping the radar hours. It is a separate estimate, not added to them.</p>}
     <details className="today-about"><summary>Forecast evidence for these amounts</summary><p>{sourcesCaption(t)}</p>
@@ -148,12 +152,20 @@ function RainfallTimeline({ s, t, initial }: { s: Scenario; t: TodayT; initial?:
 /** Official alerts from the National Weather Service, apart from Rainwatch's own signals: a neutral panel that names
  *  the issuer first. Flood products are in Flood risk instead (official state), so they are not repeated here. */
 function OfficialAlerts({ s }: { s: Scenario }) {
-  const al = officialAlerts(s);
-  if (!al.length) return null;
-  return <section className="nws-alerts" aria-label="National Weather Service alerts">
-    <p className="nws-issuer">National Weather Service</p>
-    <ul>{al.map(a => <li key={a.event + a.when}><strong>{a.event}</strong><span>{a.when}</span></li>)}</ul>
-  </section>;
+  const al = officialAlerts(s), sum = alertSummary(al);
+  if (!sum) return null;
+  // warnings (and watches) keep a stronger treatment, and a warning starts open: it is never folded into a quiet summary
+  const strong = sum.top === 'warning' || sum.top === 'watch', Icon = strong ? TriangleAlert : Info;
+  return <details className={`nws-alerts nws-${sum.top}`} open={sum.top === 'warning' || undefined}>
+    <summary aria-label={`National Weather Service: ${sum.label}: ${sum.names}`}>
+      <Icon size={20} aria-hidden /><span className="nws-sum"><strong>{sum.label}</strong><span>{sum.names}</span></span>
+      <ChevronDown className="nws-chev" size={18} aria-hidden /></summary>
+    <div className="nws-body">
+      <p className="nws-issuer">National Weather Service</p>
+      <ul>{al.map((a, i) => <li key={i}><strong>{a.event}</strong><span>{a.when}</span>
+        {a.url && <a href={a.url} target="_blank" rel="noopener noreferrer">Official alert</a>}</li>)}</ul>
+    </div>
+  </details>;
 }
 
 /** The engine's next-hours radar/model comparison in plain words, only when it matters for a near-term decision. */
@@ -210,13 +222,13 @@ function FloodRisk({ s }: { s: Scenario }) {
 
 /** The hourly row with a day heading that follows the scroll: the calendar day (forecast-local) of the first tile at
  *  least half visible. Updated on scroll (touch and programmatic), on resize, and when the forecast changes. */
-function HourlyRow({ s, children }: { s: Scenario; children: React.ReactNode }) {
+function HourlyRow({ s, children, grid = false }: { s: Scenario; children: React.ReactNode; grid?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [day, setDay] = useState(() => hourlyDayHeading(s, 0));
   useEffect(() => {
     const el = ref.current; if (!el) return;
     const update = () => {
-      const tiles = [...el.querySelectorAll<HTMLElement>('[data-from]')];
+      const tiles = [...el.querySelectorAll<HTMLElement>('.hcell[data-from], .hour[data-from]')];
       const i = firstVisibleTile(tiles.map(n => ({ left: n.offsetLeft - el.offsetLeft, width: n.offsetWidth })), el.scrollLeft);
       const at = tiles[i] ? Number(tiles[i].dataset.from) : 0;
       setDay(hourlyDayHeading(s, at));
@@ -229,41 +241,50 @@ function HourlyRow({ s, children }: { s: Scenario; children: React.ReactNode }) 
   }, [s]);
   return <>
     <p className="hourly-day" aria-live="polite">{day}</p>
-    <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast" ref={ref}>{children}</div></div>
+    <div className="hours-fade"><div className="hours-scroll" role={grid ? undefined : 'list'} aria-label={grid ? undefined : 'Hourly forecast'} ref={ref}>{children}</div></div>
   </>;
 }
 
 function Hourly({ s }: { s: Scenario }) {
-  // Option B: tiles at source resolution. Radar / hourly blocks one per hour; a model 3-hour block is ONE tile with the
-  // temperature at its start and the block amount once (never split into hourly values).
-  const items: React.ReactNode[] = [], amts = hourAmounts(s), tiles = s.rainBlocks ? hourTiles(s) : null;
-  if (tiles) tiles.forEach((g, i) => {
-    const l = hourLabel(s, g.at), icon = isUnknown(s, g.at) ? 'unknown' : g.icon, span = g.end - g.at;
-    if (i > 0 && l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${g.at}`}>{l.day}</em>);
-    const top = g.res > 1 ? g.label : l.text;
-    items.push(<div className={`hour hour-tile${span > 1 ? ' hour-3h' : ''}${l.day && i > 0 ? ' hour-midnight' : ''}`} role="listitem" key={g.at}
-      data-from={g.at} data-to={g.end} data-res={g.res}
-      aria-label={`${top}${g.res > 1 ? ` (${g.res}-hour interval${g.overlaps ? ', overlaps radar hours' : ''})` : ''}, ${deg(g.temp)}${g.amount ? `, rain ${g.amount}` : ''}`}>
-      <span>{top}</span><small className="hour-res" aria-hidden>{g.res > 1 ? `${g.overlaps ? 'Model · ' : ''}${g.res}h` : '\u00a0'}</small>
-      <WeatherIcon name={icon} size={24} label /><strong>{deg(g.temp)}</strong>
-      <em className={`amt amt-${g.amount ? 'rain' : 'dry'}`}>{g.amount}</em>
-    </div>);
-  });
-  else s.hourly.forEach((h, i) => {
+  if (s.rainBlocks) return <HourlyGrid s={s} />;
+  const items: React.ReactNode[] = [];
+  s.hourly.forEach((h, i) => {
     const at = h.hour ?? i, l = hourLabel(s, at), icon = isUnknown(s, at) ? 'unknown' : h.icon;
     if (i === 0 || l.day) items.push(<em className="hour-pin" aria-hidden key={`pin-${at}`}>{i === 0 ? 'Today' : l.day}</em>);
     items.push(<div className={`hour${l.day && i > 0 ? ' hour-midnight' : ''}`} role="listitem" key={at} aria-label={`${l.day ? `${l.day} ` : ''}${l.text}`}>
       <span>{l.text}</span><WeatherIcon name={icon} size={24} label /><strong>{deg(h.temperatureF)}</strong></div>);
   });
-  const rec = amountsVsTotal(s);
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
-    {tiles ? <HourlyRow s={s}>{items}</HourlyRow> : <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div>}
-    {amts && <details className="amounts-about"><summary>Rain amounts: typical model run, per hour or per bracketed 3-hour block</summary>
-      <p>Most of the models behind this forecast give rain in 3-hour amounts, so it is shown that way; an hourly amount appears only where every model is genuinely hourly (or radar).
-        Each amount is the median of the model runs for that interval on its own. "Trace" is under 0.01", "—" means no forecast for that hour.</p>
-      {rec && <p>{rec.exact ? 'These amounts' : 'The amounts fully inside that window'} add up to {fmtAmount(rec.blocksIn)} from {rec.from} through {rec.to}; the storm total above is {tenths(rec.totalIn)}" for the same hours.
-        {rec.blocksIn < rec.totalIn - 0.05 ? ' The difference is real, not rounding: the runs disagree on timing, so each interval\'s typical run is drier than a typical run\'s whole storm. The total is the better guide to how much rain; the intervals show when.' : ''}</p>}
-    </details>}</section>;
+    <div className="hours-fade"><div className="hours-scroll" role="list" aria-label="Hourly forecast">{items}</div></div></section>;
+}
+
+/** Hourly forecast on a continuous hourly scale (presentation refinement, Nov 19): equal-width hour cells with each
+ *  hour's own condition and temperature; underneath, one rain band per actual source interval, so a 3-hour model total
+ *  visibly belongs to its whole period (one amount, "3h total", faint hour guides) and is never repeated per hour. */
+function HourlyGrid({ s }: { s: Scenario }) {
+  const g = hourlyGrid(s), W = 'var(--hcell)';
+  const at = (h: number) => `calc(${h} * ${W})`;
+  const bandLabel = (b: RainBand) => `${clockRange(s, b.wholeStart, b.wholeEnd)}: ${b.amount ? `rain ${b.amount}` : 'no rain'}`
+    + `${b.res > 1 ? `, ${b.res}-hour total` : ', 1 hour'}${b.src === 'radar' ? ', radar' : ', models'}${b.shortened ? ', overlaps radar hours' : ''}`;
+  return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
+    <HourlyRow s={s} grid>
+      <div className="hgrid" style={{ width: at(g.hours) }}>
+        <div className="hgrid-cells" role="list" aria-label="Hourly forecast">{g.cells.map(c =>
+          <div key={c.at} className={`hcell${c.day ? ' hcell-midnight' : ''}`} role="listitem" data-from={c.at} data-to={c.at + 1}
+            aria-label={`${c.day ? `${c.day} ` : ''}${c.text}, ${c.unknown ? 'no forecast' : deg(c.temp)}`}>
+            <span className="hcell-time">{c.text}</span>
+            <WeatherIcon name={c.icon} size={22} label /><strong>{c.unknown ? '—' : deg(c.temp)}</strong>
+          </div>)}</div>
+        <div className="hgrid-bands" role="list" aria-label="Rain amounts by source interval">{g.bands.map(b =>
+          <div key={b.start} role="listitem" aria-label={bandLabel(b)}
+            className={`hband hband-${b.kind} hband-${b.src}${b.res > 1 ? ' hband-group' : ''}${b.shortened ? ' hband-short' : ''}`}
+            data-from={b.start} data-to={b.end} data-res={b.res} style={{ left: at(b.start), width: at(b.end - b.start) }}>
+            {b.amount && <b>{b.amount}</b>}
+            {b.res > 1 && (b.amount || b.shortened) && <small>{b.shortened ? `${clockRange(s, b.wholeStart, b.wholeEnd)} · ${b.res}h total` : `${b.res}h total`}</small>}
+          </div>)}</div>
+      </div>
+    </HourlyRow>
+    <p className="hourly-note">Radar is hourly. Forecast amounts cover 3-hour periods.</p></section>;
 }
 
 /** A day's rain amount, only when it is rain worth a number (see DISPLAY-RULES.md, Rain amounts). */

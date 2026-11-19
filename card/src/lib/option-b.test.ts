@@ -7,7 +7,7 @@ import { WeatherCard } from '../components/WeatherCard';
 import type { Scenario } from '../types';
 import { stormWed, stormWedNight } from './cases';
 import { tenths } from './derive';
-import { eligibleBars, hourTiles, initialSelection, intervalDetail, stormTotalWindow, todayTimeline } from './today';
+import { eligibleBars, hourlyGrid, initialSelection, intervalDetail, stormTotalWindow, todayTimeline } from './today';
 
 const html = (s: Scenario, selected?: number) => renderToString(createElement(WeatherCard, { scenario: s, selected })).replace(/<!-- -->/g, '').replace(/&quot;/g, '"').replace(/&#x27;/g, "'");
 const bars = (h: string) => [...h.matchAll(/class="today-bar[^"]*"[^>]*?data-from="(\d+)" data-to="(\d+)" data-res="(\d+)" data-in="([\d.]+)" style="left:([\d.]+)%;width:([\d.]+)%"/g)]
@@ -27,19 +27,20 @@ describe('Option B acceptance gate', () => {
       for (let i = 1; i < b.length; i++) expect(b[i].from).toBeGreaterThanOrEqual(b[i - 1].to);
       for (const x of b) expect(s.rainBlocks!.some(k => k.endHour === x.to && k.in === x.in)).toBe(true);
     });
-    it(`${name}: no invented hourly precipitation in the hourly tiles`, () => {
-      for (const g of hourTiles(s)) {
-        const blk = s.rainBlocks!.find(k => k.startHour <= g.at && g.at < k.endHour);
-        if (!blk) { expect(g.amount).toBe(''); continue; }
-        expect(g.res).toBe(blk.res);
-        expect(g.end).toBe(blk.endHour);                            // a 3-hour block is one tile, never split
+    it(`${name}: no invented hourly precipitation in the hourly forecast`, () => {
+      const g = hourlyGrid(s);
+      for (const band of g.bands) {
+        const blk = s.rainBlocks!.find(k => k.startHour === band.start)!;
+        expect(band.res).toBe(blk.res);
+        expect(band.end).toBe(Math.min(blk.endHour, g.hours));      // a 3-hour block is one band, never split
       }
     });
     it(`${name}: headline, timeline, detail card and hourly agree`, () => {
       const sel = initialSelection(t)!, d = intervalDetail(s, sel);
-      expect(h).toContain(`<strong>${d.title}</strong><span>${d.amount}</span>`);
-      const tile = hourTiles(s).find(g => g.at === sel.start)!;
-      expect(tile.amount).toBe(d.amount.split(' over ')[0]);        // the same amount in the hourly tile
+      const [amt, over] = d.amount.split(' over ');
+      expect(h).toContain(`<div class="ic-top"><strong>${d.title}</strong><span>${d.intensity} · ${sel.src === 'radar' ? 'Radar' : 'Models'}</span></div><div class="ic-amt"><b>${amt}</b><span>over ${over}</span></div>`);
+      const band = hourlyGrid(s).bands.find(g => g.start === sel.start)!;
+      expect(band.amount).toBe(amt);                                // the same amount in the hourly band
       const tw = stormTotalWindow(s)!;
       const tot = s.rainTotals!.find(x => (x.fromHour ?? x.startHour) === tw.from)!;
       expect(tw.inches).toBe(tot.medianIn);                         // the hero's total window is the engine stretch
@@ -66,7 +67,7 @@ describe('Option B acceptance gate', () => {
   });
   it('a chosen model interval renders its own detail (deterministic selection)', () => {
     const s = stormWed(), h = html(s, 20);
-    expect(h).toContain('<strong>7–10 AM Wednesday</strong><span>.75" over 3 hours</span>');
+    expect(h).toContain('<strong>7–10 AM Wednesday</strong><span>Heavy rain · Models</span></div><div class="ic-amt"><b>.75"</b><span>over 3 hours</span>');
   });
 });
 
@@ -114,10 +115,10 @@ describe('PR #12 final refinement', () => {
 });
 
 describe('PR #12 design review corrections', () => {
-  it('the overlapping model tile reads "Model · 3h"; ordinary model tiles "3h"', () => {
+  it('(superseded Nov 19) the overlapping model band keeps its original range: "1–4 AM · 3h total"; others "3h total"', () => {
     const h = html(stormWedNight());
-    expect(h.match(/class="hour-res" aria-hidden="true">Model · 3h</g)).toHaveLength(1);
-    expect(h).toMatch(/class="hour-res" aria-hidden="true">3h</);
+    expect(h.match(/<small>1–4 AM · 3h total<\/small>/g)).toHaveLength(1);
+    expect(h).toMatch(/<small>3h total<\/small>/);
   });
   it('the storm-total window uses weekday and clock time', () => {
     expect(html(stormWed())).toContain('Storm total:</span> Wed 12 AM – Fri 12 AM</p>');
@@ -130,8 +131,8 @@ describe('PR #12 design review corrections', () => {
 describe('regression checklist', () => {
   it('the overlapping 1–4 AM model tile shows its full 3-hour amount (not a share for the hours after radar)', () => {
     const s = stormWedNight(), blk = s.rainBlocks!.find(b => b.blockStartHour !== undefined && b.blockStartHour < b.startHour)!;
-    const tile = hourTiles(s).find(g => g.overlaps)!;
-    expect(tile).toMatchObject({ at: blk.startHour, end: blk.endHour, label: '1–4 AM', res: 3, amount: '.04"' });
+    const band = hourlyGrid(s).bands.find(g => g.shortened)!;
+    expect(band).toMatchObject({ start: blk.startHour, end: blk.endHour, wholeStart: 1, wholeEnd: 4, res: 3, amount: '.04"' });
     expect(blk.in).toBeCloseTo(0.036, 6);                         // the engine's whole-interval amount, unchanged
   });
 });

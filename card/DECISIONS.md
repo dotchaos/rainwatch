@@ -126,3 +126,23 @@ Implements docs/spec-rainfall-timeline.md (PR #8, amended):
   Flood products stay in Flood risk's official state (not repeated). Rainwatch's own signals never use this panel.
 - Radar/model disagreement: the engine's next-hours comparison in plain words, no ratio. Shown when one source says
   rain and the other dry, or when both say rain and the larger amount reaches 0.10" (Moderate tier) for the period.
+## Presentation refinement (2026-11-19, approved to implement)
+Forecast calculations, thresholds and the default selection are unchanged.
+- NWS alerts are a native disclosure in the Going outside surface. Collapsed it shows a count by product type
+  ("2 weather advisories", or "1 warning · 1 advisory" when mixed) and the product names, deduplicated, most
+  serious first. Expanded it lists each product with its expiry. "Until further notice" appears only when the
+  engine marks the alert open-ended. A link appears only for a verified api.weather.gov alert URL, carried as
+  additive engine data. A warning opens by default and has stronger emphasis.
+- The selected interval is one readout: the time and "intensity · source" on one row, then the amount and
+  "over N hours".
+- Source annotations are plain text: "Radar · hourly" and "Models · 3-hour intervals".
+- Hourly forecast: one continuous hourly scale with equal cells, each hour's own icon and temperature.
+  - Rain is one band per actual radar or model interval. A 3-hour amount appears once, with "3h total" and faint
+    hour guides, and is never repeated per hour.
+  - A model band shortened by radar hours keeps its original range and total ("7–10 AM · 3h total"), uses the
+    timeline's overlap hatching, and is not selectable.
+  - At most 48 hours, ending where a complete interval ends. The line under it reads: "Radar is hourly.
+    Forecast amounts cover 3-hour periods."
+  - This supersedes the Option B hourly tiles (one tile per model block).
+- Screenshot fixture: the archived published card from Thu Nov 19, 7:57 AM (tools/archive_live.py; sha256 in
+  the data branch's archive_live.md).
