@@ -284,7 +284,10 @@ function HourlyGrid({ s }: { s: Scenario }) {
             data-from={b.start} data-to={b.end} data-res={b.res} style={{ left: at(b.start), width: at(b.end - b.start) }}>
             {b.amount && <b>{b.amount}</b>}
             {b.res > 1 && b.amount && !b.shortened && <small>{b.res}h total</small>}
-          </div>)}</div>
+          </div>)}
+          {g.noData.map(n => <div key={`nd-${n.start}`} role="listitem" aria-label={`${clockRange(s, n.start, n.end)}: no data`}
+            className="hband hband-nodata" data-from={n.start} data-to={n.end} style={{ left: at(n.start), width: at(n.end - n.start) }}>
+            <small>No data</small></div>)}</div>
       </div>
     </HourlyRow>
     {g.bands.filter(b => b.shortened).map(b =>

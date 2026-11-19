@@ -388,13 +388,12 @@ details.nws-advisory summary svg:first-child,details.nws-statement summary svg:f
 .hcell-time{font-size:14px;color:#4f5e67;white-space:nowrap}
 .hcell strong{font-size:15px}
 .hcell-midnight::before{content:'';position:absolute;left:0;top:0;bottom:-58px;border-left:1px dashed #b9c5cb}
-.hgrid-bands{position:relative;height:46px;
-  background:repeating-linear-gradient(90deg,transparent 0 calc(var(--hcell) - 1px),#e3e8eb calc(var(--hcell) - 1px) var(--hcell))}
+.hgrid-bands{position:relative;height:46px}
 .hband{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
   border-radius:7px;border:2px solid #fff;background-clip:padding-box;color:#16232b}
 .hband b{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
 .hband small{font-size:12px;color:#3f4d55;white-space:nowrap}
-.hband-dry{background-color:#f1f4f6}
+.hband.hband-dry:not(.hband-short){background:none}
 .hband-trace{background-color:#e4eef6}
 .hband-rain{background-color:#cfe2f2}
 /* a 3-hour total spans its three hours: faint hour guides inside, one amount for the whole period */
@@ -404,3 +403,6 @@ details.nws-advisory summary svg:first-child,details.nws-statement summary svg:f
 .hourly-overlap{margin:10px 0 0;font-size:14px;color:#3f4d55;text-align:left}
 .hourly-overlap+.hourly-note{margin-top:4px}
 .hourly-note{margin:10px 0 0;font-size:14px;color:#4f5e67}
+/* hourly empty states (Nov 19): a dry interval leaves the track empty; missing data is hatched and labelled */
+.hband-nodata{align-items:flex-start;padding-left:8px;background:#fff repeating-linear-gradient(45deg,rgba(38,52,61,.18) 0 1.2px,transparent 1.2px 5px);box-shadow:inset 0 0 0 1px rgba(38,52,61,.10)}
+.hband-nodata small{background:#fff;padding:0 4px;border-radius:3px;color:#3f4d55}
