@@ -266,3 +266,32 @@ export function dayClock(s: Scenario, h: number) {
   const L = localHour(s, h), c = `${L % 12 === 0 ? 12 : L % 12} ${L < 12 ? 'AM' : 'PM'}`;
   return `${dayName(s, h)} ${c}`;
 }
+
+/* ---------- Official NWS alerts (Nov 19): issued by the National Weather Service, shown apart from Rainwatch's signals ---------- */
+export interface OfficialAlert { event: string; when: string; now: boolean }
+/** Non-flood alerts in force or coming within the card's range. Flood products appear in Flood risk (official state),
+ *  so they are not repeated here. Wording is the alert's own event name; timing from its own start/end hours. */
+export function officialAlerts(s: Scenario): OfficialAlert[] {
+  return (s.evidence?.alerts ?? []).filter(a => !a.flood).map(a => {
+    const now = a.startHour <= nowAt(s) + 0.5;
+    const end = openEndHour(s, a.endHour) ? 'until further notice' : `until ${hourText(s, a.endHour)}`;
+    return { event: a.event, now, when: now ? `In effect ${end}` : `From ${hourText(s, a.startHour)} ${end}` };
+  });
+}
+const openEndHour = (s: Scenario, h: number) => h >= 72 || isUnknown(s, h);
+
+/* ---------- Radar vs models, next hours (Nov 19): the engine's existing comparison, in plain language ---------- */
+/** A disagreement is worth a line when it changes a near-term decision: one source says rain and the other says dry,
+ *  or both say rain but the larger amount reaches the Moderate tier for the period (0.10"), where gear changes.
+ *  The comparison itself (0.02" wet test, 3x rule) is the engine's; this only decides whether to say it. */
+export const DISAGREE_SHOW_IN = 0.10;
+export function nearDisagreement(s: Scenario): string | null {
+  const d = s.evidence?.nearDisagree;
+  if (!d) return null;
+  const h = `the next ${d.hours} hour${d.hours === 1 ? '' : 's'}`;
+  if (d.kind === 'radar_only') return `Radar shows rain arriving in ${h} that the models don't expect. Radar sees rain that is already on its way, so plan for it.`;
+  if (d.kind === 'models_only') return `Models expect rain in ${h}, but radar doesn't show any on the way yet. It may form nearby, or hold off.`;
+  const hi = Math.max(d.radarIn ?? 0, d.modelsIn ?? 0);
+  if (hi < DISAGREE_SHOW_IN) return null;
+  return `Radar and models agree rain is coming in ${h} but not on how much. The amounts for these hours are less certain than usual.`;
+}

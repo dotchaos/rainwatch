@@ -119,3 +119,10 @@ Implements docs/spec-rainfall-timeline.md (PR #8, amended):
 - Hourly forecast at source resolution: one tile per model block, with the temperature at the block's start.
 - Looking ahead labels days inside the storm total's window. The hero states the total's window.
 - Order: Today, Flood risk (only when there is a signal), Going outside, Rainfall timeline, Flood risk (otherwise), Hourly, Looking ahead. Urgent flood guidance keeps its PR B prominence.
+## Reliability messaging (2026-11-19, under review)
+- Heavy rain now: "Heaviest rain is underway." then an easing time only when supported: a clock time at about/near
+  timing, a part of day at coarse timing, nothing when the heavy period runs past the forecast. The amount follows.
+- Official NWS alerts: a neutral panel naming the National Weather Service, above Today, for non-flood alerts.
+  Flood products stay in Flood risk's official state (not repeated). Rainwatch's own signals never use this panel.
+- Radar/model disagreement: the engine's next-hours comparison in plain words, no ratio. Shown when one source says
+  rain and the other dry, or when both say rain and the larger amount reaches 0.10" (Moderate tier) for the period.

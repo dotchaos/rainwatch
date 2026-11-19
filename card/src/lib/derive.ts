@@ -1158,7 +1158,14 @@ export function eventHero(s: Scenario): EventHero | null {
     : `from ${lvl === 'near' ? 'around' : 'about'} ${atNamed(s, heavy.start)}`;
   const heaviest = voice === 'awareness' ? `with heavy bursts possible ${when}` : `heaviest ${when}`;
   const lead = amount ? `${amount}${scopeNow}, ` : 'Rain ';
-  const sentence = `${lead}${starting} and ${heaviest}${rate}.`.replace(/^Rain falling now/, 'Rain falling now');
+  // heavy rain now (Nov 19): say it plainly, then when it eases, only when the forecast supports a time (not coarse
+  // timing, not past the forecast's end); the amount follows as its own sentence. Same storm, same hours as before.
+  // coarse timing supports a part of day only ("this afternoon"), never a clock time
+  const ease = openEnd(s, heavy.end) ? '' : lvl === 'coarse' ? ` Expected to ease ${partNamed(s, heavy.end)}.`
+    : ` Expected to ease after ${lvl === 'near' ? 'around' : 'about'} ${atNamed(s, heavy.end)}.`;
+  const sentence = heavyNow && voice !== 'awareness'
+    ? `Heaviest rain is underway${rate}.${ease}${amount ? ` ${amount}${scopeNow}.` : ''}`
+    : `${lead}${starting} and ${heaviest}${rate}.`;
   const from = onsetNow ? 'now' : lvl === 'coarse' ? partNamed(s, st.start, false, true) : `about ${atNamed(s, st.start)}`;
   const duration = open ? `${from} into ${partNamed(s, end - 1, true, true)}, past where the forecast ends; end not known yet`
     : `${from} through ${lvl === 'coarse' ? partNamed(s, end - 1, true, true) : `about ${atNamed(s, end)}`}`;
