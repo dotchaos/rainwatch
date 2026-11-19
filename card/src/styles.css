@@ -345,3 +345,5 @@ details.todo-row[open] .todo-chev{transform:rotate(90deg)}
 
 /* Hourly day heading follows the scroll (validation fix, Nov 19); same look as the old inline "Today" pin */
 .hourly-day{margin:0 0 4px;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#3f4d55}
+.coastal-note{margin:6px 0 0 24px;font-size:15px;color:#3f4d55}
+.todo-flood:not(.quiet) .coastal-note{margin-left:0}

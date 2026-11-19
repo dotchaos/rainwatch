@@ -341,3 +341,10 @@ export function firstVisibleTile(tiles: { left: number; width: number }[], scrol
 }
 
 const DAY3 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+/** An NWS coastal flood advisory, watch or warning in force now (Nov 19 design decision): Street flood risk then notes
+ *  that coastal products cover a different hazard. Reads the alert list as issued; no risk calculation is involved. */
+export function coastalFloodActive(s: Scenario): boolean {
+  const now = nowAt(s);
+  return (s.evidence?.alerts ?? []).some(a => /^Coastal Flood (Advisory|Watch|Warning|Statement)$/.test(a.event) && a.startHour <= now + 0.5 && now < a.endHour);
+}
