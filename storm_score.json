@@ -1,5 +1,5 @@
 {
- "scored_at": "2026-11-20T17:01:40.003892+00:00",
+ "scored_at": "2026-11-20T17:04:11.831816+00:00",
  "gauge_observed_through": "2026-11-20T17:00:00+00:00",
  "snapshots": [
   {
@@ -31,160 +31,212 @@
     {
      "block": "Tue 10 PM\u2013Wed 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.024,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 1 AM\u2013Wed 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.072,
      "p10": 0.012,
      "p90": 0.311,
+     "partial": false,
      "gauge": 0.12,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 AM\u2013Wed 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.435,
      "p10": 0.154,
      "p90": 0.969,
+     "partial": false,
      "gauge": 0.1,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 AM\u2013Wed 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.752,
      "p10": 0.178,
      "p90": 1.146,
+     "partial": false,
      "gauge": 0.7,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 AM\u2013Wed 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.123,
      "p10": 0.004,
      "p90": 0.677,
+     "partial": false,
      "gauge": 1.22,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 1 PM\u2013Wed 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.024,
      "p10": 0.0,
      "p90": 0.084,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 PM\u2013Wed 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.024,
      "p10": 0.0,
      "p90": 0.118,
+     "partial": false,
      "gauge": 0.09,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 PM\u2013Wed 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.1,
      "p10": 0.024,
      "p90": 0.237,
+     "partial": false,
      "gauge": 0.13,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 PM\u2013Thu 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.093,
      "p10": 0.012,
      "p90": 0.236,
+     "partial": false,
      "gauge": 0.11,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 AM\u2013Thu 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.165,
      "p10": 0.036,
      "p90": 0.361,
+     "partial": false,
      "gauge": 0.31,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 AM\u2013Thu 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.183,
      "p10": 0.06,
      "p90": 0.388,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 AM\u2013Thu 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.129,
      "p10": 0.024,
      "p90": 0.317,
+     "partial": false,
      "gauge": 0.06,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.036,
      "p10": 0.0,
      "p90": 0.26,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.024,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.011,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     }
    ],
+   "consistency": "ok",
    "peak": {
     "gauge_wettest_hour": {
-     "at": "Wed 10 AM",
+     "native": "9:43\u201310:43 AM",
      "in": 0.93
     },
     "forecast_wettest_block": {
@@ -292,169 +344,224 @@
     {
      "block": "Wed 12 AM\u2013Wed 1 AM",
      "res": 1,
+     "source": "radar (inferred)",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.008,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "11:43\u201312:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 1 AM\u2013Wed 2 AM",
      "res": 1,
+     "source": "radar (inferred)",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.047,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "12:43\u20131:43 AM",
      "coverage": "complete"
     },
     {
-     "block": "Wed 2 AM\u2013Wed 4 AM",
+     "block": "Wed 1 AM\u2013Wed 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.036,
      "p10": 0.0,
      "p90": 0.177,
+     "partial": true,
      "gauge": 0.12,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 AM\u2013Wed 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.294,
      "p10": 0.109,
      "p90": 0.703,
+     "partial": false,
      "gauge": 0.1,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 AM\u2013Wed 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.826,
      "p10": 0.312,
      "p90": 1.227,
+     "partial": false,
      "gauge": 0.7,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 AM\u2013Wed 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.454,
      "p10": 0.024,
      "p90": 1.015,
+     "partial": false,
      "gauge": 1.22,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 1 PM\u2013Wed 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.066,
      "p10": 0.0,
      "p90": 0.317,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 PM\u2013Wed 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.024,
      "p10": 0.0,
      "p90": 0.092,
+     "partial": false,
      "gauge": 0.09,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 PM\u2013Wed 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.06,
      "p10": 0.0,
      "p90": 0.177,
+     "partial": false,
      "gauge": 0.13,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 PM\u2013Thu 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.093,
      "p10": 0.012,
      "p90": 0.237,
+     "partial": false,
      "gauge": 0.11,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 AM\u2013Thu 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.151,
      "p10": 0.051,
      "p90": 0.29,
+     "partial": false,
      "gauge": 0.31,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 AM\u2013Thu 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.232,
      "p10": 0.105,
      "p90": 0.43,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 AM\u2013Thu 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.129,
      "p10": 0.036,
      "p90": 0.282,
+     "partial": false,
      "gauge": 0.06,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.048,
      "p10": 0.008,
      "p90": 0.16,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.012,
      "p10": 0.0,
      "p90": 0.039,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     }
    ],
+   "consistency": "ok",
    "peak": {
     "gauge_wettest_hour": {
-     "at": "Wed 10 AM",
+     "native": "9:43\u201310:43 AM",
      "in": 0.93
     },
     "forecast_wettest_block": {
@@ -572,169 +679,224 @@
     {
      "block": "Wed 1 AM\u2013Wed 2 AM",
      "res": 1,
+     "source": "radar (inferred)",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.047,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "12:43\u20131:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 2 AM\u2013Wed 3 AM",
      "res": 1,
+     "source": "radar (inferred)",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.047,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "1:43\u20132:43 AM",
      "coverage": "complete"
     },
     {
-     "block": "Wed 3 AM\u2013Wed 4 AM",
+     "block": "Wed 1 AM\u2013Wed 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.036,
      "p10": 0.0,
      "p90": 0.177,
-     "gauge": 0.11,
+     "partial": true,
+     "gauge": 0.12,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 AM\u2013Wed 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.294,
      "p10": 0.109,
      "p90": 0.703,
+     "partial": false,
      "gauge": 0.1,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 AM\u2013Wed 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.826,
      "p10": 0.312,
      "p90": 1.227,
+     "partial": false,
      "gauge": 0.7,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 AM\u2013Wed 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.454,
      "p10": 0.024,
      "p90": 1.015,
+     "partial": false,
      "gauge": 1.22,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 1 PM\u2013Wed 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.066,
      "p10": 0.0,
      "p90": 0.317,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 PM\u2013Wed 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.024,
      "p10": 0.0,
      "p90": 0.092,
+     "partial": false,
      "gauge": 0.09,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 PM\u2013Wed 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.06,
      "p10": 0.0,
      "p90": 0.177,
+     "partial": false,
      "gauge": 0.13,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 PM\u2013Thu 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.093,
      "p10": 0.012,
      "p90": 0.237,
+     "partial": false,
      "gauge": 0.11,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 AM\u2013Thu 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.151,
      "p10": 0.051,
      "p90": 0.29,
+     "partial": false,
      "gauge": 0.31,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 AM\u2013Thu 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.232,
      "p10": 0.105,
      "p90": 0.43,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 AM\u2013Thu 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.129,
      "p10": 0.036,
      "p90": 0.282,
+     "partial": false,
      "gauge": 0.06,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.048,
      "p10": 0.008,
      "p90": 0.16,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.012,
      "p10": 0.0,
      "p90": 0.039,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     }
    ],
+   "consistency": "ok",
    "peak": {
     "gauge_wettest_hour": {
-     "at": "Wed 10 AM",
+     "native": "9:43\u201310:43 AM",
      "in": 0.93
     },
     "forecast_wettest_block": {
@@ -833,160 +995,212 @@
     {
      "block": "Wed 3 AM\u2013Wed 4 AM",
      "res": 1,
+     "source": "radar (inferred)",
      "forecast": 0.02,
      "p10": 0.004,
      "p90": 0.067,
+     "partial": false,
      "gauge": 0.11,
+     "gauge_native": "2:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 AM\u2013Wed 5 AM",
      "res": 1,
+     "source": "radar (inferred)",
      "forecast": 0.58,
      "p10": 0.02,
      "p90": 0.181,
+     "partial": false,
      "gauge": 0.07,
+     "gauge_native": "3:43\u20134:43 AM",
      "coverage": "complete"
     },
     {
-     "block": "Wed 5 AM\u2013Wed 7 AM",
+     "block": "Wed 4 AM\u2013Wed 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.306,
      "p10": 0.095,
      "p90": 0.7,
-     "gauge": 0.03,
+     "partial": true,
+     "gauge": 0.1,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 AM\u2013Wed 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.816,
      "p10": 0.403,
      "p90": 1.225,
+     "partial": false,
      "gauge": 0.7,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 AM\u2013Wed 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.543,
      "p10": 0.059,
      "p90": 1.084,
+     "partial": false,
      "gauge": 1.22,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 1 PM\u2013Wed 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.066,
      "p10": 0.0,
      "p90": 0.467,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 PM\u2013Wed 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.024,
      "p10": 0.0,
      "p90": 0.092,
+     "partial": false,
      "gauge": 0.09,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 PM\u2013Wed 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.06,
      "p10": 0.0,
      "p90": 0.164,
+     "partial": false,
      "gauge": 0.13,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 PM\u2013Thu 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.093,
      "p10": 0.012,
      "p90": 0.225,
+     "partial": false,
      "gauge": 0.11,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 AM\u2013Thu 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.144,
      "p10": 0.024,
      "p90": 0.305,
+     "partial": false,
      "gauge": 0.31,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 AM\u2013Thu 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.224,
      "p10": 0.049,
      "p90": 0.431,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 AM\u2013Thu 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.146,
      "p10": 0.048,
      "p90": 0.33,
+     "partial": false,
      "gauge": 0.06,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.055,
      "p10": 0.0,
      "p90": 0.203,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.012,
      "p10": 0.0,
      "p90": 0.048,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.024,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     }
    ],
+   "consistency": "ok",
    "peak": {
     "gauge_wettest_hour": {
-     "at": "Wed 10 AM",
+     "native": "9:43\u201310:43 AM",
      "in": 0.93
     },
     "forecast_wettest_block": {
@@ -1086,151 +1300,200 @@
     {
      "block": "Wed 6 AM\u2013Wed 7 AM",
      "res": 1,
+     "source": "radar (inferred)",
      "forecast": 0.0,
      "p10": 0.031,
      "p90": 0.294,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "5:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 AM\u2013Wed 8 AM",
      "res": 1,
+     "source": "radar (inferred)",
      "forecast": 0.02,
      "p10": 0.13,
      "p90": 0.409,
+     "partial": false,
      "gauge": 0.02,
+     "gauge_native": "6:43\u20137:43 AM",
      "coverage": "complete"
     },
     {
-     "block": "Wed 8 AM\u2013Wed 10 AM",
+     "block": "Wed 7 AM\u2013Wed 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.816,
      "p10": 0.403,
      "p90": 1.225,
-     "gauge": 0.68,
+     "partial": true,
+     "gauge": 0.7,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 AM\u2013Wed 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.543,
      "p10": 0.059,
      "p90": 1.084,
+     "partial": false,
      "gauge": 1.22,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 1 PM\u2013Wed 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.066,
      "p10": 0.0,
      "p90": 0.467,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 PM\u2013Wed 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.024,
      "p10": 0.0,
      "p90": 0.092,
+     "partial": false,
      "gauge": 0.09,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 PM\u2013Wed 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.06,
      "p10": 0.0,
      "p90": 0.164,
+     "partial": false,
      "gauge": 0.13,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 PM\u2013Thu 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.093,
      "p10": 0.012,
      "p90": 0.225,
+     "partial": false,
      "gauge": 0.11,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 AM\u2013Thu 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.144,
      "p10": 0.024,
      "p90": 0.305,
+     "partial": false,
      "gauge": 0.31,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 AM\u2013Thu 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.224,
      "p10": 0.049,
      "p90": 0.431,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 AM\u2013Thu 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.146,
      "p10": 0.048,
      "p90": 0.33,
+     "partial": false,
      "gauge": 0.06,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.055,
      "p10": 0.0,
      "p90": 0.203,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.012,
      "p10": 0.0,
      "p90": 0.048,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.024,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     }
    ],
+   "consistency": "ok",
    "peak": {
     "gauge_wettest_hour": {
-     "at": "Wed 10 AM",
+     "native": "9:43\u201310:43 AM",
      "in": 0.93
     },
     "forecast_wettest_block": {
@@ -1340,133 +1603,176 @@
     {
      "block": "Wed 11 AM\u2013Wed 12 PM",
      "res": 1,
+     "source": "radar",
      "forecast": 0.08,
      "p10": 0.031,
      "p90": 0.377,
+     "partial": false,
      "gauge": 0.26,
+     "gauge_native": "10:43\u201311:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Wed 12 PM\u2013Wed 1 PM",
      "res": 1,
+     "source": "radar",
      "forecast": 0.04,
      "p10": 0.0,
      "p90": 0.345,
+     "partial": false,
      "gauge": 0.03,
+     "gauge_native": "11:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 1 PM\u2013Wed 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.07,
      "p10": 0.0,
      "p90": 0.411,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 4 PM\u2013Wed 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.024,
      "p10": 0.0,
      "p90": 0.105,
+     "partial": false,
      "gauge": 0.09,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 7 PM\u2013Wed 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.078,
      "p10": 0.004,
      "p90": 0.189,
+     "partial": false,
      "gauge": 0.13,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Wed 10 PM\u2013Thu 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.105,
      "p10": 0.024,
      "p90": 0.237,
+     "partial": false,
      "gauge": 0.11,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 AM\u2013Thu 4 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.165,
      "p10": 0.052,
      "p90": 0.329,
+     "partial": false,
      "gauge": 0.31,
+     "gauge_native": "12:43\u20133:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 AM\u2013Thu 7 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.195,
      "p10": 0.084,
      "p90": 0.377,
+     "partial": false,
      "gauge": 0.17,
+     "gauge_native": "3:43\u20136:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 AM\u2013Thu 10 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.129,
      "p10": 0.031,
      "p90": 0.287,
+     "partial": false,
      "gauge": 0.06,
+     "gauge_native": "6:43\u20139:43 AM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.036,
      "p10": 0.0,
      "p90": 0.173,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.008,
      "p10": 0.0,
      "p90": 0.048,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "12:43\u20133:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "3:43\u20136:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.004,
+     "partial": false,
      "gauge": 0.0,
+     "gauge_native": "6:43\u20139:43 PM",
      "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
      "res": 3,
+     "source": "model",
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.019,
+     "partial": false,
      "gauge": 0.01,
+     "gauge_native": "9:43\u201312:43 AM",
      "coverage": "complete"
     }
    ],
+   "consistency": "ok",
    "peak": {
     "gauge_wettest_hour": {
-     "at": "Wed 11 AM",
+     "native": "10:43\u201311:43 AM",
      "in": 0.26
     },
     "forecast_wettest_block": {
@@ -1592,5 +1898,332 @@
    },
    "coverage": "complete"
   }
- ]
+ ],
+ "local_outcome": {
+  "street": [
+   {
+    "observed_at": "2026-11-18T09:55:00-08:00",
+    "observed_until": "2026-11-18T10:25:00-08:00",
+    "approx": true,
+    "recorded_at": "2026-11-19T11:53:09+00:00",
+    "location": "18th Street / Folsom area, Mission District",
+    "what": "Significant street flooding. Photographs taken around 10:14 AM show substantial standing water around vehicles, reaching approximately wheel/bumper height in places. Water was affecting the roadway, not merely collecting at the curb.",
+    "level": "roadway",
+    "depth": "approximately wheel/bumper height in places (visually estimated, not measured)",
+    "evidence": "firsthand observation, confirmed; timing approximate",
+    "reporter": "John Bove",
+    "photo": "photographs ~10:14 AM, sent in chat 2026-11-19; not stored here (public branch)",
+    "supersedes": "2026-11-19 entry with unconfirmed location"
+   },
+   {
+    "observed_at": "2026-11-19T11:30:00-08:00",
+    "observed_until": null,
+    "approx": true,
+    "recorded_at": "2026-11-19T19:53:08+00:00",
+    "location": "near 18th & Shotwell, Mission District",
+    "what": "Light shower underway around 11:30 AM (visually light rain). Rainwatch, updated 11:28 AM, showed 'Only a slight chance of showers', 'Usual clothes' and 'Dry until 1 AM Fri'.",
+    "level": "none (rain only; no flooding reported)",
+    "depth": null,
+    "intensity": "not measured; visually light rain",
+    "evidence": "firsthand observation with photo; timing approximate",
+    "reporter": "John Bove",
+    "photo": "photograph ~11:30 AM and other apps' screenshots, sent in chat 2026-11-19; not stored here (public branch)",
+    "event": "2026-11-19 shower: forecast mismatch, evaluated separately from the Nov 18 storm",
+    "gauge": {
+     "station": "SFOC1 (downtown accumulator, PCIRGZZ, 0.01\" resolution)",
+     "readings": [
+      {
+       "from": "2026-11-19T10:43:00-08:00",
+       "to": "2026-11-19T11:43:00-08:00",
+       "inches": 0.01
+      },
+      {
+       "from": "2026-11-19T11:43:00-08:00",
+       "to": "2026-11-19T12:43:00-08:00",
+       "inches": 0.0
+      }
+     ],
+     "note": "Measurement windows are the accumulator's reading times (about :43 past each hour). Radar put the shower over the point about 11:20-11:45 AM, so most of it falls in the 10:43-11:43 window. The 0.01\" can't be split within that hour; KSFO (about 15 km away) reported light rain earlier, 10:38-11:14 AM, while radar showed no echo over the point before 11:20.",
+     "added": "2026-11-20"
+    }
+   }
+  ],
+  "gauge_native_windows": [
+   {
+    "from": "2026-11-13T17:43:00+00:00",
+    "to": "2026-11-13T18:43:00+00:00",
+    "in": 0.19
+   },
+   {
+    "from": "2026-11-13T18:43:00+00:00",
+    "to": "2026-11-13T19:43:00+00:00",
+    "in": 0.16
+   },
+   {
+    "from": "2026-11-13T19:43:00+00:00",
+    "to": "2026-11-13T20:43:00+00:00",
+    "in": 0.13
+   },
+   {
+    "from": "2026-11-13T20:43:00+00:00",
+    "to": "2026-11-13T21:43:00+00:00",
+    "in": 0.05
+   },
+   {
+    "from": "2026-11-14T00:43:00+00:00",
+    "to": "2026-11-14T01:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-14T01:43:00+00:00",
+    "to": "2026-11-14T02:43:00+00:00",
+    "in": 0.07
+   },
+   {
+    "from": "2026-11-14T02:43:00+00:00",
+    "to": "2026-11-14T03:43:00+00:00",
+    "in": 0.03
+   },
+   {
+    "from": "2026-11-14T03:43:00+00:00",
+    "to": "2026-11-14T04:43:00+00:00",
+    "in": 0.05
+   },
+   {
+    "from": "2026-11-14T04:43:00+00:00",
+    "to": "2026-11-14T05:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-14T09:43:00+00:00",
+    "to": "2026-11-14T10:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-14T11:43:00+00:00",
+    "to": "2026-11-14T12:43:00+00:00",
+    "in": 0.02
+   },
+   {
+    "from": "2026-11-14T14:43:00+00:00",
+    "to": "2026-11-14T15:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-15T21:43:00+00:00",
+    "to": "2026-11-15T22:43:00+00:00",
+    "in": 0.12
+   },
+   {
+    "from": "2026-11-15T22:43:00+00:00",
+    "to": "2026-11-15T23:43:00+00:00",
+    "in": 0.25
+   },
+   {
+    "from": "2026-11-15T23:43:00+00:00",
+    "to": "2026-11-16T00:43:00+00:00",
+    "in": 0.07
+   },
+   {
+    "from": "2026-11-16T00:43:00+00:00",
+    "to": "2026-11-16T01:43:00+00:00",
+    "in": 0.14
+   },
+   {
+    "from": "2026-11-16T01:43:00+00:00",
+    "to": "2026-11-16T02:43:00+00:00",
+    "in": 0.07
+   },
+   {
+    "from": "2026-11-16T02:43:00+00:00",
+    "to": "2026-11-16T03:43:00+00:00",
+    "in": 0.08
+   },
+   {
+    "from": "2026-11-16T03:43:00+00:00",
+    "to": "2026-11-16T04:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-16T04:43:00+00:00",
+    "to": "2026-11-16T05:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-16T06:43:00+00:00",
+    "to": "2026-11-16T07:43:00+00:00",
+    "in": 0.02
+   },
+   {
+    "from": "2026-11-16T07:43:00+00:00",
+    "to": "2026-11-16T08:43:00+00:00",
+    "in": 0.07
+   },
+   {
+    "from": "2026-11-16T08:43:00+00:00",
+    "to": "2026-11-16T09:43:00+00:00",
+    "in": 0.02
+   },
+   {
+    "from": "2026-11-16T18:43:00+00:00",
+    "to": "2026-11-16T19:43:00+00:00",
+    "in": 0.08
+   },
+   {
+    "from": "2026-11-18T09:43:00+00:00",
+    "to": "2026-11-18T10:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-18T10:43:00+00:00",
+    "to": "2026-11-18T11:43:00+00:00",
+    "in": 0.11
+   },
+   {
+    "from": "2026-11-18T11:43:00+00:00",
+    "to": "2026-11-18T12:43:00+00:00",
+    "in": 0.07
+   },
+   {
+    "from": "2026-11-18T12:43:00+00:00",
+    "to": "2026-11-18T13:43:00+00:00",
+    "in": 0.02
+   },
+   {
+    "from": "2026-11-18T13:43:00+00:00",
+    "to": "2026-11-18T14:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-18T14:43:00+00:00",
+    "to": "2026-11-18T15:43:00+00:00",
+    "in": 0.02
+   },
+   {
+    "from": "2026-11-18T15:43:00+00:00",
+    "to": "2026-11-18T16:43:00+00:00",
+    "in": 0.14
+   },
+   {
+    "from": "2026-11-18T16:43:00+00:00",
+    "to": "2026-11-18T17:43:00+00:00",
+    "in": 0.54
+   },
+   {
+    "from": "2026-11-18T17:43:00+00:00",
+    "to": "2026-11-18T18:43:00+00:00",
+    "in": 0.93
+   },
+   {
+    "from": "2026-11-18T18:43:00+00:00",
+    "to": "2026-11-18T19:43:00+00:00",
+    "in": 0.26
+   },
+   {
+    "from": "2026-11-18T19:43:00+00:00",
+    "to": "2026-11-18T20:43:00+00:00",
+    "in": 0.03
+   },
+   {
+    "from": "2026-11-18T20:43:00+00:00",
+    "to": "2026-11-18T21:43:00+00:00",
+    "in": 0.04
+   },
+   {
+    "from": "2026-11-18T21:43:00+00:00",
+    "to": "2026-11-18T22:43:00+00:00",
+    "in": 0.1
+   },
+   {
+    "from": "2026-11-18T22:43:00+00:00",
+    "to": "2026-11-18T23:43:00+00:00",
+    "in": 0.03
+   },
+   {
+    "from": "2026-11-18T23:43:00+00:00",
+    "to": "2026-11-19T00:43:00+00:00",
+    "in": 0.08
+   },
+   {
+    "from": "2026-11-19T01:43:00+00:00",
+    "to": "2026-11-19T02:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-19T04:43:00+00:00",
+    "to": "2026-11-19T05:43:00+00:00",
+    "in": 0.13
+   },
+   {
+    "from": "2026-11-19T05:43:00+00:00",
+    "to": "2026-11-19T06:43:00+00:00",
+    "in": 0.11
+   },
+   {
+    "from": "2026-11-19T08:43:00+00:00",
+    "to": "2026-11-19T09:43:00+00:00",
+    "in": 0.04
+   },
+   {
+    "from": "2026-11-19T09:43:00+00:00",
+    "to": "2026-11-19T10:43:00+00:00",
+    "in": 0.04
+   },
+   {
+    "from": "2026-11-19T10:43:00+00:00",
+    "to": "2026-11-19T11:43:00+00:00",
+    "in": 0.23
+   },
+   {
+    "from": "2026-11-19T11:43:00+00:00",
+    "to": "2026-11-19T12:43:00+00:00",
+    "in": 0.1
+   },
+   {
+    "from": "2026-11-19T12:43:00+00:00",
+    "to": "2026-11-19T13:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-19T13:43:00+00:00",
+    "to": "2026-11-19T14:43:00+00:00",
+    "in": 0.06
+   },
+   {
+    "from": "2026-11-19T14:43:00+00:00",
+    "to": "2026-11-19T15:43:00+00:00",
+    "in": 0.06
+   },
+   {
+    "from": "2026-11-19T18:43:00+00:00",
+    "to": "2026-11-19T19:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-20T05:43:00+00:00",
+    "to": "2026-11-20T06:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-20T10:43:00+00:00",
+    "to": "2026-11-20T11:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-20T12:43:00+00:00",
+    "to": "2026-11-20T13:43:00+00:00",
+    "in": 0.01
+   },
+   {
+    "from": "2026-11-20T13:43:00+00:00",
+    "to": "2026-11-20T14:43:00+00:00",
+    "in": 0.04
+   },
+   {
+    "from": "2026-11-20T14:43:00+00:00",
+    "to": "2026-11-20T15:43:00+00:00",
+    "in": 0.01
+   }
+  ]
+ }
 }
