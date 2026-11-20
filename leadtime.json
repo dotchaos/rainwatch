@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-20T13:57:00.799744+00:00",
+ "generated": "2026-11-20T14:12:05.071103+00:00",
  "truth": "SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24)",
  "window_days": 60,
  "heavy_in": 0.2,
@@ -1544,7 +1544,7 @@
    ]
   }
  },
- "card_records": 89,
+ "card_records": 90,
  "now_split": {
   "radar-corroborated": {
    "n": 28,
@@ -1774,7 +1774,7 @@
  "now_split_meta": {
   "corroborated_by": {
    "ensemble": 12,
-   "HRRR": 12,
+   "HRRR": 11,
    "ECMWF": 7,
    "NBM": 5,
    "Flood Advisory": 14,
