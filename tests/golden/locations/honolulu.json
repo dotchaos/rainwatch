@@ -1065,7 +1065,1166 @@
     "startHour": 0,
     "endHour": 5
    }
+  ],
+  "alerts": [
+   {
+    "event": "Flood Advisory",
+    "startHour": 0,
+    "endHour": 5,
+    "flood": true
+   }
   ]
+ },
+ "rainSignals": {
+  "measurableIn": 0.01,
+  "dryP": 0.2,
+  "wetP": 0.5,
+  "radar": {
+   "rainingNow": null,
+   "dbz": null,
+   "frameTime": null,
+   "minDbz": 15.0,
+   "horizonHours": 2.0
+  },
+  "hours": [
+   {
+    "hour": 0,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.039,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": [
+     "radar"
+    ]
+   },
+   {
+    "hour": 1,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 1.0,
+      "medianIn": 0.05
+     },
+     "nws": {
+      "qpfIn": 0.039,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": [
+     "radar"
+    ]
+   },
+   {
+    "hour": 2,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 1.0,
+      "medianIn": 0.05
+     },
+     "nws": {
+      "qpfIn": 0.039,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 3,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 1.0,
+      "medianIn": 0.3
+     },
+     "nws": {
+      "qpfIn": 0.039,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 4,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 1.0,
+      "medianIn": 0.05
+     },
+     "nws": {
+      "qpfIn": 0.039,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 5,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 1.0,
+      "medianIn": 0.05
+     },
+     "nws": {
+      "qpfIn": 0.039,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 6,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 1.0,
+      "medianIn": 0.05
+     },
+     "nws": {
+      "qpfIn": 0.079,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 7,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 1.0,
+      "medianIn": 0.05
+     },
+     "nws": {
+      "qpfIn": 0.079,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 8,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 1.0,
+      "medianIn": 0.05
+     },
+     "nws": {
+      "qpfIn": 0.079,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 9,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.079,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 10,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.079,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 11,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.079,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 12,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.02,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 13,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.02,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 14,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.02,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 15,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.02,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 16,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.02,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 17,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.02,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 18,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 19,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 20,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 21,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 22,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 23,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 24,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 25,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 26,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 27,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 28,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 29,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 30,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 31,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 32,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 33,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 34,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 35,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": 0.8,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 36,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 37,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 38,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 39,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 40,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 41,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 42,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 43,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 44,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 45,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 46,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 47,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 48,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 49,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 50,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 51,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 52,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 53,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 54,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 55,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 56,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 57,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 58,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 59,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 60,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 61,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 62,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 63,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 64,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 65,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 66,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 67,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 68,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 69,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 70,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 71,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     }
+    },
+    "unavailable": []
+   }
+  ],
+  "dryUntilHour": 1
  },
  "_strip_check": [
   {

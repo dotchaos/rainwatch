@@ -1,0 +1,1396 @@
+{
+ "note": "Nov 17 11:00 AM issue (the hour of the Tue 11:35 AM storm card): dry until the storm",
+ "issued": "2026-11-17T19:00:06.947017+00:00",
+ "rainSignals": {
+  "measurableIn": 0.01,
+  "dryP": 0.2,
+  "wetP": 0.5,
+  "radar": {
+   "rainingNow": false,
+   "dbz": null,
+   "frameTime": null,
+   "minDbz": 15.0,
+   "horizonHours": 2.0
+  },
+  "hours": [
+   {
+    "hour": 0,
+    "state": "dry",
+    "reasons": [],
+    "primary": "radar",
+    "signals": {
+     "radar": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0,
+      "window": "latest frame to end of hour"
+     },
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 1,
+    "state": "dry",
+    "reasons": [],
+    "primary": "radar",
+    "signals": {
+     "radar": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 2,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 3,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 4,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 5,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 6,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 7,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 8,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 9,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.008,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 10,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.008,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.0,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 11,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.016,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 12,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.041,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 13,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.123,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 14,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.607,
+      "medianIn": 0.016
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 15,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.664,
+      "medianIn": 0.02
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 16,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.697,
+      "medianIn": 0.028
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 17,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.992,
+      "medianIn": 0.134
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 18,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.992,
+      "medianIn": 0.146
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 19,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.992,
+      "medianIn": 0.165
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 20,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.992,
+      "medianIn": 0.248
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 21,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.959,
+      "medianIn": 0.248
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 22,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.877,
+      "medianIn": 0.228
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 23,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.738,
+      "medianIn": 0.055
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 24,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.689,
+      "medianIn": 0.035
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 25,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.648,
+      "medianIn": 0.031
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 26,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.459,
+      "medianIn": 0.008
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 27,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.459,
+      "medianIn": 0.008
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 28,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.459,
+      "medianIn": 0.008
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 29,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.41,
+      "medianIn": 0.008
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 30,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.451,
+      "medianIn": 0.008
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 31,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.516,
+      "medianIn": 0.012
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 32,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.795,
+      "medianIn": 0.035
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 33,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.795,
+      "medianIn": 0.031
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 34,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.795,
+      "medianIn": 0.031
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 35,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.762,
+      "medianIn": 0.031
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 36,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.738,
+      "medianIn": 0.028
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 37,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.721,
+      "medianIn": 0.035
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 38,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.82,
+      "medianIn": 0.051
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 39,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.877,
+      "medianIn": 0.055
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 40,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.893,
+      "medianIn": 0.055
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 41,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.967,
+      "medianIn": 0.063
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 42,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.967,
+      "medianIn": 0.063
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 43,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.967,
+      "medianIn": 0.063
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 44,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.828,
+      "medianIn": 0.043
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 45,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.828,
+      "medianIn": 0.043
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 46,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.828,
+      "medianIn": 0.043
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 47,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.516,
+      "medianIn": 0.012
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 48,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.516,
+      "medianIn": 0.012
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 49,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.516,
+      "medianIn": 0.012
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 50,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.098,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 51,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.098,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 52,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.098,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 53,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 54,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 55,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 56,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 57,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 58,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 59,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 60,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 61,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.025,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 62,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.033,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 63,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.033,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 64,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.033,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 65,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.016,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 66,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.016,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 67,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.016,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 68,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 69,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 70,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 71,
+    "state": "dry",
+    "reasons": [],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.0,
+      "medianIn": 0.0
+     },
+     "nws": {
+      "qpfIn": null,
+      "pop": null,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   }
+  ],
+  "dryUntilHour": 14
+ }
+}

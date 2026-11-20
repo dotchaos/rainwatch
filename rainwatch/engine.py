@@ -92,6 +92,11 @@ def daily_totals(cfg, tz, now, hrs, rows, parts, radar, nws_s) -> list[dict]:
     return out
 
 
+def radar_expected(t: datetime, now: datetime, cfg) -> bool:
+    """Hours the radar nowcast is meant to cover (the current hour up to the nowcast horizon)."""
+    return hour_floor(now) <= t < hour_floor(now + timedelta(hours=cfg.nowcast_max_h))
+
+
 ECHO_DBZ = 15.0          # the engine's echo line (radar quiet check, coverage)
 RADAR_FRESH_MIN = 20     # a radar frame older than this says nothing about "right now"
 
@@ -100,7 +105,8 @@ def observed_now(nc, gauges, cfg, now: datetime) -> dict:
     """Is it raining at the point right now, and did it rain recently? From the radar's latest frame (when fresh) and
     the nearby gauge's last two completed hours. None where a source can't say. Never used to change the forecast:
     the card only uses it to describe what is happening now (v0.17)."""
-    out = {"raining_now": None, "dbz": None, "radar_at": None, "recent_rain": None, "gauge_in_2h": None}
+    out = {"raining_now": None, "dbz": None, "radar_at": None, "recent_rain": None, "gauge_in_2h": None,
+           "echo_dbz": ECHO_DBZ}
     if nc and nc.frames and nc.dbz_now is not None and (now - nc.frames[-1]).total_seconds() <= RADAR_FRESH_MIN * 60:
         out.update(raining_now=nc.dbz_now >= ECHO_DBZ, dbz=round(nc.dbz_now, 1), radar_at=nc.frames[-1].isoformat())
     for g in gauges or []:
@@ -183,8 +189,16 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
                 srcs[s.key] = round(s.values[t], 3)
         if nws_s and t in nws_s.prob:
             srcs["nws_pop"] = round(nws_s.prob[t], 2)
+        # each probabilistic signal on its own (v0.27): radar and the ensemble, never combined. Used only to say
+        # whether an hour can be called dry (card.py rain_signals); amounts, gear and levels still follow `primary`.
+        sig = {}
+        for key, ser in (("radar", radar), ("ensemble", ens)):
+            if ser and t in ser.members and ser.members[t]:
+                sig[key] = {"p": round(ser.p_exceed(t, cfg.any_in), 3), "mid": round(ser.values.get(t, 0.0), 3)}
+        sig_expected = ["ensemble"] + (["radar"] if radar_expected(t, now, cfg) else [])
         rows.append({
             "t": t.isoformat(), "label": fmt_hour(t, tz, now), "primary": prim.key,
+            "sig": sig, "sig_missing": [k for k in sig_expected if k not in sig],
             "p_heavy": p_heavy, "p_any": p_any,
             "p": {k: (None if v is None else round(v, 3)) for k, v in p_thr.items()},
             "lo": round(rng[0], 2), "mid": round(rng[1], 2), "hi": round(rng[2], 2),
@@ -301,6 +315,12 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
                 ([f"ensemble {ens_tot:.2f}\""] if ens_tot is not None else [])
                 + ([f"HRRR {hr_tot:.2f}\""] if hr_tot is not None else []))) if mods else "Models: no data for these hours",
             "agree": agree,
+            # structured form of the same comparison (additive, for the card's plain-language line): which way they
+            # disagree, over which hours, with the two amounts. No new thresholds: the 0.02" wet test and 3x rule above.
+            "agree_kind": (None if not r_rows else "radar_only" if rad_wet and not mod_wet else "models_only" if mod_wet and not rad_wet
+                           else "amount" if agree else "agree"),
+            "agree_hours": len(r_rows), "agree_radar_in": round(rad_tot, 2) if r_rows else None,
+            "agree_models_in": round(max(mods), 2) if mods else None,
             "quiet": (not rad_wet and not mod_wet and not agree and not (nc.dbz_now is not None and nc.dbz_now >= 15)),
         }
 

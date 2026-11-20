@@ -367,7 +367,9 @@ def test_live_card_heat_levels_and_calm():
     assert [card.heat_level(t) for t in (79, 80, 90, 100, None)] == [0, 1, 2, 3, 0]
     cfg = Config(lat=LAT, lon=LON)
     rep, *_ = _full_report(cfg, FakeSession(NOW))
-    dry = {**rep, "rows": [{**r, "p_any": 0.0, "p_heavy": 0.0, "levels": {}} for r in rep["rows"]]}
+    # dry in every signal, not just the primary (v0.27: radar and the ensemble each classify the hour)
+    dry = {**rep, "rows": [{**r, "p_any": 0.0, "p_heavy": 0.0, "levels": {},
+                            "sig": {k: {"p": 0.0, "mid": 0.0} for k in r.get("sig", {})}} for r in rep["rows"]]}
     calm = card.build(dry, _cond_for(dry, temp=65, code=0), cfg, NOW)
     assert calm["hazard"] == "none" and "timeline" not in calm and calm["insight"]["headline"] == "Dry for the next 3 days"
     hot = card.build(dry, _cond_for(dry, temp=101, code=0), cfg, NOW)

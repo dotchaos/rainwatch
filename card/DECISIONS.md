@@ -110,3 +110,93 @@
   Flooding, Do the sources agree?, Track record, About this forecast (#about). Every existing piece kept; no values change.
 - Scenario lab moves from the homepage's top bar to the last line of About this forecast.
 - Homepage gaps are listed in docs/pr-c/AUDIT.md as proposals, not implemented.
+
+## Option B rainfall timeline (2026-11-19, under review)
+Implements docs/spec-rainfall-timeline.md (PR #8, amended):
+- Fixed-height segments on a linear axis; width = duration, colour = existing three-tier intensity, text = amount.
+- Segments are a radio group, and selection is an outline only. The initial selection is the heaviest eligible interval, which drives the detail card. The heaviest-period outline and note come from the storm rule and need not match the selection.
+- The radar/model overlap is unchanged from production (PR #6/#7).
+- Hourly forecast at source resolution: one tile per model block, with the temperature at the block's start.
+- Looking ahead labels days inside the storm total's window. The hero states the total's window.
+- Order: Today, Flood risk (only when there is a signal), Going outside, Rainfall timeline, Flood risk (otherwise), Hourly, Looking ahead. Urgent flood guidance keeps its PR B prominence.
+## Reliability messaging (2026-11-19, under review)
+- Heavy rain now: "Heaviest rain is underway." then an easing time only when supported: a clock time at about/near
+  timing, a part of day at coarse timing, nothing when the heavy period runs past the forecast. The amount follows.
+- Official NWS alerts: a neutral panel naming the National Weather Service, above Today, for non-flood alerts.
+  Flood products stay in Flood risk's official state (not repeated). Rainwatch's own signals never use this panel.
+- Radar/model disagreement: the engine's next-hours comparison in plain words, no ratio. Shown when one source says
+  rain and the other dry, or when both say rain and the larger amount reaches 0.10" (Moderate tier) for the period.
+## Presentation refinement (2026-11-19, approved to implement)
+Forecast calculations, thresholds and the default selection are unchanged.
+- NWS alerts are a native disclosure in the Going outside surface. Collapsed it shows a count by product type
+  ("2 weather advisories", or "1 warning · 1 advisory" when mixed) and the product names, deduplicated, most
+  serious first. Expanded it lists each product with its expiry. "Until further notice" appears only when the
+  engine marks the alert open-ended. A link appears only for a verified api.weather.gov alert URL, carried as
+  additive engine data. A warning opens by default and has stronger emphasis.
+- The selected interval is one readout: the time and "intensity · source" on one row, then the amount and
+  "over N hours".
+- Source annotations are plain text: "Radar · hourly" and "Models · 3-hour intervals".
+- Hourly forecast: one continuous hourly scale with equal cells, each hour's own icon and temperature.
+  - Rain is one band per actual radar or model interval. A 3-hour amount appears once, with "3h total" and faint
+    hour guides, and is never repeated per hour.
+  - A model band shortened by radar hours keeps its amount, uses the
+    timeline's overlap hatching, and is not selectable. Its original range and total are stated in a left-aligned line beneath the grid: "Hatched model interval: 7–10 AM · 3h total (overlaps radar)" (range from the actual interval).
+  - At most 48 hours, ending where a complete interval ends. The line under it reads: "Radar is hourly.
+    Forecast amounts cover 3-hour periods."
+  - This supersedes the Option B hourly tiles (one tile per model block).
+- Screenshot fixture: the archived published card from Thu Nov 19, 7:57 AM (tools/archive_live.py; sha256 in
+  the data branch's archive_live.md).
+## Default selection only for a rain event (2026-11-19, approved)
+- An interval is selected automatically only when the engine classifies a rain event: hazard 'rain' or 'flood'
+  (some hour in the 72-hour outlook reaches "Umbrella or jacket"). The card adds no rainfall threshold of its own.
+- With hazard 'none' ("Dry…" / "Only a slight chance of showers") nothing is selected and no detail card shows.
+  The timeline and every eligible interval stay interactive, and details show normally once the reader chooses.
+- When a rain event exists, the default belongs to that event. The existing priority (heaviest intensity, then the
+  largest amount) applies only to eligible intervals whose hours overlap the engine's event hours: timeline.intervals,
+  the same stretches as rainTotals' startHour/endHour. If no eligible interval covers the event, nothing is selected.
+  On the Thu 7:57 AM card, 7–10 AM overlaps radar, so there is no fallback to Fri 4–7 AM.
+- Interval eligibility is unchanged, and the shortened overlap interval is never selectable. Manual selection works
+  on any eligible interval. The heaviest-period highlight is independent of the selection.
+- Keyboard: with nothing selected, Tab reaches the first eligible interval. Arrow keys move both the selection and
+  the focus.
+## Hourly forecast empty states (2026-11-19, approved design)
+- A zero-precipitation interval has no visible rectangle: the track stays empty, with no 0.00", dash or placeholder.
+  The interval keeps its place on the hourly scale. The track has no fill or guides of its own.
+- Positive amounts, 3-hour spans, radar hours and the radar/model overlap treatment are unchanged.
+- An hour with no precipitation value (no source interval, or a missing-data hour) is a hatched track labelled
+  "No data", never shown as dry and never inferred as zero.
+- When the forecast data stops before 48 hours, the hourly scale runs on through the missing hours (as No data, up
+  to 48) instead of ending where the data ends. Fully covered forecasts keep their 48-hour ending on a complete
+  interval.
+- Row height is fixed (46px) across dry, rain and missing intervals.
+## Near-term shower uncertainty (2026-11-19, approved direction, PR #20)
+- The engine classifies each hour as measurable, possible, dry or unknown (`rainSignals`, additive). Radar and the
+  ensemble are each judged on their own with the existing thresholds and are never combined:
+  - measurable: the primary source is wet (P(≥0.01") ≥ 0.5), the same test that sets gear;
+  - dry: every available signal has P ≤ 0.2 and a median under 0.01";
+  - possible: otherwise, or radar shows rain over the point now (engine `observed_now`, 15 dBZ, frame ≤ 20 min old);
+  - unknown: no radar or ensemble covers the hour. A missing source is never read as zero; NWS PoP and single model
+    runs are evidence only.
+- The rainfall timeline lead reads the states only:
+  - "Showers possible A–B[, then dry until T]" when the current or next hour is possible;
+  - "Dry until T" from the engine's dryUntilHour;
+  - neither when measurable rain starts within 6 hours, so storm guidance is unchanged.
+  - Ranges are whole classified hours.
+- The hazard-none headline says "Dry for the next 3 days" only when all 72 hours are covered and dry. Otherwise it
+  keeps the existing wordings: "Only a slight chance of showers", or "… through …" for incomplete coverage.
+- Possible showers never change amounts, gear, hazards, flood levels or the default selection. No trace (below 0.01")
+  threshold.
+## Rain-hazard dry wording follows the engine states (2026-11-19, approved)
+- A categorical dry sentence in the rain-hazard detail appears only when every hour of the period it names is `dry` in
+  `rainSignals`:
+  - "Dry after that." and the after half of "Dry before and after.": every hour to the end of the 72 hours;
+  - "Dry until then." and the before half: now until the rain;
+  - "Then dry …": the named stretch;
+  - "Dry in between.": the gaps between events.
+- Possible or unknown hours remove the sentence. Nothing replaces it: when the only thing cutting a dry stretch short is
+  possible or unknown hours, no shorter "Then dry …" is substituted.
+- The headline, gear, timing, amounts, probabilities, hazards and selection are unchanged. Cards without rainSignals
+  keep the earlier wording.
+## "Next rain" heading (2026-11-19, approved)
+- The rainfall timeline section heading reads "Next rain" (was "Rainfall timeline"). The section's content, selection
+  and accessibility wiring (`aria-labelledby="timeline-h"`) are unchanged.

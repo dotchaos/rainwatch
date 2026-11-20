@@ -45,6 +45,10 @@ export interface Evidence {
   potential?: { startHour: number; endHour: number; pBehindAny: number; pFloodAny: number; systems: number }[];
   /** Official NWS flood products in force (Flood Watch, Flash Flood Warning …), as hour offsets, end exclusive. */
   official?: { event: string; startHour: number; endHour: number }[];
+  /** Every active NWS alert (flood and non-flood), as issued; shown apart from Rainwatch's own signals (Nov 19). */
+  alerts?: { event: string; startHour: number; endHour: number; flood: boolean; severity?: string; open?: boolean; url?: string }[];
+  /** Radar vs models over the next hours, when they disagree (the engine's existing 0.02"/3x comparison). */
+  nearDisagree?: { kind: 'radar_only' | 'models_only' | 'amount'; hours: number; radarIn: number | null; modelsIn: number | null };
 }
 export interface Insight { headline: string; detail: string; }
 export interface Scenario {
@@ -77,6 +81,15 @@ export interface Scenario {
    * runs' own totals over the interval; intervals are independent and NOT scaled to add up to a stretch's total.
    * `partial`: the forecast's block runs past now or the radar. Hours with no interval have no forecast amount.
    */
+  /** Engine near-term rain states (v0.27, additive). Each hour classified from radar and the ensemble on their own;
+   *  the card reads `state` and `dryUntilHour` only and never compares probabilities itself. */
+  rainSignals?: {
+    measurableIn: number; dryP: number; wetP: number;
+    radar: { rainingNow: boolean | null; dbz: number | null; frameTime: string | null; minDbz: number | null; horizonHours: number };
+    hours: { hour: number; state: 'measurable' | 'possible' | 'dry' | 'unknown'; reasons: string[]; primary: string | null;
+             signals: Record<string, Record<string, unknown>>; unavailable: string[] }[];
+    dryUntilHour: number | null;
+  };
   rainBlocks?: { startHour: number; endHour: number; in: number; res: 1 | 3 | 6; partial?: boolean;
     /** Where the amount comes from (PR B): radar nowcast, the model blend, or NWS QPF. */
     src?: 'radar' | 'model' | 'nws';

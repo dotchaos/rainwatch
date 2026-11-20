@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import type { Scenario } from './types';
 import { scenarios } from './data/scenarios';
 import { NowAndNext, WeatherCard } from './components/WeatherCard';
-import { narrativeCases, stormCut, stormWed, stormWedNight } from './lib/cases';
+import { liveThu, liveThuLight, narrativeCases, shiftEarlier, stormCut, stormWed, stormWedNight } from './lib/cases';
 import { Timeline } from './components/Timeline';
 import { validateScenario } from './lib/rules';
 import { ageCard, elapsedHours, floodPotentials } from './lib/derive';
@@ -61,6 +61,10 @@ const EVENT_CASES:[string,string,()=>Scenario][]=[
  ['storm-night','Wednesday storm, live forecast Wed 12:51 AM',stormWedNight],
  ['storm-cut','Storm running past the forecast: data stops Thu 3 AM',()=>stormCut(40)],
  ['storm-peak','Display check only: the same storm IF two independent hourly systems agreed (hypothetical .40–.45")',()=>{const s=stormWed();s.peakRate={lo:0.4,hi:0.45,hour:21,systems:['ICON ensemble','HRRR']};return s;}],
+ ['storm-now','Display check: Wednesday storm with heavy rain now, plus a hypothetical Wind Advisory and a radar/model amount disagreement (illustrative)',()=>{const s=shiftEarlier(stormWed(),19);s.current={...s.current,condition:'Heavy rain',icon:'heavy-rain'};s.days=[{...s.days[0],icon:s.days[1].icon,description:s.days[1].description},...s.days.slice(1)];s.evidence={...s.evidence!,alerts:[{event:'Wind Advisory',startHour:0,endHour:8,flood:false}],nearDisagree:{kind:'amount',hours:2,radarIn:0.95,modelsIn:0.29}};return s;}],
+ ['live-thu','Published live card, Thu Nov 19 7:57 AM (archived)',liveThu],
+ ['live-thu-light','Published live card, Thu Nov 19 8:29 AM (archived)',liveThuLight],
+ ['coastal','Display check: ordinary rain with no street-flood signal and an active Coastal Flood Advisory (illustrative)',()=>{const s=structuredClone(scenarios.find(x=>x.id==='rain')!) as Scenario;s.evidence={...(s.evidence??{pHeavy:[]}),pFlood:Array(72).fill(0),alerts:[{event:'Coastal Flood Advisory',startHour:0,endHour:29,flood:false},{event:'High Surf Advisory',startHour:0,endHour:23,flood:false}]} as Scenario['evidence'];return s;}],
  ['storm-official','Extreme storm fixture (Flood Watch; no amounts in this fixture)',()=>structuredClone(scenarios.find(x=>x.id==='storm')!) as Scenario],
  ['heat','Heatwave fixture',()=>structuredClone(scenarios.find(x=>x.id==='heat')!) as Scenario],
  ['rain','Ordinary intermittent rain (rain fixture)',()=>structuredClone(scenarios.find(x=>x.id==='rain')!) as Scenario],
@@ -68,11 +72,11 @@ const EVENT_CASES:[string,string,()=>Scenario][]=[
  ['incomplete','Incomplete forecast fixture',()=>structuredClone(scenarios.find(x=>x.id==='incomplete')!) as Scenario],
 ];
 function EventLab(){
- const q=new URLSearchParams(location.search),id=q.get('case'),at=Number(q.get('at'));
+ const q=new URLSearchParams(location.search),id=q.get('case'),at=Number(q.get('at'));const sel=q.get("sel")===null?undefined:Number(q.get("sel"));
  // review aid: &at=N scrolls each hourly row so hour N is first in view
  useEffect(()=>{if(!at)return;document.querySelectorAll('.hours-scroll').forEach(el=>{const items=el.querySelectorAll('.hour');const it=items[at] as HTMLElement|undefined;if(it)el.scrollLeft=it.offsetLeft-(el as HTMLElement).offsetLeft-19;});},[at]);
  const rows=EVENT_CASES.filter(c=>!id||c[0]===id);
- return <main className="event-lab">{rows.map(([k,t,f])=>{const s=f(),err=validateScenario(s);return <section key={k} className="event-case"><h3>{t}</h3><WeatherCard scenario={s} potential="outline"/>{err.length>0&&<div className="validation">{err.join('; ')}</div>}</section>})}</main>}
+ return <main className="event-lab">{rows.map(([k,t,f])=>{const s=f(),err=validateScenario(s);return <section key={k} className="event-case"><h3>{t}</h3><WeatherCard scenario={s} potential="outline" selected={sel}/>{err.length>0&&<div className="validation">{err.join('; ')}</div>}</section>})}</main>}
 const lab=new URLSearchParams(location.search).has('lab');
 const eventLab=lab&&new URLSearchParams(location.search).has('event');
 const narrativeLab=lab&&new URLSearchParams(location.search).has('narrative');

@@ -73,7 +73,7 @@ describe('Today First (PR B): one forecast state', () => {
   });
   it('every scenario renders the Today First headings, in order', () => {
     for (const s of [...FOUR.map(byId), stormWed()]) {
-      const h = html(s), idx = ['Rainwatch', 'Weather when it matters', '>Today<', '>Going outside<', '>Hourly forecast<', '>Looking ahead<', 'Forecast evidence'].map(x => h.indexOf(x));
+      const h = html(s), idx = ['Rainwatch', 'Weather when it matters', '>Today<', '>Going outside<', '>Hourly forecast<', '>Looking ahead<', 'Forecast evidence →'].map(x => h.indexOf(x));
       expect(idx.every(i => i >= 0), s.id).toBe(true);
       expect([...idx].sort((a, b) => a - b), s.id).toEqual(idx);
       expect(h).not.toContain('Scenario lab');
@@ -124,7 +124,7 @@ describe('release check: one storm, one set of windows (Nov 18)', () => {
 describe('the rain chart never implies its intervals add up to the storm total', () => {
   it('Nov 18: the chart explains 2.14" of intervals vs the 2.7" total', () => {
     const h = html(stormWed());
-    const chart = h.slice(h.indexOf('class="today-rain"'), h.indexOf('id="flood-h"')).replace(/<!-- -->/g, '').replace(/&quot;/g, '"');
+    const i0 = h.indexOf('class="today-rain"'), chart = h.slice(i0, h.indexOf('</section>', i0)).replace(/<!-- -->/g, '').replace(/&quot;/g, '"');
     expect(chart).toContain('The interval amounts are not the storm total.');
     expect(chart).toMatch(/add up to 2\.14" from .* the storm total above is 2\.7"/);
     expect(chart).toContain('The total is the better guide to how much rain; the intervals show when.');

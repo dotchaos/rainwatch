@@ -100,6 +100,10 @@ def fetch(s, lat: float, lon: float) -> NwsBundle:
     al = get_json(s, f"{API}/alerts/active", point=f"{lat:.4f},{lon:.4f}")
     for f in al.get("features", []):
         pr = f["properties"]
-        b.alerts.append({k: pr.get(k) for k in
-                         ("id", "event", "headline", "severity", "onset", "ends", "expires", "senderName")})
+        a = {k: pr.get(k) for k in ("id", "event", "headline", "severity", "onset", "ends", "expires", "senderName")}
+        # the alert's own official NWS URL (the feature id), kept only when it is a weather.gov alert address
+        u = f.get("id")
+        if isinstance(u, str) and u.startswith("https://api.weather.gov/alerts/"):
+            a["url"] = u
+        b.alerts.append(a)
     return b
