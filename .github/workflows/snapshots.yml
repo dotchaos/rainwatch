@@ -1,10 +1,8 @@
 name: snapshots
 # Timestamped forecast snapshots for scoring the Nov 18–19 2026 storm (tools/snapshot.py; read-only, no page or alerts).
-# Tue Nov 17 6 PM and 9 PM, Wed Nov 18 4 AM and 7 AM Pacific (UTC below). Remove after the storm.
+# The Nov 18 schedule (Tue 6 PM, 9 PM, Wed 4 AM, 7 AM Pacific) ran; kept for manual snapshots of future storms.
 on:
-  schedule:
-    - cron: "0 2,5,12,15 18 11 *"
-  workflow_dispatch:
+  workflow_dispatch:   # manual only: the Nov 18 storm schedule was removed after the final evaluation (Nov 20)
 permissions:
   contents: write
 jobs:
