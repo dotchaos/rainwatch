@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-20T12:56:15.601482+00:00",
+ "generated": "2026-11-20T13:11:16.250691+00:00",
  "truth": "SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24)",
  "window_days": 60,
  "heavy_in": 0.2,
@@ -1774,7 +1774,7 @@
  "now_split_meta": {
   "corroborated_by": {
    "ensemble": 12,
-   "HRRR": 10,
+   "HRRR": 12,
    "ECMWF": 7,
    "NBM": 5,
    "Flood Advisory": 14,
