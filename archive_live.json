@@ -3,127 +3,127 @@
  "title": "Live",
  "season": "November",
  "location": "18th & Shotwell",
- "observedAt": "Thursday \u00b7 1:35 PM",
+ "observedAt": "Thursday \u00b7 4:58 PM",
  "startDay": "Thu",
- "startHourLocal": 13,
+ "startHourLocal": 16,
  "hazard": "rain",
  "startDate": "2026-11-19",
  "current": {
-  "temperatureF": 56,
-  "condition": "Cloudy",
-  "icon": "overcast",
-  "highF": 56,
+  "temperatureF": 53,
+  "condition": "Partly cloudy",
+  "icon": "partly-day",
+  "highF": 55,
   "lowF": 48
  },
  "hourly": [
   {
    "hour": 0,
-   "temperatureF": 56,
-   "icon": "overcast"
+   "temperatureF": 53,
+   "icon": "partly-day"
   },
   {
    "hour": 1,
-   "temperatureF": 56,
-   "icon": "rain"
-  },
-  {
-   "hour": 2,
-   "temperatureF": 54,
-   "icon": "overcast"
-  },
-  {
-   "hour": 3,
-   "temperatureF": 53,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 4,
    "temperatureF": 51,
    "icon": "clear-night"
   },
   {
-   "hour": 5,
+   "hour": 2,
+   "temperatureF": 51,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 3,
    "temperatureF": 50,
-   "icon": "overcast"
+   "icon": "clear-night"
+  },
+  {
+   "hour": 4,
+   "temperatureF": 50,
+   "icon": "partly-night"
+  },
+  {
+   "hour": 5,
+   "temperatureF": 49,
+   "icon": "clear-night"
   },
   {
    "hour": 6,
-   "temperatureF": 51,
+   "temperatureF": 49,
    "icon": "clear-night"
   },
   {
    "hour": 7,
-   "temperatureF": 50,
+   "temperatureF": 49,
    "icon": "clear-night"
   },
   {
    "hour": 8,
-   "temperatureF": 49,
+   "temperatureF": 48,
    "icon": "clear-night"
   },
   {
    "hour": 9,
    "temperatureF": 48,
-   "icon": "clear-night"
+   "icon": "overcast"
   },
   {
    "hour": 10,
    "temperatureF": 48,
-   "icon": "clear-night"
+   "icon": "partly-night"
   },
   {
    "hour": 11,
    "temperatureF": 48,
-   "icon": "clear-night"
+   "icon": "overcast"
   },
   {
    "hour": 12,
    "temperatureF": 48,
-   "icon": "clear-night"
+   "icon": "rain"
   },
   {
    "hour": 13,
    "temperatureF": 48,
-   "icon": "overcast"
+   "icon": "rain"
   },
   {
    "hour": 14,
    "temperatureF": 48,
-   "icon": "partly-night"
+   "icon": "rain"
   },
   {
    "hour": 15,
-   "temperatureF": 47,
-   "icon": "overcast"
-  },
-  {
-   "hour": 16,
    "temperatureF": 46,
    "icon": "overcast"
   },
   {
-   "hour": 17,
-   "temperatureF": 47,
-   "icon": "overcast"
-  },
-  {
-   "hour": 18,
-   "temperatureF": 47,
-   "icon": "overcast"
-  },
-  {
-   "hour": 19,
+   "hour": 16,
    "temperatureF": 48,
-   "icon": "partly-day"
+   "icon": "overcast"
   },
   {
-   "hour": 20,
+   "hour": 17,
    "temperatureF": 51,
    "icon": "partly-day"
   },
   {
-   "hour": 21,
+   "hour": 18,
    "temperatureF": 53,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 19,
+   "temperatureF": 55,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 20,
+   "temperatureF": 55,
+   "icon": "clear-day"
+  },
+  {
+   "hour": 21,
+   "temperatureF": 55,
    "icon": "clear-day"
   },
   {
@@ -138,72 +138,72 @@
   },
   {
    "hour": 24,
-   "temperatureF": 55,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 25,
-   "temperatureF": 55,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 26,
-   "temperatureF": 55,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 27,
    "temperatureF": 52,
    "icon": "clear-day"
   },
   {
-   "hour": 28,
+   "hour": 25,
    "temperatureF": 50,
    "icon": "clear-night"
   },
   {
-   "hour": 29,
+   "hour": 26,
    "temperatureF": 49,
    "icon": "clear-night"
   },
   {
-   "hour": 30,
+   "hour": 27,
    "temperatureF": 48,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 28,
+   "temperatureF": 48,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 29,
+   "temperatureF": 47,
+   "icon": "clear-night"
+  },
+  {
+   "hour": 30,
+   "temperatureF": 47,
    "icon": "clear-night"
   },
   {
    "hour": 31,
-   "temperatureF": 48,
-   "icon": "clear-night"
-  },
-  {
-   "hour": 32,
-   "temperatureF": 47,
-   "icon": "clear-night"
-  },
-  {
-   "hour": 33,
-   "temperatureF": 47,
-   "icon": "clear-night"
-  },
-  {
-   "hour": 34,
    "temperatureF": 46,
    "icon": "clear-night"
   },
   {
-   "hour": 35,
+   "hour": 32,
    "temperatureF": 45,
    "icon": "clear-night"
   },
   {
-   "hour": 36,
+   "hour": 33,
    "temperatureF": 45,
    "icon": "partly-night"
   },
   {
-   "hour": 37,
+   "hour": 34,
    "temperatureF": 45,
+   "icon": "overcast"
+  },
+  {
+   "hour": 35,
+   "temperatureF": 45,
+   "icon": "overcast"
+  },
+  {
+   "hour": 36,
+   "temperatureF": 44,
+   "icon": "overcast"
+  },
+  {
+   "hour": 37,
+   "temperatureF": 44,
    "icon": "overcast"
   },
   {
@@ -213,52 +213,52 @@
   },
   {
    "hour": 39,
-   "temperatureF": 44,
-   "icon": "overcast"
-  },
-  {
-   "hour": 40,
-   "temperatureF": 44,
-   "icon": "overcast"
-  },
-  {
-   "hour": 41,
-   "temperatureF": 45,
-   "icon": "overcast"
-  },
-  {
-   "hour": 42,
    "temperatureF": 46,
    "icon": "overcast"
   },
   {
-   "hour": 43,
+   "hour": 40,
    "temperatureF": 48,
    "icon": "overcast"
   },
   {
-   "hour": 44,
+   "hour": 41,
    "temperatureF": 50,
    "icon": "overcast"
   },
   {
-   "hour": 45,
+   "hour": 42,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 43,
    "temperatureF": 53,
    "icon": "overcast"
   },
   {
-   "hour": 46,
+   "hour": 44,
    "temperatureF": 56,
    "icon": "overcast"
   },
   {
-   "hour": 47,
+   "hour": 45,
    "temperatureF": 57,
    "icon": "overcast"
   },
   {
-   "hour": 48,
+   "hour": 46,
    "temperatureF": 57,
+   "icon": "overcast"
+  },
+  {
+   "hour": 47,
+   "temperatureF": 56,
+   "icon": "overcast"
+  },
+  {
+   "hour": 48,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
@@ -268,22 +268,22 @@
   },
   {
    "hour": 50,
-   "temperatureF": 55,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 51,
-   "temperatureF": 55,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 52,
-   "temperatureF": 54,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 53,
-   "temperatureF": 54,
+   "temperatureF": 55,
    "icon": "overcast"
   },
   {
@@ -293,72 +293,72 @@
   },
   {
    "hour": 55,
-   "temperatureF": 53,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 56,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 57,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 58,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 59,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 60,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 61,
-   "temperatureF": 51,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 62,
-   "temperatureF": 51,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 63,
-   "temperatureF": 52,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 64,
-   "temperatureF": 52,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 65,
-   "temperatureF": 52,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 66,
-   "temperatureF": 52,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 67,
-   "temperatureF": 52,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
    "hour": 68,
-   "temperatureF": 53,
+   "temperatureF": 54,
    "icon": "overcast"
   },
   {
@@ -368,206 +368,191 @@
   },
   {
    "hour": 70,
-   "temperatureF": 54,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 71,
-   "temperatureF": 55,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 72,
-   "temperatureF": 56,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 73,
-   "temperatureF": 56,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 74,
-   "temperatureF": 56,
+   "temperatureF": 53,
    "icon": "overcast"
   },
   {
    "hour": 75,
-   "temperatureF": 56,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 76,
-   "temperatureF": 55,
+   "temperatureF": 52,
    "icon": "overcast"
   },
   {
    "hour": 77,
-   "temperatureF": 54,
-   "icon": "clear-night"
+   "temperatureF": 52,
+   "icon": "overcast"
   },
   {
    "hour": 78,
-   "temperatureF": 54,
-   "icon": "partly-night"
+   "temperatureF": 51,
+   "icon": "clear-night"
   },
   {
    "hour": 79,
-   "temperatureF": 52,
-   "icon": "overcast"
+   "temperatureF": 51,
+   "icon": "clear-night"
   },
   {
    "hour": 80,
-   "temperatureF": 53,
-   "icon": "overcast"
+   "temperatureF": 50,
+   "icon": "clear-night"
   },
   {
    "hour": 81,
-   "temperatureF": 53,
-   "icon": "overcast"
+   "temperatureF": 50,
+   "icon": "clear-night"
   },
   {
    "hour": 82,
-   "temperatureF": 52,
-   "icon": "overcast"
+   "temperatureF": 50,
+   "icon": "clear-night"
   },
   {
    "hour": 83,
-   "temperatureF": 52,
-   "icon": "partly-night"
+   "temperatureF": 49,
+   "icon": "clear-night"
   },
   {
    "hour": 84,
-   "temperatureF": 51,
-   "icon": "partly-night"
+   "temperatureF": 49,
+   "icon": "clear-night"
   },
   {
    "hour": 85,
-   "temperatureF": 51,
-   "icon": "clear-night"
+   "temperatureF": 49,
+   "icon": "partly-night"
   },
   {
    "hour": 86,
-   "temperatureF": 50,
-   "icon": "clear-night"
+   "temperatureF": 49,
+   "icon": "overcast"
   },
   {
    "hour": 87,
-   "temperatureF": 50,
-   "icon": "clear-night"
+   "temperatureF": 48,
+   "icon": "overcast"
   },
   {
    "hour": 88,
    "temperatureF": 49,
-   "icon": "clear-night"
+   "icon": "overcast"
   },
   {
    "hour": 89,
-   "temperatureF": 49,
-   "icon": "clear-night"
+   "temperatureF": 50,
+   "icon": "overcast"
   },
   {
    "hour": 90,
-   "temperatureF": 49,
-   "icon": "clear-day"
+   "temperatureF": 52,
+   "icon": "overcast"
   },
   {
    "hour": 91,
-   "temperatureF": 49,
-   "icon": "clear-day"
+   "temperatureF": 53,
+   "icon": "overcast"
   },
   {
    "hour": 92,
-   "temperatureF": 51,
-   "icon": "clear-day"
+   "temperatureF": 54,
+   "icon": "overcast"
   },
   {
    "hour": 93,
-   "temperatureF": 52,
+   "temperatureF": 55,
    "icon": "overcast"
   },
   {
    "hour": 94,
-   "temperatureF": 53,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 95,
-   "temperatureF": 54,
+   "temperatureF": 56,
    "icon": "overcast"
   },
   {
    "hour": 96,
-   "temperatureF": 55,
-   "icon": "partly-day"
+   "temperatureF": 56,
+   "icon": "overcast"
   },
   {
    "hour": 97,
    "temperatureF": 56,
-   "icon": "clear-day"
-  },
-  {
-   "hour": 98,
-   "temperatureF": 56,
    "icon": "overcast"
   },
   {
-   "hour": 99,
-   "temperatureF": 57,
-   "icon": "partly-day"
-  },
-  {
-   "hour": 100,
-   "temperatureF": 56,
-   "icon": "clear-night"
-  },
-  {
-   "hour": 101,
+   "hour": 98,
    "temperatureF": 55,
    "icon": "overcast"
   },
   {
-   "hour": 102,
+   "hour": 99,
    "temperatureF": 54,
-   "icon": "clear-night"
+   "icon": "overcast"
+  },
+  {
+   "hour": 100,
+   "temperatureF": 53,
+   "icon": "overcast"
+  },
+  {
+   "hour": 101,
+   "temperatureF": 52,
+   "icon": "overcast"
+  },
+  {
+   "hour": 102,
+   "temperatureF": 52,
+   "icon": "overcast"
   },
   {
    "hour": 103,
-   "temperatureF": 53,
-   "icon": "partly-night"
-  },
-  {
-   "hour": 104,
-   "temperatureF": 53,
-   "icon": "partly-night"
-  },
-  {
-   "hour": 105,
-   "temperatureF": 52,
-   "icon": "overcast"
-  },
-  {
-   "hour": 106,
-   "temperatureF": 52,
-   "icon": "overcast"
+   "temperatureF": 51,
+   "icon": "clear-night"
   }
  ],
  "days": [
   {
    "label": "Today",
-   "description": "Rain at times",
-   "icon": "rain",
+   "description": "Cloudy",
+   "icon": "overcast",
    "lowF": 48,
-   "highF": 56,
-   "rainIn": 0.03
+   "highF": 55,
+   "rainIn": 0.0
   },
   {
    "label": "Tomorrow",
-   "description": "Cloudy",
-   "icon": "overcast",
+   "description": "Rain at times",
+   "icon": "rain",
    "lowF": 45,
    "highF": 55,
-   "rainIn": 0.08
+   "rainIn": 0.09
   },
   {
    "label": "Saturday",
@@ -575,47 +560,47 @@
    "icon": "overcast",
    "lowF": 44,
    "highF": 57,
-   "rainIn": 0.08
+   "rainIn": 0.09
   },
   {
    "label": "Sunday",
    "description": "Cloudy",
    "icon": "overcast",
-   "lowF": 51,
-   "highF": 56,
-   "rainIn": 0.04
+   "lowF": 50,
+   "highF": 54,
+   "rainIn": 0.08
   },
   {
    "label": "Monday",
    "description": "Cloudy",
    "icon": "overcast",
-   "lowF": 49,
-   "highF": 57,
+   "lowF": 48,
+   "highF": 56,
    "rainIn": 0.0
   }
  ],
  "observedNow": {
   "rainingNow": null,
-  "recentRain": null
+  "recentRain": false
  },
  "rainHours": [
   {
-   "startHour": 1,
-   "endHour": 2,
+   "startHour": 12,
+   "endHour": 15,
    "intensity": 1
   }
  ],
  "provenance": {
   "type": "live",
-  "generated": "2026-11-19T21:35:54.835340+00:00",
+  "generated": "2026-11-20T00:58:39.752410+00:00",
   "note": "Live forecast from NWS, Open-Meteo models and radar. Not an official warning."
  },
  "timeline": {
   "title": "Rain outlook",
   "intervals": [
    {
-    "startHour": 1,
-    "endHour": 2,
+    "startHour": 12,
+    "endHour": 15,
     "severity": 1,
     "confidence": "unknown",
     "pattern": "steady"
@@ -624,11 +609,11 @@
  },
  "rainTotals": [
   {
-   "startHour": 1,
-   "endHour": 2,
-   "medianIn": 0.03,
-   "fromHour": 0,
-   "toHour": 11
+   "startHour": 12,
+   "endHour": 15,
+   "medianIn": 0.09,
+   "fromHour": 8,
+   "toHour": 32
   }
  ],
  "rainBlocks": [
@@ -642,7 +627,7 @@
   {
    "startHour": 1,
    "endHour": 2,
-   "in": 0.02,
+   "in": 0.0,
    "res": 1,
    "src": "radar"
   },
@@ -673,28 +658,28 @@
   {
    "startHour": 9,
    "endHour": 12,
-   "in": 0.0,
+   "in": 0.012,
    "res": 3,
    "src": "model"
   },
   {
    "startHour": 12,
    "endHour": 15,
-   "in": 0.012,
+   "in": 0.036,
    "res": 3,
    "src": "model"
   },
   {
    "startHour": 15,
    "endHour": 18,
-   "in": 0.024,
+   "in": 0.022,
    "res": 3,
    "src": "model"
   },
   {
    "startHour": 18,
    "endHour": 21,
-   "in": 0.012,
+   "in": 0.0,
    "res": 3,
    "src": "model"
   },
@@ -764,7 +749,7 @@
   {
    "startHour": 48,
    "endHour": 51,
-   "in": 0.0,
+   "in": 0.012,
    "res": 3,
    "src": "model"
   },
@@ -778,7 +763,7 @@
   {
    "startHour": 54,
    "endHour": 57,
-   "in": 0.012,
+   "in": 0.0,
    "res": 3,
    "src": "model"
   },
@@ -889,19 +874,12 @@
   },
   {
    "startHour": 102,
-   "endHour": 105,
-   "in": 0.0,
-   "res": 3,
-   "src": "model"
-  },
-  {
-   "startHour": 105,
-   "endHour": 107,
+   "endHour": 104,
    "in": 0.0,
    "res": 3,
    "src": "model",
-   "blockStartHour": 105,
-   "blockEndHour": 108,
+   "blockStartHour": 102,
+   "blockEndHour": 105,
    "partial": true
   }
  ],
@@ -912,28 +890,21 @@
     "system": "ICON ensemble",
     "family": "ens:icon_seamless",
     "in": 0.0,
-    "hour": 1,
+    "hour": 12,
     "kind": "ensemble median of run peaks"
    },
    {
     "system": "HRRR",
     "family": "NCEP high-resolution (HRRR/NBM)",
     "in": 0.0,
-    "hour": 1,
+    "hour": 12,
     "kind": "heaviest hour"
    },
    {
     "system": "NBM",
     "family": "NCEP high-resolution (HRRR/NBM)",
-    "in": 0.0,
-    "hour": 1,
-    "kind": "heaviest hour"
-   },
-   {
-    "system": "Radar nowcast",
-    "family": "radar",
-    "in": 0.022,
-    "hour": 1,
+    "in": 0.059,
+    "hour": 12,
     "kind": "heaviest hour"
    }
   ],
@@ -1245,7 +1216,7 @@
    {
     "event": "Coastal Flood Advisory",
     "startHour": 0,
-    "endHour": 46,
+    "endHour": 43,
     "flood": false,
     "severity": "Minor",
     "url": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.4d9fcaca5d239928ede605f4f5736c6c55ee00e1.001.2"
@@ -1253,18 +1224,12 @@
    {
     "event": "High Surf Advisory",
     "startHour": 0,
-    "endHour": 15,
+    "endHour": 12,
     "flood": false,
     "severity": "Minor",
     "url": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.4d9fcaca5d239928ede605f4f5736c6c55ee00e1.001.3"
    }
-  ],
-  "nearDisagree": {
-   "kind": "radar_only",
-   "hours": 2,
-   "radarIn": 0.02,
-   "modelsIn": 0.0
-  }
+  ]
  },
  "rainSignals": {
   "measurableIn": 0.01,
@@ -1285,17 +1250,17 @@
     "primary": "radar",
     "signals": {
      "radar": {
-      "pMeasurable": 0.037,
-      "medianIn": 0.001,
+      "pMeasurable": 0.0,
+      "medianIn": 0.0,
       "window": "latest frame to end of hour"
      },
      "ensemble": {
-      "pMeasurable": 0.074,
+      "pMeasurable": 0.008,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.007,
-      "pop": 0.25,
+      "qpfIn": 0.0,
+      "pop": 0.08,
       "classifies": false
      }
     },
@@ -1303,23 +1268,21 @@
    },
    {
     "hour": 1,
-    "state": "measurable",
-    "reasons": [
-     "radar"
-    ],
+    "state": "dry",
+    "reasons": [],
     "primary": "radar",
     "signals": {
      "radar": {
-      "pMeasurable": 0.833,
-      "medianIn": 0.022
+      "pMeasurable": 0.014,
+      "medianIn": 0.0
      },
      "ensemble": {
-      "pMeasurable": 0.074,
+      "pMeasurable": 0.008,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.007,
-      "pop": 0.13,
+      "qpfIn": 0.0,
+      "pop": 0.06,
       "classifies": false
      }
     },
@@ -1332,12 +1295,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.066,
+      "pMeasurable": 0.008,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.007,
-      "pop": 0.12,
+      "qpfIn": 0.0,
+      "pop": 0.11,
       "classifies": false
      }
     },
@@ -1373,7 +1336,7 @@
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.06,
+      "pop": 0.05,
       "classifies": false
      }
     },
@@ -1391,7 +1354,7 @@
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.11,
+      "pop": 0.05,
       "classifies": false
      }
     },
@@ -1404,12 +1367,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.0,
+      "pMeasurable": 0.025,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.0,
-      "pop": 0.08,
+      "qpfIn": 0.008,
+      "pop": 0.14,
       "classifies": false
      }
     },
@@ -1422,12 +1385,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.0,
+      "pMeasurable": 0.025,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.0,
-      "pop": 0.05,
+      "qpfIn": 0.008,
+      "pop": 0.15,
       "classifies": false
      }
     },
@@ -1440,61 +1403,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.0,
-      "medianIn": 0.0
-     },
-     "nws": {
-      "qpfIn": 0.0,
-      "pop": 0.05,
-      "classifies": false
-     }
-    },
-    "unavailable": []
-   },
-   {
-    "hour": 9,
-    "state": "dry",
-    "reasons": [],
-    "primary": "ens",
-    "signals": {
-     "ensemble": {
-      "pMeasurable": 0.057,
-      "medianIn": 0.0
-     },
-     "nws": {
-      "qpfIn": 0.008,
-      "pop": 0.14,
-      "classifies": false
-     }
-    },
-    "unavailable": []
-   },
-   {
-    "hour": 10,
-    "state": "dry",
-    "reasons": [],
-    "primary": "ens",
-    "signals": {
-     "ensemble": {
-      "pMeasurable": 0.057,
-      "medianIn": 0.0
-     },
-     "nws": {
-      "qpfIn": 0.008,
-      "pop": 0.15,
-      "classifies": false
-     }
-    },
-    "unavailable": []
-   },
-   {
-    "hour": 11,
-    "state": "dry",
-    "reasons": [],
-    "primary": "ens",
-    "signals": {
-     "ensemble": {
-      "pMeasurable": 0.066,
+      "pMeasurable": 0.033,
       "medianIn": 0.0
      },
      "nws": {
@@ -1506,47 +1415,7 @@
     "unavailable": []
    },
    {
-    "hour": 12,
-    "state": "possible",
-    "reasons": [
-     "ensemble"
-    ],
-    "primary": "ens",
-    "signals": {
-     "ensemble": {
-      "pMeasurable": 0.213,
-      "medianIn": 0.0
-     },
-     "nws": {
-      "qpfIn": 0.008,
-      "pop": 0.31,
-      "classifies": false
-     }
-    },
-    "unavailable": []
-   },
-   {
-    "hour": 13,
-    "state": "possible",
-    "reasons": [
-     "ensemble"
-    ],
-    "primary": "ens",
-    "signals": {
-     "ensemble": {
-      "pMeasurable": 0.262,
-      "medianIn": 0.004
-     },
-     "nws": {
-      "qpfIn": 0.008,
-      "pop": 0.44,
-      "classifies": false
-     }
-    },
-    "unavailable": []
-   },
-   {
-    "hour": 14,
+    "hour": 9,
     "state": "possible",
     "reasons": [
      "ensemble"
@@ -1559,7 +1428,107 @@
      },
      "nws": {
       "qpfIn": 0.008,
+      "pop": 0.31,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 10,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.295,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.008,
+      "pop": 0.44,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 11,
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.279,
+      "medianIn": 0.004
+     },
+     "nws": {
+      "qpfIn": 0.008,
       "pop": 0.59,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 12,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.516,
+      "medianIn": 0.012
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.56,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 13,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.516,
+      "medianIn": 0.012
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.67,
+      "classifies": false
+     }
+    },
+    "unavailable": []
+   },
+   {
+    "hour": 14,
+    "state": "measurable",
+    "reasons": [
+     "ensemble"
+    ],
+    "primary": "ens",
+    "signals": {
+     "ensemble": {
+      "pMeasurable": 0.525,
+      "medianIn": 0.012
+     },
+     "nws": {
+      "qpfIn": 0.022,
+      "pop": 0.5,
       "classifies": false
      }
     },
@@ -1574,12 +1543,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.402,
+      "pMeasurable": 0.352,
       "medianIn": 0.008
      },
      "nws": {
       "qpfIn": 0.022,
-      "pop": 0.56,
+      "pop": 0.26,
       "classifies": false
      }
     },
@@ -1594,12 +1563,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.402,
+      "pMeasurable": 0.361,
       "medianIn": 0.008
      },
      "nws": {
       "qpfIn": 0.022,
-      "pop": 0.67,
+      "pop": 0.23,
       "classifies": false
      }
     },
@@ -1614,12 +1583,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.41,
+      "pMeasurable": 0.352,
       "medianIn": 0.008
      },
      "nws": {
       "qpfIn": 0.022,
-      "pop": 0.5,
+      "pop": 0.13,
       "classifies": false
      }
     },
@@ -1627,19 +1596,17 @@
    },
    {
     "hour": 18,
-    "state": "possible",
-    "reasons": [
-     "ensemble"
-    ],
+    "state": "dry",
+    "reasons": [],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.311,
-      "medianIn": 0.004
+      "pMeasurable": 0.131,
+      "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.022,
-      "pop": 0.26,
+      "qpfIn": 0.0,
+      "pop": 0.05,
       "classifies": false
      }
     },
@@ -1647,19 +1614,17 @@
    },
    {
     "hour": 19,
-    "state": "possible",
-    "reasons": [
-     "ensemble"
-    ],
+    "state": "dry",
+    "reasons": [],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.32,
-      "medianIn": 0.004
+      "pMeasurable": 0.123,
+      "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.022,
-      "pop": 0.23,
+      "qpfIn": 0.0,
+      "pop": 0.04,
       "classifies": false
      }
     },
@@ -1667,19 +1632,17 @@
    },
    {
     "hour": 20,
-    "state": "possible",
-    "reasons": [
-     "ensemble"
-    ],
+    "state": "dry",
+    "reasons": [],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.311,
-      "medianIn": 0.004
+      "pMeasurable": 0.123,
+      "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.022,
-      "pop": 0.13,
+      "qpfIn": 0.0,
+      "pop": 0.02,
       "classifies": false
      }
     },
@@ -1692,12 +1655,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.098,
+      "pMeasurable": 0.0,
       "medianIn": 0.0
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.05,
+      "pop": 0.0,
       "classifies": false
      }
     },
@@ -1710,12 +1673,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.09,
+      "pMeasurable": 0.0,
       "medianIn": 0.0
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.04,
+      "pop": 0.0,
       "classifies": false
      }
     },
@@ -1728,12 +1691,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.09,
+      "pMeasurable": 0.0,
       "medianIn": 0.0
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.02,
+      "pop": 0.0,
       "classifies": false
      }
     },
@@ -1746,7 +1709,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.008,
+      "pMeasurable": 0.0,
       "medianIn": 0.0
      },
      "nws": {
@@ -1764,7 +1727,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.008,
+      "pMeasurable": 0.0,
       "medianIn": 0.0
      },
      "nws": {
@@ -1782,7 +1745,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.008,
+      "pMeasurable": 0.0,
       "medianIn": 0.0
      },
      "nws": {
@@ -1949,7 +1912,7 @@
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.0,
+      "pop": 0.01,
       "classifies": false
      }
     },
@@ -1967,7 +1930,7 @@
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.0,
+      "pop": 0.01,
       "classifies": false
      }
     },
@@ -1985,7 +1948,7 @@
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.0,
+      "pop": 0.01,
       "classifies": false
      }
     },
@@ -2070,12 +2033,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.0,
+      "pMeasurable": 0.025,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.0,
-      "pop": 0.01,
+      "qpfIn": 0.003,
+      "pop": 0.48,
       "classifies": false
      }
     },
@@ -2088,12 +2051,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.0,
+      "pMeasurable": 0.025,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.0,
-      "pop": 0.01,
+      "qpfIn": 0.003,
+      "pop": 0.48,
       "classifies": false
      }
     },
@@ -2106,12 +2069,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.0,
+      "pMeasurable": 0.025,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.0,
-      "pop": 0.01,
+      "qpfIn": 0.003,
+      "pop": 0.48,
       "classifies": false
      }
     },
@@ -2124,7 +2087,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.033,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
@@ -2142,7 +2105,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.033,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
@@ -2160,7 +2123,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.033,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
@@ -2173,17 +2136,19 @@
    },
    {
     "hour": 48,
-    "state": "dry",
-    "reasons": [],
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.18,
-      "medianIn": 0.0
+      "pMeasurable": 0.303,
+      "medianIn": 0.004
      },
      "nws": {
-      "qpfIn": 0.003,
-      "pop": 0.48,
+      "qpfIn": 0.023,
+      "pop": 0.87,
       "classifies": false
      }
     },
@@ -2191,17 +2156,19 @@
    },
    {
     "hour": 49,
-    "state": "dry",
-    "reasons": [],
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.18,
-      "medianIn": 0.0
+      "pMeasurable": 0.303,
+      "medianIn": 0.004
      },
      "nws": {
-      "qpfIn": 0.003,
-      "pop": 0.48,
+      "qpfIn": 0.023,
+      "pop": 0.87,
       "classifies": false
      }
     },
@@ -2209,17 +2176,19 @@
    },
    {
     "hour": 50,
-    "state": "dry",
-    "reasons": [],
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.18,
-      "medianIn": 0.0
+      "pMeasurable": 0.303,
+      "medianIn": 0.004
      },
      "nws": {
-      "qpfIn": 0.003,
-      "pop": 0.48,
+      "qpfIn": 0.023,
+      "pop": 0.87,
       "classifies": false
      }
     },
@@ -2234,7 +2203,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.279,
+      "pMeasurable": 0.352,
       "medianIn": 0.004
      },
      "nws": {
@@ -2254,7 +2223,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.279,
+      "pMeasurable": 0.352,
       "medianIn": 0.004
      },
      "nws": {
@@ -2274,7 +2243,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.279,
+      "pMeasurable": 0.352,
       "medianIn": 0.004
      },
      "nws": {
@@ -2294,12 +2263,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.287,
-      "medianIn": 0.004
+      "pMeasurable": 0.246,
+      "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.023,
-      "pop": 0.87,
+      "qpfIn": 0.002,
+      "pop": 0.27,
       "classifies": false
      }
     },
@@ -2314,12 +2283,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.287,
-      "medianIn": 0.004
+      "pMeasurable": 0.246,
+      "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.023,
-      "pop": 0.87,
+      "qpfIn": 0.002,
+      "pop": 0.27,
       "classifies": false
      }
     },
@@ -2334,12 +2303,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.287,
-      "medianIn": 0.004
+      "pMeasurable": 0.246,
+      "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.023,
-      "pop": 0.87,
+      "qpfIn": 0.002,
+      "pop": 0.27,
       "classifies": false
      }
     },
@@ -2352,7 +2321,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.197,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
@@ -2370,7 +2339,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.197,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
@@ -2388,7 +2357,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.197,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
@@ -2406,12 +2375,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.123,
+      "pMeasurable": 0.156,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.002,
-      "pop": 0.27,
+      "qpfIn": 0.0,
+      "pop": 0.19,
       "classifies": false
      }
     },
@@ -2424,12 +2393,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.123,
+      "pMeasurable": 0.156,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.002,
-      "pop": 0.27,
+      "qpfIn": 0.0,
+      "pop": 0.19,
       "classifies": false
      }
     },
@@ -2442,12 +2411,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.123,
+      "pMeasurable": 0.156,
       "medianIn": 0.0
      },
      "nws": {
-      "qpfIn": 0.002,
-      "pop": 0.27,
+      "qpfIn": 0.0,
+      "pop": 0.19,
       "classifies": false
      }
     },
@@ -2460,7 +2429,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.107,
+      "pMeasurable": 0.115,
       "medianIn": 0.0
      },
      "nws": {
@@ -2478,7 +2447,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.107,
+      "pMeasurable": 0.115,
       "medianIn": 0.0
      },
      "nws": {
@@ -2496,7 +2465,7 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.107,
+      "pMeasurable": 0.115,
       "medianIn": 0.0
      },
      "nws": {
@@ -2514,12 +2483,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.098,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.19,
+      "pop": 0.29,
       "classifies": false
      }
     },
@@ -2532,12 +2501,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.098,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.19,
+      "pop": 0.29,
       "classifies": false
      }
     },
@@ -2550,12 +2519,12 @@
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.098,
+      "pMeasurable": 0.164,
       "medianIn": 0.0
      },
      "nws": {
       "qpfIn": 0.0,
-      "pop": 0.19,
+      "pop": 0.29,
       "classifies": false
      }
     },
@@ -2563,12 +2532,14 @@
    },
    {
     "hour": 69,
-    "state": "dry",
-    "reasons": [],
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.172,
+      "pMeasurable": 0.238,
       "medianIn": 0.0
      },
      "nws": {
@@ -2581,12 +2552,14 @@
    },
    {
     "hour": 70,
-    "state": "dry",
-    "reasons": [],
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.172,
+      "pMeasurable": 0.238,
       "medianIn": 0.0
      },
      "nws": {
@@ -2599,12 +2572,14 @@
    },
    {
     "hour": 71,
-    "state": "dry",
-    "reasons": [],
+    "state": "possible",
+    "reasons": [
+     "ensemble"
+    ],
     "primary": "ens",
     "signals": {
      "ensemble": {
-      "pMeasurable": 0.172,
+      "pMeasurable": 0.238,
       "medianIn": 0.0
      },
      "nws": {
@@ -2616,19 +2591,19 @@
     "unavailable": []
    }
   ],
-  "dryUntilHour": 1
+  "dryUntilHour": 9
  },
  "_strip_check": [
   {
    "date": "2026-11-19",
    "complete": true,
-   "wet_hours": 1,
-   "top_intensity": 1,
-   "total_p10": 0.023,
-   "total_p50": 0.027,
-   "total_p90": 0.043,
-   "sum_hourly_medians": 0.02,
-   "strip_sum": 0.02,
+   "wet_hours": 0,
+   "top_intensity": 0,
+   "total_p10": 0.0,
+   "total_p50": 0.0,
+   "total_p90": 0.008,
+   "sum_hourly_medians": 0,
+   "strip_sum": 0,
    "runs_in_wet_hours": null,
    "outside_wet_hours": null,
    "strip_heavy_hours": 0,
@@ -2650,15 +2625,15 @@
   {
    "date": "2026-11-20",
    "complete": true,
-   "wet_hours": 0,
-   "top_intensity": 0,
-   "total_p10": 0.0,
-   "total_p50": 0.076,
-   "total_p90": 0.229,
-   "sum_hourly_medians": 0.03,
-   "strip_sum": 0,
-   "runs_in_wet_hours": null,
-   "outside_wet_hours": null,
+   "wet_hours": 3,
+   "top_intensity": 1,
+   "total_p10": 0.004,
+   "total_p50": 0.09,
+   "total_p90": 0.281,
+   "sum_hourly_medians": 0.06,
+   "strip_sum": 0.03,
+   "runs_in_wet_hours": 0.04,
+   "outside_wet_hours": 0.05,
    "strip_heavy_hours": 0,
    "strip_moderate_plus_hours": 0,
    "runs_heavy_hours_p50_p75": [
@@ -2680,8 +2655,8 @@
    "wet_hours": 0,
    "top_intensity": 0,
    "total_p10": 0.0,
-   "total_p50": 0.082,
-   "total_p90": 0.193,
+   "total_p50": 0.086,
+   "total_p90": 0.232,
    "sum_hourly_medians": 0,
    "strip_sum": 0,
    "runs_in_wet_hours": null,
@@ -2707,8 +2682,8 @@
    "wet_hours": 0,
    "top_intensity": 0,
    "total_p10": 0.0,
-   "total_p50": 0.04,
-   "total_p90": 0.244,
+   "total_p50": 0.082,
+   "total_p90": 0.335,
    "sum_hourly_medians": 0,
    "strip_sum": 0,
    "runs_in_wet_hours": null,
@@ -2735,7 +2710,7 @@
    "top_intensity": 0,
    "total_p10": 0.0,
    "total_p50": 0.0,
-   "total_p90": 0.032,
+   "total_p90": 0.06,
    "sum_hourly_medians": 0,
    "strip_sum": 0,
    "runs_in_wet_hours": null,
@@ -2759,13 +2734,13 @@
  "_diagnostics": {
   "rain_periods": [
    {
-    "start": 1,
-    "end": 2,
+    "start": 12,
+    "end": 15,
     "bridged": false,
-    "runs_with_break": null,
+    "runs_with_break": 0.0,
     "pattern": "steady",
-    "start_local": "Thu 2 PM",
-    "end_local": "Thu 3 PM"
+    "start_local": "Fri 4 AM",
+    "end_local": "Fri 7 AM"
    }
   ]
  }
