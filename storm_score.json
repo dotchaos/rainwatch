@@ -1,6 +1,6 @@
 {
- "scored_at": "2026-11-19T17:01:04.398674+00:00",
- "gauge_observed_through": "2026-11-19T17:00:00+00:00",
+ "scored_at": "2026-11-20T17:01:40.003892+00:00",
+ "gauge_observed_through": "2026-11-20T17:00:00+00:00",
  "snapshots": [
   {
    "snapshot": "2026-11-17T19:53:59.367586+00:00",
@@ -23,9 +23,9 @@
       "toHour": 61
      }
     ],
-    "gauge": 3.18,
-    "coverage": "INCOMPLETE (33/48 h observed)",
-    "inside_p10_p90": null
+    "gauge": 3.2,
+    "coverage": "complete",
+    "inside_p10_p90": true
    },
    "blocks": [
     {
@@ -134,7 +134,7 @@
      "p10": 0.024,
      "p90": 0.317,
      "gauge": 0.06,
-     "coverage": "INCOMPLETE (2/3 h observed)"
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
@@ -142,8 +142,8 @@
      "forecast": 0.036,
      "p10": 0.0,
      "p90": 0.26,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
@@ -151,8 +151,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.024,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
@@ -160,8 +160,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.011,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
@@ -169,8 +169,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
@@ -178,8 +178,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     }
    ],
    "peak": {
@@ -209,7 +209,7 @@
      }
     ],
     "card_showed_rate": null,
-    "coverage": "INCOMPLETE (33/48 h observed)"
+    "coverage": "complete"
    },
    "timing": {
     "onset": {
@@ -230,8 +230,8 @@
     },
     "end": {
      "forecast": "Thu 1 PM",
-     "gauge_last_wet_hour": "Thu 7 AM",
-     "note": "end not yet observable"
+     "gauge_last_wet_hour": "Thu 10 PM",
+     "note": ""
     }
    },
    "flood": [
@@ -284,9 +284,9 @@
       "toHour": 48
      }
     ],
-    "gauge": 3.18,
-    "coverage": "INCOMPLETE (33/48 h observed)",
-    "inside_p10_p90": null
+    "gauge": 3.2,
+    "coverage": "complete",
+    "inside_p10_p90": true
    },
    "blocks": [
     {
@@ -404,7 +404,7 @@
      "p10": 0.036,
      "p90": 0.282,
      "gauge": 0.06,
-     "coverage": "INCOMPLETE (2/3 h observed)"
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
@@ -412,8 +412,8 @@
      "forecast": 0.048,
      "p10": 0.008,
      "p90": 0.16,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
@@ -421,8 +421,8 @@
      "forecast": 0.012,
      "p10": 0.0,
      "p90": 0.039,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
@@ -430,8 +430,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
@@ -439,8 +439,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
@@ -448,8 +448,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     }
    ],
    "peak": {
@@ -488,7 +488,7 @@
       "NBM"
      ]
     },
-    "coverage": "INCOMPLETE (33/48 h observed)"
+    "coverage": "complete"
    },
    "timing": {
     "onset": {
@@ -509,8 +509,8 @@
     },
     "end": {
      "forecast": "Thu 1 PM",
-     "gauge_last_wet_hour": "Thu 7 AM",
-     "note": "end not yet observable"
+     "gauge_last_wet_hour": "Thu 10 PM",
+     "note": ""
     }
    },
    "flood": [
@@ -564,9 +564,9 @@
       "toHour": 47
      }
     ],
-    "gauge": 3.18,
-    "coverage": "INCOMPLETE (32/47 h observed)",
-    "inside_p10_p90": null
+    "gauge": 3.2,
+    "coverage": "complete",
+    "inside_p10_p90": true
    },
    "blocks": [
     {
@@ -684,7 +684,7 @@
      "p10": 0.036,
      "p90": 0.282,
      "gauge": 0.06,
-     "coverage": "INCOMPLETE (2/3 h observed)"
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
@@ -692,8 +692,8 @@
      "forecast": 0.048,
      "p10": 0.008,
      "p90": 0.16,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
@@ -701,8 +701,8 @@
      "forecast": 0.012,
      "p10": 0.0,
      "p90": 0.039,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
@@ -710,8 +710,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
@@ -719,8 +719,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.0,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
@@ -728,8 +728,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     }
    ],
    "peak": {
@@ -749,7 +749,7 @@
      }
     ],
     "card_showed_rate": null,
-    "coverage": "INCOMPLETE (32/47 h observed)"
+    "coverage": "complete"
    },
    "timing": {
     "onset": {
@@ -770,8 +770,8 @@
     },
     "end": {
      "forecast": "Thu 1 PM",
-     "gauge_last_wet_hour": "Thu 7 AM",
-     "note": "end not yet observable"
+     "gauge_last_wet_hour": "Thu 10 PM",
+     "note": ""
     }
    },
    "flood": [
@@ -825,9 +825,9 @@
       "toHour": 45
      }
     ],
-    "gauge": 3.17,
-    "coverage": "INCOMPLETE (30/45 h observed)",
-    "inside_p10_p90": null
+    "gauge": 3.19,
+    "coverage": "complete",
+    "inside_p10_p90": true
    },
    "blocks": [
     {
@@ -936,7 +936,7 @@
      "p10": 0.048,
      "p90": 0.33,
      "gauge": 0.06,
-     "coverage": "INCOMPLETE (2/3 h observed)"
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
@@ -944,8 +944,8 @@
      "forecast": 0.055,
      "p10": 0.0,
      "p90": 0.203,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
@@ -953,8 +953,8 @@
      "forecast": 0.012,
      "p10": 0.0,
      "p90": 0.048,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
@@ -962,8 +962,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
@@ -971,8 +971,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
@@ -980,8 +980,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.024,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     }
    ],
    "peak": {
@@ -1001,7 +1001,7 @@
      }
     ],
     "card_showed_rate": null,
-    "coverage": "INCOMPLETE (30/45 h observed)"
+    "coverage": "complete"
    },
    "timing": {
     "onset": {
@@ -1022,8 +1022,8 @@
     },
     "end": {
      "forecast": "Thu 1 PM",
-     "gauge_last_wet_hour": "Thu 7 AM",
-     "note": "end not yet observable"
+     "gauge_last_wet_hour": "Thu 10 PM",
+     "note": ""
     }
    },
    "flood": [
@@ -1078,9 +1078,9 @@
       "toHour": 42
      }
     ],
-    "gauge": 2.97,
-    "coverage": "INCOMPLETE (27/42 h observed)",
-    "inside_p10_p90": null
+    "gauge": 2.99,
+    "coverage": "complete",
+    "inside_p10_p90": true
    },
    "blocks": [
     {
@@ -1180,7 +1180,7 @@
      "p10": 0.048,
      "p90": 0.33,
      "gauge": 0.06,
-     "coverage": "INCOMPLETE (2/3 h observed)"
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
@@ -1188,8 +1188,8 @@
      "forecast": 0.055,
      "p10": 0.0,
      "p90": 0.203,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
@@ -1197,8 +1197,8 @@
      "forecast": 0.012,
      "p10": 0.0,
      "p90": 0.048,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
@@ -1206,8 +1206,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
@@ -1215,8 +1215,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
@@ -1224,8 +1224,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.024,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     }
    ],
    "peak": {
@@ -1255,7 +1255,7 @@
      }
     ],
     "card_showed_rate": null,
-    "coverage": "INCOMPLETE (27/42 h observed)"
+    "coverage": "complete"
    },
    "timing": {
     "onset": {
@@ -1276,8 +1276,8 @@
     },
     "end": {
      "forecast": "Thu 1 PM",
-     "gauge_last_wet_hour": "Thu 7 AM",
-     "note": "end not yet observable"
+     "gauge_last_wet_hour": "Thu 10 PM",
+     "note": ""
     }
    },
    "flood": [
@@ -1332,9 +1332,9 @@
       "toHour": 37
      }
     ],
-    "gauge": 1.33,
-    "coverage": "INCOMPLETE (22/37 h observed)",
-    "inside_p10_p90": null
+    "gauge": 1.35,
+    "coverage": "complete",
+    "inside_p10_p90": true
    },
    "blocks": [
     {
@@ -1416,7 +1416,7 @@
      "p10": 0.031,
      "p90": 0.287,
      "gauge": 0.06,
-     "coverage": "INCOMPLETE (2/3 h observed)"
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 AM\u2013Thu 1 PM",
@@ -1424,8 +1424,8 @@
      "forecast": 0.036,
      "p10": 0.0,
      "p90": 0.173,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     },
     {
      "block": "Thu 1 PM\u2013Thu 4 PM",
@@ -1433,8 +1433,8 @@
      "forecast": 0.008,
      "p10": 0.0,
      "p90": 0.048,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 4 PM\u2013Thu 7 PM",
@@ -1442,8 +1442,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.012,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 7 PM\u2013Thu 10 PM",
@@ -1451,8 +1451,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.004,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.0,
+     "coverage": "complete"
     },
     {
      "block": "Thu 10 PM\u2013Fri 1 AM",
@@ -1460,8 +1460,8 @@
      "forecast": 0.0,
      "p10": 0.0,
      "p90": 0.019,
-     "gauge": null,
-     "coverage": "INCOMPLETE (0/3 h observed)"
+     "gauge": 0.01,
+     "coverage": "complete"
     }
    ],
    "peak": {
@@ -1491,7 +1491,7 @@
      }
     ],
     "card_showed_rate": null,
-    "coverage": "INCOMPLETE (22/37 h observed)"
+    "coverage": "complete"
    },
    "timing": {
     "onset": {
@@ -1507,8 +1507,8 @@
     },
     "end": {
      "forecast": "Thu 1 PM",
-     "gauge_last_wet_hour": "Thu 7 AM",
-     "note": "end not yet observable"
+     "gauge_last_wet_hour": "Thu 10 PM",
+     "note": ""
     }
    },
    "flood": []
@@ -1524,7 +1524,7 @@
     "max6": 1.94,
     "heavy_longest_h": 3
    },
-   "coverage": "INCOMPLETE (33/48 h observed)"
+   "coverage": "complete"
   },
   {
    "forecast": "2026-11-18T08:51:37.611430+00:00",
@@ -1535,7 +1535,7 @@
     "max6": 1.94,
     "heavy_longest_h": 3
    },
-   "coverage": "INCOMPLETE (33/48 h observed)"
+   "coverage": "complete"
   },
   {
    "forecast": "2026-11-18T09:24:02.479963+00:00",
@@ -1546,7 +1546,7 @@
     "max6": 1.94,
     "heavy_longest_h": 3
    },
-   "coverage": "INCOMPLETE (32/47 h observed)"
+   "coverage": "complete"
   },
   {
    "forecast": "2026-11-18T12:04:04.863784+00:00",
@@ -1557,7 +1557,7 @@
     "max6": 1.94,
     "heavy_longest_h": 3
    },
-   "coverage": "INCOMPLETE (29/44 h observed)"
+   "coverage": "complete"
   },
   {
    "forecast": "2026-11-18T14:55:54.870337+00:00",
@@ -1568,7 +1568,7 @@
     "max6": 1.94,
     "heavy_longest_h": 3
    },
-   "coverage": "INCOMPLETE (27/42 h observed)"
+   "coverage": "complete"
   },
   {
    "forecast": "2026-11-18T19:38:53.574929+00:00",
@@ -1579,7 +1579,7 @@
     "max6": 0.54,
     "heavy_longest_h": 1
    },
-   "coverage": "INCOMPLETE (22/37 h observed)"
+   "coverage": "complete"
   },
   {
    "forecast": "2026-11-19T16:03:35.917799+00:00",
@@ -1587,10 +1587,10 @@
     "cross_1h_driveway": false,
     "cross_3h_behind": false,
     "cross_3h_driveway": false,
-    "max6": 0.0,
+    "max6": 0.01,
     "heavy_longest_h": 0
    },
-   "coverage": "INCOMPLETE (1/16 h observed)"
+   "coverage": "complete"
   }
  ]
 }
