@@ -101,18 +101,29 @@ def _storms_html(card, tz, heavy) -> str:
         rows = []
         for L in st["leads"]:
             if L["status"] != "ok":
-                rows.append(f"<tr><td class=n>{L['lead_h']} h ahead</td><td colspan=5 class=sub>{e(L['status'])}</td></tr>")
+                why = L["status"]
+                if L.get("valid_until"):
+                    why += f" (it ran to {_local(L['valid_until'], tz, '%a %-I %p')}); not scored"
+                rows.append(f"<tr><td class=n>{L['lead_h']} h ahead</td><td colspan=5 class=sub>{e(why)}</td></tr>")
                 continue
+            bad = L.get("invalid") or {}
+            cell = lambda k, txt: (f"<td class=sub title='{e(bad[k])}'>not scored</td>" if k in bad else f"<td>{txt}</td>")
             onset = sgn(L["onset_err_h"]) if L["onset_called"] else "not called"
-            rows.append(f"<tr><td class=n>{L['lead_h']} h ahead</td><td>{onset}</td><td>{sgn(L['peak_err_h'])}</td>"
-                        f"<td>{num(L['peak_pred'])}</td><td>{num(L['total_pred'])}</td><td>{e(L['threshold'] or '—')}</td></tr>")
+            thr = L["threshold"] or "—"
+            if L.get("threshold_runs"):
+                thr += f" ({L['threshold_runs'][0]} of {L['threshold_runs'][1]} runs)"
+            rows.append(f"<tr><td class=n>{L['lead_h']} h ahead</td><td>{onset}</td>{cell('peak_t', sgn(L['peak_err_h']))}"
+                        f"{cell('peak', num(L['peak_pred']))}{cell('total', num(L['total_pred']))}{cell('threshold', e(thr))}</tr>")
         blocks.append(f"<p>{hd}</p><div class=scroll><table><tr><th>Forecast</th><th>Start</th><th>Peak time</th>"
                       f"<th>Peak hour</th><th>Total</th><th>{heavy:.2f}\" call</th></tr>{''.join(rows)}</table></div>")
     cov = card.get("range_coverage") or {}
     names = {"onset": "start", "peak_t": "peak time", "peak": "peak strength", "total": "total"}
     cv = " · ".join(f"{names[k]} {a}/{b}" for k, (a, b) in cov.items() if b)
     return ("<h3 style='margin-bottom:4px'>Storm report card</h3><p class=sub>Rainfall only, against the Mint gauge. "
-            "Flood calls are scored separately once flood observations exist.</p>" + "".join(blocks)
+            "Flood calls are scored separately once flood observations exist. The "
+            f"{heavy:.2f}\" call counts model runs whose own storm has an hour at that level; per-hour chances are "
+            "never used for it. A forecast is scored only on hours it covered: \"not scored\" marks a claim its "
+            "forecast window did not reach.</p>" + "".join(blocks)
             + (f"<p class=sub>Times the measured value fell inside the forecast's stated range: {cv}. "
                "Ranges cover the middle of the model runs, so roughly half to most should land inside; "
                "far fewer means the confidence words are too generous.</p>" if cv else ""))

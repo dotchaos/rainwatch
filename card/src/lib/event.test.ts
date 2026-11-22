@@ -108,8 +108,20 @@ describe('event-first hero ("Next up")', () => {
 describe('flood advisory: one line, evidence behind a link; potential is never a sandbag call', () => {
   it('evidence is inspectable and makes no unvalidated claims', () => {
     const a = eventHero(stormWed())!.advisory!;
-    expect(a.evidence.map(x => x.label)).toEqual(['Heavy hour (0.20"+)', 'Risk window', 'Model agreement', 'Sustained', 'Peak hourly rate', 'Local flood level']);
-    expect(JSON.stringify(a)).not.toMatch(/sandbag|historical|20\d\d/i);
+    // storm-wed.json is a Nov 18 capture made before raw member counts were archived: it carries only the
+    // floored per-hour probability, so the heavy-hour line is omitted rather than shown as a share of runs (v0.28).
+    expect(a.evidence.map(x => x.label)).toEqual(['Risk window', 'Model agreement', 'Sustained', 'Peak hourly rate', 'Local flood level']);
+    expect(JSON.stringify(a)).not.toMatch(/sandbag|historical|20\d\d|% of model runs/i);
+  });
+  it('the heavy-hour line is a raw member count, never the floored probability', () => {
+    const withRuns = (k: number, n: number) => { const s = stormWed();
+      s.evidence!.heavyRuns = s.hourly.map(() => [k, n] as [number, number]); return s; };
+    const line = (s: Scenario) => eventHero(s)!.advisory!.evidence.find(x => x.label.startsWith('Heavy hour'))?.value;
+    // zero exceeding members while pHeavy sits at the 2% radar floor: the count, not "2%"
+    const z = withRuns(0, 122); z.evidence!.pHeavy = z.evidence!.pHeavy.map(p => p === null ? p : 0.02);
+    expect(line(z)).toBe('none of 122 model runs in any hour');
+    expect(JSON.stringify(eventHero(z)!.advisory)).not.toMatch(/2%/);
+    expect(line(withRuns(17, 122))).toBe('17 of 122 model runs in the most likely hour');
   });
   it('an official product is what makes it a driveway call', () => {
     expect(eventHero(byId('storm'))!.advisory!).toMatchObject({ action: 'Protect your driveway now, ahead of the heaviest rain this afternoon.', risk: true });

@@ -200,3 +200,22 @@ Forecast calculations, thresholds and the default selection are unchanged.
 ## "Next rain" heading (2026-11-19, approved)
 - The rainfall timeline section heading reads "Next rain" (was "Rainfall timeline"). The section's content, selection
   and accessibility wiring (`aria-labelledby="timeline-h"`) are unchanged.
+## Evidence integrity (2026-11-22, PR #26 follow-up)
+- Two exceedance definitions, never interchanged:
+  - **per-hour**: the probability of ≥0.20" in one hour (`p_heavy` on rows, `p` in the archive, `evidence.pHeavy` on
+    the card). It is the share of model runs, or of radar samples where radar leads, and is raised to a 2% floor on
+    radar-led hours. It drives gear and stage decisions exactly as before. It is never shown as a count of runs.
+  - **event-level**: k of n model runs whose own first rain event has an hour ≥ the level (`outlook.threshold`). Raw,
+    never floored. It is the only basis for the storm report's threshold verdict.
+- Counts shown to readers are counts. The engine carries the raw ensemble count per hour (`heavy_runs {k, n}`) and
+  flags the floor (`p_heavy_floored`). The card's "Heavy hour (0.20"+)" evidence line reads the count for the hour
+  where the most runs reach 0.20": "17 of 122 model runs in the most likely hour", or "none of 122 model runs in any
+  hour". The old line ("in X% of model runs") showed the floored per-hour maximum as a storm-wide share of runs.
+  Cards without counts omit the line.
+- The storm report scores a forecast only on hours it covered (its saved combined-product hours):
+  - window ends before the storm starts: "forecast ended before the storm", not scored (the Nov 15 "24 h" case);
+  - window ends before the storm ends: start is scored; peak, peak time, total and threshold are "not scored";
+  - the outlook's first rain event starts more than 6 h outside the storm: its event claims are "not scored";
+  - no outlook saved: no threshold verdict (per-hour chances only). The per-hour maximum is kept as
+    `p_heavy_hour_max` for reference.
+- No change to amounts, probabilities, thresholds, gear, hazards, flood rules or selection (goldens: additive keys only).

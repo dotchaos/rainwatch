@@ -168,9 +168,15 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
         p_heavy = prim.p_exceed(t, cfg.heavy_in)
         p_any = prim.p_exceed(t, cfg.any_in)
         p_thr = {f"{x:.2f}": prim.p_exceed(t, x) for x in THRESHOLDS}
+        # raw member counts (v0.28, evidence only): how many of the model ensemble's own runs reach the heavy level in
+        # this hour, before any floor. A probability is not a count: radar hours are floored at 2% below.
+        em = (ens.members.get(t) if ens else None) or []
+        heavy_runs = {"k": sum(1 for x in em if x >= cfg.heavy_in), "n": len(em)} if em else None
+        p_heavy_floored = False
         if prim is radar:   # extrapolation can't see growth/decay: never certain
             cap = 0.95 if nc.motion.confidence != "low" else 0.85
             clip = lambda p: None if p is None else min(max(p, 0.02), cap)
+            p_heavy_floored = p_heavy is not None and p_heavy < 0.02
             p_heavy, p_any = clip(p_heavy), clip(p_any)
             p_thr = {k: clip(v) for k, v in p_thr.items()}
         if p_any is None and prim is nws_s:
@@ -199,7 +205,8 @@ def build(cfg, now: datetime, nws, ens: Series | None, ens_parts: list[Series],
         rows.append({
             "t": t.isoformat(), "label": fmt_hour(t, tz, now), "primary": prim.key,
             "sig": sig, "sig_missing": [k for k in sig_expected if k not in sig],
-            "p_heavy": p_heavy, "p_any": p_any,
+            "p_heavy": p_heavy, "p_any": p_any, "heavy_runs": heavy_runs,
+            **({"p_heavy_floored": True} if p_heavy_floored else {}),
             "p": {k: (None if v is None else round(v, 3)) for k, v in p_thr.items()},
             "lo": round(rng[0], 2), "mid": round(rng[1], 2), "hi": round(rng[2], 2),
             "tier": tier(rng[1]), "basis": basis, "sources": srcs,
