@@ -73,17 +73,56 @@ def test_three_hourly_families_are_stored_as_three_hour_totals():
     assert provenance._native(times, even, smoothed=False)[0] == 1          # ICON: genuinely hourly
 
 
-def test_hrrr_archive_and_forecast_share_the_values_hash(tmp_path, monkeypatch):
-    import rainwatch.__main__ as m
+def _hrrr(issued, values):
     from rainwatch.model import Series
+    return Series("hrrr", "HRRR", issued, values=values)
+
+
+RUN = {NOW.replace(minute=0) + timedelta(hours=i - 3): 0.01 * i for i in range(20)}
+
+
+def test_hrrr_archive_and_forecast_share_the_content_fingerprint(tmp_path):
     arc = archive.Archive(tmp_path)
-    h = Series("hrrr", "HRRR", datetime(2026, 11, 14, 18, tzinfo=UTC), values={NOW.replace(minute=0) + timedelta(hours=i): 0.01 * i
-                                                                          for i in range(5)})
+    h = _hrrr(datetime(2026, 11, 14, 18, tzinfo=UTC), RUN)
     assert arc.hrrr(NOW, [h])
     rec = json.loads(next((tmp_path / "hrrr").glob("*.jsonl")).read_text())
     _, det, _ = provenance.runs_records([], [h], NOW, NOW, NOW - timedelta(hours=1))
-    assert rec["values_sha"] == det["hrrr"]["values_sha"] and "not verified" in rec["run_source"]
-    # the same label with different values is a different record
-    h2 = Series("hrrr", "HRRR", h.issued, values={t: v + 0.01 for t, v in h.values.items()})
-    assert arc.hrrr(NOW, [h2])
-    assert m is not None
+    assert rec["content_sha"] == det["hrrr"]["content_sha"]
+    assert rec["run_verified"] is False and det["hrrr"]["run_verified"] is False and "not verified" in rec["run_source"]
+    # different values under the same label are a different record
+    assert arc.hrrr(NOW, [_hrrr(h.issued, {t: v + 0.01 for t, v in RUN.items()})])
+
+
+def test_the_same_run_keeps_its_fingerprint_as_the_window_advances(tmp_path):
+    """Defect 1: the fingerprint covered hours from 'now - 1 h', so the same run got a new one every clock hour."""
+    h = _hrrr(datetime(2026, 11, 14, 18, tzinfo=UTC), RUN)
+    later = NOW + timedelta(hours=2)
+    for d in (h, _hrrr(None, RUN)):                       # with and without a run label
+        a = provenance.runs_records([], [d], NOW, NOW, NOW - timedelta(hours=1))[1]["hrrr"]["content_sha"]
+        b = provenance.runs_records([], [d], later, later, later - timedelta(hours=1))[1]["hrrr"]["content_sha"]
+        assert a == b
+    arc = archive.Archive(tmp_path)
+    assert arc.hrrr(NOW, [h]) and not arc.hrrr(NOW + timedelta(minutes=20), [h]) and not arc.hrrr(later, [h])
+    assert len(next((tmp_path / "hrrr").glob("*.jsonl")).read_text().splitlines()) == 1
+
+
+def test_identical_numbers_from_different_models_are_different_sources():
+    """Defect 2: HRRR, NBM and ECMWF all forecasting zero shared one fingerprint."""
+    from rainwatch.model import Series
+    zeros = {NOW.replace(minute=0) + timedelta(hours=i): 0.0 for i in range(48)}
+    det = [Series(k, k, None, values=dict(zeros)) for k in ("hrrr", "nbm", "ecmwf")]
+    _, ref, recs = provenance.runs_records([], det, NOW, NOW, NOW - timedelta(hours=1))
+    shas = {k: v["content_sha"] for k, v in ref.items()}
+    assert len(set(shas.values())) == 3
+    assert {r["sha"] for r in recs} == {shas["nbm"], shas["ecmwf"]}      # data/runs keys are the same fingerprints
+    assert all(v["run_verified"] is False for v in ref.values())
+
+
+def test_records_saved_before_the_fix_are_left_as_they_were(tmp_path):
+    arc = archive.Archive(tmp_path)
+    (tmp_path / "hrrr").mkdir()
+    old = '{"run": "2026-11-22T20:00:00+00:00", "fetched": "x", "values": {}, "values_sha": "2deca2"}\n'
+    (tmp_path / "hrrr" / "2026-11.jsonl").write_text(old)
+    assert arc.hrrr(NOW, [_hrrr(datetime(2026, 11, 14, 18, tzinfo=UTC), RUN)])
+    lines = (tmp_path / "hrrr" / "2026-11.jsonl").read_text().splitlines()
+    assert lines[0] + "\n" == old and "content_sha" in json.loads(lines[1])
