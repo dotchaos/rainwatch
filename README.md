@@ -5,6 +5,9 @@ on GitHub Actions and published as a phone-friendly page.
 
 **Page:** https://dotchaos.github.io/rainwatch/
 
+**New to the code? Start with [ARCHITECTURE.md](ARCHITECTURE.md).** It covers the data flow, a reading order,
+how the forecast is built and verified, where the evidence lives, what is still under investigation, and a glossary.
+
 ## What it does each run
 
 | Step | Source | What it computes |
