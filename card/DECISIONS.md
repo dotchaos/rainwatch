@@ -219,3 +219,7 @@ Forecast calculations, thresholds and the default selection are unchanged.
   - no outlook saved: no threshold verdict (per-hour chances only). The per-hour maximum is kept as
     `p_heavy_hour_max` for reference.
 - No change to amounts, probabilities, thresholds, gear, hazards, flood rules or selection (goldens: additive keys only).
+- Reproducible evidence (v0.28, archive only): each saved forecast carries `prov` (location, time zone, issue time,
+  calculation version and commit, units, outlook window, model references by content hash, per-family peaks and
+  event-level counts at 0.10/0.20/0.30"). Each distinct model run is stored once in `data/runs`; ECMWF and GFS as
+  verified 3-hour totals, never as hourly values. `tools/reconstruct.py` recomputes the ensemble claims from them.
