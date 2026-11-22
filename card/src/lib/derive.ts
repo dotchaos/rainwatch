@@ -819,7 +819,12 @@ export function heavyRunsLine(s: Scenario, a: number, b: number): string | null 
   let best: [number, number] | null = null;
   for (let h = a; h < b; h++) { const x = hr[h]; if (x && (!best || x[0] > best[0])) best = x; }
   if (!best || !best[1]) return null;
-  return best[0] === 0 ? `none of ${best[1]} model runs in any hour` : `${best[0]} of ${best[1]} model runs in the most likely hour`;
+  const n = `${best[1]} ensemble model runs`;
+  const base = best[0] === 0 ? `none of ${n} in any hour` : `${best[0]} of ${n} in the most likely hour`;
+  // radar leads the first hours with its own estimate, a different measurement: say so rather than let the count
+  // read as radar's chance (v0.28)
+  const radarLed = (s.rainSignals?.hours ?? []).some(x => x.hour >= a && x.hour < b && x.primary === 'radar');
+  return radarLed ? `${base}; the radar estimate for the next hours is separate and not counted here` : base;
 }
 
 /** Share of model runs at or above which an outcome is called likely (provisional). */

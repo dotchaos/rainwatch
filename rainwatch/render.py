@@ -111,7 +111,7 @@ def _storms_html(card, tz, heavy) -> str:
             onset = sgn(L["onset_err_h"]) if L["onset_called"] else "not called"
             thr = L["threshold"] or "—"
             if L.get("threshold_runs"):
-                thr += f" ({L['threshold_runs'][0]} of {L['threshold_runs'][1]} runs)"
+                thr += f" ({L['threshold_runs'][0]} of {L['threshold_runs'][1]} ensemble runs)"
             rows.append(f"<tr><td class=n>{L['lead_h']} h ahead</td><td>{onset}</td>{cell('peak_t', sgn(L['peak_err_h']))}"
                         f"{cell('peak', num(L['peak_pred']))}{cell('total', num(L['total_pred']))}{cell('threshold', e(thr))}</tr>")
         blocks.append(f"<p>{hd}</p><div class=scroll><table><tr><th>Forecast</th><th>Start</th><th>Peak time</th>"

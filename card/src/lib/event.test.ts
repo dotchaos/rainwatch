@@ -119,9 +119,14 @@ describe('flood advisory: one line, evidence behind a link; potential is never a
     const line = (s: Scenario) => eventHero(s)!.advisory!.evidence.find(x => x.label.startsWith('Heavy hour'))?.value;
     // zero exceeding members while pHeavy sits at the 2% radar floor: the count, not "2%"
     const z = withRuns(0, 122); z.evidence!.pHeavy = z.evidence!.pHeavy.map(p => p === null ? p : 0.02);
-    expect(line(z)).toBe('none of 122 model runs in any hour');
+    expect(line(z)).toBe('none of 122 ensemble model runs in any hour');
     expect(JSON.stringify(eventHero(z)!.advisory)).not.toMatch(/2%/);
-    expect(line(withRuns(17, 122))).toBe('17 of 122 model runs in the most likely hour');
+    expect(line(withRuns(17, 122))).toBe('17 of 122 ensemble model runs in the most likely hour');
+    // a radar-led hour inside the window: the count is named as the ensemble's, and radar's estimate as separate
+    const r = withRuns(17, 122); const st = storms(r)[0];
+    r.rainSignals = { ...(r.rainSignals ?? { measurableIn: 0.01, dryP: 0.2, wetP: 0.5, radar: { rainingNow: null, dbz: null, frameTime: null, minDbz: null, horizonHours: 2 }, dryUntilHour: null }),
+      hours: [{ hour: st.start, state: 'measurable', reasons: [], primary: 'radar', signals: {}, unavailable: [] }] } as Scenario['rainSignals'];
+    expect(line(r)).toBe('17 of 122 ensemble model runs in the most likely hour; the radar estimate for the next hours is separate and not counted here');
   });
   it('an official product is what makes it a driveway call', () => {
     expect(eventHero(byId('storm'))!.advisory!).toMatchObject({ action: 'Protect your driveway now, ahead of the heaviest rain this afternoon.', risk: true });

@@ -5,7 +5,9 @@
 Reads data/forecasts/*.jsonl (the forecast and its `prov` block) and data/runs/*.jsonl (the member series it
 references). Rebuilds the pooled ensemble over the forecast's outlook window, reruns the outlook's ensemble claims
 (rain at all, peak time, peak rate, event total, threshold) and the per-family summary, and reports any difference.
-Onset is compared only when the forecast took it from the ensemble (radar- and gauge-led onsets need inputs that
+It also recomputes the pooled ensemble's archived hourly values (median, chance of the heavy and any-rain levels).
+Only archived inputs are read to rebuild (prov window and levels, data/runs); the saved outputs are read only to
+compare. Onset is compared only when the forecast took it from the ensemble (radar- and gauge-led onsets need inputs that
 are not archived as series).
 
     python -m tools.reconstruct --runs-snapshot SNAPSHOT.json FORECAST_ISSUED DATA_DIR
@@ -84,6 +86,21 @@ def compare(fc: dict, runs: dict[str, dict]) -> dict:
     rows = [{"claim": k, "saved": saved.get(k), "recomputed": re_ol.get(k), "match": saved.get(k) == re_ol.get(k)}
             for k in keys]
     rows.append({"claim": "families", "saved": prov["families"], "recomputed": fams, "match": prov["families"] == fams})
+    # hourly: the pooled ensemble as archived per hour (median, P(heavy), P(any)) vs recomputed from the runs
+    diffs, n = [], 0
+    for t, e in sorted(fc["hours"].items()):
+        a = e.get("ens")
+        m = ens.members.get(datetime.fromisoformat(t))
+        if not a or not m:
+            continue
+        n += 1
+        re_h = {"v": round(sorted(m)[len(m) // 2], 3), "p": round(sum(x >= cfg.heavy_in for x in m) / len(m), 3),
+                "pa": round(sum(x >= cfg.any_in for x in m) / len(m), 3)}
+        sv = {k: a.get(k) for k in re_h}
+        if sv != re_h:
+            diffs.append({"t": t, "saved": sv, "recomputed": re_h})
+    rows.append({"claim": "hourly ensemble (median, P(>=heavy), P(>=any))", "saved": f"{n} hours",
+                 "recomputed": f"{n - len(diffs)} identical", "match": n > 0 and not diffs, "diffs": diffs[:10]})
     return {"issued": fc["issued"], "calc": prov["calc"], "window": prov["window"], "rows": rows,
             "all_match": all(r["match"] for r in rows)}
 
