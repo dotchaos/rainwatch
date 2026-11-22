@@ -10,9 +10,12 @@ Status labels used below:
 
 ## 1. What Rainwatch is
 
-Rainwatch is an hourly rain forecast for one street corner, 18th & Shotwell in San Francisco's Mission District.
-It runs every 15 minutes on GitHub Actions and publishes a phone page ([README.md](README.md)). The page's audience
-is the household at that address. The forecast engine also runs for any coordinates, without the local extras.
+Rainwatch is an hourly rain forecast engine for arbitrary coordinates, with one deployment today. It is currently
+configured for 18th & Shotwell in San Francisco's Mission District, where it runs every 15 minutes on GitHub Actions
+and publishes a phone page ([README.md](README.md)).
+- Any location gets the same general forecast through `forecast_at()`.
+- Only the configured site adds the local extras: radar nowcast, gauges and flood levels
+  ([forecast.py](rainwatch/forecast.py), [tests/test_equivalence.py](tests/test_equivalence.py)).
 
 Its outputs are:
 - **The card**: the front page, a React app reading `live.json`. It shows a headline, gear advice, a 72-hour graph,
@@ -141,6 +144,11 @@ Sources are never averaged together ([engine.py](rainwatch/engine.py)).
   - Each raw increment is filed under the clock hour that holds most of its interval ([verify.py](rainwatch/verify.py)).
   - `obs.json` uses an older convention, filing each reading under its start hour. Both are in use: scoring uses
     `verify.py` when raw readings exist.
+  - **Timing limit:** the gauge reports a running total about once an hour, usually at :43. An increment is rain
+    that fell somewhere in that roughly 60-minute interval. Filing it under one clock hour avoids inventing
+    sub-hourly timing, but it cannot show when within the interval the rain fell.
+  - So an "observed wettest hour" is the largest reporting interval assigned to a clock hour, not a measured
+    clock-hour maximum. This matters most for peak-hour verification ([verify.py](rainwatch/verify.py)).
 - **Per source and lead time:** Brier score, MAE and bias (`archive.score` in [archive.py](rainwatch/archive.py)).
 - **Lead-time scorecards** (0–1, 1–3 and 3–6 h): contingency tables and calibration bins
   ([scorecard.py](rainwatch/scorecard.py)).
@@ -155,11 +163,13 @@ Sources are never averaged together ([engine.py](rainwatch/engine.py)).
   - ECMWF and GFS hourly values are 3-hour totals spread evenly ([intervals.py](rainwatch/intervals.py),
     [provenance.py](rainwatch/provenance.py)).
   - The radar nowcast assumes no growth or decay.
-- *Observed:*
+- *Observed:* these are historical verification results, not an established measure of predictive reliability.
   - The storm report covers 2 storms (Nov 15 and Nov 18, 2026) and 9 valid lead-time evaluations.
   - In all 9, the measured wettest hour fell outside the forecast peak-rate range. Totals fell inside it in 7 of 9
     ([docs/evidence-integrity-report.md](docs/evidence-integrity-report.md)).
   - These are nine forecast evaluations from two storms, not nine independent events.
+  - The observed peaks also carry the gauge timing limit above. Two storms cannot show how often peaks will be
+    missed in future storms.
 - *Under investigation:* why peaks are missed. Source-model error, 3-hour smoothing and sample size are weighed in
   [PR #26](https://github.com/dotchaos/rainwatch/pull/26) (provisional).
 
