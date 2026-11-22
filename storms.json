@@ -12,20 +12,15 @@
    "leads": [
     {
      "lead_h": 24,
-     "status": "ok",
+     "status": "forecast ended before the storm",
      "issued": "2026-11-14T21:02:31.101171+00:00",
-     "onset_err_h": null,
-     "onset_called": false,
-     "peak_err_h": null,
-     "peak_pred": 0.0,
-     "total_pred": null,
-     "p_heavy": 0.02,
-     "threshold": "missed"
+     "valid_until": "2026-11-15T10:00:00+00:00"
     },
     {
      "lead_h": 12,
      "status": "ok",
      "issued": "2026-11-15T09:08:16.206753+00:00",
+     "valid_until": "2026-11-18T08:00:00+00:00",
      "onset_err_h": -2.0,
      "onset_called": true,
      "peak_err_h": 1.0,
@@ -33,6 +28,11 @@
      "total_pred": 0.696,
      "p_heavy": 0.066,
      "threshold": "missed",
+     "threshold_runs": [
+      8,
+      122
+     ],
+     "p_heavy_hour_max": 0.02,
      "inside": {
       "onset": false,
       "peak_t": true,
@@ -44,6 +44,7 @@
      "lead_h": 6,
      "status": "ok",
      "issued": "2026-11-15T15:03:13.808804+00:00",
+     "valid_until": "2026-11-18T08:00:00+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
      "peak_err_h": 1.0,
@@ -51,6 +52,11 @@
      "total_pred": 0.698,
      "p_heavy": 0.074,
      "threshold": "missed",
+     "threshold_runs": [
+      9,
+      122
+     ],
+     "p_heavy_hour_max": 0.025,
      "inside": {
       "onset": false,
       "peak_t": true,
@@ -62,6 +68,7 @@
      "lead_h": 3,
      "status": "ok",
      "issued": "2026-11-15T18:01:11.409348+00:00",
+     "valid_until": "2026-11-18T19:00:00+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
      "peak_err_h": -1.0,
@@ -69,6 +76,11 @@
      "total_pred": 0.639,
      "p_heavy": 0.074,
      "threshold": "missed",
+     "threshold_runs": [
+      9,
+      122
+     ],
+     "p_heavy_hour_max": 0.025,
      "inside": {
       "onset": false,
       "peak_t": true,
@@ -80,6 +92,7 @@
      "lead_h": 1,
      "status": "ok",
      "issued": "2026-11-15T20:02:23.302710+00:00",
+     "valid_until": "2026-11-18T21:00:00+00:00",
      "onset_err_h": -2.0,
      "onset_called": true,
      "peak_err_h": -1.0,
@@ -87,6 +100,11 @@
      "total_pred": 0.627,
      "p_heavy": 0.074,
      "threshold": "missed",
+     "threshold_runs": [
+      9,
+      122
+     ],
+     "p_heavy_hour_max": 0.025,
      "inside": {
       "onset": null,
       "peak_t": true,
@@ -94,7 +112,13 @@
       "total": true
      }
     }
-   ]
+   ],
+   "coverage": {
+    "scored": 4,
+    "rejected": 1,
+    "partial": 0,
+    "no_forecast": 0
+   }
   },
   {
    "start": "2026-11-18T10:00:00+00:00",
@@ -110,6 +134,7 @@
      "lead_h": 24,
      "status": "ok",
      "issued": "2026-11-17T09:02:57.059702+00:00",
+     "valid_until": "2026-11-20T10:00:00+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
      "peak_err_h": -3.0,
@@ -117,6 +142,11 @@
      "total_pred": 1.542,
      "p_heavy": 0.852,
      "threshold": "hit",
+     "threshold_runs": [
+      104,
+      122
+     ],
+     "p_heavy_hour_max": 0.574,
      "inside": {
       "onset": true,
       "peak_t": false,
@@ -128,6 +158,7 @@
      "lead_h": 12,
      "status": "ok",
      "issued": "2026-11-17T21:01:24.580763+00:00",
+     "valid_until": "2026-11-20T22:00:00+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
      "peak_err_h": -3.0,
@@ -135,6 +166,11 @@
      "total_pred": 2.244,
      "p_heavy": 0.885,
      "threshold": "hit",
+     "threshold_runs": [
+      108,
+      122
+     ],
+     "p_heavy_hour_max": 0.631,
      "inside": {
       "onset": true,
       "peak_t": false,
@@ -146,6 +182,7 @@
      "lead_h": 6,
      "status": "ok",
      "issued": "2026-11-18T03:02:12.304019+00:00",
+     "valid_until": "2026-11-21T04:00:00+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
      "peak_err_h": -3.0,
@@ -153,6 +190,11 @@
      "total_pred": 1.997,
      "p_heavy": 0.861,
      "threshold": "hit",
+     "threshold_runs": [
+      105,
+      122
+     ],
+     "p_heavy_hour_max": 0.566,
      "inside": {
       "onset": true,
       "peak_t": false,
@@ -164,6 +206,7 @@
      "lead_h": 3,
      "status": "ok",
      "issued": "2026-11-18T06:12:40.757467+00:00",
+     "valid_until": "2026-11-21T07:00:00+00:00",
      "onset_err_h": -1.0,
      "onset_called": true,
      "peak_err_h": -3.0,
@@ -171,6 +214,11 @@
      "total_pred": 2.208,
      "p_heavy": 0.91,
      "threshold": "hit",
+     "threshold_runs": [
+      111,
+      122
+     ],
+     "p_heavy_hour_max": 0.623,
      "inside": {
       "onset": true,
       "peak_t": true,
@@ -182,6 +230,7 @@
      "lead_h": 1,
      "status": "ok",
      "issued": "2026-11-18T08:14:09.525974+00:00",
+     "valid_until": "2026-11-21T09:00:00+00:00",
      "onset_err_h": 0.0,
      "onset_called": true,
      "peak_err_h": -2.0,
@@ -189,6 +238,11 @@
      "total_pred": 2.24,
      "p_heavy": 0.91,
      "threshold": "hit",
+     "threshold_runs": [
+      111,
+      122
+     ],
+     "p_heavy_hour_max": 0.68,
      "inside": {
       "onset": true,
       "peak_t": true,
@@ -196,7 +250,13 @@
       "total": true
      }
     }
-   ]
+   ],
+   "coverage": {
+    "scored": 5,
+    "rejected": 0,
+    "partial": 0,
+    "no_forecast": 0
+   }
   }
  ],
  "range_coverage": {
