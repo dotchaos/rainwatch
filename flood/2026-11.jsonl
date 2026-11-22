@@ -104,3 +104,4 @@
 {"issued": "2026-11-21T14:12:22.337963+00:00", "systems": 3, "hours": {}, "windows": [], "official": [], "validated": false}
 {"issued": "2026-11-21T17:39:06.799123+00:00", "systems": 3, "hours": {}, "windows": [], "official": [], "validated": false}
 {"issued": "2026-11-21T23:22:09.362705+00:00", "systems": 3, "hours": {}, "windows": [], "official": [], "validated": false}
+{"issued": "2026-11-22T01:08:17.092223+00:00", "systems": 3, "hours": {"2026-11-25T00:00:00+00:00": {"pFlood": 0, "pBehind": 0.01, "systems": 0, "pHeavy": 0.01}}, "windows": [], "official": [], "validated": false}
