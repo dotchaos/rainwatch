@@ -41,7 +41,7 @@ class Archive:
 
     # ---------- forecasts ----------
     def snapshot(self, now: datetime, series: list[Series], report: dict, heavy: float, anyt: float,
-                 force: bool = False) -> bool:
+                 force: bool = False, prov: dict | None = None) -> bool:
         """Store at most one snapshot per clock hour (the first run in it)."""
         hour_key = now.astimezone(UTC).strftime("%Y-%m-%dT%H")
         st = self.state()
@@ -81,7 +81,10 @@ class Archive:
         ol = report.get("outlook") or {}
         keep = {k: ol[k] for k in ("p_rain", "n_rain", "runs", "onset", "peak", "peak_rate", "event_total", "threshold")
                 if k in ol}
-        line = json.dumps({"issued": now.astimezone(UTC).isoformat(), "hours": hrs, "outlook": keep})
+        rec = {"issued": now.astimezone(UTC).isoformat(), "hours": hrs, "outlook": keep}
+        if prov:        # v0.28: what this forecast was computed from (rainwatch/provenance.py)
+            rec["prov"] = prov
+        line = json.dumps(rec)
         with open(self.root / "forecasts" / f"{now.astimezone(UTC):%Y-%m}.jsonl", "a") as f:
             f.write(line + "\n")
         st["last_snapshot"] = hour_key
@@ -102,6 +105,33 @@ class Archive:
         self.save_state(st)
         return True
 
+    def runs(self, recs: list[dict]) -> int:
+        """data/runs/YYYY-MM.jsonl (v0.28): each distinct model run once, keyed by sha256 (rainwatch/provenance.py).
+        Returns how many records were new."""
+        if not recs:
+            return 0
+        st = self.state()
+        seen = st.get("runs_seen", [])
+        new = [r for r in recs if r["sha"] not in seen]
+        if new:
+            (self.root / "runs").mkdir(exist_ok=True)
+            month = datetime.fromisoformat(new[0]["t0"]).astimezone(UTC).strftime("%Y-%m")
+            with open(self.root / "runs" / f"{month}.jsonl", "a") as f:
+                for r in new:
+                    f.write(json.dumps(r, separators=(",", ":")) + "\n")
+            st["runs_seen"] = (seen + [r["sha"] for r in new])[-400:]
+            self.save_state(st)
+        return len(new)
+
+    def run_records(self) -> dict[str, dict]:
+        out = {}
+        for p in sorted((self.root / "runs").glob("*.jsonl")) if (self.root / "runs").exists() else []:
+            for line in p.read_text().splitlines():
+                if line.strip():
+                    r = json.loads(line)
+                    out[r["sha"]] = r
+        return out
+
     def hrrr(self, now: datetime, series: list[Series]) -> bool:
         """data/hrrr/YYYY-MM.jsonl (v0.23): every HRRR run once, as Open-Meteo served it for this point: the run's own
         initialisation time, when it was fetched, and its hourly precipitation (inches, hour-start keys) for every hour
@@ -110,12 +140,18 @@ class Archive:
         h = next((x for x in series if x.key == "hrrr" and x.values), None)
         if h is None:
             return False
-        key = h.issued.isoformat() if h.issued else now.astimezone(UTC).strftime("fetched-%Y-%m-%dT%H")
+        from .provenance import series_sha
+        vsha = series_sha(h.values, now - timedelta(hours=1))
+        # v0.28: a new record whenever the values change, not only the label (the label can repeat across runs)
+        key = (h.issued.isoformat() if h.issued else now.astimezone(UTC).strftime("fetched-%Y-%m-%dT%H")) + ":" + vsha[:16]
         st = self.state()
         if st.get("last_hrrr") == key:
             return False
         rec = {"run": h.issued.isoformat() if h.issued else None, "fetched": now.astimezone(UTC).isoformat(),
                "values": {t.isoformat(): round(v, 3) for t, v in sorted(h.values.items()) if t >= now - timedelta(hours=1)}}
+        if h.issued:    # v0.28: "run" is Open-Meteo's metadata label, read in a separate call; it repeats across runs
+            rec["run_source"] = "metadata label (last_run_initialisation_time), not verified against the values"
+        rec["values_sha"] = vsha
         (self.root / "hrrr").mkdir(exist_ok=True)
         with open(self.root / "hrrr" / f"{now.astimezone(UTC):%Y-%m}.jsonl", "a") as f:
             f.write(json.dumps(rec) + "\n")

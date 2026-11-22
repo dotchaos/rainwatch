@@ -293,7 +293,9 @@ def test_storm_detect_and_score():
     fcs = [{"issued": (h(10) - timedelta(hours=6, minutes=30)).isoformat(), "hours": fc_hours}]
     rep = storms.report(obs, fcs, h(47), 0.01, 0.20)
     lead6 = next(r for r in rep["storms"][0]["leads"] if r["lead_h"] == 6)
-    assert lead6["onset_err_h"] == 1.0 and lead6["peak_err_h"] == 0.0 and lead6["threshold"] == "hit"
+    assert lead6["onset_err_h"] == 1.0 and lead6["peak_err_h"] == 0.0
+    # no outlook saved: per-hour chances only, so no event-level threshold verdict (v0.28)
+    assert lead6["threshold"] is None and lead6["p_heavy_hour_max"] == 0.35 and "threshold" in lead6["invalid"]
     assert next(r for r in rep["storms"][0]["leads"] if r["lead_h"] == 24)["status"] == "no forecast saved"
 
 

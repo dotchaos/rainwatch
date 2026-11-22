@@ -76,6 +76,28 @@ def _aligned(ens, hrs):
     return np.array([ens.members[t] for t in used]).T, used
 
 
+def first_events(X, any_in: float) -> list[tuple[int, int, int]]:
+    """(run, first hour, last hour) of each run's first rain event: from its first hour >= any_in until DRY_GAP_H
+    hours in a row below it. Runs without rain are left out. The event definition every outlook claim uses."""
+    wet = X >= any_in
+    out = []
+    for r in range(X.shape[0]):
+        idx = np.flatnonzero(wet[r])
+        if not len(idx):
+            continue
+        s = e = int(idx[0])
+        dry = 0
+        for j in range(s, X.shape[1]):
+            if wet[r, j]:
+                e, dry = j, 0
+            else:
+                dry += 1
+                if dry >= DRY_GAP_H:
+                    break
+        out.append((r, s, e))
+    return out
+
+
 def compute(cfg, now: datetime, hrs: list[datetime], ens, radar_rows: list[dict], raining_now: str,
             fmt) -> dict:
     """Return the per-claim outlook. `fmt(t)` formats a UTC datetime as a local short time."""
@@ -86,22 +108,8 @@ def compute(cfg, now: datetime, hrs: list[datetime], ens, radar_rows: list[dict]
         return out
     n_runs, n_h = X.shape
     out["runs"] = n_runs
-    wet = X >= cfg.any_in
     onset_i, peak_i, peak_v, ev_tot, exceed = [], [], [], [], []
-    for r in range(n_runs):
-        idx = np.flatnonzero(wet[r])
-        if not len(idx):
-            continue
-        s = int(idx[0])
-        e = s
-        dry = 0
-        for j in range(s, n_h):
-            if wet[r, j]:
-                e, dry = j, 0
-            else:
-                dry += 1
-                if dry >= DRY_GAP_H:
-                    break
+    for r, s, e in first_events(X, cfg.any_in):
         seg = X[r, s:e + 1]
         onset_i.append(s)
         peak_i.append(s + int(np.argmax(seg)))

@@ -456,7 +456,13 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
             r = by_t.get(t.isoformat())
             out.append(None if not r or r.get("missing") else round(f(r) or 0, 2))
         return out
-    ev = {"pHeavy": per(lambda r: r.get("p_heavy")),
+    # pHeavy is a per-hour probability (radar hours floored at 2%): it drives wording strength, never shown as a count.
+    # heavyRuns is the count behind the claim (v0.28): per hour, how many model-ensemble runs reach the heavy level.
+    def runs(t):
+        r = by_t.get(t.isoformat())
+        hr = (r or {}).get("heavy_runs") if r and not r.get("missing") else None
+        return [hr["k"], hr["n"]] if hr else None
+    ev = {"pHeavy": per(lambda r: r.get("p_heavy")), "heavyRuns": [runs(t) for t in hours],
           "floodValidated": bool(cfg.site and getattr(cfg.site, "flood_validated", False))}
     if cfg.flood_site:
         ev["pFlood"] = per(lambda r: (r.get("levels") or {}).get("driveway"))

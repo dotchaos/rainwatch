@@ -28,6 +28,7 @@ class Series:
     prob: dict[datetime, float] = field(default_factory=dict)         # optional direct P(any) e.g. NWS PoP
     note: str = ""
     smoothed: bool = False        # True when hourly values are spread from multi-hour totals
+    raw: dict | None = None       # provenance only (v0.28): member ids and per-member values as served
 
     def p_exceed(self, t: datetime, thresh: float) -> float | None:
         m = self.members.get(t)

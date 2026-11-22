@@ -33,8 +33,10 @@ def parse_ensemble(data: dict, model: str) -> Series:
         if vals:
             members[t] = vals
     med = {t: sorted(v)[len(v) // 2] for t, v in members.items()}
+    # provenance only (v0.28): member ids (the API's column names) and each member's values as served, hour-start keys
+    raw = {"model": model, "times": times, "members": {c: list(h[c]) for c in cols}}
     return Series(key=f"ens:{model}", label=f"{model} ensemble ({len(cols)} members)",
-                  issued=None, url=ENS, values=med, members=members,
+                  issued=None, url=ENS, values=med, members=members, raw=raw,
                   smoothed=model.split("_")[0] in ("gfs", "ecmwf"),
                   note="3-hourly model interpolated to hourly; tends to understate short bursts."
                   if model.split("_")[0] in ("gfs", "ecmwf") else "")

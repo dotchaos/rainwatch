@@ -28,8 +28,12 @@ export interface Alert {
  * The card uses it only to decide how strongly to speak, never to change what the forecast is.
  */
 export interface Evidence {
-  /** Share of model runs with a heavy hour (0.20"+), 0–1. */
+  /** Per hour, the probability of 0.20"+ in that hour, 0–1: the share of model runs, or of radar samples where radar
+   *  leads, floored at 2% there. A probability, not a count: use heavyRuns for any "of N runs" wording. */
   pHeavy: (number | null)[];
+  /** Per hour, [runs reaching 0.20", runs] in the model ensemble, counted (v0.28). The count behind pHeavy, which is a
+   *  probability (radar hours floored at 2%) and is never shown as a share of runs. */
+  heavyRuns?: ([number, number] | null)[];
   /** Share of model runs reaching the local flood (driveway) level, 0–1. Only with a flood site. */
   pFlood?: (number | null)[];
   /** Whether the local flood levels are validated at this address. Until they are, model odds never order action. */

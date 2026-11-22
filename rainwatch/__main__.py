@@ -7,10 +7,11 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from . import alerts, archive, forecast, nowcast, render, shading, storms
+from . import alerts, archive, forecast, nowcast, provenance, render, shading, storms
 from .config import Config
 from .model import UTC
 from .net import session
@@ -80,7 +81,24 @@ def main(argv=None) -> int:
     # --- archive + scoring
     arc = archive.Archive(a.data)
     series = [x for x in [nc.series, ens, *det, nb.qpf if nb else None] if x]
-    arc.snapshot(now, series, report, cfg.heavy_in, cfg.any_in)
+    try:    # the HRRR run label Open-Meteo is serving (one extra call, scheduled job only): archive only
+        for d in det:
+            if d.key == "hrrr" and d.issued is None:
+                d.issued = openmeteo.run_time(s, cfg.deterministic_models["HRRR"][0])
+    except Exception as e:  # noqa: BLE001
+        print(f"hrrr run label: {e}")
+    prov, run_recs = None, []
+    try:    # provenance (v0.28): what this forecast was computed from, to recompute it later; archive only
+        t_p = time.perf_counter()
+        prov, run_recs = provenance.build(cfg, now, report, ens, fc.ensemble_parts, det)
+        prov["overhead_ms"] = round((time.perf_counter() - t_p) * 1000, 1)
+    except Exception as e:  # noqa: BLE001
+        print(f"provenance: {e}")
+    arc.snapshot(now, series, report, cfg.heavy_in, cfg.any_in, prov=prov)
+    try:
+        print("runs archived:", arc.runs(run_recs))
+    except Exception as e:  # noqa: BLE001
+        print(f"runs record: {e}")
     try:    # strip shading trial (v0.13): record A and B for scoring; never blocks the update
         arc.shading(now, shading.record(fc.ensemble_parts, ens, now, cfg.any_in, cfg.heavy_in))
     except Exception as e:  # noqa: BLE001
@@ -89,10 +107,7 @@ def main(argv=None) -> int:
         arc.flood(now, fc.card)
     except Exception as e:  # noqa: BLE001
         print(f"flood record: {e}")
-    try:    # HRRR archive (v0.23): each run once, with its own run time, for lead-time scoring; never blocks the update
-        for d in det:     # the run Open-Meteo is serving (one extra call, scheduled job only)
-            if d.key == "hrrr" and d.issued is None:
-                d.issued = openmeteo.run_time(s, cfg.deterministic_models["HRRR"][0])
+    try:    # HRRR archive (v0.23): each run once, with its run label, for lead-time scoring; never blocks the update
         arc.hrrr(now, det)
     except Exception as e:  # noqa: BLE001
         print(f"hrrr record: {e}")
