@@ -12,9 +12,10 @@ Each saved forecast (data/forecasts/*.jsonl) gains a `prov` block:
   ensembles    per family: model, member count, native interval (3 h for ECMWF and GFS when their hourly values
                are 3-hour totals spread evenly, verified per run; 1 h otherwise), model init time (not served by
                the Open-Meteo ensemble API: null) and the sha256 of the member series, stored once in data/runs
-  det          per deterministic model (HRRR, NBM, ECMWF): its run label where known, the label's source, the
-               values_sha of the hourly series from the hour before issue (data/hrrr records carry the same hash),
-               and, for NBM and ECMWF, the sha of their full served series in data/runs (HRRR's is in data/hrrr).
+  det          per deterministic model (HRRR, NBM, ECMWF): its run label where known with run_verified false and
+               the label's source, and content_sha, the fingerprint of the model name and its whole served series
+               (v0.28.1). NBM and ECMWF are stored under it in data/runs; data/hrrr records carry the same content_sha.
+               Records saved on Nov 22, 2026 before v0.28.1 carry values_sha instead (a sliding window, no model name).
   families     per family and pooled, over the outlook's own event definition (each run's first rain event):
                n runs, peak-rate p10/p50/p90 of each run's wettest hour, and event-level exceedance counts k at
                0.10, 0.20 and 0.30"/hr (k runs whose first event has an hour at or above the level). Raw counts.
@@ -78,16 +79,29 @@ def _native(times: list[datetime], cols: dict[str, list], smoothed: bool):
     return 1, times[0], {c: [_milli(x) for x in v] for c, v in cols.items()}
 
 
-def series_sha(values: dict[datetime, float], since: datetime) -> str:
-    """Identity of a deterministic series as archived: every hour from `since`, inches to 3 decimals. The same
-    function dates data/hrrr records, so a forecast's HRRR reference can be matched to the HRRR archive."""
-    return _sha({t.isoformat(): round(v, 3) for t, v in sorted(values.items()) if t >= since})
+def det_record(model: str, values: dict[datetime, float]) -> dict | None:
+    """A deterministic run as stored: the model, and the whole series as served (not a window of it)."""
+    ks = sorted(values)
+    if not ks:
+        return None
+    vals = [_milli(values[ks[0] + timedelta(hours=i)]) if ks[0] + timedelta(hours=i) in values else None
+            for i in range(int((ks[-1] - ks[0]).total_seconds() // 3600) + 1)]
+    return {"kind": "det", "model": model, "interval_h": 1, "t0": ks[0].isoformat(), "units": "in/10000 per hour",
+            "values": vals}
+
+
+def content_sha(model: str, values: dict[datetime, float]) -> str | None:
+    """Content fingerprint of a deterministic run (v0.28.1): the model's name and its whole served series. The same
+    run fetched an hour later keeps it; two models with identical numbers do not share it. It identifies content,
+    not a model cycle: no verified run identity is served (the HRRR label is unverified metadata)."""
+    rec = det_record(model, values)
+    return _sha(rec) if rec else None
 
 
 def runs_records(parts, det, w0: datetime, w1: datetime, since: datetime) -> tuple[dict, dict, list[dict]]:
     """(ensemble refs, deterministic refs, run records for data/runs). A record is the whole series as served, so
-    the same run fetched an hour later is the same record; the forecast's own window is in prov["window"]. `since`
-    only scopes the deterministic values hash, to match data/hrrr. w0/w1 are kept for the caller's reference."""
+    the same run fetched an hour later is the same record; the forecast's own window is in prov["window"].
+    w0/w1/since are kept for the caller's reference."""
     ens_ref, det_ref, recs = {}, {}, []
     for p in parts or []:
         raw = p.raw
@@ -103,19 +117,15 @@ def runs_records(parts, det, w0: datetime, w1: datetime, since: datetime) -> tup
         ens_ref[fam] = {"model": raw["model"], "members": len(vals), "interval_h": step, "init": None, "sha": sha}
         recs.append({"sha": sha, **body})
     for d in det or []:
-        ks = sorted(d.values)
-        if not ks:
+        body = det_record(d.key, d.values)
+        if body is None:
             continue
-        vals = [_milli(d.values[ks[0] + timedelta(hours=i)]) if ks[0] + timedelta(hours=i) in d.values else None
-                for i in range(int((ks[-1] - ks[0]).total_seconds() // 3600) + 1)]
-        body = {"kind": "det", "model": d.key, "interval_h": 1, "t0": ks[0].isoformat(), "units": "in/10000 per hour",
-                "values": vals}
         sha = _sha(body)
-        det_ref[d.key] = {"run": d.issued.isoformat() if d.issued else None, "values_sha": series_sha(d.values, since),
+        det_ref[d.key] = {"run": d.issued.isoformat() if d.issued else None, "run_verified": False,
                           "run_source": ("Open-Meteo metadata last_run_initialisation_time, fetched in a separate call: "
                                          "a label, not verified to be the run that produced these values")
-                          if d.key == "hrrr" and d.issued else None,
-                          "sha": None if d.key == "hrrr" else sha, "stored": "hrrr" if d.key == "hrrr" else "runs"}
+                          if d.issued else None,
+                          "content_sha": sha, "stored": "hrrr" if d.key == "hrrr" else "runs"}
         if d.key != "hrrr":
             recs.append({"sha": sha, **body})
     return ens_ref, det_ref, recs

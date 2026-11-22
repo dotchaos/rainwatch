@@ -136,14 +136,14 @@ class Archive:
         """data/hrrr/YYYY-MM.jsonl (v0.23): every HRRR run once, as Open-Meteo served it for this point: the run's own
         initialisation time, when it was fetched, and its hourly precipitation (inches, hour-start keys) for every hour
         it covers, past the forecast's 12-hour snapshot window. Lets HRRR be scored by lead time against the gauge.
-        Without a known run time it is saved once per clock hour, marked run=None."""
+        Saved again only when the served content changes (v0.28.1); without a run label, marked run=None."""
         h = next((x for x in series if x.key == "hrrr" and x.values), None)
         if h is None:
             return False
-        from .provenance import series_sha
-        vsha = series_sha(h.values, now - timedelta(hours=1))
-        # v0.28: a new record whenever the values change, not only the label (the label can repeat across runs)
-        key = (h.issued.isoformat() if h.issued else now.astimezone(UTC).strftime("fetched-%Y-%m-%dT%H")) + ":" + vsha[:16]
+        from .provenance import content_sha
+        csha = content_sha(h.key, h.values)
+        # v0.28.1: a new record when the served run's content changes (model + whole series), not when the window moves
+        key = (h.issued.isoformat() if h.issued else "unlabelled") + ":" + csha[:16]
         st = self.state()
         if st.get("last_hrrr") == key:
             return False
@@ -151,7 +151,8 @@ class Archive:
                "values": {t.isoformat(): round(v, 3) for t, v in sorted(h.values.items()) if t >= now - timedelta(hours=1)}}
         if h.issued:    # v0.28: "run" is Open-Meteo's metadata label, read in a separate call; it repeats across runs
             rec["run_source"] = "metadata label (last_run_initialisation_time), not verified against the values"
-        rec["values_sha"] = vsha
+        rec["run_verified"] = False
+        rec["content_sha"] = csha
         (self.root / "hrrr").mkdir(exist_ok=True)
         with open(self.root / "hrrr" / f"{now.astimezone(UTC):%Y-%m}.jsonl", "a") as f:
             f.write(json.dumps(rec) + "\n")
