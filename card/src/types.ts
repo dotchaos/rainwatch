@@ -50,7 +50,11 @@ export interface Evidence {
   /** Official NWS flood products in force (Flood Watch, Flash Flood Warning …), as hour offsets, end exclusive. */
   official?: { event: string; startHour: number; endHour: number }[];
   /** Every active NWS alert (flood and non-flood), as issued; shown apart from Rainwatch's own signals (Nov 19). */
-  alerts?: { event: string; startHour: number; endHour: number; flood: boolean; severity?: string; open?: boolean; url?: string }[];
+  /** NWS alerts. startHour/endHour are clipped to the card's hours: placement only, never shown as times. The shown
+   *  times come from the alert's own record (Nov 22): onsetText / endsText (the hazard's scheduled end) / expiresText
+   *  (when the message lapses), local wording made from the NWS timestamps, absent when NWS gave none. */
+  alerts?: { event: string; startHour: number; endHour: number; flood: boolean; severity?: string; open?: boolean; url?: string;
+             onset?: string; ends?: string; expires?: string; onsetText?: string; endsText?: string; expiresText?: string }[];
   /** Radar vs models over the next hours, when they disagree (the engine's existing 0.02"/3x comparison). */
   nearDisagree?: { kind: 'radar_only' | 'models_only' | 'amount'; hours: number; radarIn: number | null; modelsIn: number | null };
 }
