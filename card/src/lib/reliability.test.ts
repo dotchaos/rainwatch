@@ -35,7 +35,7 @@ describe('official NWS alerts, apart from Rainwatch signals', () => {
   it('lists non-flood alerts with the issuer named; flood products stay in Flood risk', () => {
     expect(officialAlerts(s)).toEqual([{ event: 'Wind Advisory', kind: 'advisory', now: true, when: 'Until 8 PM' }]);
     const h = html(s);
-    expect(h).toContain('<summary aria-label="National Weather Service: 1 weather advisory: Wind">');
+    expect(h).toContain('<summary aria-label="National Weather Service: 1 weather advisory: Wind advisory">');
     expect(h.indexOf('nws-alerts')).toBeLessThan(h.indexOf('id="today-h"'));
     expect(h.slice(h.indexOf('nws-alerts'), h.indexOf('id="today-h"'))).not.toContain('Flood Watch');
   });

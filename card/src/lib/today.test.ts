@@ -63,17 +63,17 @@ describe('Today First (PR B): one forecast state', () => {
     expect(propertyFlood(v)!.state).toBe(eventHero(v)!.advisory!.risk ? 'validated' : 'potential');
     expect(asOption('Prepare flood barriers before about 1 AM Wednesday.')).toBe('If you use flood barriers, have them ready before about 1 AM Wednesday.');
   });
-  it('flood row: prominent with a signal, one quiet line without, absent without a flood site', () => {
+  it('flood row: prominent with a signal, absent with no elevated signal (Nov 22) or without a flood site', () => {
     for (const id of FOUR) {
       const s = byId(id), f = propertyFlood(s), h = html(s);
       if (!f) { expect(h, id).not.toContain('id="flood-h"'); continue; }
-      if (f.state === 'none') expect(h, id).toContain('todo-flood quiet');
+      if (f.state === 'none') expect(h, id).not.toContain('id="flood-h"');
       else expect(h.indexOf('id="flood-h"'), id).toBeLessThan(h.indexOf('id="outside-h"'));
     }
   });
   it('every scenario renders the Today First headings, in order', () => {
     for (const s of [...FOUR.map(byId), stormWed()]) {
-      const h = html(s), idx = ['Rainwatch', 'Weather when it matters', '>Today<', '>Going outside<', '>Hourly forecast<', '>Looking ahead<', 'Forecast evidence →'].map(x => h.indexOf(x));
+      const h = html(s), idx = ['Rainwatch', 'Weather when it matters', '>Current conditions<', '>Going outside<', '>Hourly forecast<', '>Looking ahead<', 'Forecast evidence →'].map(x => h.indexOf(x));
       expect(idx.every(i => i >= 0), s.id).toBe(true);
       expect([...idx].sort((a, b) => a - b), s.id).toEqual(idx);
       expect(h).not.toContain('Scenario lab');

@@ -1,6 +1,6 @@
 /** Validation handoff (Nov 19): regression tests for the confirmed defects. */
 import { describe, expect, it } from 'vitest';
-import { stormWed, shiftEarlier } from './cases';
+import { liveThu, stormWed, shiftEarlier } from './cases';
 import type { Scenario } from '../types';
 import { absHour, eligibleBars, firstVisibleTile, hourlyDayHeading, initialSelection, intervalName, resolveSelection, todayTimeline } from './today';
 
@@ -77,5 +77,18 @@ describe('Street flood risk and coastal advisories (design decision, Nov 19)', (
     // the alert line itself is untouched: the advisory is still listed as issued
     expect(html(withCoastal(base))).toContain('<strong>Coastal Flood Advisory</strong>');
     void quiet;
+  });
+  it('no elevated street-flood signal: the whole section is left off, coastal note included (Nov 22)', async () => {
+    const { createElement } = await import('react');
+    const { renderToString } = await import('react-dom/server');
+    const { WeatherCard } = await import('../components/WeatherCard');
+    const { propertyFlood } = await import('./today');
+    const quiet = liveThu();                               // Nov 19 live card: no street-flood signal, coastal products in force
+    quiet.evidence = { ...quiet.evidence!, alerts: [...(quiet.evidence!.alerts ?? []), { event: 'Coastal Flood Warning', startHour: 0, endHour: 29, flood: false }] };
+    expect(propertyFlood(quiet)!.state).toBe('none');
+    const h = renderToString(createElement(WeatherCard, { scenario: quiet }));
+    expect(h).not.toContain('id="flood-h"');
+    expect(h).not.toContain('Coastal flood advisories cover a different hazard.');
+    expect(h).toContain('Coastal flood warning');                    // the product is still in the alert summary
   });
 });

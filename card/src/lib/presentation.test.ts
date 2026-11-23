@@ -18,7 +18,7 @@ describe('NWS alerts: compact disclosure', () => {
   it('archived live card: "2 weather advisories", names from the actual products, collapsed', () => {
     const s = liveThu(), sum = alertSummary(officialAlerts(s))!;
     expect(sum.label).toBe('2 weather advisories');
-    expect(sum.names.split(' · ').sort()).toEqual(['Coastal flood', 'High surf']);
+    expect(sum.names.split(' · ').sort()).toEqual(['Coastal flood advisory', 'High surf advisory']);
     expect(sum.top).toBe('advisory');
     const h = html(s);
     expect(h).toMatch(/<details class="nws-alerts nws-advisory"><summary/);   // native disclosure, not open
@@ -31,8 +31,15 @@ describe('NWS alerts: compact disclosure', () => {
     const s = withAlerts(stormWed(), [{ event: 'Wind Advisory', startHour: 0, endHour: 9, flood: false },
                                       { event: 'High Wind Warning', startHour: 2, endHour: 12, flood: false }]);
     const sum = alertSummary(officialAlerts(s))!;
-    expect(sum).toEqual({ label: '1 warning · 1 advisory', names: 'High wind · Wind', top: 'warning' });
+    expect(sum).toEqual({ label: '1 warning · 1 advisory', names: 'High wind warning · Wind advisory', top: 'warning' });
     expect(html(s)).toMatch(/<details class="nws-alerts nws-warning" open=""><summary/);
+  });
+  it('products of one hazard at different severities stay distinct (Nov 22): full names, counts and order unchanged', () => {
+    const s = withAlerts(stormWed(), [{ event: 'Coastal Flood Advisory', startHour: 0, endHour: 9, flood: false },
+                                      { event: 'High Surf Warning', startHour: 0, endHour: 12, flood: false },
+                                      { event: 'Coastal Flood Warning', startHour: 2, endHour: 12, flood: false }]);
+    expect(alertSummary(officialAlerts(s))).toEqual({ label: '2 warnings · 1 advisory', top: 'warning',
+      names: 'High surf warning · Coastal flood warning · Coastal flood advisory' });
   });
   it('"Until further notice" only for an alert with no end time; a link only for a verified URL', () => {
     const url = 'https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.abc';

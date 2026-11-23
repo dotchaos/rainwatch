@@ -223,3 +223,13 @@ Forecast calculations, thresholds and the default selection are unchanged.
   calculation version and commit, units, outlook window, model references by content hash, per-family peaks and
   event-level counts at 0.10/0.20/0.30"). Each distinct model run is stored once in `data/runs`; ECMWF and GFS as
   verified 3-hour totals, never as hourly values. `tools/reconstruct.py` recomputes the ensemble claims from them.
+## Card hierarchy cleanup (2026-11-22)
+- The hero's heading reads "Current conditions" (was "Today") in both views. The event labels ("Upcoming storm · …",
+  "Storm underway · …"), headline wording, timing and today's high/low are unchanged.
+- The collapsed NWS summary names each product in full, type word kept ("Coastal flood warning · High surf warning ·
+  Coastal flood advisory"), so products of one hazard at different severities stay distinct. Counts, filtering and
+  order are unchanged.
+- **Reverses the earlier "one quiet line when there is none" rule:** with no elevated street-flood signal the whole
+  "Street flood risk" section is left off the card, including the coastal-flood note. Coastal products still appear
+  in the NWS summary. Elevated states (potential, official, validated) are unchanged, as are the flood calculations
+  and the evidence page.
