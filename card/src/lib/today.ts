@@ -149,8 +149,10 @@ export function todayTimeline(s: Scenario): TodayTimeline | null {
   return { from, to, now, dryUntil, bars, heavy, sources, ticks };
 }
 function dayName(s: Scenario, h: number) {
-  const i = dayIndexAt(s, h);
-  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][(dowOf(s.startDay) + i) % 7];
+  // calendar arithmetic, not the card's day rows: an alert can end after the last day the card covers (or have started
+  // before its first), where the row lookup finds no day (-1) and the name came out "undefined" (Nov 22 fix)
+  const i = Math.floor((s.startHourLocal + h) / 24);
+  return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][(((dowOf(s.startDay) + i) % 7) + 7) % 7];
 }
 const dowOf = (d: string) => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(d);
 
