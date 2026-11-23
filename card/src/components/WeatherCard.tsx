@@ -267,12 +267,12 @@ function Hourly({ s }: { s: Scenario }) {
  *  visibly belongs to its whole period (one amount, "3h total", faint hour guides) and is never repeated per hour. */
 function HourlyGrid({ s }: { s: Scenario }) {
   const g = hourlyGrid(s), W = 'var(--hcell)';
-  const at = (h: number) => `calc(${h} * ${W})`;
+  const at = (h: number) => `calc(${h} * ${W})`, pos = (h: number) => at(h - g.from);   // placed from the row's first hour (now)
   const bandLabel = (b: RainBand) => `${clockRange(s, b.wholeStart, b.wholeEnd)}: ${b.amount ? `rain ${b.amount}` : 'no rain'}`
     + `${b.res > 1 ? `, ${b.res}-hour total` : ', 1 hour'}${b.src === 'radar' ? ', radar' : ', models'}${b.shortened ? ', overlaps radar hours' : ''}`;
   return <section className="next-hours"><div className="section-heading"><strong>Hourly forecast</strong><span>Local time</span></div>
     <HourlyRow s={s} grid>
-      <div className="hgrid" style={{ width: at(g.hours) }}>
+      <div className="hgrid" style={{ width: at(g.hours - g.from) }}>
         <div className="hgrid-cells" role="list" aria-label="Hourly forecast">{g.cells.map(c =>
           <div key={c.at} className={`hcell${c.day ? ' hcell-midnight' : ''}`} role="listitem" data-from={c.at} data-to={c.at + 1}
             aria-label={`${c.day ? `${c.day} ` : ''}${c.text}, ${c.unknown ? 'no forecast' : deg(c.temp)}`}>
@@ -282,12 +282,12 @@ function HourlyGrid({ s }: { s: Scenario }) {
         <div className="hgrid-bands" role="list" aria-label="Rain amounts by source interval">{g.bands.map(b =>
           <div key={b.start} role="listitem" aria-label={bandLabel(b)}
             className={`hband hband-${b.kind} hband-${b.src}${b.res > 1 ? ' hband-group' : ''}${b.shortened ? ' hband-short' : ''}`}
-            data-from={b.start} data-to={b.end} data-res={b.res} style={{ left: at(b.start), width: at(b.end - b.start) }}>
+            data-from={b.start} data-to={b.end} data-res={b.res} style={{ left: pos(b.start), width: at(b.end - b.start) }}>
             {b.amount && <b>{b.amount}</b>}
             {b.res > 1 && b.amount && !b.shortened && <small>{b.res}h total</small>}
           </div>)}
           {g.noData.map(n => <div key={`nd-${n.start}`} role="listitem" aria-label={`${clockRange(s, n.start, n.end)}: no data`}
-            className="hband hband-nodata" data-from={n.start} data-to={n.end} style={{ left: at(n.start), width: at(n.end - n.start) }}>
+            className="hband hband-nodata" data-from={n.start} data-to={n.end} style={{ left: pos(n.start), width: at(n.end - n.start) }}>
             <small>No data</small></div>)}</div>
       </div>
     </HourlyRow>
