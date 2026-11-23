@@ -308,7 +308,8 @@ const KIND_ORDER: AlertKind[] = ['warning', 'watch', 'advisory', 'statement', 'o
 const KIND_WORD: Record<AlertKind, [string, string]> = { warning: ['warning', 'warnings'], watch: ['watch', 'watches'],
   advisory: ['advisory', 'advisories'], statement: ['statement', 'statements'], other: ['alert', 'alerts'] };
 /** Collapsed summary from the actual products: distinct events, counted by product type. One type: "2 weather
- *  advisories"; mixed: "1 warning · 2 advisories" (most serious first). Names without the type word: "Coastal flood". */
+ *  advisories"; mixed: "1 warning · 2 advisories" (most serious first). Names keep the type word, so products of one hazard stay distinct:
+ *  "Coastal flood warning · High surf warning · Coastal flood advisory". */
 export function alertSummary(al: OfficialAlert[]): { label: string; names: string; top: AlertKind } | null {
   const events = [...new Map(al.map(a => [a.event, a.kind])).entries()];
   if (!events.length) return null;
@@ -316,7 +317,7 @@ export function alertSummary(al: OfficialAlert[]): { label: string; names: strin
   const word = (k: AlertKind, n: number) => KIND_WORD[k][n === 1 ? 0 : 1];
   const label = counts.length === 1 ? `${counts[0][1]} weather ${word(counts[0][0], counts[0][1])}` : counts.map(([k, n]) => `${n} ${word(k, n)}`).join(' · ');
   const sorted = [...events].sort((x, y) => KIND_ORDER.indexOf(x[1]) - KIND_ORDER.indexOf(y[1]));
-  const names = sorted.map(([e]) => { const n = e.replace(/\s+(Warning|Watch|Advisory|Statement)$/, ''); return n[0] + n.slice(1).toLowerCase(); }).join(' · ');
+  const names = sorted.map(([e]) => e[0] + e.slice(1).toLowerCase()).join(' · ');   // full name, type word kept (Nov 22)
   return { label, names, top: counts[0][0] };
 }
 

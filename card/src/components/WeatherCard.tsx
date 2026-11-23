@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type React from 'react';
-import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, ChevronDown, Umbrella, Shirt, Waves, Droplets, TriangleAlert, Info } from 'lucide-react';
+import { MapPin, ShieldAlert, Footprints, Sun, ChevronRight, ChevronDown, Umbrella, Shirt, Droplets, TriangleAlert, Info } from 'lucide-react';
 import type { Scenario } from '../types';
 import { isUnknown, showTimeline } from '../lib/rules';
 import { amountsVsTotal, edgeNote, eventHero, fiveDays, fmtAmount, hourLabel, nowNext, tenths, type EventHero, rainAmount, stripCoverageNote, stripWords, upcomingEvent, type FiveDayRow } from '../lib/derive';
@@ -57,7 +57,7 @@ function Upcoming({ up, target }: { up: NonNullable<ReturnType<typeof upcomingEv
 function EventHeroView({ s, e }: { s: Scenario; e: EventHero }) {
   const up = upcomingEvent(s), c = s.current, tw = e.kind === 'storm' ? stormTotalWindow(s) : null;
   const rest = e.amount && e.sentence.startsWith(e.amount) ? e.sentence.slice(e.amount.length) : null;
-  return <section className="now-next event-hero" aria-labelledby="today-h"><h2 className="section-title" id="today-h">Today</h2>
+  return <section className="now-next event-hero" aria-labelledby="today-h"><h2 className="section-title" id="today-h">Current conditions</h2>
     <div className="now"><WeatherIcon name={c.icon} size={34} /><span className="now-temp">{deg(c.temperatureF)}</span><span className="now-cond">{c.condition}</span>
       {(c.highF !== null || c.lowF !== null) && <span className="now-hilo" aria-label={`Today's high ${deg(c.highF)}, low ${deg(c.lowF)}`}>{deg(c.highF)} / {deg(c.lowF)}</span>}</div>
     <div className="event-label">{e.section}</div>
@@ -73,7 +73,7 @@ export function NowAndNext({ s }: { s: Scenario }) {
   const e = eventHero(s);
   if (e) return <EventHeroView s={s} e={e} />;
   const n = nowNext(s), up = upcomingEvent(s);
-  return <section className="now-next" aria-labelledby="today-h"><h2 className="section-title" id="today-h">Today</h2>
+  return <section className="now-next" aria-labelledby="today-h"><h2 className="section-title" id="today-h">Current conditions</h2>
     <div className="now"><WeatherIcon name={s.current.icon} size={34} /><span className="now-temp">{deg(s.current.temperatureF)}</span><span className="now-cond">{s.current.condition}</span></div>
     {n && <><p className="headline">{n.headline}</p>{n.detail && <p className="headline-detail">{n.detail}</p>}</>}
     {up && <Upcoming up={up} target={fiveDays(s) ? `five-day-${up.dayIndex}` : null} />}
@@ -191,17 +191,14 @@ function GoingOutside({ s, potential, graph }: { s: Scenario; potential?: Potent
   </section>;
 }
 
-/** Flood risk (property flooding): prominent, and placed before Going outside, when there is a signal; one quiet line
- *  when there is none. The model signal is never shown as a calibrated chance of flooding. */
+/** Flood risk (property flooding): prominent, and placed before Going outside, when there is a signal; nothing when
+ *  there is none (Nov 22). The model signal is never shown as a calibrated chance of flooding. */
 function FloodRisk({ s }: { s: Scenario }) {
   const f = propertyFlood(s);
   if (!f) return null;
   const coastal = coastalFloodActive(s) ? <p className="coastal-note">Coastal flood advisories cover a different hazard.</p> : null;
-  if (f.state === 'none') return <section className="todo todo-flood quiet" aria-labelledby="flood-h">
-    <h2 className="section-title" id="flood-h">Street flood risk</h2>
-    <div className="todo-row"><Waves size={20} aria-hidden /><span className="todo-text"><strong>{f.label}</strong><span>The forecast does not reach the rain rates watched for street flooding here.</span></span></div>
-    {coastal}
-  </section>;
+  // no elevated signal: the section is left off the card entirely, coastal note included (Nov 22 decision)
+  if (f.state === 'none') return null;
   // a model signal reads as information (neutral panel, accent rule, droplets); only an official product or a validated
   // local level gets the shield and the warning panel
   const Icon = f.state === 'potential' ? Droplets : ShieldAlert;
