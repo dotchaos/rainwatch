@@ -160,7 +160,7 @@ function OfficialAlerts({ s }: { s: Scenario }) {
   if (!sum) return null;
   // warnings (and watches) keep a stronger treatment, and a warning starts open: it is never folded into a quiet summary
   const strong = sum.top === 'warning' || sum.top === 'watch', Icon = strong ? TriangleAlert : Info;
-  return <details className={`nws-alerts nws-${sum.top}`} open={sum.top === 'warning' || undefined}>
+  return <details className={`nws-alerts nws-${sum.top}`}>
     <summary aria-label={`National Weather Service: ${sum.label}: ${sum.names}`}>
       <Icon size={20} aria-hidden /><span className="nws-sum"><strong>{sum.label}</strong><span>{sum.names}</span></span>
       <ChevronDown className="nws-chev" size={18} aria-hidden /></summary>
