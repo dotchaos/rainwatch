@@ -492,7 +492,7 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
         ev["official"] = off
     # every active NWS alert (not only flood products), as hour offsets, for a separate "official alerts" line.
     # Passed through as issued; Rainwatch's own signals stay in their own fields.
-    al = alert_spans(report, t0)
+    al = alert_spans(report, t0, ZoneInfo(cfg.tz))
     if al:
         ev["alerts"] = al
     n = report.get("near") or {}
@@ -503,10 +503,26 @@ def evidence(rows: list[dict], hours: list[datetime], by_t: dict, report: dict, 
 
 
 
-def alert_spans(report: dict, t0: datetime) -> list[dict]:
+def _alert_time(iso: str | None, t0: datetime, tz) -> str | None:
+    """An NWS timestamp as the card writes times: '6 PM', or '6 PM Wed' on another local day than the card's first.
+    Converted from the alert's own timestamp in the site's time zone (DST-safe), never from forecast hours."""
+    if not iso:
+        return None
+    t, d0 = datetime.fromisoformat(iso).astimezone(tz), t0.astimezone(tz).date()
+    return clock_word(t) if t.date() == d0 else f"{clock_word(t)} {t:%a}"
+
+
+def alert_spans(report: dict, t0: datetime, tz=None) -> list[dict]:
     """Every active NWS alert as hour offsets from t0, for the card's official-alerts line (passed through as issued).
     An alert with no end or expiry time is in force until further notice and runs to the horizon (Nov 19 fix: these
-    were dropped before, which could suppress an active official alert)."""
+    were dropped before, which could suppress an active official alert).
+
+    startHour/endHour are clipped to the card's horizon: they place the alert on the card's hours (and decide which
+    official flood products cover a storm), and are never shown as times. With `tz` (Nov 22 fix), each alert also
+    carries its own NWS timestamps (onset, ends, expires) and their local wording, which the card shows; before,
+    the card wrote the clipped endHour, so an alert running past the 72-hour window showed the window's end, which
+    moved forward every hour. `ends` is the hazard's scheduled end, `expires` when the message lapses; neither is
+    invented when NWS gave none."""
     al = []
     for a in report.get("alerts") or []:
         try:
@@ -522,6 +538,11 @@ def alert_spans(report: dict, t0: datetime) -> list[dict]:
                        **({"open": True} if e is None else {}),
                        **({"severity": a["severity"]} if a.get("severity") else {}),
                        **({"url": a["url"]} if isinstance(a.get("url"), str) and a["url"].startswith("https://api.weather.gov/alerts/") else {})})
+            if tz is not None:
+                for k in ("onset", "ends", "expires"):
+                    if a.get(k):
+                        al[-1][k] = a[k]
+                        al[-1][f"{k}Text"] = _alert_time(a[k], t0, tz)
     return al
 
 def build(report: dict, cond: Conditions, cfg, now: datetime, ens=None,

@@ -1361,7 +1361,9 @@
     "event": "Flood Advisory",
     "startHour": 0,
     "endHour": 5,
-    "flood": true
+    "flood": true,
+    "expires": "2026-11-14T23:07:00+00:00",
+    "expiresText": "1 PM"
    }
   ]
  },

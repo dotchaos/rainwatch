@@ -42,6 +42,19 @@ describe('NWS alerts: compact disclosure', () => {
     expect(a.when).not.toContain('undefined');
     expect(a.when.endsWith(` ${want}`)).toBe(true);
   });
+  it("alert times come from the NWS record, not the card's clipped hours (Nov 22)", () => {
+    const s = stormWed(), H = s.hourly.length;
+    const al = (x: Partial<Al>) => officialAlerts(withAlerts(s, [{ event: 'Coastal Flood Warning', startHour: 0, endHour: H, flood: false, ...x }]))[0].when;
+    // past the window: the record's end, whatever endHour the window clipped it to
+    expect(al({ ends: '2026-11-27T22:00:00-08:00', endsText: '10 PM Fri', expiresText: '3 AM Mon' })).toBe('Until 10 PM Fri');
+    expect(al({ endHour: H - 1, endsText: '10 PM Fri' })).toBe('Until 10 PM Fri');            // a later window: same text
+    // future onset from the record
+    expect(al({ startHour: 5, onsetText: '6 AM Mon', endsText: '10 PM Fri' })).toBe('From 6 AM Mon until 10 PM Fri');
+    // only a message expiry: said as an expiry, not as the hazard's end
+    expect(al({ expiresText: '3 AM Mon' })).toBe('Expires 3 AM Mon');
+    // neither: until further notice, never a made-up time
+    expect(al({ open: true })).toBe('Until further notice');
+  });
   it('products of one hazard at different severities stay distinct (Nov 22): full names, counts and order unchanged', () => {
     const s = withAlerts(stormWed(), [{ event: 'Coastal Flood Advisory', startHour: 0, endHour: 9, flood: false },
                                       { event: 'High Surf Warning', startHour: 0, endHour: 12, flood: false },

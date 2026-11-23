@@ -296,13 +296,16 @@ export interface OfficialAlert { event: string; kind: AlertKind; when: string; n
 export const alertKind = (event: string): AlertKind => /Warning$/.test(event) ? 'warning' : /Watch$/.test(event) ? 'watch'
   : /Advisory$/.test(event) ? 'advisory' : /Statement$/.test(event) ? 'statement' : 'other';
 /** Non-flood alerts in force or coming within the card's range. Flood products appear in Street flood risk (official
- *  state), so they are not repeated here. Wording is the alert's own event name; timing from its own start/end hours;
- *  "Until further notice" only when NWS gave no end or expiry time. */
+ *  state), so they are not repeated here. Wording is the alert's own event name; times from its own NWS record
+ *  (ends, else expires: "Expires …"); "Until further notice" only when NWS gave no end or expiry time. */
 export function officialAlerts(s: Scenario): OfficialAlert[] {
   return (s.evidence?.alerts ?? []).filter(a => !a.flood).map(a => {
     const now = a.startHour <= nowAt(s) + 0.5;
-    const end = a.open ? 'until further notice' : `until ${hourText(s, a.endHour)}`;
-    const when = now ? `${end[0].toUpperCase()}${end.slice(1)}` : `From ${hourText(s, a.startHour)} ${end}`;
+    // times from the alert's own NWS record (Nov 22); endHour is clipped to the card's window and is only a fallback
+    // for cards built before the record's times were passed through
+    const end = a.endsText ? `until ${a.endsText}` : a.expiresText ? `expires ${a.expiresText}`
+      : a.open ? 'until further notice' : `until ${hourText(s, a.endHour)}`;
+    const when = now ? `${end[0].toUpperCase()}${end.slice(1)}` : `From ${a.onsetText ?? hourText(s, a.startHour)} ${end}`;
     return { event: a.event, kind: alertKind(a.event), now, when, ...(a.url ? { url: a.url } : {}), ...(a.severity ? { severity: a.severity } : {}) };
   });
 }
