@@ -82,6 +82,19 @@ function partsPhrase(s: Scenario, a: number, b: number) {
   return `${d} ${list}`;
 }
 
+/** One start-to-end range for an event that spans days (Nov 22): "Tuesday evening through early Wednesday".
+ *  Start: the part of day it begins ("this evening", "tonight", "tomorrow evening", "Tuesday evening"). End: the part
+ *  of day of its last hour; midnight–6 AM reads "early <day>", so it never implies the next morning. From the existing
+ *  event hours only: no new timing. */
+export function rangePhrase(s: Scenario, a: number, b: number) {
+  const part = (h: number) => PARTS.find(([x, y]) => localHour(s, h) >= x && localHour(s, h) < y)![2];
+  const name = (h: number) => { const d = relDay(s, h); return d === 'today' || d === 'tomorrow' ? d : fullDay[d] ?? d; };
+  const d0 = name(a), p0 = part(a);
+  const start = d0 === 'today' ? (p0 === 'night' ? 'tonight' : `this ${p0}`) : `${d0} ${p0}`;
+  const e = b - 1, d1 = name(e), p1 = part(e);
+  return `${start} through ${p1 === 'overnight' ? `early ${d1}` : `${d1} ${p1}`}`;
+}
+
 /**
  * Plan for a day whose rain stays at the first rung: the next rain day's events.
  *   continuous   one steady event                      "Rain jacket, about 1–10 PM"
@@ -350,6 +363,9 @@ export interface NowNext {
   action?: { icon: 'boots' | 'shield' | 'sun'; text: string; risk: boolean };
   /** Required small print (flood: what to do and the local-validation caveat). */
   note?: string;
+  /** The headline is about rain that has not started (its first hour is past the "now" hours): the hero labels it
+   *  "Next rain" (Nov 22). Uses the same isNowAt test as the headline's own wording, so the two cannot disagree. */
+  upcoming?: boolean;
 }
 /** "6–9 PM" today; "Fri 8 AM–4 PM" on another day. */
 const windowShort = (s: Scenario, a: number, b: number) => dayIndexAt(s, a) === 0 ? span(s, a, b) : windowLabel(s, { startHour: a, endHour: b });
@@ -378,16 +394,18 @@ export function nowNext(s: Scenario): NowNext | null {
   const plan = jacketPlan(s);
   // the detail keeps every note except the one that restates the gear window (the headline and action carry it)
   const notes = ins.detail.split(/(?<=\.)\s+/).filter(n => n && !n.startsWith(levelLabels(s)[1]) && !n.startsWith(levelLabels(s)[2]));
-  let headline: string;
+  let headline: string, upcoming = false;
   if (plan?.kind === 'separate' && plan.events.length <= 4) {
     headline = `${NUMBER_WORDS[plan.events.length]} rounds of rain ${relDay(s, plan.events[0].start)}`;
+    upcoming = !isNowAt(s, plan.events[0].start);
     notes.unshift(`Rain ${joinAnd(plan.events.map(e => when(s, e.start, e.end, e.sure)))}.`.replace(' and ', ', then '));
   } else {
     const multi = plan?.kind === 'intermittent';
     const a = multi ? plan!.events[0].start : aw.eventStart, b = multi ? plan!.events[plan!.events.length - 1].end : aw.eventEnd;
     const d = relDay(s, a), word = rainWord(s, a, b), sure = multi ? plan!.sure : aw.sure;
+    upcoming = !isNowAt(s, a);
     headline = !isNowAt(s, a) && dayIndexAt(s, a) !== dayIndexAt(s, Math.max(a, b - 1)) && !openEnd(s, b)
-      ? `${word} ${partsPhrase(s, a, b)}`                                   // spans days: parts of the day, not clock times
+      ? `${word} ${rangePhrase(s, a, b)}`                                   // spans days: one start-to-end range (Nov 22)
       : openEnd(s, b) ? (isNowAt(s, a) ? `${word} now` : `${word} ${d === 'today' ? '' : `${d} `}from ${sure ? '' : 'about '}${clock(s, a)}`)
       : isNowAt(s, a) ? `${word} ${when(s, a, b, sure)}`
       : `${word} ${d === 'today' ? '' : `${d} `}from ${sure ? '' : 'about '}${span(s, a, b)}`;
@@ -413,7 +431,7 @@ export function nowNext(s: Scenario): NowNext | null {
     }
   }
   const gear = aw.rung >= 2 ? `${aw.action} · ${gearWhen}` : aw.action;
-  return { headline, detail: notes.join(' '), action: { icon: 'boots', text: gear, risk: false } };
+  return { headline, detail: notes.join(' '), action: { icon: 'boots', text: gear, risk: false }, ...(upcoming ? { upcoming } : {}) };
 }
 
 /**
