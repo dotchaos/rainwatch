@@ -27,12 +27,12 @@ describe('NWS alerts: compact disclosure', () => {
     expect(officialAlerts(liveThu()).filter(a => a.event === 'Coastal Flood Advisory')).toHaveLength(2);
     expect(alertSummary(officialAlerts(liveThu()))!.names.match(/Coastal flood/g)).toHaveLength(1);
   });
-  it('mixed products: counts per type, most serious first; a warning opens the disclosure and stands out', () => {
+  it('mixed products: counts per type, most serious first; a warning stands out but starts collapsed (Nov 22)', () => {
     const s = withAlerts(stormWed(), [{ event: 'Wind Advisory', startHour: 0, endHour: 9, flood: false },
                                       { event: 'High Wind Warning', startHour: 2, endHour: 12, flood: false }]);
     const sum = alertSummary(officialAlerts(s))!;
     expect(sum).toEqual({ label: '1 warning · 1 advisory', names: 'High wind warning · Wind advisory', top: 'warning' });
-    expect(html(s)).toMatch(/<details class="nws-alerts nws-warning" open=""><summary/);
+    expect(html(s)).toMatch(/<details class="nws-alerts nws-warning"><summary/);   // collapsed on load, emphasis kept
   });
   it('an alert ending after the last day the card covers names its real day, never "undefined" (Nov 22)', () => {
     const s = stormWed(), last = s.hourly.length + 48;          // well past the card's last day

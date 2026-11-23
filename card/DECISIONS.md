@@ -233,3 +233,5 @@ Forecast calculations, thresholds and the default selection are unchanged.
   "Street flood risk" section is left off the card, including the coastal-flood note. Coastal products still appear
   in the NWS summary. Elevated states (potential, official, validated) are unchanged, as are the flood calculations
   and the evidence page.
+- NWS alerts start collapsed on page load, warnings included; the reader expands them (Nov 22, reverses "a warning
+  opens by default"). A warning keeps its stronger emphasis in the collapsed summary.
