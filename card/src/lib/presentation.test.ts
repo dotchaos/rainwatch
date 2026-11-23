@@ -34,6 +34,14 @@ describe('NWS alerts: compact disclosure', () => {
     expect(sum).toEqual({ label: '1 warning · 1 advisory', names: 'High wind warning · Wind advisory', top: 'warning' });
     expect(html(s)).toMatch(/<details class="nws-alerts nws-warning" open=""><summary/);
   });
+  it('an alert ending after the last day the card covers names its real day, never "undefined" (Nov 22)', () => {
+    const s = stormWed(), last = s.hourly.length + 48;          // well past the card's last day
+    const [a] = officialAlerts(withAlerts(s, [{ event: 'High Surf Warning', startHour: 2, endHour: last, flood: false }]));
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const want = days[(days.indexOf(s.startDay) + Math.floor((s.startHourLocal + last) / 24)) % 7];
+    expect(a.when).not.toContain('undefined');
+    expect(a.when.endsWith(` ${want}`)).toBe(true);
+  });
   it('products of one hazard at different severities stay distinct (Nov 22): full names, counts and order unchanged', () => {
     const s = withAlerts(stormWed(), [{ event: 'Coastal Flood Advisory', startHour: 0, endHour: 9, flood: false },
                                       { event: 'High Surf Warning', startHour: 0, endHour: 12, flood: false },
