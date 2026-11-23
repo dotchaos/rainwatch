@@ -57,9 +57,10 @@ function Upcoming({ up, target }: { up: NonNullable<ReturnType<typeof upcomingEv
 function EventHeroView({ s, e }: { s: Scenario; e: EventHero }) {
   const up = upcomingEvent(s), c = s.current, tw = e.kind === 'storm' ? stormTotalWindow(s) : null;
   const rest = e.amount && e.sentence.startsWith(e.amount) ? e.sentence.slice(e.amount.length) : null;
-  return <section className="now-next event-hero" aria-labelledby="today-h"><h2 className="section-title" id="today-h">Current conditions</h2>
-    <div className="now"><WeatherIcon name={c.icon} size={34} /><span className="now-temp">{deg(c.temperatureF)}</span><span className="now-cond">{c.condition}</span>
+  return <section className="now-next event-hero" id="today-h" aria-label="Current conditions and forecast">
+    <div className="now"><WeatherIcon name={c.icon} size={34} /><span className="now-temp">{deg(c.temperatureF)}</span><span className="now-cond">{c.condition} now</span>
       {(c.highF !== null || c.lowF !== null) && <span className="now-hilo" aria-label={`Today's high ${deg(c.highF)}, low ${deg(c.lowF)}`}>{deg(c.highF)} / {deg(c.lowF)}</span>}</div>
+    <hr className="hero-divider" />
     <div className="event-label">{e.section}</div>
     <p className="headline">{e.headline}</p>
     <p className="headline-detail event-sentence">{rest !== null ? <><strong>{e.amount}</strong>{rest}</> : e.sentence}</p>
@@ -73,8 +74,10 @@ export function NowAndNext({ s }: { s: Scenario }) {
   const e = eventHero(s);
   if (e) return <EventHeroView s={s} e={e} />;
   const n = nowNext(s), up = upcomingEvent(s);
-  return <section className="now-next" aria-labelledby="today-h"><h2 className="section-title" id="today-h">Current conditions</h2>
-    <div className="now"><WeatherIcon name={s.current.icon} size={34} /><span className="now-temp">{deg(s.current.temperatureF)}</span><span className="now-cond">{s.current.condition}</span></div>
+  return <section className="now-next" id="today-h" aria-label="Current conditions and forecast">
+    <div className="now"><WeatherIcon name={s.current.icon} size={34} /><span className="now-temp">{deg(s.current.temperatureF)}</span><span className="now-cond">{s.current.condition} now</span></div>
+    <hr className="hero-divider" />
+    {n?.upcoming && <div className="event-label">Next rain</div>}
     {n && <><p className="headline">{n.headline}</p>{n.detail && <p className="headline-detail">{n.detail}</p>}</>}
     {up && <Upcoming up={up} target={fiveDays(s) ? `five-day-${up.dayIndex}` : null} />}
   </section>;
