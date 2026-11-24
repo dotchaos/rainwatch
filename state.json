@@ -14,12 +14,12 @@
   "peak": "2026-11-19T13:00:00+00:00",
   "sent": "2026-11-19T12:22:55.852924+00:00"
  },
- "last_card": "2026-11-24T20",
- "last_flood": "2026-11-24T20",
+ "last_card": "2026-11-24T21",
+ "last_flood": "2026-11-24T21",
  "last_hrrr": "2026-11-24T19:00:00+00:00:10fa204cf1ab63ac",
- "last_shading": "2026-11-24T20",
- "last_signals": "2026-11-24T20",
- "last_snapshot": "2026-11-24T20",
+ "last_shading": "2026-11-24T21",
+ "last_signals": "2026-11-24T21",
+ "last_snapshot": "2026-11-24T21",
  "nws_seen": [
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.3",
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.2",
@@ -152,6 +152,7 @@
   "362c56cae4d52a89538b62e47acc6bdf80eaa08c4165b81e2dc9b7b7cc9978ac",
   "3aac2e9924f2ff83120ce89da5157316ab627f6f710c8940ab82451dd8b6fc37",
   "796c80d9b5df0d254c81b4d5ab07563d39bbc8798c4c11826dd36a65ac7752b3",
-  "7d855a2425b6b17729958e0e628deea2df77210b30f1ad70d8da421157c402a6"
+  "7d855a2425b6b17729958e0e628deea2df77210b30f1ad70d8da421157c402a6",
+  "d64175fc43b15c2419b40a9579065c3d90fc2cdd8064d264b7007efa02461788"
  ]
 }
