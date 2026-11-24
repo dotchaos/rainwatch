@@ -1,19 +1,19 @@
 # Lead-time scorecards vs the Mint gauge
 
-Generated 2026-11-24T07:43 UTC · last 60 days · truth: SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24) · heavy = an hour >= 0.20". One verdict per gauge hour per bucket (the latest forecast issued in it). Probabilistic sources say heavy at >= 20% of runs.
+Generated 2026-11-24T07:58 UTC · last 60 days · truth: SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24) · heavy = an hour >= 0.20". One verdict per gauge hour per bucket (the latest forecast issued in it). Probabilistic sources say heavy at >= 20% of runs.
 
 
 ## 0–1 h (the hour in progress and the next)
 
 | source | hours | MAE | bias | heavy hits | misses | false alarms | POD | FAR | CSI |
 |---|---|---|---|---|---|---|---|---|---|
-| rainwatch | 253 | 0.016 | +0.001 | 4 | 1 | 9 | 0.8 | 0.69 | 0.29 |
-| ens | 253 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
-| radar | 250 | 0.016 | +0.001 | 4 | 1 | 9 | 0.8 | 0.69 | 0.29 |
-| hrrr | 248 | 0.026 | -0.006 | 1 | 4 | 4 | 0.2 | 0.8 | 0.11 |
-| nbm | 250 | 0.015 | -0.004 | 2 | 3 | 1 | 0.4 | 0.33 | 0.33 |
-| ecmwf | 252 | 0.019 | -0.001 | 1 | 4 | 3 | 0.2 | 0.75 | 0.12 |
-| nws | 253 | 0.021 | -0.001 | 0 | 5 | 0 | 0.0 | – | 0.0 |
+| rainwatch | 254 | 0.016 | +0.001 | 4 | 1 | 9 | 0.8 | 0.69 | 0.29 |
+| ens | 254 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
+| radar | 251 | 0.016 | +0.001 | 4 | 1 | 9 | 0.8 | 0.69 | 0.29 |
+| hrrr | 249 | 0.026 | -0.006 | 1 | 4 | 4 | 0.2 | 0.8 | 0.11 |
+| nbm | 251 | 0.015 | -0.004 | 2 | 3 | 1 | 0.4 | 0.33 | 0.33 |
+| ecmwf | 253 | 0.019 | -0.001 | 1 | 4 | 3 | 0.2 | 0.75 | 0.12 |
+| nws | 254 | 0.021 | -0.001 | 0 | 5 | 0 | 0.0 | – | 0.0 |
 
 Primary forecast by what carried the hour (heavy = the same rule as above):
 
@@ -21,7 +21,7 @@ Primary forecast by what carried the hour (heavy = the same rule as above):
 |---|---|---|---|---|---|---|
 | radar-only | 216 | 0.009 | +0.002 | 0 | 1 | 4 |
 | radar-corroborated | 29 | 0.074 | -0.006 | 4 | 0 | 5 |
-| models | 8 | 0.000 | +0.000 | 0 | 0 | 0 |
+| models | 9 | 0.000 | +0.000 | 0 | 0 | 0 |
 
 Corroborating sources (radar hours): ECMWF 7, Flood Advisory 14, HRRR 12, Mint gauge 0.23" last hour 1, Mint gauge 0.26" last hour 1, Mint gauge 0.54" last hour 1, Mint gauge 0.93" last hour 1, NBM 5, ensemble 12
 
@@ -31,69 +31,69 @@ Calibration, primary forecast (0–1 h); observed frequency only where a bin has
 
 | event | bin | hours | mean forecast | observed |
 |---|---|---|---|---|
-| heavy | 0.00–0.05 | 234 | 0.02 | 0.00 |
+| heavy | 0.00–0.05 | 235 | 0.02 | 0.00 |
 | heavy | 0.05–0.20 | 6 | 0.11 | too few |
 | heavy | 0.20–0.50 | 1 | 0.46 | too few |
 | heavy | 0.50–0.80 | 9 | 0.67 | too few |
 | heavy | 0.80–1.00 | 3 | 0.85 | too few |
-| any | 0.00–0.05 | 190 | 0.02 | 0.05 |
+| any | 0.00–0.05 | 191 | 0.02 | 0.05 |
 | any | 0.05–0.20 | 9 | 0.10 | too few |
 | any | 0.20–0.50 | 9 | 0.33 | too few |
 | any | 0.50–0.80 | 11 | 0.62 | 0.64 |
 | any | 0.80–1.00 | 34 | 0.88 | 0.97 |
 
-Card gear vs the gauge (0–1 h): 178 hours · exact 162 · over 6 · under 10 · heavy hours the card under-geared: 1 · Sandbags the gauge didn't support: 3
+Card gear vs the gauge (0–1 h): 179 hours · exact 163 · over 6 · under 10 · heavy hours the card under-geared: 1 · Sandbags the gauge didn't support: 3
 
 ## 1–3 h ahead
 
 | source | hours | MAE | bias | heavy hits | misses | false alarms | POD | FAR | CSI |
 |---|---|---|---|---|---|---|---|---|---|
-| rainwatch | 251 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
-| ens | 251 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
-| hrrr | 246 | 0.021 | -0.004 | 1 | 4 | 6 | 0.2 | 0.86 | 0.09 |
-| nbm | 248 | 0.014 | -0.003 | 2 | 3 | 1 | 0.4 | 0.33 | 0.33 |
-| ecmwf | 250 | 0.019 | -0.002 | 1 | 4 | 2 | 0.2 | 0.67 | 0.14 |
-| nws | 251 | 0.021 | -0.001 | 0 | 5 | 0 | 0.0 | – | 0.0 |
+| rainwatch | 252 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
+| ens | 252 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
+| hrrr | 247 | 0.021 | -0.004 | 1 | 4 | 6 | 0.2 | 0.86 | 0.09 |
+| nbm | 249 | 0.014 | -0.003 | 2 | 3 | 1 | 0.4 | 0.33 | 0.33 |
+| ecmwf | 251 | 0.018 | -0.002 | 1 | 4 | 2 | 0.2 | 0.67 | 0.14 |
+| nws | 252 | 0.021 | -0.001 | 0 | 5 | 0 | 0.0 | – | 0.0 |
 
 Calibration, primary forecast (1–3 h); observed frequency only where a bin has >= 10 hours:
 
 | event | bin | hours | mean forecast | observed |
 |---|---|---|---|---|
-| heavy | 0.00–0.05 | 240 | 0.00 | 0.01 |
+| heavy | 0.00–0.05 | 241 | 0.00 | 0.01 |
 | heavy | 0.05–0.20 | 4 | 0.09 | too few |
 | heavy | 0.20–0.50 | 2 | 0.34 | too few |
 | heavy | 0.50–0.80 | 5 | 0.64 | too few |
-| any | 0.00–0.05 | 141 | 0.00 | 0.02 |
+| any | 0.00–0.05 | 142 | 0.00 | 0.02 |
 | any | 0.05–0.20 | 32 | 0.10 | 0.16 |
 | any | 0.20–0.50 | 30 | 0.38 | 0.37 |
 | any | 0.50–0.80 | 21 | 0.63 | 0.62 |
 | any | 0.80–1.00 | 27 | 0.92 | 0.85 |
 
-Card gear vs the gauge (1–3 h): 176 hours · exact 156 · over 13 · under 7 · heavy hours the card under-geared: 1 · Sandbags the gauge didn't support: 4
+Card gear vs the gauge (1–3 h): 177 hours · exact 157 · over 13 · under 7 · heavy hours the card under-geared: 1 · Sandbags the gauge didn't support: 4
 
 ## 3–6 h ahead
 
 | source | hours | MAE | bias | heavy hits | misses | false alarms | POD | FAR | CSI |
 |---|---|---|---|---|---|---|---|---|---|
-| rainwatch | 249 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
-| ens | 249 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
-| hrrr | 248 | 0.020 | -0.005 | 2 | 3 | 1 | 0.4 | 0.33 | 0.33 |
-| nbm | 249 | 0.016 | -0.003 | 2 | 3 | 1 | 0.4 | 0.33 | 0.33 |
-| ecmwf | 249 | 0.018 | -0.001 | 1 | 4 | 2 | 0.2 | 0.67 | 0.14 |
-| nws | 249 | 0.021 | -0.001 | 0 | 5 | 0 | 0.0 | – | 0.0 |
+| rainwatch | 250 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
+| ens | 250 | 0.015 | -0.005 | 3 | 2 | 4 | 0.6 | 0.57 | 0.33 |
+| hrrr | 249 | 0.020 | -0.005 | 2 | 3 | 1 | 0.4 | 0.33 | 0.33 |
+| nbm | 250 | 0.016 | -0.003 | 2 | 3 | 1 | 0.4 | 0.33 | 0.33 |
+| ecmwf | 250 | 0.018 | -0.001 | 1 | 4 | 2 | 0.2 | 0.67 | 0.14 |
+| nws | 250 | 0.021 | -0.001 | 0 | 5 | 0 | 0.0 | – | 0.0 |
 
 Calibration, primary forecast (3–6 h); observed frequency only where a bin has >= 10 hours:
 
 | event | bin | hours | mean forecast | observed |
 |---|---|---|---|---|
-| heavy | 0.00–0.05 | 240 | 0.00 | 0.01 |
+| heavy | 0.00–0.05 | 241 | 0.00 | 0.01 |
 | heavy | 0.05–0.20 | 2 | 0.12 | too few |
 | heavy | 0.20–0.50 | 3 | 0.38 | too few |
 | heavy | 0.50–0.80 | 4 | 0.65 | too few |
-| any | 0.00–0.05 | 142 | 0.01 | 0.03 |
+| any | 0.00–0.05 | 143 | 0.01 | 0.03 |
 | any | 0.05–0.20 | 32 | 0.11 | 0.16 |
 | any | 0.20–0.50 | 30 | 0.39 | 0.37 |
 | any | 0.50–0.80 | 20 | 0.63 | 0.55 |
 | any | 0.80–1.00 | 25 | 0.91 | 0.88 |
 
-Card gear vs the gauge (3–6 h): 174 hours · exact 152 · over 15 · under 7 · heavy hours the card under-geared: 1 · Sandbags the gauge didn't support: 4
+Card gear vs the gauge (3–6 h): 175 hours · exact 153 · over 15 · under 7 · heavy hours the card under-geared: 1 · Sandbags the gauge didn't support: 4
