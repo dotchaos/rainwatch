@@ -24,11 +24,23 @@ jobs:
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run update.yml -R ${{ github.repository }} --ref main
+        # GitHub's dispatch API sometimes returns 5xx; retry instead of losing this update
+        run: |
+          for i in 1 2 3 4 5; do
+            gh workflow run update.yml -R ${{ github.repository }} --ref main && exit 0
+            sleep $((i * 15))
+          done
+          exit 1
       - name: Wait 15 minutes
         run: sleep 900
       - name: Start the next tick
         if: always()
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run tick.yml -R ${{ github.repository }} --ref main
+        # a single 5xx here used to end the chain until the unreliable cron backup fired; retry
+        run: |
+          for i in 1 2 3 4 5 6; do
+            gh workflow run tick.yml -R ${{ github.repository }} --ref main && exit 0
+            sleep $((i * 20))
+          done
+          exit 1
