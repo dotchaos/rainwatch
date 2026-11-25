@@ -266,7 +266,7 @@
    "peak": 0.29,
    "heavy": true,
    "missing_hours": 0,
-   "done": false,
+   "done": true,
    "leads": [
     {
      "lead_h": 24,
