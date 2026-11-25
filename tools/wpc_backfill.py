@@ -34,7 +34,8 @@ NAME = re.compile(r"^p(\d+)m_(\d{10})f(\d{3})\.grb2?$")
 
 def box_values(path):
     import pygrib
-    g = pygrib.open(str(path)).message(1)
+    raw = Path(path).read_bytes()
+    g = pygrib.fromstring(raw[raw.find(b"GRIB"):])
     la, lo = g.latlons()
     lo = np.where(lo > 180, lo - 360, lo)
     inside = (la >= BOX[0]) & (la <= BOX[1]) & (lo >= BOX[2]) & (lo <= BOX[3])
@@ -82,7 +83,8 @@ def main():
                     f = e
                     time.sleep(3)
             got = datetime.now(UTC).isoformat()
-            if not hasattr(f, "status_code") or f.status_code != 200 or f.content[:4] != b"GRIB":
+            gpos = f.content.find(b"GRIB", 0, 200) if hasattr(f, "content") else -1   # day 4-7 files carry a WMO header first
+            if not hasattr(f, "status_code") or f.status_code != 200 or gpos < 0:
                 c = getattr(f, "content", b"") or b""
                 manifest["failures"].append({"url": url, "status": getattr(f, "status_code", str(f)), "at": got, "bytes": len(c),
                                              "content_type": getattr(f, "headers", {}).get("Content-Type"),
@@ -92,7 +94,8 @@ def main():
             entry = {"folder": folder, "file": name, "url": url, "issued": issued.isoformat(),
                      "valid_start": start.isoformat(), "valid_end": end.isoformat(), "interval_h": int(acc),
                      "storms": hit, "last_modified": f.headers.get("Last-Modified"), "retrieved": got,
-                     "bytes": len(f.content), "sha256": sha}
+                     "bytes": len(f.content), "sha256": sha, "grib_offset": gpos,
+                     "wmo_header": f.content[:gpos].decode("latin-1").strip() if gpos > 0 else None}
             if sha in have:
                 entry["saved_as"] = have[sha]
                 entry["duplicate_of_archived"] = True
