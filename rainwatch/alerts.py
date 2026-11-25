@@ -38,8 +38,8 @@ def decide(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
             msgs.append({
                 "kind": "heavy", "peak": pk["t"], "p": pk["p_heavy"], "radar_only": True,
                 "title": f"Heavy rain possible {when}",
-                "message": (f"Radar shows a burst heading this way (~{pk['mid']:.2f}\"/hr). No model, the Mint gauge "
-                            f"or an NWS product shows it yet, so it may weaken or miss. {pk['basis']}"),
+                "message": (f"Radar shows a burst heading this way (~{pk['mid']:.2f}\"/hr). No model or the Mint gauge "
+                            f"shows it yet, so it may weaken or miss. {pk['basis']}"),
                 "priority": 3, "tags": ["cloud_with_rain"],
             })
         elif fresh:

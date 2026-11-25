@@ -243,3 +243,6 @@ Forecast calculations, thresholds and the default selection are unchanged.
 - While `flood_validated` is false, Rainwatch sends none of its own local flood-risk pushes (driveway risk, long
   soaker). The card's potential state is unchanged (no percentages) and is never pushed. NWS pushes and the heavy-rain
   push are unchanged.
+- (same day) The heavy-rain push also stops counting an NWS flood product as corroboration for a radar-only heavy
+  hour: "Heavy rain possible in the next hour" stays the wording unless the ensemble, a model run or the Mint gauge
+  shows it. Its message no longer says an NWS product would count.

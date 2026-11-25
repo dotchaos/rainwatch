@@ -27,29 +27,12 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 
 from . import levels as lv
-from .card import FLOOD_PRODUCTS
 
 H = timedelta(hours=1)
 GATED = ("behind", "driveway")
 MODEL_P = 0.10            # an ensemble "sees" a level when this share of its runs reach it (same floor as FLOOD_FLOOR)
 GAUGE_FRESH_H = 2.5       # the gauge's latest hour counts only while it is still reporting
 RANK = {"feel": 1, "behind": 2, "driveway": 3}
-
-
-def _official(alerts, t: datetime) -> list[str]:
-    out = []
-    for a in alerts or []:
-        if a.get("event") not in FLOOD_PRODUCTS:
-            continue
-        try:
-            s = datetime.fromisoformat(a["onset"]) if a.get("onset") else None
-            e = a.get("ends") or a.get("expires")
-            e = datetime.fromisoformat(e) if e else None
-        except (TypeError, ValueError):
-            s = e = None
-        if (s is None or s <= t + H) and (e is None or e > t):
-            out.append(a["event"])
-    return out
 
 
 def gauge_level(gauges, cfg, now: datetime) -> float | None:
@@ -100,7 +83,8 @@ def heavy_corroboration(t: datetime, cfg, ens, det, gauge_in: float | None, aler
             out.append(d.label)
     if gauge_in is not None and gauge_in >= cfg.heavy_in:
         out.append(f"Mint gauge {gauge_in:.2f}\" last hour")
-    return out + _official(alerts, t)
+    # NWS flood products are authority, not evidence (Nov 25 2026): often issued from the same radar
+    return out
 
 
 def gate(lev: dict, t: datetime, cfg, ens, det, gauge_in, alerts) -> dict:
