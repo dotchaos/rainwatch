@@ -122,17 +122,83 @@ def test_stale_gauge_does_not_corroborate():
     assert escalation.gauge_level([g], CFG, NOW) is None
 
 
-def test_official_flood_product_corroborates_and_nws_alerts_stay_independent():
+def test_official_flood_product_is_authority_not_evidence_and_nws_alerts_stay_independent():
+    """Nov 25 2026: an NWS flood product no longer licenses a radar-derived local level; it is still pushed itself."""
     ffw = {"id": "urn:ffw:1", "event": "Flash Flood Warning", "headline": "Flash Flood Warning for San Francisco",
            "onset": (NOW - H).isoformat(), "ends": (NOW + 3 * H).isoformat()}
     rep = build(nws_alerts=[ffw])
-    assert row(rep, T8)["levels"]["corroborated"]["driveway"] == ["Flash Flood Warning"]
+    r8 = row(rep, T8)
+    assert r8["levels"]["corroborated"] == {"behind": [], "driveway": []}
+    assert r8["levels"]["gated"] is True and r8["levels"]["driveway"] < card.SANDBAGS_P
     assert "nws" in [m["kind"] for m in alerts.decide(rep, {}, NOW, CFG)]
     # and an NWS alert is pushed even when every radar level was gated
     other = {"id": "urn:wind:1", "event": "Wind Advisory", "headline": "Wind Advisory", "onset": None, "ends": None}
     rep = build(nws_alerts=[other])
     assert row(rep, T8)["levels"]["gated"] is True
     assert [m for m in alerts.decide(rep, {}, NOW, CFG) if m["kind"] == "nws"][0]["title"] == "Wind Advisory"
+
+
+# ---- Nov 24 2026, 11:08 PM PST (07:08 UTC): radar 0.67" for the hour, ensemble ~0.02", HRRR 0.00", NBM 0.02",
+# Mint gauge's last hour 0.00", and an NWS Flood Advisory issued at 11:01 PM from "Doppler radar indicated heavy
+# rain". Before: the advisory corroborated radar (driveway 78%) and an urgent "Driveway risk" push went out. The Mint
+# gauge then measured 0.29" for 10:43-11:43 PM and the street did not flood.
+
+N24 = datetime(2026, 11, 25, 7, 8, tzinfo=UTC)
+A24 = {"id": "urn:oid:fa58", "event": "Flood Advisory", "headline": "Flood Advisory issued November 24 at 11:01PM PST",
+       "onset": "2026-11-25T07:01:00+00:00", "ends": "2026-11-25T10:00:00+00:00"}
+
+
+def nov24():
+    t7, t8 = datetime(2026, 11, 25, 7, tzinfo=UTC), datetime(2026, 11, 25, 8, tzinfo=UTC)
+    n = 100
+    rs = Series("radar", "Radar nowcast", N24)
+    for t, lo, hi in ((t7, 0.40, 0.95), (t8, 0.25, 0.75)):        # medians ~0.67" and ~0.50", as on the card
+        rs.members[t] = [lo + (hi - lo) * i / (n - 1) for i in range(n)]
+        rs.values[t] = sorted(rs.members[t])[n // 2]
+    nc = SimpleNamespace(series=rs, basis={}, dbz_now=51.0, frames=[N24 - timedelta(minutes=3)], status="ok",
+                         coverage=0.4, motion=SimpleNamespace(confidence="high", describe=lambda: "moving toward E"))
+    ens = Series("ens", "Ensemble", N24)
+    for i in range(80):
+        t = t7 + i * H
+        base = 0.016 if i < 2 else max(0.0, 0.01 - 0.003 * i)
+        ens.members[t] = [round(base * (0.5 + k / 30), 4) for k in range(30)]
+        ens.values[t] = base
+    det = [Series("hrrr", "HRRR", N24, values={t7 - H: 0.0, t7: 0.0, t8: 0.0, t8 + H: 0.016}),
+           Series("nbm", "NBM", N24, values={t7 - H: 0.02, t7: 0.02, t8: 0.012, t8 + H: 0.0})]
+    g = Gauge(station=CFG.site.hads_station, label="Mint", url="", hourly={t7 - 2 * H: 0.0, t7 - H: 0.0})
+    nws = SimpleNamespace(alerts=[A24], qpf=None, gust_mph={}, office="MTR")
+    return engine.build(CFG, N24, nws, ens, [ens], det, nc, [g], []), t7
+
+
+def test_nov24_advisory_no_longer_licenses_radar_and_no_local_flood_push():
+    rep, t7 = nov24()
+    r = row(rep, t7)
+    assert r["primary"] == "radar"
+    assert r["levels"]["radar_raw"]["driveway"] >= 0.5                   # radar alone still says driveway risk
+    assert r["levels"]["corroborated"] == {"behind": [], "driveway": []}  # the advisory is not evidence
+    assert r["levels"]["driveway"] < CFG.site.driveway_alert_prob and r["levels"]["gated"] is True
+    msgs = alerts.decide(rep, {}, N24, CFG)
+    kinds = [m["kind"] for m in msgs]
+    assert not [k for k in kinds if k.startswith("block_")]               # no Rainwatch local flood-risk push
+    assert [m["title"] for m in msgs if m["kind"] == "nws"] == ["Flood Advisory"]   # the advisory is still pushed
+    # and the card still carries the official product, independent of the gating
+    from tests.test_rainwatch import _cond_for
+    c = card.build(rep, _cond_for(rep), CFG, N24)
+    assert [(a["event"], a["flood"]) for a in c["evidence"]["alerts"]] == [("Flood Advisory", True)]
+
+
+def test_local_flood_pushes_wait_for_validation_whatever_the_levels():
+    """While flood_validated is False no driveway / long-soaker push is sent, even for levels that would qualify."""
+    rep, t7 = nov24()
+    for r in rep["rows"][:3]:
+        if r.get("levels"):
+            r["levels"]["driveway"] = r["levels"]["behind"] = 0.9            # as if corroborated
+    assert CFG.site.flood_validated is False
+    assert not [m for m in alerts.decide(rep, {}, N24, CFG) if m["kind"].startswith("block_")]
+    assert alerts.block_alerts(rep, {}, N24, CFG)                         # the rule itself is intact ...
+    import dataclasses
+    vcfg = dataclasses.replace(CFG, site=dataclasses.replace(CFG.site, flood_validated=True))
+    assert [m for m in alerts.decide(rep, {}, N24, vcfg) if m["kind"].startswith("block_")]   # ... and used once validated
 
 
 def test_model_hours_are_untouched():

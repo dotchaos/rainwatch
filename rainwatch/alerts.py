@@ -3,7 +3,9 @@
 Sends:
 * a heavy-rain alert when an hour within the alert window reaches the probability threshold,
   once per event; re-sends only if the peak moves by 2+ hours or the chance climbs sharply;
-* each new NWS alert for the point (Flood Advisory, Wind Advisory, ...), once, in its own words and urgency.
+* each new NWS alert for the point (Flood Advisory, Wind Advisory, ...), once, in its own words and urgency;
+* Rainwatch's own local flood-risk alerts (driveway risk, long soaker) only when the site's flood levels are
+  validated (flood_validated); until then the card may show a potential state, but nothing is pushed for it.
 A heavy hour carried by the radar nowcast alone (nothing corroborates it: rainwatch/escalation.py) is worded
 "Heavy rain possible in the next hour", not by its probability; corroborated, the probability wording stands.
 """
@@ -50,7 +52,9 @@ def decide(report: dict, state: dict, now: datetime, cfg) -> list[dict]:
                             f"{report['total']['hi']:.2f}\") through {report['total']['through']}."),
                 "priority": 3, "tags": ["cloud_with_rain"],
             })
-    if cfg.flood_site:
+    # Rainwatch's own local flood-risk pushes (driveway, long soaker) only once the levels are validated at the site,
+    # the same standard the card applies (Nov 25 2026); NWS flood products are still pushed below, on their own path
+    if cfg.flood_site and cfg.site.flood_validated:
         msgs += block_alerts(report, state, now, cfg)
     seen = set(state.get("nws_seen", []))
     groups: dict[str, list[dict]] = {}          # NWS often issues one event under several ids

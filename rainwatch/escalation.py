@@ -10,10 +10,12 @@ one independent source corroborates that level near that hour:
               ECMWF, ...) flags that level or worse at t-1..t+1;
   * gauge:    the Mint gauge's latest completed hour (still reporting) is already at the drains-working-hard
               level (>= feel_in);
-  * official: an NWS flood product (watch, warning, advisory) is in force at that hour.
 Otherwise the level falls back to what the non-radar evidence says for that hour (the ensemble's own share, or 0).
 The heavy-rain push from a radar-primary hour with no corroborating heavy evidence (heavy_corroboration) is worded
 "Heavy rain possible"; with corroboration it keeps the probability wording. Thresholds here are provisional.
+An NWS flood product is not evidence here (Nov 25 2026, John): it is shown and pushed in its own right, but it
+does not license a radar-derived local level. On Nov 24 at 11:08 PM a Flood Advisory issued from "Doppler radar
+indicated heavy rain" at 10:59 PM let the radar's own 0.67" stand (driveway 78%) while the Mint gauge measured 0.29".
 Nothing else changes: amounts, p_heavy, p_any, timing and the 'feel' level stay the radar's. NWS alerts are pushed
 on their own path (alerts.decide) and never pass through here.
 
@@ -81,9 +83,7 @@ def corroboration(t: datetime, cfg, ens, det, gauge_in: float | None, alerts) ->
     if gauge_in is not None and gauge_in >= cfg.site.feel_in:
         for k in GATED:
             out[k].append(f"Mint gauge {gauge_in:.2f}\" last hour")
-    off = _official(alerts, t)
-    for k in GATED:
-        out[k] += off
+    # NWS flood products are authority, not evidence: never corroboration for a local level (Nov 25 2026)
     return out
 
 
