@@ -114,9 +114,7 @@
    },
    "model_flags": {},
    "radar_heavy": {
-    "corroborated": [
-     "Flood Advisory"
-    ]
+    "corroborated": []
    }
   },
   {
@@ -178,9 +176,7 @@
    },
    "model_flags": {},
    "radar_heavy": {
-    "corroborated": [
-     "Flood Advisory"
-    ]
+    "corroborated": []
    }
   },
   {
@@ -3294,9 +3290,7 @@
    },
    "model_flags": {},
    "radar_heavy": {
-    "corroborated": [
-     "Flood Advisory"
-    ]
+    "corroborated": []
    }
   },
   {
@@ -3358,9 +3352,7 @@
    },
    "model_flags": {},
    "radar_heavy": {
-    "corroborated": [
-     "Flood Advisory"
-    ]
+    "corroborated": []
    }
   },
   {

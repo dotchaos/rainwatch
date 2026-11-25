@@ -148,7 +148,7 @@ A24 = {"id": "urn:oid:fa58", "event": "Flood Advisory", "headline": "Flood Advis
        "onset": "2026-11-25T07:01:00+00:00", "ends": "2026-11-25T10:00:00+00:00"}
 
 
-def nov24():
+def nov24(gauge_last=0.0):
     t7, t8 = datetime(2026, 11, 25, 7, tzinfo=UTC), datetime(2026, 11, 25, 8, tzinfo=UTC)
     n = 100
     rs = Series("radar", "Radar nowcast", N24)
@@ -165,7 +165,7 @@ def nov24():
         ens.values[t] = base
     det = [Series("hrrr", "HRRR", N24, values={t7 - H: 0.0, t7: 0.0, t8: 0.0, t8 + H: 0.016}),
            Series("nbm", "NBM", N24, values={t7 - H: 0.02, t7: 0.02, t8: 0.012, t8 + H: 0.0})]
-    g = Gauge(station=CFG.site.hads_station, label="Mint", url="", hourly={t7 - 2 * H: 0.0, t7 - H: 0.0})
+    g = Gauge(station=CFG.site.hads_station, label="Mint", url="", hourly={t7 - 2 * H: 0.0, t7 - H: gauge_last})
     nws = SimpleNamespace(alerts=[A24], qpf=None, gust_mph={}, office="MTR")
     return engine.build(CFG, N24, nws, ens, [ens], det, nc, [g], []), t7
 
@@ -241,3 +241,30 @@ def test_official_warning_keeps_its_own_words_beside_a_radar_only_push():
     msgs = alerts.decide(build(nws_alerts=[other]), {}, NOW, CFG)
     assert [m["title"] for m in msgs] == ["Heavy rain possible in the next hour", "Wind Advisory"]
     assert msgs[1]["message"] == "Wind Advisory until 4 AM" and msgs[1]["priority"] == 4
+
+
+# ---- heavy-rain push (Nov 25 2026): an NWS flood product is not corroboration for radar's heavy-rain probability
+
+def test_nov24_heavy_push_stays_possible_despite_the_advisory():
+    rep, t7 = nov24()
+    r = row(rep, t7)
+    assert r["primary"] == "radar" and r["p_heavy"] >= 0.8                # the probability itself is unchanged
+    assert r["radar_heavy"]["corroborated"] == []                        # the radar-based advisory is not evidence
+    msgs = alerts.decide(rep, {}, N24, CFG)
+    heavy = [m for m in msgs if m["kind"] == "heavy"]
+    assert len(heavy) == 1 and heavy[0]["title"] == "Heavy rain possible in the next hour"
+    assert heavy[0]["radar_only"] is True and heavy[0]["priority"] == 3
+    assert "NWS product" not in heavy[0]["message"]
+    assert [m["title"] for m in msgs if m["kind"] == "nws"] == ["Flood Advisory"]   # the advisory is still pushed
+
+
+def test_nov24_independent_corroboration_still_gives_probability_wording():
+    """Same night, but the Mint gauge's last hour already at the heavy level: real, independent evidence."""
+    rep0, t7 = nov24()
+    rep, _ = nov24(gauge_last=0.29)
+    r = row(rep, t7)
+    assert r["radar_heavy"]["corroborated"] == ['Mint gauge 0.29" last hour']
+    heavy = [m for m in alerts.decide(rep, {}, N24, CFG) if m["kind"] == "heavy"][0]
+    assert heavy["title"].startswith('Rain at your .20" threshold') and "radar_only" not in heavy
+    assert r["p_heavy"] == row(rep0, t7)["p_heavy"]                      # wording changes, the probability does not
+
