@@ -332,12 +332,12 @@ Kennedy
 
 | Hour (PST) | Radar obs block | Radar obs Mint | MRMS radar-only block | MRMS radar-only Mint | MRMS multi-sensor block | MRMS multi-sensor Mint |
 |---|---|---|---|---|---|---|
-| Tue 9:00 PM | 0.007 | 0.011 | None | None | None | None |
-| Tue 10:00 PM | 0.018 | 0.025 | None | None | None | None |
-| Tue 11:00 PM | 0.361 | 0.599 | None | None | None | None |
-| Wed 12:00 AM | 0.267 | 0.36 | None | None | None | None |
-| Wed 1:00 AM | 0.039 | 0.06 | None | None | None | None |
-| Wed 2:00 AM | 0.018 | 0.015 | None | None | None | None |
+| Tue 9:00 PM | 0.007 | 0.011 | 0.035 | 0.02 | 0.024 | 0.02 |
+| Tue 10:00 PM | 0.018 | 0.025 | 0.039 | 0.043 | 0.02 | 0.024 |
+| Tue 11:00 PM | 0.361 | 0.599 | 0.154 | 0.181 | 0.331 | 0.339 |
+| Wed 12:00 AM | 0.267 | 0.36 | 0.122 | 0.146 | 0.114 | 0.13 |
+| Wed 1:00 AM | 0.039 | 0.06 | 0.035 | 0.039 | 0.02 | 0.024 |
+| Wed 2:00 AM | 0.018 | 0.015 | 0.02 | 0.016 | 0.012 | 0.0 |
 
 ## Nowcast replay vs production vs radar observed at the block, inches
 
@@ -389,17 +389,3 @@ Motion: {'known': True, 'speed_kmh': 0.0, 'toward_deg': 180.0, 'source': 'radar'
 | Wed 2:00 AM | 0.015 | 0.015 | 0.018 |
 | Wed 3:00 AM | 0.027 | 0.027 | 0.0 |
 
-## Errors
-
-- mrms RadarOnly_QPE_01H 05Z: Key/value not found
-- mrms MultiSensor_QPE_01H_Pass2 05Z: Key/value not found
-- mrms RadarOnly_QPE_01H 06Z: Key/value not found
-- mrms MultiSensor_QPE_01H_Pass2 06Z: Key/value not found
-- mrms RadarOnly_QPE_01H 07Z: Key/value not found
-- mrms MultiSensor_QPE_01H_Pass2 07Z: Key/value not found
-- mrms RadarOnly_QPE_01H 08Z: Key/value not found
-- mrms MultiSensor_QPE_01H_Pass2 08Z: Key/value not found
-- mrms RadarOnly_QPE_01H 09Z: Key/value not found
-- mrms MultiSensor_QPE_01H_Pass2 09Z: Key/value not found
-- mrms RadarOnly_QPE_01H 10Z: Key/value not found
-- mrms MultiSensor_QPE_01H_Pass2 10Z: Key/value not found

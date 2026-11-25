@@ -10,20 +10,7 @@
    "SAN FRANCISCO DOWNTOWN"
   ]
  },
- "errors": [
-  "mrms RadarOnly_QPE_01H 05Z: Key/value not found",
-  "mrms MultiSensor_QPE_01H_Pass2 05Z: Key/value not found",
-  "mrms RadarOnly_QPE_01H 06Z: Key/value not found",
-  "mrms MultiSensor_QPE_01H_Pass2 06Z: Key/value not found",
-  "mrms RadarOnly_QPE_01H 07Z: Key/value not found",
-  "mrms MultiSensor_QPE_01H_Pass2 07Z: Key/value not found",
-  "mrms RadarOnly_QPE_01H 08Z: Key/value not found",
-  "mrms MultiSensor_QPE_01H_Pass2 08Z: Key/value not found",
-  "mrms RadarOnly_QPE_01H 09Z: Key/value not found",
-  "mrms MultiSensor_QPE_01H_Pass2 09Z: Key/value not found",
-  "mrms RadarOnly_QPE_01H 10Z: Key/value not found",
-  "mrms MultiSensor_QPE_01H_Pass2 10Z: Key/value not found"
- ],
+ "errors": [],
  "advisory": {
   "products": [
    {
@@ -757,42 +744,66 @@
    "radar_obs_block_pixel": 0.007,
    "radar_obs_block_max5x5": 0.025,
    "radar_obs_mint_pixel": 0.011,
-   "radar_obs_mint_max5x5": 0.023
+   "radar_obs_mint_max5x5": 0.023,
+   "RadarOnly_QPE_01H_block": 0.035,
+   "RadarOnly_QPE_01H_mint": 0.02,
+   "MultiSensor_QPE_01H_Pass2_block": 0.024,
+   "MultiSensor_QPE_01H_Pass2_mint": 0.02
   },
   {
    "hour": "2026-11-25T06:00:00+00:00",
    "radar_obs_block_pixel": 0.018,
    "radar_obs_block_max5x5": 0.048,
    "radar_obs_mint_pixel": 0.025,
-   "radar_obs_mint_max5x5": 0.074
+   "radar_obs_mint_max5x5": 0.074,
+   "RadarOnly_QPE_01H_block": 0.039,
+   "RadarOnly_QPE_01H_mint": 0.043,
+   "MultiSensor_QPE_01H_Pass2_block": 0.02,
+   "MultiSensor_QPE_01H_Pass2_mint": 0.024
   },
   {
    "hour": "2026-11-25T07:00:00+00:00",
    "radar_obs_block_pixel": 0.361,
    "radar_obs_block_max5x5": 1.046,
    "radar_obs_mint_pixel": 0.599,
-   "radar_obs_mint_max5x5": 1.215
+   "radar_obs_mint_max5x5": 1.215,
+   "RadarOnly_QPE_01H_block": 0.154,
+   "RadarOnly_QPE_01H_mint": 0.181,
+   "MultiSensor_QPE_01H_Pass2_block": 0.331,
+   "MultiSensor_QPE_01H_Pass2_mint": 0.339
   },
   {
    "hour": "2026-11-25T08:00:00+00:00",
    "radar_obs_block_pixel": 0.267,
    "radar_obs_block_max5x5": 0.728,
    "radar_obs_mint_pixel": 0.36,
-   "radar_obs_mint_max5x5": 0.884
+   "radar_obs_mint_max5x5": 0.884,
+   "RadarOnly_QPE_01H_block": 0.122,
+   "RadarOnly_QPE_01H_mint": 0.146,
+   "MultiSensor_QPE_01H_Pass2_block": 0.114,
+   "MultiSensor_QPE_01H_Pass2_mint": 0.13
   },
   {
    "hour": "2026-11-25T09:00:00+00:00",
    "radar_obs_block_pixel": 0.039,
    "radar_obs_block_max5x5": 0.089,
    "radar_obs_mint_pixel": 0.06,
-   "radar_obs_mint_max5x5": 0.096
+   "radar_obs_mint_max5x5": 0.096,
+   "RadarOnly_QPE_01H_block": 0.035,
+   "RadarOnly_QPE_01H_mint": 0.039,
+   "MultiSensor_QPE_01H_Pass2_block": 0.02,
+   "MultiSensor_QPE_01H_Pass2_mint": 0.024
   },
   {
    "hour": "2026-11-25T10:00:00+00:00",
    "radar_obs_block_pixel": 0.018,
    "radar_obs_block_max5x5": 0.059,
    "radar_obs_mint_pixel": 0.015,
-   "radar_obs_mint_max5x5": 0.039
+   "radar_obs_mint_max5x5": 0.039,
+   "RadarOnly_QPE_01H_block": 0.02,
+   "RadarOnly_QPE_01H_mint": 0.016,
+   "MultiSensor_QPE_01H_Pass2_block": 0.012,
+   "MultiSensor_QPE_01H_Pass2_mint": 0.0
   }
  ],
  "replay": [
