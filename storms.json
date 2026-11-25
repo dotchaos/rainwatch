@@ -260,8 +260,8 @@
   },
   {
    "start": "2026-11-25T07:00:00+00:00",
-   "end": "2026-11-25T08:00:00+00:00",
-   "total": 0.4,
+   "end": "2026-11-25T09:00:00+00:00",
+   "total": 0.44,
    "peak_t": "2026-11-25T07:00:00+00:00",
    "peak": 0.29,
    "heavy": true,
@@ -313,7 +313,7 @@
       "onset": false,
       "peak_t": false,
       "peak": false,
-      "total": true
+      "total": false
      }
     },
     {
@@ -364,7 +364,7 @@
       "onset": false,
       "peak_t": true,
       "peak": false,
-      "total": true
+      "total": false
      }
     },
     {
@@ -414,7 +414,7 @@
    13
   ],
   "total": [
-   9,
+   7,
    13
   ]
  },
