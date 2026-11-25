@@ -107,12 +107,8 @@
      "driveway": 0.0
     },
     "corroborated": {
-     "behind": [
-      "Flood Advisory"
-     ],
-     "driveway": [
-      "Flood Advisory"
-     ]
+     "behind": [],
+     "driveway": []
     },
     "gated": false
    },
@@ -175,12 +171,8 @@
      "driveway": 0.0
     },
     "corroborated": {
-     "behind": [
-      "Flood Advisory"
-     ],
-     "driveway": [
-      "Flood Advisory"
-     ]
+     "behind": [],
+     "driveway": []
     },
     "gated": false
    },
@@ -3295,12 +3287,8 @@
      "driveway": 0.0
     },
     "corroborated": {
-     "behind": [
-      "Flood Advisory"
-     ],
-     "driveway": [
-      "Flood Advisory"
-     ]
+     "behind": [],
+     "driveway": []
     },
     "gated": false
    },
@@ -3363,12 +3351,8 @@
      "driveway": 0.0
     },
     "corroborated": {
-     "behind": [
-      "Flood Advisory"
-     ],
-     "driveway": [
-      "Flood Advisory"
-     ]
+     "behind": [],
+     "driveway": []
     },
     "gated": false
    },

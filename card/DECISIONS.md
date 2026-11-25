@@ -235,3 +235,11 @@ Forecast calculations, thresholds and the default selection are unchanged.
   and the evidence page.
 - NWS alerts start collapsed on page load, warnings included; the reader expands them (Nov 22, reverses "a warning
   opens by default"). A warning keeps its stronger emphasis in the collapsed summary.
+## Official alerts are authority, not evidence; local flood pushes wait for validation (2026-11-25)
+- An NWS flood product (watch, warning, advisory) no longer corroborates a radar-derived local level (drains falling
+  behind, driveway risk). It is shown on the card and pushed in its own words, as before. Reason: on Nov 24 at
+  11:08 PM a Flood Advisory issued at 11:01 PM from "Doppler radar indicated heavy rain" let the radar's own 0.67"
+  stand (driveway 78%); the Mint gauge measured 0.29" for 10:43–11:43 PM and the street did not flood.
+- While `flood_validated` is false, Rainwatch sends none of its own local flood-risk pushes (driveway risk, long
+  soaker). The card's potential state is unchanged (no percentages) and is never pushed. NWS pushes and the heavy-rain
+  push are unchanged.
