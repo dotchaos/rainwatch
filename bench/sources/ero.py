@@ -47,9 +47,11 @@ def at_block(zbytes: bytes) -> dict:
             continue
     best = max((category(a) for a in hits), key=lambda c: c[1], default=(None, 0))
     first = all_attrs[0] if all_attrs else {}
-    pick = lambda *ks: next((first[k] for k in first if any(s in k.upper() for s in ks)), None)  # noqa: E731
+    exact = {k.upper(): v for k, v in first.items()}
     return {"fields": fields, "polygons": len(all_attrs), "containing": hits, "category": best[0] or "none (outside all areas)",
-            "category_rank": best[1], "issue_attr": pick("ISSUE"), "start_attr": pick("START", "VALID"), "end_attr": pick("END", "EXPIRE")}
+            "category_rank": best[1], "issue_attr": exact.get("ISSUE_TIME"), "start_attr": exact.get("START_TIME"),
+            "end_attr": exact.get("END_TIME"), "valid_text": exact.get("VALID_TIME"),
+            "time_zone_note": "WPC attribute times are recorded exactly as published (no zone given in the file)"}
 
 
 def collect(net, store, log, now, deadline):

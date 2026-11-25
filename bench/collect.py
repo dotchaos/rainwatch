@@ -17,12 +17,12 @@ from pathlib import Path
 
 from . import VERSION
 from .net import Net
-from .settings import INDEX_DAYS, RUN_BUDGET_S
+from .settings import DEADLINES_S, INDEX_DAYS
 from .sources import ero, nws, refs, wpc_qpf
 from .store import Store
 
 UTC = timezone.utc
-SOURCES = [("nws_gridpoint", nws), ("wpc_ero", ero), ("wpc_qpf", wpc_qpf), ("refs", refs)]   # quick ones first
+SOURCES = [("nws_gridpoint", nws), ("wpc_ero", ero), ("refs", refs), ("wpc_qpf", wpc_qpf)]   # quick ones, then shortest-lived
 
 
 def main(argv=None):
@@ -41,7 +41,7 @@ def main(argv=None):
             continue
         s0, f0 = time.time(), len(log["failures"])
         try:
-            mod.collect(net, store, log, now, t0 + RUN_BUDGET_S)
+            mod.collect(net, store, log, now, t0 + DEADLINES_S[name])
             status = "ok" if len(log["failures"]) == f0 else "partial"
         except Exception as e:  # noqa: BLE001
             log["failures"].append({"source": name, "error": f"crash: {e}", "trace": traceback.format_exc()[-1500:]})

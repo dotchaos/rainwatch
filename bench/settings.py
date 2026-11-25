@@ -14,7 +14,9 @@ WPC_ERO = "https://ftp.wpc.ncep.noaa.gov/shapefiles/qpf/excessive/"
 ERO_DAYS = (1, 2, 3, 4, 5)
 
 NOMADS_PAUSE_S = 0.5                  # at most ~2 requests/second to NOMADS (its published hit limit is far higher)
-RUN_BUDGET_S = 40 * 60                # stop starting new REFS files after this; the rest is picked up next hour
+# Per-source time limits within one run (seconds from run start). Work not done is picked up next hour; REFS goes
+# first because NOMADS keeps it only two days, WPC keeps about thirteen.
+DEADLINES_S = {"nws_gridpoint": 5 * 60, "wpc_ero": 8 * 60, "refs": 32 * 60, "wpc_qpf": 50 * 60}
 INDEX_DAYS = 21                       # dedupe keys older than this are not reloaded (sources keep <= 13 days)
 
 # A product is declared missing (explicitly, once) when it has not appeared this long after nominal issuance.

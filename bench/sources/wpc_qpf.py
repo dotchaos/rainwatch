@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+import time
 from datetime import datetime, timedelta, timezone
 
 from .. import grib
@@ -34,14 +35,17 @@ def collect(net, store, log, now, deadline):
         fails.append({"source": SRC, "url": WPC_QPF, "status": getattr(r, "status_code", None), "error": err})
         return
     files = listing(r.text)
-    issued_seen = set()
-    for name, mtime in sorted(files.items()):
+    # issuances present on the server (from the listing, so an early stop below cannot fake a missing issuance)
+    issued_seen = {datetime.strptime(NAME.match(n).group(2), "%Y%m%d%H").replace(tzinfo=UTC) for n in files}
+    for name, mtime in sorted(files.items(), key=lambda kv: kv[0].split("_")[1], reverse=True):   # newest first
         acc, iss, fh = NAME.match(name).groups()
         issued = datetime.strptime(iss, "%Y%m%d%H").replace(tzinfo=UTC)
-        issued_seen.add(issued)
         fkey = f"file|{name}|{mtime}"
         if store.known(SRC, fkey):
             continue
+        if time.time() > deadline:
+            log["wpc_qpf_stopped_for_time"] = True
+            break
         url = WPC_QPF + name
         f, err = net.get(url, timeout=120)
         got = datetime.now(UTC).isoformat()
