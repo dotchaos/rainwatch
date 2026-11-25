@@ -1,31 +1,31 @@
 # WPC QPF backfill for the three storms
 
-Run 2026-11-25 21:20 UTC. Folders: 22.
+Run 2026-11-25 21:24 UTC. Folders: 22.
 
 | storm | files | intervals (h) | issuances | earliest issuance | same bytes in both folders |
 |---|---|---|---|---|---|
-| Nov 15 | 50 | [6] | 15 | 2026-11-12T18 | 0 |
-| Nov 18 | 50 | [6] | 16 | 2026-11-15T06 | 0 |
-| Nov 24 | 84 | [6, 24] | 16 | 2026-11-21T18 | 0 |
+| Nov 15 | 50 | [6] | 15 | 2026-11-12T18 | 50 |
+| Nov 18 | 50 | [6] | 16 | 2026-11-15T06 | 50 |
+| Nov 24 | 84 | [6, 24] | 16 | 2026-11-21T18 | 84 |
 
 Failures: 137
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f114.grb", "status": 200, "at": "2026-11-25T21:20:40.633113+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f120.grb", "status": 200, "at": "2026-11-25T21:20:41.034123+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f126.grb", "status": 200, "at": "2026-11-25T21:20:41.338589+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f132.grb", "status": 200, "at": "2026-11-25T21:20:41.704603+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f138.grb", "status": 200, "at": "2026-11-25T21:20:41.972625+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f108.grb", "status": 200, "at": "2026-11-25T21:20:42.299112+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f114.grb", "status": 200, "at": "2026-11-25T21:20:42.634761+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f120.grb", "status": 200, "at": "2026-11-25T21:20:42.958493+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f126.grb", "status": 200, "at": "2026-11-25T21:20:43.263643+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f132.grb", "status": 200, "at": "2026-11-25T21:20:43.595902+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f102.grb", "status": 200, "at": "2026-11-25T21:20:43.849795+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f108.grb", "status": 200, "at": "2026-11-25T21:20:44.177865+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f114.grb", "status": 200, "at": "2026-11-25T21:20:44.436568+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f120.grb", "status": 200, "at": "2026-11-25T21:20:44.696626+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f126.grb", "status": 200, "at": "2026-11-25T21:20:45.056359+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f096.grb", "status": 200, "at": "2026-11-25T21:20:45.320728+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f102.grb", "status": 200, "at": "2026-11-25T21:20:45.586000+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f108.grb", "status": 200, "at": "2026-11-25T21:20:45.894238+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f114.grb", "status": 200, "at": "2026-11-25T21:20:46.202167+00:00"}
-- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f120.grb", "status": 200, "at": "2026-11-25T21:20:46.520194+00:00"}
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f114.grb", "status": 200, "at": "2026-11-25T21:24:17.732365+00:00", "bytes": 87472, "content_type": null, "head": "4d454d573938204b574e48203230303030300d0d0a475249", "head_text": "MEMW98 KWNH 200000\r\r\nGRIB\u0000\u0000\u0000\u0002\u00
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f120.grb", "status": 200, "at": "2026-11-25T21:24:18.054288+00:00", "bytes": 99234, "content_type": null, "head": "4c454d4f3938204b574e48203230303030300d0d0a475249", "head_text": "LEMO98 KWNH 200000\r\r\nGRIB\u0000\u0000\u0000\u0002\u00
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f126.grb", "status": 200, "at": "2026-11-25T21:24:18.157413+00:00", "bytes": 106645, "content_type": null, "head": "4d454d583938204b574e48203230303030300d0d0a475249", "head_text": "MEMX98 KWNH 200000\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f132.grb", "status": 200, "at": "2026-11-25T21:24:18.329341+00:00", "bytes": 115478, "content_type": null, "head": "4c454d503938204b574e48203230303030300d0d0a475249", "head_text": "LEMP98 KWNH 200000\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f138.grb", "status": 200, "at": "2026-11-25T21:24:18.621284+00:00", "bytes": 117326, "content_type": null, "head": "4d454d583938204b574e48203230303030300d0d0a475249", "head_text": "MEMX98 KWNH 200000\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f108.grb", "status": 200, "at": "2026-11-25T21:24:18.712178+00:00", "bytes": 98953, "content_type": null, "head": "4d454d563938204b574e48203230303630300d0d0a475249", "head_text": "MEMV98 KWNH 200600\r\r\nGRIB\u0000\u0000\u0000\u0002\u00
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f114.grb", "status": 200, "at": "2026-11-25T21:24:18.776129+00:00", "bytes": 117382, "content_type": null, "head": "4c454d4e3938204b574e48203230303630300d0d0a475249", "head_text": "LEMN98 KWNH 200600\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f120.grb", "status": 200, "at": "2026-11-25T21:24:18.947629+00:00", "bytes": 126830, "content_type": null, "head": "4d454d573938204b574e48203230303630300d0d0a475249", "head_text": "MEMW98 KWNH 200600\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f126.grb", "status": 200, "at": "2026-11-25T21:24:19.127310+00:00", "bytes": 136263, "content_type": null, "head": "4c454d4f3938204b574e48203230303630300d0d0a475249", "head_text": "LEMO98 KWNH 200600\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112006f132.grb", "status": 200, "at": "2026-11-25T21:24:19.193577+00:00", "bytes": 127087, "content_type": null, "head": "4d454d583938204b574e48203230303630300d0d0a475249", "head_text": "MEMX98 KWNH 200600\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f102.grb", "status": 200, "at": "2026-11-25T21:24:19.287747+00:00", "bytes": 83788, "content_type": null, "head": "4d454d563938204b574e48203230313230300d0d0a475249", "head_text": "MEMV98 KWNH 201200\r\r\nGRIB\u0000\u0000\u0000\u0002\u00
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f108.grb", "status": 200, "at": "2026-11-25T21:24:19.354577+00:00", "bytes": 99089, "content_type": null, "head": "4c454d4e3938204b574e48203230313230300d0d0a475249", "head_text": "LEMN98 KWNH 201200\r\r\nGRIB\u0000\u0000\u0000\u0002\u00
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f114.grb", "status": 200, "at": "2026-11-25T21:24:19.546706+00:00", "bytes": 105338, "content_type": null, "head": "4d454d573938204b574e48203230313230300d0d0a475249", "head_text": "MEMW98 KWNH 201200\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f120.grb", "status": 200, "at": "2026-11-25T21:24:19.799370+00:00", "bytes": 106899, "content_type": null, "head": "4c454d4f3938204b574e48203230313230300d0d0a475249", "head_text": "LEMO98 KWNH 201200\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112012f126.grb", "status": 200, "at": "2026-11-25T21:24:19.870625+00:00", "bytes": 98799, "content_type": null, "head": "4d454d583938204b574e48203230313230300d0d0a475249", "head_text": "MEMX98 KWNH 201200\r\r\nGRIB\u0000\u0000\u0000\u0002\u00
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f096.grb", "status": 200, "at": "2026-11-25T21:24:20.165958+00:00", "bytes": 107448, "content_type": null, "head": "4d454d553938204b574e48203230313830300d0d0a475249", "head_text": "MEMU98 KWNH 201800\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f102.grb", "status": 200, "at": "2026-11-25T21:24:20.340206+00:00", "bytes": 126781, "content_type": null, "head": "4c454d4d3938204b574e48203230313830300d0d0a475249", "head_text": "LEMM98 KWNH 201800\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f108.grb", "status": 200, "at": "2026-11-25T21:24:20.413982+00:00", "bytes": 137612, "content_type": null, "head": "4d454d563938204b574e48203230313830300d0d0a475249", "head_text": "MEMV98 KWNH 201800\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f114.grb", "status": 200, "at": "2026-11-25T21:24:20.714455+00:00", "bytes": 148062, "content_type": null, "head": "4c454d4e3938204b574e48203230313830300d0d0a475249", "head_text": "LEMN98 KWNH 201800\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
+- {"url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112018f120.grb", "status": 200, "at": "2026-11-25T21:24:20.814710+00:00", "bytes": 153734, "content_type": null, "head": "4d454d573938204b574e48203230313830300d0d0a475249", "head_text": "MEMW98 KWNH 201800\r\r\nGRIB\u0000\u0000\u0000\u0002\u0
