@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-25T08:39:01.983395+00:00",
+ "generated": "2026-11-25T08:54:16.991406+00:00",
  "truth": "SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24)",
  "window_days": 60,
  "heavy_in": 0.2,
@@ -8,17 +8,17 @@
  "sources": {
   "radar": {
    "0\u20131 h": {
-    "n": 275,
-    "mae": 0.016,
-    "bias": 0.002,
+    "n": 276,
+    "mae": 0.017,
+    "bias": 0.003,
     "heavy": {
      "hits": 5,
      "misses": 1,
-     "false_alarms": 9,
+     "false_alarms": 10,
      "correct_negatives": 260,
      "pod": 0.83,
-     "far": 0.64,
-     "csi": 0.33,
+     "far": 0.67,
+     "csi": 0.31,
      "rule": "share of runs >= 20%"
     },
     "heavy_hours": [
@@ -87,8 +87,8 @@
       },
       {
        "bin": "0.80\u20131.00",
-       "n": 4,
-       "mean_p": 0.941,
+       "n": 5,
+       "mean_p": 0.946,
        "observed": null
       }
      ],
@@ -119,9 +119,9 @@
       },
       {
        "bin": "0.80\u20131.00",
-       "n": 37,
+       "n": 38,
        "mean_p": 0.977,
-       "observed": 0.919
+       "observed": 0.921
       }
      ]
     }
@@ -129,14 +129,14 @@
   },
   "ens": {
    "0\u20131 h": {
-    "n": 278,
+    "n": 279,
     "mae": 0.015,
     "bias": -0.005,
     "heavy": {
      "hits": 3,
      "misses": 3,
      "false_alarms": 4,
-     "correct_negatives": 268,
+     "correct_negatives": 269,
      "pod": 0.5,
      "far": 0.57,
      "csi": 0.3,
@@ -184,7 +184,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 265,
+       "n": 266,
        "mean_p": 0.001,
        "observed": 0.011
       },
@@ -228,9 +228,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 22,
-       "mean_p": 0.648,
-       "observed": 0.636
+       "n": 23,
+       "mean_p": 0.644,
+       "observed": 0.652
       },
       {
        "bin": "0.80\u20131.00",
@@ -242,14 +242,14 @@
     }
    },
    "1\u20133 h": {
-    "n": 276,
+    "n": 277,
     "mae": 0.015,
     "bias": -0.005,
     "heavy": {
      "hits": 3,
      "misses": 3,
      "false_alarms": 4,
-     "correct_negatives": 266,
+     "correct_negatives": 267,
      "pod": 0.5,
      "far": 0.57,
      "csi": 0.3,
@@ -297,7 +297,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 265,
+       "n": 266,
        "mean_p": 0.001,
        "observed": 0.011
       },
@@ -341,9 +341,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 23,
-       "mean_p": 0.632,
-       "observed": 0.609
+       "n": 24,
+       "mean_p": 0.629,
+       "observed": 0.625
       },
       {
        "bin": "0.80\u20131.00",
@@ -355,14 +355,14 @@
     }
    },
    "3\u20136 h": {
-    "n": 274,
+    "n": 275,
     "mae": 0.015,
-    "bias": -0.005,
+    "bias": -0.006,
     "heavy": {
      "hits": 3,
      "misses": 3,
      "false_alarms": 4,
-     "correct_negatives": 264,
+     "correct_negatives": 265,
      "pod": 0.5,
      "far": 0.57,
      "csi": 0.3,
@@ -410,7 +410,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 265,
+       "n": 266,
        "mean_p": 0.001,
        "observed": 0.011
       },
@@ -454,9 +454,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 22,
-       "mean_p": 0.633,
-       "observed": 0.545
+       "n": 23,
+       "mean_p": 0.632,
+       "observed": 0.565
       },
       {
        "bin": "0.80\u20131.00",
@@ -470,14 +470,14 @@
   },
   "hrrr": {
    "0\u20131 h": {
-    "n": 273,
+    "n": 274,
     "mae": 0.025,
-    "bias": -0.006,
+    "bias": -0.007,
     "heavy": {
      "hits": 1,
      "misses": 5,
      "false_alarms": 4,
-     "correct_negatives": 263,
+     "correct_negatives": 264,
      "pod": 0.17,
      "far": 0.8,
      "csi": 0.1,
@@ -524,14 +524,14 @@
     "calibration": {}
    },
    "1\u20133 h": {
-    "n": 271,
+    "n": 272,
     "mae": 0.021,
     "bias": -0.004,
     "heavy": {
      "hits": 1,
      "misses": 5,
      "false_alarms": 6,
-     "correct_negatives": 259,
+     "correct_negatives": 260,
      "pod": 0.17,
      "far": 0.86,
      "csi": 0.08,
@@ -578,14 +578,14 @@
     "calibration": {}
    },
    "3\u20136 h": {
-    "n": 273,
-    "mae": 0.019,
+    "n": 274,
+    "mae": 0.02,
     "bias": -0.005,
     "heavy": {
      "hits": 2,
      "misses": 4,
      "false_alarms": 1,
-     "correct_negatives": 266,
+     "correct_negatives": 267,
      "pod": 0.33,
      "far": 0.33,
      "csi": 0.29,
@@ -634,14 +634,14 @@
   },
   "nbm": {
    "0\u20131 h": {
-    "n": 275,
+    "n": 276,
     "mae": 0.015,
-    "bias": -0.004,
+    "bias": -0.005,
     "heavy": {
      "hits": 2,
      "misses": 4,
      "false_alarms": 1,
-     "correct_negatives": 268,
+     "correct_negatives": 269,
      "pod": 0.33,
      "far": 0.33,
      "csi": 0.29,
@@ -688,14 +688,14 @@
     "calibration": {}
    },
    "1\u20133 h": {
-    "n": 273,
+    "n": 274,
     "mae": 0.014,
     "bias": -0.004,
     "heavy": {
      "hits": 2,
      "misses": 4,
      "false_alarms": 1,
-     "correct_negatives": 266,
+     "correct_negatives": 267,
      "pod": 0.33,
      "far": 0.33,
      "csi": 0.29,
@@ -742,14 +742,14 @@
     "calibration": {}
    },
    "3\u20136 h": {
-    "n": 274,
-    "mae": 0.015,
-    "bias": -0.003,
+    "n": 275,
+    "mae": 0.016,
+    "bias": -0.004,
     "heavy": {
      "hits": 2,
      "misses": 4,
      "false_alarms": 1,
-     "correct_negatives": 267,
+     "correct_negatives": 268,
      "pod": 0.33,
      "far": 0.33,
      "csi": 0.29,
@@ -798,14 +798,14 @@
   },
   "ecmwf": {
    "0\u20131 h": {
-    "n": 277,
+    "n": 278,
     "mae": 0.018,
     "bias": -0.002,
     "heavy": {
      "hits": 1,
      "misses": 5,
      "false_alarms": 3,
-     "correct_negatives": 268,
+     "correct_negatives": 269,
      "pod": 0.17,
      "far": 0.75,
      "csi": 0.11,
@@ -852,14 +852,14 @@
     "calibration": {}
    },
    "1\u20133 h": {
-    "n": 275,
+    "n": 276,
     "mae": 0.018,
     "bias": -0.003,
     "heavy": {
      "hits": 1,
      "misses": 5,
      "false_alarms": 2,
-     "correct_negatives": 267,
+     "correct_negatives": 268,
      "pod": 0.17,
      "far": 0.67,
      "csi": 0.12,
@@ -906,14 +906,14 @@
     "calibration": {}
    },
    "3\u20136 h": {
-    "n": 274,
+    "n": 275,
     "mae": 0.018,
     "bias": -0.002,
     "heavy": {
      "hits": 1,
      "misses": 5,
      "false_alarms": 2,
-     "correct_negatives": 266,
+     "correct_negatives": 267,
      "pod": 0.17,
      "far": 0.67,
      "csi": 0.12,
@@ -962,14 +962,14 @@
   },
   "nws": {
    "0\u20131 h": {
-    "n": 278,
+    "n": 279,
     "mae": 0.021,
     "bias": -0.001,
     "heavy": {
      "hits": 0,
      "misses": 6,
      "false_alarms": 0,
-     "correct_negatives": 272,
+     "correct_negatives": 273,
      "pod": 0.0,
      "far": null,
      "csi": 0.0,
@@ -1016,14 +1016,14 @@
     "calibration": {}
    },
    "1\u20133 h": {
-    "n": 276,
+    "n": 277,
     "mae": 0.02,
     "bias": -0.001,
     "heavy": {
      "hits": 0,
      "misses": 6,
      "false_alarms": 0,
-     "correct_negatives": 270,
+     "correct_negatives": 271,
      "pod": 0.0,
      "far": null,
      "csi": 0.0,
@@ -1070,14 +1070,14 @@
     "calibration": {}
    },
    "3\u20136 h": {
-    "n": 274,
-    "mae": 0.02,
+    "n": 275,
+    "mae": 0.021,
     "bias": -0.002,
     "heavy": {
      "hits": 0,
      "misses": 6,
      "false_alarms": 0,
-     "correct_negatives": 268,
+     "correct_negatives": 269,
      "pod": 0.0,
      "far": null,
      "csi": 0.0,
@@ -1126,17 +1126,17 @@
   },
   "rainwatch": {
    "0\u20131 h": {
-    "n": 278,
-    "mae": 0.016,
-    "bias": 0.002,
+    "n": 279,
+    "mae": 0.017,
+    "bias": 0.003,
     "heavy": {
      "hits": 5,
      "misses": 1,
-     "false_alarms": 9,
+     "false_alarms": 10,
      "correct_negatives": 263,
      "pod": 0.83,
-     "far": 0.64,
-     "csi": 0.33,
+     "far": 0.67,
+     "csi": 0.31,
      "rule": "share of runs >= 20%"
     },
     "heavy_hours": [
@@ -1205,7 +1205,7 @@
       },
       {
        "bin": "0.80\u20131.00",
-       "n": 4,
+       "n": 5,
        "mean_p": 0.85,
        "observed": null
       }
@@ -1237,22 +1237,22 @@
       },
       {
        "bin": "0.80\u20131.00",
-       "n": 37,
-       "mean_p": 0.878,
-       "observed": 0.919
+       "n": 38,
+       "mean_p": 0.877,
+       "observed": 0.921
       }
      ]
     }
    },
    "1\u20133 h": {
-    "n": 276,
+    "n": 277,
     "mae": 0.015,
-    "bias": -0.005,
+    "bias": -0.006,
     "heavy": {
      "hits": 3,
      "misses": 3,
      "false_alarms": 4,
-     "correct_negatives": 266,
+     "correct_negatives": 267,
      "pod": 0.5,
      "far": 0.57,
      "csi": 0.3,
@@ -1300,7 +1300,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 265,
+       "n": 266,
        "mean_p": 0.001,
        "observed": 0.011
       },
@@ -1344,9 +1344,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 23,
-       "mean_p": 0.632,
-       "observed": 0.609
+       "n": 24,
+       "mean_p": 0.629,
+       "observed": 0.625
       },
       {
        "bin": "0.80\u20131.00",
@@ -1358,14 +1358,14 @@
     }
    },
    "3\u20136 h": {
-    "n": 274,
+    "n": 275,
     "mae": 0.015,
     "bias": -0.006,
     "heavy": {
      "hits": 3,
      "misses": 3,
      "false_alarms": 4,
-     "correct_negatives": 264,
+     "correct_negatives": 265,
      "pod": 0.5,
      "far": 0.57,
      "csi": 0.3,
@@ -1413,7 +1413,7 @@
      "heavy": [
       {
        "bin": "0.00\u20130.05",
-       "n": 265,
+       "n": 266,
        "mean_p": 0.001,
        "observed": 0.011
       },
@@ -1457,9 +1457,9 @@
       },
       {
        "bin": "0.50\u20130.80",
-       "n": 22,
-       "mean_p": 0.633,
-       "observed": 0.545
+       "n": 23,
+       "mean_p": 0.632,
+       "observed": 0.565
       },
       {
        "bin": "0.80\u20131.00",
@@ -1474,9 +1474,9 @@
  },
  "card": {
   "0\u20131 h": {
-   "n": 203,
+   "n": 204,
    "exact": 183,
-   "over": 10,
+   "over": 11,
    "under": 10,
    "heavy_missed": [
     {
@@ -1507,6 +1507,11 @@
      "t": "2026-11-25T07:00:00+00:00",
      "obs_in": 0.29,
      "issued": "2026-11-25T07:08:46.530435+00:00"
+    },
+    {
+     "t": "2026-11-25T08:00:00+00:00",
+     "obs_in": 0.11,
+     "issued": "2026-11-25T08:10:02.328661+00:00"
     }
    ],
    "confusion": [
@@ -1530,15 +1535,15 @@
     ],
     [
      0,
-     3,
+     4,
      1,
      2
     ]
    ]
   },
   "1\u20133 h": {
-   "n": 201,
-   "exact": 178,
+   "n": 202,
+   "exact": 179,
    "over": 15,
    "under": 8,
    "heavy_missed": [
@@ -1588,7 +1593,7 @@
     ],
     [
      10,
-     18,
+     19,
      2,
      0
     ],
@@ -1607,8 +1612,8 @@
    ]
   },
   "3\u20136 h": {
-   "n": 199,
-   "exact": 174,
+   "n": 200,
+   "exact": 175,
    "over": 17,
    "under": 8,
    "heavy_missed": [
@@ -1658,7 +1663,7 @@
     ],
     [
      12,
-     18,
+     19,
      2,
      0
     ],
@@ -1680,17 +1685,17 @@
  "card_records": 204,
  "now_split": {
   "radar-corroborated": {
-   "n": 30,
-   "mae": 0.084,
-   "bias": 0.007,
+   "n": 31,
+   "mae": 0.089,
+   "bias": 0.015,
    "heavy": {
     "hits": 5,
     "misses": 0,
-    "false_alarms": 5,
+    "false_alarms": 6,
     "correct_negatives": 20,
     "pod": 1.0,
-    "far": 0.5,
-    "csi": 0.5,
+    "far": 0.55,
+    "csi": 0.45,
     "rule": "share of runs >= 20%"
    },
    "heavy_hours": [
@@ -1753,7 +1758,7 @@
      },
      {
       "bin": "0.80\u20131.00",
-      "n": 3,
+      "n": 4,
       "mean_p": 0.85,
       "observed": null
      }
@@ -1785,8 +1790,8 @@
      },
      {
       "bin": "0.80\u20131.00",
-      "n": 18,
-      "mean_p": 0.872,
+      "n": 19,
+      "mean_p": 0.871,
       "observed": 1.0
      }
     ]
