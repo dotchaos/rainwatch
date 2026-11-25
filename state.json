@@ -15,11 +15,11 @@
   "sent": "2026-11-19T12:22:55.852924+00:00"
  },
  "last_card": "2026-11-25T00",
- "last_flood": "2026-11-24T23",
+ "last_flood": "2026-11-25T00",
  "last_hrrr": "2026-11-24T22:00:00+00:00:f71be9b1e8d8222f",
- "last_shading": "2026-11-24T23",
- "last_signals": "2026-11-24T23",
- "last_snapshot": "2026-11-24T23",
+ "last_shading": "2026-11-25T00",
+ "last_signals": "2026-11-25T00",
+ "last_snapshot": "2026-11-25T00",
  "nws_seen": [
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.3",
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.2",
@@ -162,6 +162,7 @@
   "f96afe36e0d045d7786e69d5c03c7551c0eda9ffc8303de1af16631bdde2dab9",
   "98bb23b28ce67677abc45cfa2095f056538eca422c6672027895e16f532dab41",
   "5d850bc4ed43010260fcb522226baf73385b84971f195c1edb362be0affbe3f6",
-  "1fd69c6bd0bae69e1cd63c9bc9a265f271feb5957dc6144f91746694b03d6e08"
+  "1fd69c6bd0bae69e1cd63c9bc9a265f271feb5957dc6144f91746694b03d6e08",
+  "a637c641b074dd21167261624980626b3f3950cb22b58b6f6c112bf2a1a0ea9a"
  ]
 }
