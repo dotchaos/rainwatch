@@ -26,6 +26,7 @@ jobs:
           git config --global user.name "rainwatch-bot"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for f in ${{ inputs.script }}.md ${{ inputs.script }}.json ${{ inputs.script }}.png storm_cases.json; do [ -f "$f" ] && cp "$f" data/ || true; done
+          [ -d archive ] && mkdir -p data/archive && cp -rn archive/. data/archive/ || true   # append-only: never overwrite
           [ -d snapshots ] && mkdir -p data/snapshots && cp snapshots/*.json data/snapshots/ || true
           cd data && git add -A && git commit -qm "analysis ${{ inputs.script }} $(date -u +%FT%TZ)" || exit 0
           for i in 1 2 3 4 5; do git push -q origin data && exit 0; git pull -q --rebase origin data; sleep 5; done; exit 1
