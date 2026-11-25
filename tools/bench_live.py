@@ -9,7 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import bench.collect as c  # noqa: E402
 
-c.RUN_BUDGET_S = 300
+c.DEADLINES_S.update(refs=4 * 60, wpc_qpf=6 * 60)
 root = Path(tempfile.mkdtemp())
 c.main(["--root", str(root)])
 print("# Collector live test\n")
