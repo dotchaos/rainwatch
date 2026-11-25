@@ -107,14 +107,22 @@ def mrms(s, product, t, pts):
     with tempfile.NamedTemporaryFile(suffix=".grib2") as f:
         f.write(gzip.decompress(r.content)); f.flush()
         g = pygrib.open(f.name).message(1)
-        lat0, lon0 = g["latitudeOfFirstGridPointInDegrees"], g["longitudeOfFirstGridPointInDegrees"]
-        dlat, dlon = g["jDirectIncrementInDegrees"], g["iDirectIncrementInDegrees"]
-        v = g.values
         res = []
         for lat, lon in pts:
-            lonp = lon % 360 if lon0 > 180 else lon
-            i, j = int(round((lat0 - lat) / dlat)), int(round((lonp - lon0) / dlon))
-            x = v[i, j]
+            lonp = lon % 360
+            vals, la, lo = None, None, None
+            for lon_try in (lonp, lon):     # MRMS longitudes are 0-360; try both conventions
+                try:
+                    vals, la, lo = g.data(lat1=lat - 0.03, lat2=lat + 0.03, lon1=lon_try - 0.03, lon2=lon_try + 0.03)
+                    if np.size(vals):
+                        break
+                except Exception:  # noqa: BLE001
+                    continue
+            if vals is None or not np.size(vals):
+                res.append(None); continue
+            lo_ = np.where(lo > 180, lo - 360, lo)
+            k = np.argmin((la - lat) ** 2 + (lo_ - lon) ** 2)
+            x = np.ravel(vals)[k]
             res.append(None if np.ma.is_masked(x) or x < 0 else round(float(x) / 25.4, 3))
         return res, url
 
