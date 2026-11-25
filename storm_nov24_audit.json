@@ -1,0 +1,950 @@
+{
+ "points": {
+  "block": [
+   37.761,
+   -122.415
+  ],
+  "mint": [
+   37.7705,
+   -122.4269,
+   "SAN FRANCISCO DOWNTOWN"
+  ]
+ },
+ "errors": [
+  "mrms RadarOnly_QPE_01H 05Z: Key/value not found",
+  "mrms MultiSensor_QPE_01H_Pass2 05Z: Key/value not found",
+  "mrms RadarOnly_QPE_01H 06Z: Key/value not found",
+  "mrms MultiSensor_QPE_01H_Pass2 06Z: Key/value not found",
+  "mrms RadarOnly_QPE_01H 07Z: Key/value not found",
+  "mrms MultiSensor_QPE_01H_Pass2 07Z: Key/value not found",
+  "mrms RadarOnly_QPE_01H 08Z: Key/value not found",
+  "mrms MultiSensor_QPE_01H_Pass2 08Z: Key/value not found",
+  "mrms RadarOnly_QPE_01H 09Z: Key/value not found",
+  "mrms MultiSensor_QPE_01H_Pass2 09Z: Key/value not found",
+  "mrms RadarOnly_QPE_01H 10Z: Key/value not found",
+  "mrms MultiSensor_QPE_01H_Pass2 10Z: Key/value not found"
+ ],
+ "advisory": {
+  "products": [
+   {
+    "pil": "FLSMTR",
+    "text": "902 \nWGUS86 KMTR 251034\nFLSMTR\n\nFlood Advisory\nNational Weather Service San Francisco CA\n234 AM PST Wed Nov 25 2026\n\nCAC075-081-251044-\n/O.EXP.KMTR.FA.Y.0059.000000T0000Z-261125T1030Z/\n/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/\nSan Francisco CA-San Mateo CA-\n234 AM PST Wed Nov 25 2026\n\n...FLOOD ADVISORY HAS EXPIRED...\n\nThe Flood Advisory has expired for a portion of northern California,\nincluding the following areas, San Francisco and San Mateo.\n\nThe heavy rain has ended. Urban area flooding is no longer expected\nto pose a threat. Please continue to heed remaining road closures.\n\n&&\n\nLAT...LON 3771 12250 3771 12239 3767 12238 3766 12240\n      3767 12237 3764 12240 3764 12238 3763 12239\n      3763 12237 3761 12236 3761 12238 3759 12235\n      3759 12236 3758 12235 3756 12234 3754 12252\n      3760 12252 3761 12250\n\n\n$$\n\nKR\n\n\u0003"
+   },
+   {
+    "pil": "FLSMTR",
+    "text": "572 \nWGUS86 KMTR 250958\nFLSMTR\n\nFlood Advisory\nNational Weather Service San Francisco CA\n158 AM PST Wed Nov 25 2026\n\nCAC075-251008-\n/O.EXP.KMTR.FA.Y.0058.000000T0000Z-261125T1000Z/\n/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/\nSan Francisco CA-\n158 AM PST Wed Nov 25 2026\n\n...FLOOD ADVISORY WILL EXPIRE AT 2 AM PST EARLY THIS MORNING...\n\nThe Flood Advisory will expire at 2 AM PST early this morning for a\nportion of northern California, including the following area, San\nFrancisco.\n\nThe heavy rain has ended. Urban area flooding is no longer expected\nto pose a threat. Please continue to heed remaining road closures.\n\n&&\n\nLAT...LON 3778 12252 3779 12249 3781 12248 3781 12241\n      3779 12239 3775 12238 3775 12239 3774 12238\n      3773 12238 3773 12236 3772 12236 3772 12239\n      3771 12238 3771 12250\n\n\n$$\n\nKR\n\n\u0003"
+   },
+   {
+    "pil": "FLSMTR",
+    "text": "387 \nWGUS86 KMTR 250836\nFLSMTR\n\nFlood Advisory\nNational Weather Service San Francisco CA\n1236 AM PST Wed Nov 25 2026\n\nCAC041-097-250846-\n/O.EXP.KMTR.FA.Y.0057.000000T0000Z-261125T0845Z/\n/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/\nMarin CA-Sonoma CA-\n1236 AM PST Wed Nov 25 2026\n\n...FLOOD ADVISORY WILL EXPIRE AT 1245 AM PST EARLY THIS MORNING...\n\nThe Flood Advisory will expire at 1245 AM PST early this morning for\na portion of northern California, including the following areas,\nMarin and Sonoma.\n\nThe heavy rain has ended. Flooding is no longer expected to pose a\nthreat. Please continue to heed remaining road closures.\n\n&&\n\nLAT...LON 3845 12313 3859 12307 3865 12266 3857 12263\n      3856 12261 3827 12244 3792 12272 3801 12285\n      3803 12293 3803 12289 3809 12293 3806 12295\n      3808 12296 3806 12296 3799 12302 3815 12295\n      3822 12298 3808 12283 3809 12283\n\n\n$$\n\nSarment\n\n\u0003"
+   },
+   {
+    "pil": "FLSMTR",
+    "text": "912 \nWGUS86 KMTR 250725\nFLSMTR\n\nFlood Advisory\nNational Weather Service San Francisco CA\n1125 PM PST Tue Nov 24 2026\n\nCAC075-081-251030-\n/O.NEW.KMTR.FA.Y.0059.261125T0725Z-261125T1030Z/\n/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/\nSan Francisco CA-San Mateo CA-\n1125 PM PST Tue Nov 24 2026\n\n...FLOOD ADVISORY IN EFFECT UNTIL 230 AM PST WEDNESDAY...\n\n* WHAT...Urban area caused by excessive rainfall is expected.\n\n* WHERE...Southern San Francisco County in northern California...\n  Northwestern San Mateo County in northern California...\n\n* WHEN...Until 230 AM PST.\n\n* IMPACTS...Minor flooding in low-lying and poor drainage areas.\n  Ponding of water in urban or other areas is occurring or is\n  imminent.\n\n* ADDITIONAL DETAILS...\n  - At 1124 PM PST, Doppler radar indicated heavy rain. This will\n    cause urban and small stream flooding.\n  - Some locations that will experience flooding include...\n    Daly City, South San Francisco, San Bruno, Pacifica, Burlingame,\n    Millbrae, Hillsborough, Brisbane, Colma, Broadmoor and Montara.\n  - Rainfall rates are between 0.25 to 0.75 inches per hour.\n  - http://www.weather.gov/safety/flood\n\nPRECAUTIONARY/PREPAREDNESS ACTIONS...\n\nTurn around, don't drown when encountering flooded roads. Most flood\ndeaths occur in vehicles.\n\nBe especially cautious at night when it is harder to recognize the\ndangers of flooding.\n\n&&\n\nLAT...LON 3771 12250 3771 12239 3767 12238 3766 12240\n      3767 12237 3764 12240 3764 12238 3763 12239\n      3763 12237 3761 12236 3761 12238 3759 12235\n      3759 12236 3758 12235 3756 12234 3754 12252\n      3760 12252 3761 12250\n\n\n$$\n\nKR\n\n\u0003"
+   },
+   {
+    "pil": "FLSMTR",
+    "text": "311 \nWGUS86 KMTR 250701\nFLSMTR\n\nFlood Advisory\nNational Weather Service San Francisco CA\n1101 PM PST Tue Nov 24 2026\n\nCAC075-251000-\n/O.NEW.KMTR.FA.Y.0058.261125T0701Z-261125T1000Z/\n/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/\nSan Francisco CA-\n1101 PM PST Tue Nov 24 2026\n\n...FLOOD ADVISORY IN EFFECT UNTIL 2 AM PST WEDNESDAY...\n\n* WHAT...Urban area flooding caused by excessive rainfall is\n  expected.\n\n* WHERE...San Francisco County in northern California...\n\n* WHEN...Until 200 AM PST.\n\n* IMPACTS...Minor flooding in low-lying and poor drainage areas.\n  Ponding of water in urban or other areas is occurring or is\n  imminent.\n\n* ADDITIONAL DETAILS...\n  - At 1059 PM PST, Doppler radar indicated heavy rain. This will\n    cause urban flooding. Overflowing poor drainage areas will cause\n    minor flooding in the advisory area.\n  - Rainfall rates of 0.25 to 0.80 inches have been observed.\n  - Some locations that will experience flooding include...\n    San Francisco.\n  - http://www.weather.gov/safety/flood\n\nPRECAUTIONARY/PREPAREDNESS ACTIONS...\n\nTurn around, don't drown when encountering flooded roads. Most flood\ndeaths occur in vehicles.\n\nBe especially cautious at night when it is harder to recognize the\ndangers of flooding.\n\n&&\n\nLAT...LON 3778 12252 3779 12249 3781 12248 3781 12241\n      3779 12239 3775 12238 3775 12239 3774 12238\n      3773 12238 3773 12236 3772 12236 3772 12239\n      3771 12238 3771 12250\n\n\n$$\n\nSarment\n\n\u0003"
+   },
+   {
+    "pil": "FLSMTR",
+    "text": "812 \nWGUS86 KMTR 250548\nFLSMTR\n\nFlood Advisory\nNational Weather Service San Francisco CA\n948 PM PST Tue Nov 24 2026\n\nCAC041-097-250845-\n/O.NEW.KMTR.FA.Y.0057.261125T0548Z-261125T0845Z/\n/00000.N.ER.000000T0000Z.000000T0000Z.000000T0000Z.OO/\nMarin CA-Sonoma CA-\n948 PM PST Tue Nov 24 2026\n\n...FLOOD ADVISORY IN EFFECT UNTIL 1245 AM PST WEDNESDAY...\n\n* WHAT...Flooding caused by excessive rainfall is expected.\n\n* WHERE...Marin County in northern California...\n  Central Sonoma County in northern California...\n\n* WHEN...Until 1245 AM PST.\n\n* IMPACTS...Minor flooding in low-lying and poor drainage areas.\n  Ponding of water in urban or other areas is occurring or is\n  imminent.\n\n* ADDITIONAL DETAILS...\n  - At 948 PM PST, Doppler radar indicated heavy rain. Minor flooding\n    is ongoing or expected to begin shortly in the advisory area.\n    Between 0.2 and 1.5 inches of rain have fallen over the last 3\n    hours with additional training rainfall expected over this area.\n  - Some locations that will experience flooding include...\n    Santa Rosa, Petaluma, Novato, Rohnert Park, Windsor, Healdsburg,\n    Sonoma, Sebastopol, Cotati, South Santa Rosa Cdp, Roseland,\n    Tomales, Larkfield-Wikiup, Dillon Beach, Point Reyes Station,\n    Boyes Hot Springs, San Geronimo, Forestville and Guerneville.\n  - http://www.weather.gov/safety/flood\n\nPRECAUTIONARY/PREPAREDNESS ACTIONS...\n\nTurn around, don't drown when encountering flooded roads. Most flood\ndeaths occur in vehicles.\n\nBe especially cautious at night when it is harder to recognize the\ndangers of flooding.\n\nPlease report observed flooding to local emergency services or law\nenforcement and request they pass this information to the National\nWeather Service when you can do so safely.\n\n&&\n\nLAT...LON 3845 12313 3859 12307 3865 12266 3857 12263\n      3856 12261 3827 12244 3792 12272 3801 12285\n      3803 12293 3803 12289 3809 12293 3806 12295\n      3808 12296 3806 12296 3799 12302 3815 12295\n      3822 12298 3808 12283 3809 12283\n\n\n$$\n\nKennedy\n\n\u0003"
+   }
+  ],
+  "events": [
+   {
+    "url": "https://mesonet.agron.iastate.edu/vtec/?year=2026&wfo=KMTR&phenomena=FA&significance=Y&eventid=0057",
+    "product_issued": "2026-11-25T05:48:00Z",
+    "issue": "2026-11-25T05:48:00Z",
+    "expire": "2026-11-25T08:45:00Z",
+    "init_expired": "2026-11-25T08:45:00Z",
+    "purge_time": "2026-11-25T08:46:00Z",
+    "updated": "2026-11-25T08:36:00Z",
+    "eventid": 57,
+    "phenomena": "FA",
+    "hvtec_nwsli": "00000",
+    "significance": "Y",
+    "last_product_id": "202611250836-KMTR-WGUS86-FLSMTR",
+    "product_id": "202611250548-KMTR-WGUS86-FLSMTR",
+    "wfo": "MTR",
+    "ugc": "CAC041"
+   },
+   {
+    "url": "https://mesonet.agron.iastate.edu/vtec/?year=2026&wfo=KMTR&phenomena=FA&significance=Y&eventid=0057",
+    "product_issued": "2026-11-25T05:48:00Z",
+    "issue": "2026-11-25T05:48:00Z",
+    "expire": "2026-11-25T08:45:00Z",
+    "init_expired": "2026-11-25T08:45:00Z",
+    "purge_time": "2026-11-25T08:46:00Z",
+    "updated": "2026-11-25T08:36:00Z",
+    "eventid": 57,
+    "phenomena": "FA",
+    "hvtec_nwsli": "00000",
+    "significance": "Y",
+    "last_product_id": "202611250836-KMTR-WGUS86-FLSMTR",
+    "product_id": "202611250548-KMTR-WGUS86-FLSMTR",
+    "wfo": "MTR",
+    "ugc": "CAC097"
+   },
+   {
+    "url": "https://mesonet.agron.iastate.edu/vtec/?year=2026&wfo=KMTR&phenomena=FA&significance=Y&eventid=0058",
+    "product_issued": "2026-11-25T07:01:00Z",
+    "issue": "2026-11-25T07:01:00Z",
+    "expire": "2026-11-25T10:00:00Z",
+    "init_expired": "2026-11-25T10:00:00Z",
+    "purge_time": "2026-11-25T10:08:00Z",
+    "updated": "2026-11-25T09:58:00Z",
+    "eventid": 58,
+    "phenomena": "FA",
+    "hvtec_nwsli": "00000",
+    "significance": "Y",
+    "last_product_id": "202611250958-KMTR-WGUS86-FLSMTR",
+    "product_id": "202611250701-KMTR-WGUS86-FLSMTR",
+    "wfo": "MTR",
+    "ugc": "CAC075"
+   },
+   {
+    "url": "https://mesonet.agron.iastate.edu/vtec/?year=2026&wfo=KMTR&phenomena=FA&significance=Y&eventid=0059",
+    "product_issued": "2026-11-25T07:25:00Z",
+    "issue": "2026-11-25T07:25:00Z",
+    "expire": "2026-11-25T10:30:00Z",
+    "init_expired": "2026-11-25T10:30:00Z",
+    "purge_time": "2026-11-25T10:44:00Z",
+    "updated": "2026-11-25T10:34:00Z",
+    "eventid": 59,
+    "phenomena": "FA",
+    "hvtec_nwsli": "00000",
+    "significance": "Y",
+    "last_product_id": "202611251034-KMTR-WGUS86-FLSMTR",
+    "product_id": "202611250725-KMTR-WGUS86-FLSMTR",
+    "wfo": "MTR",
+    "ugc": "CAC081"
+   },
+   {
+    "url": "https://mesonet.agron.iastate.edu/vtec/?year=2026&wfo=KMTR&phenomena=FA&significance=Y&eventid=0059",
+    "product_issued": "2026-11-25T07:25:00Z",
+    "issue": "2026-11-25T07:25:00Z",
+    "expire": "2026-11-25T10:30:00Z",
+    "init_expired": "2026-11-25T10:30:00Z",
+    "purge_time": "2026-11-25T10:44:00Z",
+    "updated": "2026-11-25T10:34:00Z",
+    "eventid": 59,
+    "phenomena": "FA",
+    "hvtec_nwsli": "00000",
+    "significance": "Y",
+    "last_product_id": "202611251034-KMTR-WGUS86-FLSMTR",
+    "product_id": "202611250725-KMTR-WGUS86-FLSMTR",
+    "wfo": "MTR",
+    "ugc": "CAC075"
+   }
+  ],
+  "errors": []
+ },
+ "frames": [
+  {
+   "t": "2026-11-25T04:30:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T04:35:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T04:40:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T04:45:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T04:50:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T04:55:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T05:00:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T05:05:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T05:10:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T05:15:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T05:20:00+00:00",
+   "block_0": 12.0,
+   "block_2": 17.0,
+   "mint_0": 14.0,
+   "mint_2": 17.5
+  },
+  {
+   "t": "2026-11-25T05:25:00+00:00",
+   "block_0": 15.5,
+   "block_2": 19.0,
+   "mint_0": 14.0,
+   "mint_2": 20.5
+  },
+  {
+   "t": "2026-11-25T05:30:00+00:00",
+   "block_0": 8.0,
+   "block_2": 23.5,
+   "mint_0": 20.5,
+   "mint_2": 25.0
+  },
+  {
+   "t": "2026-11-25T05:35:00+00:00",
+   "block_0": 7.0,
+   "block_2": 15.5,
+   "mint_0": 10.0,
+   "mint_2": 18.5
+  },
+  {
+   "t": "2026-11-25T05:40:00+00:00",
+   "block_0": null,
+   "block_2": 12.0,
+   "mint_0": 9.0,
+   "mint_2": 11.0
+  },
+  {
+   "t": "2026-11-25T05:45:00+00:00",
+   "block_0": null,
+   "block_2": 20.5,
+   "mint_0": null,
+   "mint_2": 21.5
+  },
+  {
+   "t": "2026-11-25T05:50:00+00:00",
+   "block_0": 21.0,
+   "block_2": 30.0,
+   "mint_0": 25.5,
+   "mint_2": 27.5
+  },
+  {
+   "t": "2026-11-25T05:55:00+00:00",
+   "block_0": 22.0,
+   "block_2": 26.5,
+   "mint_0": 20.0,
+   "mint_2": 24.0
+  },
+  {
+   "t": "2026-11-25T06:00:00+00:00",
+   "block_0": 13.0,
+   "block_2": 18.0,
+   "mint_0": 15.0,
+   "mint_2": 21.5
+  },
+  {
+   "t": "2026-11-25T06:05:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": 19.0
+  },
+  {
+   "t": "2026-11-25T06:10:00+00:00",
+   "block_0": null,
+   "block_2": 20.0,
+   "mint_0": null,
+   "mint_2": 25.0
+  },
+  {
+   "t": "2026-11-25T06:15:00+00:00",
+   "block_0": 22.0,
+   "block_2": 22.0,
+   "mint_0": 21.5,
+   "mint_2": 30.0
+  },
+  {
+   "t": "2026-11-25T06:20:00+00:00",
+   "block_0": 21.5,
+   "block_2": 27.5,
+   "mint_0": 23.0,
+   "mint_2": 29.5
+  },
+  {
+   "t": "2026-11-25T06:25:00+00:00",
+   "block_0": 16.0,
+   "block_2": 20.0,
+   "mint_0": 17.5,
+   "mint_2": 27.0
+  },
+  {
+   "t": "2026-11-25T06:30:00+00:00",
+   "block_0": 10.5,
+   "block_2": 24.0,
+   "mint_0": 13.5,
+   "mint_2": 20.5
+  },
+  {
+   "t": "2026-11-25T06:35:00+00:00",
+   "block_0": 7.0,
+   "block_2": 15.5,
+   "mint_0": 8.5,
+   "mint_2": 15.5
+  },
+  {
+   "t": "2026-11-25T06:40:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": 8.0
+  },
+  {
+   "t": "2026-11-25T06:45:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": 8.0
+  },
+  {
+   "t": "2026-11-25T06:50:00+00:00",
+   "block_0": null,
+   "block_2": 28.5,
+   "mint_0": null,
+   "mint_2": 27.5
+  },
+  {
+   "t": "2026-11-25T06:55:00+00:00",
+   "block_0": 30.5,
+   "block_2": 36.0,
+   "mint_0": 34.0,
+   "mint_2": 39.0
+  },
+  {
+   "t": "2026-11-25T07:00:00+00:00",
+   "block_0": 37.0,
+   "block_2": 45.0,
+   "mint_0": 41.0,
+   "mint_2": 48.0
+  },
+  {
+   "t": "2026-11-25T07:05:00+00:00",
+   "block_0": 37.0,
+   "block_2": 51.0,
+   "mint_0": 51.0,
+   "mint_2": 51.0
+  },
+  {
+   "t": "2026-11-25T07:10:00+00:00",
+   "block_0": 37.5,
+   "block_2": 45.5,
+   "mint_0": 41.5,
+   "mint_2": 45.0
+  },
+  {
+   "t": "2026-11-25T07:15:00+00:00",
+   "block_0": 35.5,
+   "block_2": 43.5,
+   "mint_0": 41.5,
+   "mint_2": 45.0
+  },
+  {
+   "t": "2026-11-25T07:20:00+00:00",
+   "block_0": 35.5,
+   "block_2": 41.0,
+   "mint_0": 37.0,
+   "mint_2": 45.0
+  },
+  {
+   "t": "2026-11-25T07:25:00+00:00",
+   "block_0": 37.0,
+   "block_2": 45.0,
+   "mint_0": 43.0,
+   "mint_2": 48.0
+  },
+  {
+   "t": "2026-11-25T07:30:00+00:00",
+   "block_0": 45.5,
+   "block_2": 47.5,
+   "mint_0": 44.5,
+   "mint_2": 51.5
+  },
+  {
+   "t": "2026-11-25T07:35:00+00:00",
+   "block_0": 39.0,
+   "block_2": 47.5,
+   "mint_0": 41.5,
+   "mint_2": 49.0
+  },
+  {
+   "t": "2026-11-25T07:40:00+00:00",
+   "block_0": 39.0,
+   "block_2": 44.5,
+   "mint_0": 42.0,
+   "mint_2": 48.5
+  },
+  {
+   "t": "2026-11-25T07:45:00+00:00",
+   "block_0": 37.5,
+   "block_2": 46.5,
+   "mint_0": 30.5,
+   "mint_2": 38.5
+  },
+  {
+   "t": "2026-11-25T07:50:00+00:00",
+   "block_0": 36.5,
+   "block_2": 43.5,
+   "mint_0": 27.5,
+   "mint_2": 38.0
+  },
+  {
+   "t": "2026-11-25T07:55:00+00:00",
+   "block_0": 36.5,
+   "block_2": 43.5,
+   "mint_0": 30.0,
+   "mint_2": 39.5
+  },
+  {
+   "t": "2026-11-25T08:00:00+00:00",
+   "block_0": 39.0,
+   "block_2": 43.5,
+   "mint_0": 42.0,
+   "mint_2": 49.0
+  },
+  {
+   "t": "2026-11-25T08:05:00+00:00",
+   "block_0": 40.0,
+   "block_2": 46.0,
+   "mint_0": 38.5,
+   "mint_2": 48.5
+  },
+  {
+   "t": "2026-11-25T08:10:00+00:00",
+   "block_0": 38.5,
+   "block_2": 46.0,
+   "mint_0": 43.0,
+   "mint_2": 46.0
+  },
+  {
+   "t": "2026-11-25T08:15:00+00:00",
+   "block_0": 38.0,
+   "block_2": 47.5,
+   "mint_0": 35.5,
+   "mint_2": 42.0
+  },
+  {
+   "t": "2026-11-25T08:20:00+00:00",
+   "block_0": 37.0,
+   "block_2": 44.5,
+   "mint_0": 36.5,
+   "mint_2": 46.0
+  },
+  {
+   "t": "2026-11-25T08:25:00+00:00",
+   "block_0": 35.0,
+   "block_2": 46.5,
+   "mint_0": 38.0,
+   "mint_2": 46.5
+  },
+  {
+   "t": "2026-11-25T08:30:00+00:00",
+   "block_0": 35.0,
+   "block_2": 42.0,
+   "mint_0": 42.0,
+   "mint_2": 45.0
+  },
+  {
+   "t": "2026-11-25T08:35:00+00:00",
+   "block_0": 35.0,
+   "block_2": 42.0,
+   "mint_0": 42.0,
+   "mint_2": 45.0
+  },
+  {
+   "t": "2026-11-25T08:40:00+00:00",
+   "block_0": 32.0,
+   "block_2": 38.5,
+   "mint_0": 36.0,
+   "mint_2": 38.5
+  },
+  {
+   "t": "2026-11-25T08:45:00+00:00",
+   "block_0": 39.0,
+   "block_2": 40.5,
+   "mint_0": 32.0,
+   "mint_2": 44.5
+  },
+  {
+   "t": "2026-11-25T08:50:00+00:00",
+   "block_0": 28.0,
+   "block_2": 36.0,
+   "mint_0": 32.5,
+   "mint_2": 37.5
+  },
+  {
+   "t": "2026-11-25T08:55:00+00:00",
+   "block_0": 27.5,
+   "block_2": 32.5,
+   "mint_0": 23.0,
+   "mint_2": 27.5
+  },
+  {
+   "t": "2026-11-25T09:00:00+00:00",
+   "block_0": 25.0,
+   "block_2": 27.5,
+   "mint_0": 25.0,
+   "mint_2": 27.0
+  },
+  {
+   "t": "2026-11-25T09:05:00+00:00",
+   "block_0": 17.5,
+   "block_2": 27.0,
+   "mint_0": 24.0,
+   "mint_2": 27.0
+  },
+  {
+   "t": "2026-11-25T09:10:00+00:00",
+   "block_0": 19.5,
+   "block_2": 29.0,
+   "mint_0": 21.5,
+   "mint_2": 27.5
+  },
+  {
+   "t": "2026-11-25T09:15:00+00:00",
+   "block_0": 22.0,
+   "block_2": 30.0,
+   "mint_0": 30.0,
+   "mint_2": 30.0
+  },
+  {
+   "t": "2026-11-25T09:20:00+00:00",
+   "block_0": 17.5,
+   "block_2": 22.5,
+   "mint_0": 17.0,
+   "mint_2": 24.0
+  },
+  {
+   "t": "2026-11-25T09:25:00+00:00",
+   "block_0": 21.5,
+   "block_2": 26.5,
+   "mint_0": 26.0,
+   "mint_2": 29.0
+  },
+  {
+   "t": "2026-11-25T09:30:00+00:00",
+   "block_0": 21.5,
+   "block_2": 26.5,
+   "mint_0": 26.0,
+   "mint_2": 29.0
+  },
+  {
+   "t": "2026-11-25T09:35:00+00:00",
+   "block_0": 24.0,
+   "block_2": 30.5,
+   "mint_0": 30.0,
+   "mint_2": 30.0
+  },
+  {
+   "t": "2026-11-25T09:40:00+00:00",
+   "block_0": 22.5,
+   "block_2": 29.5,
+   "mint_0": 28.0,
+   "mint_2": 31.5
+  },
+  {
+   "t": "2026-11-25T09:45:00+00:00",
+   "block_0": 17.5,
+   "block_2": 23.0,
+   "mint_0": 19.0,
+   "mint_2": 25.0
+  },
+  {
+   "t": "2026-11-25T09:50:00+00:00",
+   "block_0": 30.5,
+   "block_2": 32.0,
+   "mint_0": 22.0,
+   "mint_2": 33.0
+  },
+  {
+   "t": "2026-11-25T09:55:00+00:00",
+   "block_0": 23.0,
+   "block_2": 32.5,
+   "mint_0": 29.5,
+   "mint_2": 31.5
+  },
+  {
+   "t": "2026-11-25T10:00:00+00:00",
+   "block_0": 16.0,
+   "block_2": 21.5,
+   "mint_0": 21.0,
+   "mint_2": 24.0
+  },
+  {
+   "t": "2026-11-25T10:05:00+00:00",
+   "block_0": 7.5,
+   "block_2": 14.5,
+   "mint_0": 8.0,
+   "mint_2": 16.0
+  },
+  {
+   "t": "2026-11-25T10:10:00+00:00",
+   "block_0": 23.0,
+   "block_2": 24.0,
+   "mint_0": 24.0,
+   "mint_2": 24.0
+  },
+  {
+   "t": "2026-11-25T10:15:00+00:00",
+   "block_0": 22.0,
+   "block_2": 22.0,
+   "mint_0": 14.0,
+   "mint_2": 22.0
+  },
+  {
+   "t": "2026-11-25T10:20:00+00:00",
+   "block_0": 17.0,
+   "block_2": 23.5,
+   "mint_0": 18.5,
+   "mint_2": 23.5
+  },
+  {
+   "t": "2026-11-25T10:25:00+00:00",
+   "block_0": 25.5,
+   "block_2": 34.5,
+   "mint_0": 23.0,
+   "mint_2": 32.5
+  },
+  {
+   "t": "2026-11-25T10:30:00+00:00",
+   "block_0": 21.5,
+   "block_2": 36.0,
+   "mint_0": 18.0,
+   "mint_2": 26.5
+  },
+  {
+   "t": "2026-11-25T10:35:00+00:00",
+   "block_0": 18.5,
+   "block_2": 26.5,
+   "mint_0": 18.0,
+   "mint_2": 25.0
+  },
+  {
+   "t": "2026-11-25T10:40:00+00:00",
+   "block_0": 7.5,
+   "block_2": 18.5,
+   "mint_0": 9.0,
+   "mint_2": 15.0
+  },
+  {
+   "t": "2026-11-25T10:45:00+00:00",
+   "block_0": 1.0,
+   "block_2": 7.0,
+   "mint_0": 7.0,
+   "mint_2": 7.0
+  },
+  {
+   "t": "2026-11-25T10:50:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T10:55:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": null
+  },
+  {
+   "t": "2026-11-25T11:00:00+00:00",
+   "block_0": null,
+   "block_2": null,
+   "mint_0": null,
+   "mint_2": 15.5
+  }
+ ],
+ "intervals": [
+  {
+   "from": "2026-11-25T04:43:00+00:00",
+   "to": "2026-11-25T05:43:00+00:00",
+   "gauge": 0.0,
+   "radar_obs_block_pixel": 0.002,
+   "radar_obs_block_max5x5": 0.009,
+   "radar_obs_mint_pixel": 0.005,
+   "radar_obs_mint_max5x5": 0.01
+  },
+  {
+   "from": "2026-11-25T05:43:00+00:00",
+   "to": "2026-11-25T06:43:00+00:00",
+   "gauge": 0.0,
+   "radar_obs_block_pixel": 0.013,
+   "radar_obs_block_max5x5": 0.037,
+   "radar_obs_mint_pixel": 0.016,
+   "radar_obs_mint_max5x5": 0.048
+  },
+  {
+   "from": "2026-11-25T06:43:00+00:00",
+   "to": "2026-11-25T07:43:00+00:00",
+   "gauge": 0.29,
+   "radar_obs_block_pixel": 0.298,
+   "radar_obs_block_max5x5": 0.853,
+   "radar_obs_mint_pixel": 0.59,
+   "radar_obs_mint_max5x5": 1.16
+  },
+  {
+   "from": "2026-11-25T07:43:00+00:00",
+   "to": "2026-11-25T08:43:00+00:00",
+   "gauge": 0.11,
+   "radar_obs_block_pixel": 0.293,
+   "radar_obs_block_max5x5": 0.875,
+   "radar_obs_mint_pixel": 0.357,
+   "radar_obs_mint_max5x5": 0.873
+  },
+  {
+   "from": "2026-11-25T08:43:00+00:00",
+   "to": "2026-11-25T09:43:00+00:00",
+   "gauge": 0.04,
+   "radar_obs_block_pixel": 0.07,
+   "radar_obs_block_max5x5": 0.135,
+   "radar_obs_mint_pixel": 0.075,
+   "radar_obs_mint_max5x5": 0.171
+  },
+  {
+   "from": "2026-11-25T09:43:00+00:00",
+   "to": "2026-11-25T10:43:00+00:00",
+   "gauge": 0.0,
+   "radar_obs_block_pixel": 0.032,
+   "radar_obs_block_max5x5": 0.087,
+   "radar_obs_mint_pixel": 0.028,
+   "radar_obs_mint_max5x5": 0.068
+  }
+ ],
+ "hours": [
+  {
+   "hour": "2026-11-25T05:00:00+00:00",
+   "radar_obs_block_pixel": 0.007,
+   "radar_obs_block_max5x5": 0.025,
+   "radar_obs_mint_pixel": 0.011,
+   "radar_obs_mint_max5x5": 0.023
+  },
+  {
+   "hour": "2026-11-25T06:00:00+00:00",
+   "radar_obs_block_pixel": 0.018,
+   "radar_obs_block_max5x5": 0.048,
+   "radar_obs_mint_pixel": 0.025,
+   "radar_obs_mint_max5x5": 0.074
+  },
+  {
+   "hour": "2026-11-25T07:00:00+00:00",
+   "radar_obs_block_pixel": 0.361,
+   "radar_obs_block_max5x5": 1.046,
+   "radar_obs_mint_pixel": 0.599,
+   "radar_obs_mint_max5x5": 1.215
+  },
+  {
+   "hour": "2026-11-25T08:00:00+00:00",
+   "radar_obs_block_pixel": 0.267,
+   "radar_obs_block_max5x5": 0.728,
+   "radar_obs_mint_pixel": 0.36,
+   "radar_obs_mint_max5x5": 0.884
+  },
+  {
+   "hour": "2026-11-25T09:00:00+00:00",
+   "radar_obs_block_pixel": 0.039,
+   "radar_obs_block_max5x5": 0.089,
+   "radar_obs_mint_pixel": 0.06,
+   "radar_obs_mint_max5x5": 0.096
+  },
+  {
+   "hour": "2026-11-25T10:00:00+00:00",
+   "radar_obs_block_pixel": 0.018,
+   "radar_obs_block_max5x5": 0.059,
+   "radar_obs_mint_pixel": 0.015,
+   "radar_obs_mint_max5x5": 0.039
+  }
+ ],
+ "replay": [
+  {
+   "issued": "2026-11-25T05:07:03.102950+00:00",
+   "latest_frame": "2026-11-25T05:05:00+00:00",
+   "status": "moving toward NE at 13 km/h (8 mph), low confidence",
+   "motion": {
+    "known": true,
+    "speed_kmh": 13.447873212416745,
+    "toward_deg": 51.6712738131482,
+    "source": "radar",
+    "confidence": "low"
+   },
+   "dbz_now": null,
+   "replay": {
+    "2026-11-25T05:00:00+00:00": 0.0,
+    "2026-11-25T06:00:00+00:00": 0.0
+   },
+   "production": {
+    "2026-11-25T05:00:00+00:00": 0.0,
+    "2026-11-25T06:00:00+00:00": 0.0
+   },
+   "radar_observed_block": {
+    "2026-11-25T05:00:00+00:00": 0.007,
+    "2026-11-25T06:00:00+00:00": 0.018
+   }
+  },
+  {
+   "issued": "2026-11-25T06:07:31.991193+00:00",
+   "latest_frame": "2026-11-25T06:05:00+00:00",
+   "status": "moving toward NNE at 55 km/h (34 mph), medium confidence",
+   "motion": {
+    "known": true,
+    "speed_kmh": 54.980832354561045,
+    "toward_deg": 31.847050757578145,
+    "source": "radar",
+    "confidence": "medium"
+   },
+   "dbz_now": null,
+   "replay": {
+    "2026-11-25T06:00:00+00:00": 0.017,
+    "2026-11-25T07:00:00+00:00": 0.083
+   },
+   "production": {
+    "2026-11-25T06:00:00+00:00": 0.017,
+    "2026-11-25T07:00:00+00:00": 0.083
+   },
+   "radar_observed_block": {
+    "2026-11-25T06:00:00+00:00": 0.018,
+    "2026-11-25T07:00:00+00:00": 0.361
+   }
+  },
+  {
+   "issued": "2026-11-25T07:08:15.791564+00:00",
+   "latest_frame": "2026-11-25T07:05:00+00:00",
+   "status": "moving toward E at 11 km/h (7 mph), high confidence",
+   "motion": {
+    "known": true,
+    "speed_kmh": 10.680445587017234,
+    "toward_deg": 81.01515221193465,
+    "source": "radar",
+    "confidence": "high"
+   },
+   "dbz_now": 51.0,
+   "replay": {
+    "2026-11-25T07:00:00+00:00": 0.666,
+    "2026-11-25T08:00:00+00:00": 0.487
+   },
+   "production": {
+    "2026-11-25T07:00:00+00:00": 0.666,
+    "2026-11-25T08:00:00+00:00": 0.487
+   },
+   "radar_observed_block": {
+    "2026-11-25T07:00:00+00:00": 0.361,
+    "2026-11-25T08:00:00+00:00": 0.267
+   }
+  },
+  {
+   "issued": "2026-11-25T08:08:50.775174+00:00",
+   "latest_frame": "2026-11-25T08:05:00+00:00",
+   "status": "moving toward NE at 17 km/h (11 mph), high confidence",
+   "motion": {
+    "known": true,
+    "speed_kmh": 17.01035067061335,
+    "toward_deg": 38.328910016129896,
+    "source": "radar",
+    "confidence": "high"
+   },
+   "dbz_now": 46.0,
+   "replay": {
+    "2026-11-25T08:00:00+00:00": 0.363,
+    "2026-11-25T09:00:00+00:00": 0.219
+   },
+   "production": {
+    "2026-11-25T08:00:00+00:00": 0.363,
+    "2026-11-25T09:00:00+00:00": 0.219
+   },
+   "radar_observed_block": {
+    "2026-11-25T08:00:00+00:00": 0.267,
+    "2026-11-25T09:00:00+00:00": 0.039
+   }
+  },
+  {
+   "issued": "2026-11-25T09:09:26.463450+00:00",
+   "latest_frame": "2026-11-25T09:05:00+00:00",
+   "status": "moving toward NE at 17 km/h (11 mph), high confidence",
+   "motion": {
+    "known": true,
+    "speed_kmh": 17.01035067061335,
+    "toward_deg": 38.328910016129896,
+    "source": "radar",
+    "confidence": "high"
+   },
+   "dbz_now": 27.0,
+   "replay": {
+    "2026-11-25T09:00:00+00:00": 0.034,
+    "2026-11-25T10:00:00+00:00": 0.068
+   },
+   "production": {
+    "2026-11-25T09:00:00+00:00": 0.034,
+    "2026-11-25T10:00:00+00:00": 0.068
+   },
+   "radar_observed_block": {
+    "2026-11-25T09:00:00+00:00": 0.039,
+    "2026-11-25T10:00:00+00:00": 0.018
+   }
+  },
+  {
+   "issued": "2026-11-25T10:10:08.410862+00:00",
+   "latest_frame": "2026-11-25T10:10:00+00:00",
+   "status": "moving toward S at 0 km/h (0 mph), high confidence",
+   "motion": {
+    "known": true,
+    "speed_kmh": 0.0,
+    "toward_deg": 180.0,
+    "source": "radar",
+    "confidence": "high"
+   },
+   "dbz_now": 24.0,
+   "replay": {
+    "2026-11-25T10:00:00+00:00": 0.015,
+    "2026-11-25T11:00:00+00:00": 0.027
+   },
+   "production": {
+    "2026-11-25T10:00:00+00:00": 0.015,
+    "2026-11-25T11:00:00+00:00": 0.027
+   },
+   "radar_observed_block": {
+    "2026-11-25T10:00:00+00:00": 0.018,
+    "2026-11-25T11:00:00+00:00": 0.0
+   }
+  }
+ ]
+}
