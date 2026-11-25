@@ -19,6 +19,22 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import radar_verify2 as rv  # noqa: E402
 
 rv.RADIUS_KM = 22.0
+_stations = rv.stations
+
+
+def _unique_stations(s, home):
+    """ASOS and HADS can share an id (OAK is both): name ASOS sites K*** so neither overwrites the other."""
+    out = _stations(s, home)
+    for g in out:
+        if g["net"] == "CA_ASOS" and len(g["id"]) == 3:
+            g["asos_id"] = g["id"]
+            g["id"] = "K" + g["id"]
+    return out
+
+
+rv.stations = _unique_stations
+_asos = rv.asos_intervals
+rv.asos_intervals = lambda s, sid, a, b: _asos(s, sid[1:] if len(sid) == 4 and sid.startswith("K") else sid, a, b)
 STORMS = rv.STORMS
 HEAVY = (0.10, 0.20)
 
