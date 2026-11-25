@@ -1,0 +1,6431 @@
+{
+ "Nov 15": [
+  {
+   "t": "2026-11-15T21:00:00+00:00",
+   "engine": {
+    "speed": 87.2,
+    "toward": 26,
+    "conf": "low",
+    "known": true,
+    "sharp": 13.8,
+    "pair_spread_kmh": 22.1,
+    "pair_speeds_kmh": [
+     0.1,
+     0.5,
+     0.4,
+     63.8
+    ],
+    "echo_cover": 0.1286
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 21.2,
+     "toward": 85
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.002,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.014,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:05:00+00:00",
+   "engine": {
+    "speed": 11.1,
+    "toward": 72,
+    "conf": "low",
+    "known": true,
+    "sharp": 17.7,
+    "pair_spread_kmh": 21.9,
+    "pair_speeds_kmh": [
+     0.5,
+     0.4,
+     63.8,
+     41.4
+    ],
+    "echo_cover": 0.1358
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 31.9,
+     "toward": 108
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.003,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.002,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.031,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:10:00+00:00",
+   "engine": {
+    "speed": 10.5,
+    "toward": 90,
+    "conf": "low",
+    "known": true,
+    "sharp": 16.4,
+    "pair_spread_kmh": 20.5,
+    "pair_speeds_kmh": [
+     0.4,
+     63.8,
+     41.4,
+     60.5
+    ],
+    "echo_cover": 0.1358
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 6.4,
+     "toward": 142
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.006,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.008,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.007,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:15:00+00:00",
+   "engine": {
+    "speed": 65.1,
+    "toward": 42,
+    "conf": "low",
+    "known": true,
+    "sharp": 15.8,
+    "pair_spread_kmh": 20.6,
+    "pair_speeds_kmh": [
+     63.8,
+     41.4,
+     60.5,
+     0.1
+    ],
+    "echo_cover": 0.1358
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 22.5,
+     "toward": 86
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.008,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.004,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:20:00+00:00",
+   "engine": {
+    "speed": 10.7,
+    "toward": 99,
+    "conf": "medium",
+    "known": true,
+    "sharp": 15.1,
+    "pair_spread_kmh": 19.5,
+    "pair_speeds_kmh": [
+     41.4,
+     60.5,
+     0.1,
+     58.5
+    ],
+    "echo_cover": 0.1393
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 29.4,
+     "toward": 80
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.01,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.001,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.001,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:25:00+00:00",
+   "engine": {
+    "speed": 10.7,
+    "toward": 81,
+    "conf": "low",
+    "known": true,
+    "sharp": 11.9,
+    "pair_spread_kmh": 23.6,
+    "pair_speeds_kmh": [
+     60.5,
+     0.1,
+     58.5,
+     1.0
+    ],
+    "echo_cover": 0.1598
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 37.9,
+     "toward": 77
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.011,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.001,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:30:00+00:00",
+   "engine": {
+    "speed": 33.2,
+    "toward": 72,
+    "conf": "medium",
+    "known": true,
+    "sharp": 12.6,
+    "pair_spread_kmh": 19.9,
+    "pair_speeds_kmh": [
+     0.1,
+     58.5,
+     1.0,
+     0.0
+    ],
+    "echo_cover": 0.1654
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 22.5,
+     "toward": 86
+    },
+    "local 0.5deg": {
+     "speed": 12.5,
+     "toward": 122
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.016,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.002,
+    "band>=35dBZ": 0.004,
+    "local 0.5deg": 0.005,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:35:00+00:00",
+   "engine": {
+    "speed": 113.5,
+    "toward": 166,
+    "conf": "medium",
+    "known": true,
+    "sharp": 12.8,
+    "pair_spread_kmh": 19.9,
+    "pair_speeds_kmh": [
+     58.5,
+     1.0,
+     0.0,
+     0.0
+    ],
+    "echo_cover": 0.1724
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 13.3,
+     "toward": 180
+    },
+    "local 0.5deg": {
+     "speed": 11.7,
+     "toward": 115
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.018,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.005,
+    "band>=35dBZ": 0.004,
+    "local 0.5deg": 0.002,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:40:00+00:00",
+   "engine": {
+    "speed": 62.5,
+    "toward": 39,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.8,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     1.0,
+     0.0,
+     0.0,
+     0.3
+    ],
+    "echo_cover": 0.1774
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 13.4,
+     "toward": 151
+    },
+    "local 0.5deg": {
+     "speed": 14.9,
+     "toward": 206
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.023,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": 0.003,
+    "local 0.5deg": 0.002,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:45:00+00:00",
+   "engine": {
+    "speed": 10.5,
+    "toward": 90,
+    "conf": "low",
+    "known": true,
+    "sharp": 14.5,
+    "pair_spread_kmh": 20.8,
+    "pair_speeds_kmh": [
+     0.0,
+     0.0,
+     0.3,
+     61.5
+    ],
+    "echo_cover": 0.1774
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 15.9,
+     "toward": 264
+    },
+    "local 0.5deg": {
+     "speed": 12.5,
+     "toward": 122
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.027,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.001,
+    "band>=35dBZ": 0.0,
+    "local 0.5deg": 0.002,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:50:00+00:00",
+   "engine": {
+    "speed": 39.3,
+    "toward": 50,
+    "conf": "low",
+    "known": true,
+    "sharp": 13.2,
+    "pair_spread_kmh": 23.7,
+    "pair_speeds_kmh": [
+     0.0,
+     0.3,
+     61.5,
+     59.7
+    ],
+    "echo_cover": 0.1913
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 13.4,
+     "toward": 174
+    },
+    "local 0.5deg": {
+     "speed": 14.1,
+     "toward": 111
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.032,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": 0.001,
+    "local 0.5deg": 0.001,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T21:55:00+00:00",
+   "engine": {
+    "speed": 72.3,
+    "toward": 38,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.4,
+    "pair_spread_kmh": 21.3,
+    "pair_speeds_kmh": [
+     0.3,
+     61.5,
+     59.7,
+     66.9
+    ],
+    "echo_cover": 0.1946
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 17.0,
+     "toward": 28
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 34.7,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    43.4
+   ],
+   "radar_observed_block_next_h": 0.035,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.001,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.039
+  },
+  {
+   "t": "2026-11-15T22:00:00+00:00",
+   "engine": {
+    "speed": 70.2,
+    "toward": 38,
+    "conf": "low",
+    "known": true,
+    "sharp": 15.8,
+    "pair_spread_kmh": 21.4,
+    "pair_speeds_kmh": [
+     61.5,
+     59.7,
+     66.9,
+     0.2
+    ],
+    "echo_cover": 0.1946
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 30.7,
+     "toward": 81
+    },
+    "local 0.5deg": {
+     "speed": 34.3,
+     "toward": 167
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.038,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.014,
+    "band>=35dBZ": 0.085,
+    "local 0.5deg": 0.034,
+    "0.8 x 700 hPa wind": 0.014
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:05:00+00:00",
+   "engine": {
+    "speed": 68.0,
+    "toward": 38,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.4,
+    "pair_spread_kmh": 22.0,
+    "pair_speeds_kmh": [
+     59.7,
+     66.9,
+     0.2,
+     63.7
+    ],
+    "echo_cover": 0.1946
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 21.2,
+     "toward": 85
+    },
+    "local 0.5deg": {
+     "speed": 17.6,
+     "toward": 212
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.041,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.017,
+    "band>=35dBZ": 0.089,
+    "local 0.5deg": 0.031,
+    "0.8 x 700 hPa wind": 0.023
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:10:00+00:00",
+   "engine": {
+    "speed": 10.7,
+    "toward": 81,
+    "conf": "low",
+    "known": true,
+    "sharp": 14.9,
+    "pair_spread_kmh": 22.1,
+    "pair_speeds_kmh": [
+     66.9,
+     0.2,
+     63.7,
+     58.8
+    ],
+    "echo_cover": 0.1946
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 67.6,
+     "toward": 77
+    },
+    "local 0.5deg": {
+     "speed": 19.9,
+     "toward": 95
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.043,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.075,
+    "band>=35dBZ": 0.07,
+    "local 0.5deg": 0.097,
+    "0.8 x 700 hPa wind": 0.029
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:15:00+00:00",
+   "engine": {
+    "speed": 11.7,
+    "toward": 65,
+    "conf": "low",
+    "known": true,
+    "sharp": 14.8,
+    "pair_spread_kmh": 24.7,
+    "pair_speeds_kmh": [
+     0.2,
+     63.7,
+     58.8,
+     0.0
+    ],
+    "echo_cover": 0.1982
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 20.9,
+     "toward": 71
+    },
+    "local 0.5deg": {
+     "speed": 11.7,
+     "toward": 115
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.046,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.05,
+    "band>=35dBZ": 0.071,
+    "local 0.5deg": 0.071,
+    "0.8 x 700 hPa wind": 0.032
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:20:00+00:00",
+   "engine": {
+    "speed": 34.2,
+    "toward": 54,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.6,
+    "pair_spread_kmh": 21.9,
+    "pair_speeds_kmh": [
+     63.7,
+     58.8,
+     0.0,
+     65.9
+    ],
+    "echo_cover": 0.2084
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 12.3,
+     "toward": 106
+    },
+    "local 0.5deg": {
+     "speed": 38.3,
+     "toward": 229
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.05,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.058,
+    "band>=35dBZ": 0.059,
+    "local 0.5deg": 0.026,
+    "0.8 x 700 hPa wind": 0.033
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:25:00+00:00",
+   "engine": {
+    "speed": 37.4,
+    "toward": 122,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.3,
+    "pair_spread_kmh": 21.4,
+    "pair_speeds_kmh": [
+     58.8,
+     0.0,
+     65.9,
+     59.0
+    ],
+    "echo_cover": 0.2084
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 13.6,
+     "toward": 104
+    },
+    "local 0.5deg": {
+     "speed": 9.8,
+     "toward": 110
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.053,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.034,
+    "band>=35dBZ": 0.058,
+    "local 0.5deg": 0.054,
+    "0.8 x 700 hPa wind": 0.033
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:30:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "low",
+    "known": true,
+    "sharp": 15.0,
+    "pair_spread_kmh": 25.1,
+    "pair_speeds_kmh": [
+     0.0,
+     65.9,
+     59.0,
+     0.4
+    ],
+    "echo_cover": 0.2092
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 11.7,
+     "toward": 115
+    },
+    "local 0.5deg": {
+     "speed": 19.8,
+     "toward": 90
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.048,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.038,
+    "band>=35dBZ": 0.067,
+    "local 0.5deg": 0.078,
+    "0.8 x 700 hPa wind": 0.025
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:35:00+00:00",
+   "engine": {
+    "speed": 59.1,
+    "toward": 40,
+    "conf": "low",
+    "known": true,
+    "sharp": 16.8,
+    "pair_spread_kmh": 25.1,
+    "pair_speeds_kmh": [
+     65.9,
+     59.0,
+     0.4,
+     0.0
+    ],
+    "echo_cover": 0.2213
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 55.3,
+     "toward": 59
+    },
+    "local 0.5deg": {
+     "speed": 43.6,
+     "toward": 65
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.045,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.016,
+    "band>=35dBZ": 0.027,
+    "local 0.5deg": 0.04,
+    "0.8 x 700 hPa wind": 0.021
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:40:00+00:00",
+   "engine": {
+    "speed": 68.8,
+    "toward": 154,
+    "conf": "low",
+    "known": true,
+    "sharp": 11.5,
+    "pair_spread_kmh": 20.5,
+    "pair_speeds_kmh": [
+     59.0,
+     0.4,
+     0.0,
+     0.4
+    ],
+    "echo_cover": 0.2291
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 67.3,
+     "toward": 62
+    },
+    "local 0.5deg": {
+     "speed": 6.7,
+     "toward": 180
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.04,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.015,
+    "band>=35dBZ": 0.019,
+    "local 0.5deg": 0.024,
+    "0.8 x 700 hPa wind": 0.015
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:45:00+00:00",
+   "engine": {
+    "speed": 44.5,
+    "toward": 50,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.0,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.4,
+     0.0,
+     0.4,
+     0.3
+    ],
+    "echo_cover": 0.2362
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 16.6,
+     "toward": 108
+    },
+    "local 0.5deg": {
+     "speed": 39.7,
+     "toward": 60
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.038,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.013,
+    "band>=35dBZ": 0.013,
+    "local 0.5deg": 0.015,
+    "0.8 x 700 hPa wind": 0.011
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:50:00+00:00",
+   "engine": {
+    "speed": 10.5,
+    "toward": 90,
+    "conf": "high",
+    "known": true,
+    "sharp": 14.2,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.4,
+     0.3,
+     0.4
+    ],
+    "echo_cover": 0.2491
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 117.5,
+     "toward": 279
+    },
+    "local 0.5deg": {
+     "speed": 21.2,
+     "toward": 95
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.033,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.008,
+    "band>=35dBZ": 0.006,
+    "local 0.5deg": 0.008,
+    "0.8 x 700 hPa wind": 0.007
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T22:55:00+00:00",
+   "engine": {
+    "speed": 11.1,
+    "toward": 108,
+    "conf": "high",
+    "known": true,
+    "sharp": 15.0,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.4,
+     0.3,
+     0.4,
+     0.3
+    ],
+    "echo_cover": 0.2539
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 38.3,
+     "toward": 75
+    },
+    "local 0.5deg": {
+     "speed": 12.0,
+     "toward": 98
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.1,
+     "toward": 36
+    }
+   },
+   "steer_700": [
+    216,
+    45.1
+   ],
+   "radar_observed_block_next_h": 0.03,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.004,
+    "band>=35dBZ": 0.005,
+    "local 0.5deg": 0.005,
+    "0.8 x 700 hPa wind": 0.004
+   },
+   "radar_observed_current_and_next_hour": 0.063
+  },
+  {
+   "t": "2026-11-15T23:00:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 14.2,
+    "pair_spread_kmh": 0.4,
+    "pair_speeds_kmh": [
+     0.3,
+     0.4,
+     0.3,
+     0.7
+    ],
+    "echo_cover": 0.2519
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 25.3,
+     "toward": 98
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.026,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.049,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.022,
+    "0.8 x 700 hPa wind": 0.028
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:05:00+00:00",
+   "engine": {
+    "speed": 34.6,
+    "toward": 82,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.3,
+    "pair_spread_kmh": 0.4,
+    "pair_speeds_kmh": [
+     0.4,
+     0.3,
+     0.7,
+     0.8
+    ],
+    "echo_cover": 0.2519
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 80.3,
+     "toward": 40
+    },
+    "local 0.5deg": {
+     "speed": 22.7,
+     "toward": 98
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.02,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.023,
+    "band>=35dBZ": 0.023,
+    "local 0.5deg": 0.017,
+    "0.8 x 700 hPa wind": 0.037
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:10:00+00:00",
+   "engine": {
+    "speed": 11.7,
+    "toward": 65,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.7,
+    "pair_spread_kmh": 0.4,
+    "pair_speeds_kmh": [
+     0.3,
+     0.7,
+     0.8,
+     0.8
+    ],
+    "echo_cover": 0.2519
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 77.1,
+     "toward": 37
+    },
+    "local 0.5deg": {
+     "speed": 29.1,
+     "toward": 87
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.021,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.037,
+    "band>=35dBZ": 0.021,
+    "local 0.5deg": 0.017,
+    "0.8 x 700 hPa wind": 0.042
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:15:00+00:00",
+   "engine": {
+    "speed": 27.0,
+    "toward": 68,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.8,
+    "pair_spread_kmh": 25.2,
+    "pair_speeds_kmh": [
+     0.7,
+     0.8,
+     0.8,
+     74.8
+    ],
+    "echo_cover": 0.2519
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 91.0,
+     "toward": 40
+    },
+    "local 0.5deg": {
+     "speed": 30.3,
+     "toward": 90
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.031,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.026,
+    "band>=35dBZ": 0.024,
+    "local 0.5deg": 0.013,
+    "0.8 x 700 hPa wind": 0.043
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:20:00+00:00",
+   "engine": {
+    "speed": 65.7,
+    "toward": 160,
+    "conf": "low",
+    "known": true,
+    "sharp": 13.3,
+    "pair_spread_kmh": 25.3,
+    "pair_speeds_kmh": [
+     0.8,
+     0.8,
+     74.8,
+     0.2
+    ],
+    "echo_cover": 0.2519
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 78.2,
+     "toward": 40
+    },
+    "local 0.5deg": {
+     "speed": 27.7,
+     "toward": 90
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.032,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.016,
+    "band>=35dBZ": 0.022,
+    "local 0.5deg": 0.011,
+    "0.8 x 700 hPa wind": 0.034
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:25:00+00:00",
+   "engine": {
+    "speed": 70.4,
+    "toward": 161,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.2,
+    "pair_spread_kmh": 25.3,
+    "pair_speeds_kmh": [
+     0.8,
+     74.8,
+     0.2,
+     0.0
+    ],
+    "echo_cover": 0.2578
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 76.6,
+     "toward": 42
+    },
+    "local 0.5deg": {
+     "speed": 11.7,
+     "toward": 115
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.036,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.011,
+    "band>=35dBZ": 0.019,
+    "local 0.5deg": 0.002,
+    "0.8 x 700 hPa wind": 0.025
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:30:00+00:00",
+   "engine": {
+    "speed": 40.6,
+    "toward": 58,
+    "conf": "low",
+    "known": true,
+    "sharp": 9.8,
+    "pair_spread_kmh": 25.3,
+    "pair_speeds_kmh": [
+     74.8,
+     0.2,
+     0.0,
+     0.1
+    ],
+    "echo_cover": 0.2649
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 68.4,
+     "toward": 41
+    },
+    "local 0.5deg": {
+     "speed": 21.4,
+     "toward": 81
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.052,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.017,
+    "band>=35dBZ": 0.015,
+    "local 0.5deg": 0.01,
+    "0.8 x 700 hPa wind": 0.02
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:35:00+00:00",
+   "engine": {
+    "speed": 63.8,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 11.7,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.2,
+     0.0,
+     0.1,
+     0.3
+    ],
+    "echo_cover": 0.2668
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 64.3,
+     "toward": 36
+    },
+    "local 0.5deg": {
+     "speed": 30.3,
+     "toward": 60
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.063,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.011,
+    "band>=35dBZ": 0.011,
+    "local 0.5deg": 0.007,
+    "0.8 x 700 hPa wind": 0.011
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:40:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 18.2,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.1,
+     0.3,
+     0.6
+    ],
+    "echo_cover": 0.2736
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 76.1,
+     "toward": 40
+    },
+    "local 0.5deg": {
+     "speed": 16.6,
+     "toward": 127
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.065,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.004,
+    "band>=35dBZ": 0.009,
+    "local 0.5deg": 0.003,
+    "0.8 x 700 hPa wind": 0.006
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:45:00+00:00",
+   "engine": {
+    "speed": 68.6,
+    "toward": 37,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.3,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.1,
+     0.3,
+     0.6,
+     0.1
+    ],
+    "echo_cover": 0.2795
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 77.4,
+     "toward": 39
+    },
+    "local 0.5deg": {
+     "speed": 46.6,
+     "toward": 202
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.072,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.005,
+    "band>=35dBZ": 0.004,
+    "local 0.5deg": 0.001,
+    "0.8 x 700 hPa wind": 0.002
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:50:00+00:00",
+   "engine": {
+    "speed": 13.4,
+    "toward": 128,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.5,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.3,
+     0.6,
+     0.1,
+     0.3
+    ],
+    "echo_cover": 0.2795
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 72.6,
+     "toward": 34
+    },
+    "local 0.5deg": {
+     "speed": 48.8,
+     "toward": 123
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.08,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": 0.0,
+    "local 0.5deg": 0.0,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-15T23:55:00+00:00",
+   "engine": {
+    "speed": 11.7,
+    "toward": 115,
+    "conf": "high",
+    "known": true,
+    "sharp": 15.9,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.6,
+     0.1,
+     0.3,
+     0.1
+    ],
+    "echo_cover": 0.2795
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 99.0,
+     "toward": 45
+    },
+    "local 0.5deg": {
+     "speed": 37.5,
+     "toward": 37
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.6,
+     "toward": 38
+    }
+   },
+   "steer_700": [
+    218,
+    45.7
+   ],
+   "radar_observed_block_next_h": 0.088,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": 0.0,
+    "local 0.5deg": 0.0,
+    "0.8 x 700 hPa wind": 0.0
+   },
+   "radar_observed_current_and_next_hour": 0.118
+  },
+  {
+   "t": "2026-11-16T00:00:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 16.4,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.1,
+     0.3,
+     0.1,
+     0.2
+    ],
+    "echo_cover": 0.2795
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 53.8,
+     "toward": 173
+    },
+    "local 0.5deg": {
+     "speed": 31.1,
+     "toward": 144
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.092,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.085,
+    "band>=35dBZ": 0.11,
+    "local 0.5deg": 0.155,
+    "0.8 x 700 hPa wind": 0.081
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:05:00+00:00",
+   "engine": {
+    "speed": 12.5,
+    "toward": 122,
+    "conf": "high",
+    "known": true,
+    "sharp": 13.8,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.3,
+     0.1,
+     0.2,
+     0.5
+    ],
+    "echo_cover": 0.2795
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 57.4,
+     "toward": 22
+    },
+    "local 0.5deg": {
+     "speed": 57.9,
+     "toward": 157
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.095,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.034,
+    "band>=35dBZ": 0.064,
+    "local 0.5deg": 0.135,
+    "0.8 x 700 hPa wind": 0.099
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:10:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 15.3,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.1,
+     0.2,
+     0.5,
+     0.0
+    ],
+    "echo_cover": 0.2823
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 66.7,
+     "toward": 39
+    },
+    "local 0.5deg": {
+     "speed": 0.0,
+     "toward": 180
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.093,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.126,
+    "band>=35dBZ": 0.08,
+    "local 0.5deg": 0.078,
+    "0.8 x 700 hPa wind": 0.094
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:15:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 16.0,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.2,
+     0.5,
+     0.0,
+     0.1
+    ],
+    "echo_cover": 0.2907
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 67.6,
+     "toward": 40
+    },
+    "local 0.5deg": {
+     "speed": 67.5,
+     "toward": 171
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.082,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.1,
+    "band>=35dBZ": 0.074,
+    "local 0.5deg": 0.117,
+    "0.8 x 700 hPa wind": 0.077
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:20:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 19.5,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.5,
+     0.0,
+     0.1,
+     0.3
+    ],
+    "echo_cover": 0.2907
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 56.3,
+     "toward": 168
+    },
+    "local 0.5deg": {
+     "speed": 20.0,
+     "toward": 41
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.084,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.075,
+    "band>=35dBZ": 0.077,
+    "local 0.5deg": 0.076,
+    "0.8 x 700 hPa wind": 0.057
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:25:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 17.6,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.0,
+     0.1,
+     0.3,
+     0.1
+    ],
+    "echo_cover": 0.2932
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 74.4,
+     "toward": 42
+    },
+    "local 0.5deg": {
+     "speed": 27.2,
+     "toward": 23
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.087,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.076,
+    "band>=35dBZ": 0.056,
+    "local 0.5deg": 0.05,
+    "0.8 x 700 hPa wind": 0.052
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:30:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 13.5,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.1,
+     0.3,
+     0.1,
+     0.5
+    ],
+    "echo_cover": 0.294
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 80.8,
+     "toward": 38
+    },
+    "local 0.5deg": {
+     "speed": 18.3,
+     "toward": 0
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.091,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.04,
+    "band>=35dBZ": 0.035,
+    "local 0.5deg": 0.032,
+    "0.8 x 700 hPa wind": 0.037
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:35:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 20.5,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.3,
+     0.1,
+     0.5,
+     0.4
+    ],
+    "echo_cover": 0.2905
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 88.8,
+     "toward": 40
+    },
+    "local 0.5deg": {
+     "speed": 16.2,
+     "toward": 35
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.115,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.024,
+    "band>=35dBZ": 0.023,
+    "local 0.5deg": 0.024,
+    "0.8 x 700 hPa wind": 0.022
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:40:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 18.4,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.1,
+     0.5,
+     0.4,
+     0.1
+    ],
+    "echo_cover": 0.2867
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 78.7,
+     "toward": 38
+    },
+    "local 0.5deg": {
+     "speed": 49.4,
+     "toward": 29
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.147,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.033,
+    "band>=35dBZ": 0.025,
+    "local 0.5deg": 0.021,
+    "0.8 x 700 hPa wind": 0.025
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:45:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 22.3,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.5,
+     0.4,
+     0.1,
+     0.3
+    ],
+    "echo_cover": 0.2858
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 83.7,
+     "toward": 39
+    },
+    "local 0.5deg": {
+     "speed": 38.6,
+     "toward": 6
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.153,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.026,
+    "band>=35dBZ": 0.02,
+    "local 0.5deg": 0.017,
+    "0.8 x 700 hPa wind": 0.02
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:50:00+00:00",
+   "engine": {
+    "speed": 16.2,
+    "toward": 35,
+    "conf": "high",
+    "known": true,
+    "sharp": 19.9,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.4,
+     0.1,
+     0.3,
+     0.1
+    ],
+    "echo_cover": 0.2858
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 73.1,
+     "toward": 39
+    },
+    "local 0.5deg": {
+     "speed": 30.1,
+     "toward": 3
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.158,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.013,
+    "band>=35dBZ": 0.012,
+    "local 0.5deg": 0.01,
+    "0.8 x 700 hPa wind": 0.012
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T00:55:00+00:00",
+   "engine": {
+    "speed": 14.9,
+    "toward": 26,
+    "conf": "high",
+    "known": true,
+    "sharp": 16.6,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.1,
+     0.3,
+     0.1,
+     0.4
+    ],
+    "echo_cover": 0.2858
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 83.7,
+     "toward": 39
+    },
+    "local 0.5deg": {
+     "speed": 29.0,
+     "toward": 305
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 36.9,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    46.1
+   ],
+   "radar_observed_block_next_h": 0.155,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.004,
+    "band>=35dBZ": 0.004,
+    "local 0.5deg": 0.003,
+    "0.8 x 700 hPa wind": 0.004
+   },
+   "radar_observed_current_and_next_hour": 0.255
+  },
+  {
+   "t": "2026-11-16T01:00:00+00:00",
+   "engine": {
+    "speed": 56.4,
+    "toward": 149,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.3,
+     0.1,
+     0.4,
+     0.0
+    ],
+    "echo_cover": 0.2858
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 76.5,
+     "toward": 38
+    },
+    "local 0.5deg": {
+     "speed": 11.3,
+     "toward": 28
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 43.6,
+     "toward": 33
+    }
+   },
+   "steer_700": [
+    213,
+    54.5
+   ],
+   "radar_observed_block_next_h": 0.163,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.045,
+    "band>=35dBZ": 0.1,
+    "local 0.5deg": 0.031,
+    "0.8 x 700 hPa wind": 0.097
+   },
+   "radar_observed_current_and_next_hour": 0.175
+  }
+ ],
+ "Nov 18": [
+  {
+   "t": "2026-11-18T16:00:00+00:00",
+   "engine": {
+    "speed": 53.1,
+    "toward": 105,
+    "conf": "low",
+    "known": true,
+    "sharp": 9.1,
+    "pair_spread_kmh": 40.6,
+    "pair_speeds_kmh": [
+     1.1,
+     0.5,
+     116.3,
+     0.2
+    ],
+    "echo_cover": 0.5968
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 76.0,
+     "toward": 225
+    },
+    "local 0.5deg": {
+     "speed": 15.1,
+     "toward": 185
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.214,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.198,
+    "band>=35dBZ": 0.275,
+    "local 0.5deg": 0.295,
+    "0.8 x 700 hPa wind": 0.168
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:05:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "low",
+    "known": true,
+    "sharp": 13.3,
+    "pair_spread_kmh": 40.5,
+    "pair_speeds_kmh": [
+     0.5,
+     116.3,
+     0.2,
+     0.1
+    ],
+    "echo_cover": 0.5968
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 12.3,
+     "toward": 19
+    },
+    "local 0.5deg": {
+     "speed": 45.2,
+     "toward": 144
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.259,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.274,
+    "band>=35dBZ": 0.158,
+    "local 0.5deg": 0.265,
+    "0.8 x 700 hPa wind": 0.186
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:10:00+00:00",
+   "engine": {
+    "speed": 12.5,
+    "toward": 122,
+    "conf": "low",
+    "known": true,
+    "sharp": 9.6,
+    "pair_spread_kmh": 40.6,
+    "pair_speeds_kmh": [
+     116.3,
+     0.2,
+     0.1,
+     0.0
+    ],
+    "echo_cover": 0.5968
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 19.7,
+     "toward": 32
+    },
+    "local 0.5deg": {
+     "speed": 26.0,
+     "toward": 135
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.308,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.289,
+    "band>=35dBZ": 0.215,
+    "local 0.5deg": 0.288,
+    "0.8 x 700 hPa wind": 0.167
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:15:00+00:00",
+   "engine": {
+    "speed": 12.5,
+    "toward": 122,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.8,
+    "pair_spread_kmh": 47.6,
+    "pair_speeds_kmh": [
+     0.2,
+     0.1,
+     0.0,
+     136.3
+    ],
+    "echo_cover": 0.5968
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 24.7,
+     "toward": 74
+    },
+    "local 0.5deg": {
+     "speed": 21.7,
+     "toward": 128
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.354,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.358,
+    "band>=35dBZ": 0.24,
+    "local 0.5deg": 0.412,
+    "0.8 x 700 hPa wind": 0.167
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:20:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.4,
+    "pair_spread_kmh": 47.5,
+    "pair_speeds_kmh": [
+     0.1,
+     0.0,
+     136.3,
+     0.2
+    ],
+    "echo_cover": 0.5968
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 44.8,
+     "toward": 135
+    },
+    "local 0.5deg": {
+     "speed": 33.9,
+     "toward": 208
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.418,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.227,
+    "band>=35dBZ": 0.305,
+    "local 0.5deg": 0.222,
+    "0.8 x 700 hPa wind": 0.112
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:25:00+00:00",
+   "engine": {
+    "speed": 15.7,
+    "toward": 138,
+    "conf": "low",
+    "known": true,
+    "sharp": 8.6,
+    "pair_spread_kmh": 47.5,
+    "pair_speeds_kmh": [
+     0.0,
+     136.3,
+     0.2,
+     0.2
+    ],
+    "echo_cover": 0.6137
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 68.9,
+     "toward": 64
+    },
+    "local 0.5deg": {
+     "speed": 21.8,
+     "toward": 173
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.479,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.227,
+    "band>=35dBZ": 0.167,
+    "local 0.5deg": 0.248,
+    "0.8 x 700 hPa wind": 0.102
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:30:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "low",
+    "known": true,
+    "sharp": 11.4,
+    "pair_spread_kmh": 47.5,
+    "pair_speeds_kmh": [
+     136.3,
+     0.2,
+     0.2,
+     0.6
+    ],
+    "echo_cover": 0.6157
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 112.6,
+     "toward": 59
+    },
+    "local 0.5deg": {
+     "speed": 31.1,
+     "toward": 282
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.486,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.149,
+    "band>=35dBZ": 0.09,
+    "local 0.5deg": 0.123,
+    "0.8 x 700 hPa wind": 0.077
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:35:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.6,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.2,
+     0.2,
+     0.6,
+     0.1
+    ],
+    "echo_cover": 0.6157
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 114.5,
+     "toward": 161
+    },
+    "local 0.5deg": {
+     "speed": 6.8,
+     "toward": 76
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.55,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.161,
+    "band>=35dBZ": 0.136,
+    "local 0.5deg": 0.102,
+    "0.8 x 700 hPa wind": 0.086
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:40:00+00:00",
+   "engine": {
+    "speed": 15.7,
+    "toward": 138,
+    "conf": "high",
+    "known": true,
+    "sharp": 9.6,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.2,
+     0.6,
+     0.1,
+     0.0
+    ],
+    "echo_cover": 0.6257
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 16.7,
+     "toward": 60
+    },
+    "local 0.5deg": {
+     "speed": 23.0,
+     "toward": 223
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.61,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.114,
+    "band>=35dBZ": 0.074,
+    "local 0.5deg": 0.084,
+    "0.8 x 700 hPa wind": 0.07
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:45:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.6,
+     0.1,
+     0.0,
+     0.4
+    ],
+    "echo_cover": 0.6315
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 14.3,
+     "toward": 158
+    },
+    "local 0.5deg": {
+     "speed": 31.1,
+     "toward": 78
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.624,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.068,
+    "band>=35dBZ": 0.069,
+    "local 0.5deg": 0.059,
+    "0.8 x 700 hPa wind": 0.059
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:50:00+00:00",
+   "engine": {
+    "speed": 15.7,
+    "toward": 138,
+    "conf": "high",
+    "known": true,
+    "sharp": 18.2,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.1,
+     0.0,
+     0.4,
+     0.1
+    ],
+    "echo_cover": 0.6306
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 20.1,
+     "toward": 184
+    },
+    "local 0.5deg": {
+     "speed": 17.6,
+     "toward": 212
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.663,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.043,
+    "band>=35dBZ": 0.04,
+    "local 0.5deg": 0.035,
+    "0.8 x 700 hPa wind": 0.043
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T16:55:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.4,
+     0.1,
+     0.4
+    ],
+    "echo_cover": 0.6286
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 26.7,
+     "toward": 160
+    },
+    "local 0.5deg": {
+     "speed": 36.2,
+     "toward": 79
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 82.6,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    103.3
+   ],
+   "radar_observed_block_next_h": 0.695,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.033,
+    "band>=35dBZ": 0.035,
+    "local 0.5deg": 0.033,
+    "0.8 x 700 hPa wind": 0.03
+   },
+   "radar_observed_current_and_next_hour": 0.933
+  },
+  {
+   "t": "2026-11-18T17:00:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 15.9,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.4,
+     0.1,
+     0.4,
+     0.4
+    ],
+    "echo_cover": 0.6279
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 31.3,
+     "toward": 205
+    },
+    "local 0.5deg": {
+     "speed": 12.5,
+     "toward": 122
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.718,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.707,
+    "band>=35dBZ": 0.41,
+    "local 0.5deg": 0.67,
+    "0.8 x 700 hPa wind": 0.394
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:05:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 9.4,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.1,
+     0.4,
+     0.4,
+     0.1
+    ],
+    "echo_cover": 0.6279
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 45.1,
+     "toward": 183
+    },
+    "local 0.5deg": {
+     "speed": 10.7,
+     "toward": 99
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.74,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.817,
+    "band>=35dBZ": 0.645,
+    "local 0.5deg": 0.724,
+    "0.8 x 700 hPa wind": 0.422
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:10:00+00:00",
+   "engine": {
+    "speed": 14.5,
+    "toward": 133,
+    "conf": "high",
+    "known": true,
+    "sharp": 11.5,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.4,
+     0.4,
+     0.1,
+     0.0
+    ],
+    "echo_cover": 0.6279
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 44.6,
+     "toward": 56
+    },
+    "local 0.5deg": {
+     "speed": 10.3,
+     "toward": 50
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.758,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.782,
+    "band>=35dBZ": 0.459,
+    "local 0.5deg": 0.541,
+    "0.8 x 700 hPa wind": 0.395
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:15:00+00:00",
+   "engine": {
+    "speed": 11.7,
+    "toward": 115,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.8,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.4,
+     0.1,
+     0.0,
+     0.2
+    ],
+    "echo_cover": 0.6073
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 43.4,
+     "toward": 52
+    },
+    "local 0.5deg": {
+     "speed": 10.7,
+     "toward": 81
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.745,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.659,
+    "band>=35dBZ": 0.419,
+    "local 0.5deg": 0.519,
+    "0.8 x 700 hPa wind": 0.384
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:20:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 14.8,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.1,
+     0.0,
+     0.2,
+     0.6
+    ],
+    "echo_cover": 0.5856
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 37.8,
+     "toward": 139
+    },
+    "local 0.5deg": {
+     "speed": 10.5,
+     "toward": 90
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.702,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.702,
+    "band>=35dBZ": 0.575,
+    "local 0.5deg": 0.503,
+    "0.8 x 700 hPa wind": 0.398
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:25:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 17.0,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.0,
+     0.2,
+     0.6,
+     0.0
+    ],
+    "echo_cover": 0.58
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 10.7,
+     "toward": 99
+    },
+    "local 0.5deg": {
+     "speed": 11.1,
+     "toward": 72
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.647,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.524,
+    "band>=35dBZ": 0.465,
+    "local 0.5deg": 0.431,
+    "0.8 x 700 hPa wind": 0.36
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:30:00+00:00",
+   "engine": {
+    "speed": 15.7,
+    "toward": 138,
+    "conf": "high",
+    "known": true,
+    "sharp": 14.7,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.2,
+     0.6,
+     0.0,
+     0.8
+    ],
+    "echo_cover": 0.5745
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 10.7,
+     "toward": 81
+    },
+    "local 0.5deg": {
+     "speed": 10.7,
+     "toward": 99
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.637,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.409,
+    "band>=35dBZ": 0.4,
+    "local 0.5deg": 0.413,
+    "0.8 x 700 hPa wind": 0.312
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:35:00+00:00",
+   "engine": {
+    "speed": 15.7,
+    "toward": 138,
+    "conf": "high",
+    "known": true,
+    "sharp": 11.2,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.6,
+     0.0,
+     0.8,
+     0.0
+    ],
+    "echo_cover": 0.5745
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 11.7,
+     "toward": 115
+    },
+    "local 0.5deg": {
+     "speed": 10.0,
+     "toward": 180
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.588,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.339,
+    "band>=35dBZ": 0.341,
+    "local 0.5deg": 0.339,
+    "0.8 x 700 hPa wind": 0.281
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:40:00+00:00",
+   "engine": {
+    "speed": 14.5,
+    "toward": 133,
+    "conf": "high",
+    "known": true,
+    "sharp": 13.6,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.8,
+     0.0,
+     0.2
+    ],
+    "echo_cover": 0.5736
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 119.4,
+     "toward": 208
+    },
+    "local 0.5deg": {
+     "speed": 11.7,
+     "toward": 115
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.614,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.25,
+    "band>=35dBZ": 0.223,
+    "local 0.5deg": 0.237,
+    "0.8 x 700 hPa wind": 0.211
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:45:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.7,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.8,
+     0.0,
+     0.2,
+     0.0
+    ],
+    "echo_cover": 0.5736
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 84.1,
+     "toward": 194
+    },
+    "local 0.5deg": {
+     "speed": 27.9,
+     "toward": 83
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.602,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.132,
+    "band>=35dBZ": 0.163,
+    "local 0.5deg": 0.13,
+    "0.8 x 700 hPa wind": 0.142
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:50:00+00:00",
+   "engine": {
+    "speed": 69.3,
+    "toward": 284,
+    "conf": "high",
+    "known": true,
+    "sharp": 9.4,
+    "pair_spread_kmh": 0.4,
+    "pair_speeds_kmh": [
+     0.0,
+     0.2,
+     0.0,
+     1.3
+    ],
+    "echo_cover": 0.5736
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 28.2,
+     "toward": 214
+    },
+    "local 0.5deg": {
+     "speed": 41.7,
+     "toward": 37
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.569,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.076,
+    "band>=35dBZ": 0.103,
+    "local 0.5deg": 0.117,
+    "0.8 x 700 hPa wind": 0.102
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T17:55:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 11.9,
+    "pair_spread_kmh": 0.4,
+    "pair_speeds_kmh": [
+     0.2,
+     0.0,
+     1.3,
+     0.0
+    ],
+    "echo_cover": 0.5736
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 27.7,
+     "toward": 93
+    },
+    "local 0.5deg": {
+     "speed": 63.9,
+     "toward": 65
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 80.4,
+     "toward": 50
+    }
+   },
+   "steer_700": [
+    230,
+    100.5
+   ],
+   "radar_observed_block_next_h": 0.639,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.063,
+    "band>=35dBZ": 0.063,
+    "local 0.5deg": 0.067,
+    "0.8 x 700 hPa wind": 0.063
+   },
+   "radar_observed_current_and_next_hour": 1.331
+  },
+  {
+   "t": "2026-11-18T18:00:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 0.5,
+    "pair_speeds_kmh": [
+     0.0,
+     1.3,
+     0.0,
+     1.0
+    ],
+    "echo_cover": 0.5736
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 54.0,
+     "toward": 56
+    },
+    "local 0.5deg": {
+     "speed": 55.8,
+     "toward": 67
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.612,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.658,
+    "band>=35dBZ": 0.356,
+    "local 0.5deg": 0.356,
+    "0.8 x 700 hPa wind": 0.34
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:05:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.7,
+    "pair_spread_kmh": 0.5,
+    "pair_speeds_kmh": [
+     1.3,
+     0.0,
+     1.0,
+     0.0
+    ],
+    "echo_cover": 0.5793
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 31.8,
+     "toward": 161
+    },
+    "local 0.5deg": {
+     "speed": 25.1,
+     "toward": 202
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.559,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.636,
+    "band>=35dBZ": 0.473,
+    "local 0.5deg": 0.564,
+    "0.8 x 700 hPa wind": 0.313
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:10:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.5,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.0,
+     1.0,
+     0.0,
+     0.4
+    ],
+    "echo_cover": 0.5868
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 91.2,
+     "toward": 204
+    },
+    "local 0.5deg": {
+     "speed": 7.3,
+     "toward": 133
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.505,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.549,
+    "band>=35dBZ": 0.427,
+    "local 0.5deg": 0.64,
+    "0.8 x 700 hPa wind": 0.255
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:15:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 9.8,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     1.0,
+     0.0,
+     0.4,
+     0.0
+    ],
+    "echo_cover": 0.5925
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 46.6,
+     "toward": 55
+    },
+    "local 0.5deg": {
+     "speed": 17.0,
+     "toward": 142
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.478,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.476,
+    "band>=35dBZ": 0.256,
+    "local 0.5deg": 0.476,
+    "0.8 x 700 hPa wind": 0.241
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:20:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.1,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.4,
+     0.0,
+     0.4
+    ],
+    "echo_cover": 0.5925
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 23.0,
+     "toward": 137
+    },
+    "local 0.5deg": {
+     "speed": 46.3,
+     "toward": 118
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.475,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.262,
+    "band>=35dBZ": 0.23,
+    "local 0.5deg": 0.117,
+    "0.8 x 700 hPa wind": 0.196
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:25:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 142,
+    "conf": "high",
+    "known": true,
+    "sharp": 15.4,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.4,
+     0.0,
+     0.4,
+     0.1
+    ],
+    "echo_cover": 0.5882
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 46.6,
+     "toward": 130
+    },
+    "local 0.5deg": {
+     "speed": 50.5,
+     "toward": 197
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.49,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.146,
+    "band>=35dBZ": 0.075,
+    "local 0.5deg": 0.224,
+    "0.8 x 700 hPa wind": 0.166
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:30:00+00:00",
+   "engine": {
+    "speed": 13.4,
+    "toward": 128,
+    "conf": "high",
+    "known": true,
+    "sharp": 12.9,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.4,
+     0.1,
+     0.4
+    ],
+    "echo_cover": 0.5775
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 33.5,
+     "toward": 60
+    },
+    "local 0.5deg": {
+     "speed": 17.0,
+     "toward": 142
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.521,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.129,
+    "band>=35dBZ": 0.192,
+    "local 0.5deg": 0.122,
+    "0.8 x 700 hPa wind": 0.151
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:35:00+00:00",
+   "engine": {
+    "speed": 12.5,
+    "toward": 122,
+    "conf": "high",
+    "known": true,
+    "sharp": 11.3,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.4,
+     0.1,
+     0.4,
+     0.5
+    ],
+    "echo_cover": 0.5673
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 47.1,
+     "toward": 157
+    },
+    "local 0.5deg": {
+     "speed": 40.6,
+     "toward": 58
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.511,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.291,
+    "band>=35dBZ": 0.11,
+    "local 0.5deg": 0.18,
+    "0.8 x 700 hPa wind": 0.155
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:40:00+00:00",
+   "engine": {
+    "speed": 12.5,
+    "toward": 122,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 38.1,
+    "pair_speeds_kmh": [
+     0.1,
+     0.4,
+     0.5,
+     109.4
+    ],
+    "echo_cover": 0.566
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 88.1,
+     "toward": 42
+    },
+    "local 0.5deg": {
+     "speed": 13.6,
+     "toward": 169
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.429,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.108,
+    "band>=35dBZ": 0.097,
+    "local 0.5deg": 0.116,
+    "0.8 x 700 hPa wind": 0.094
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:45:00+00:00",
+   "engine": {
+    "speed": 46.9,
+    "toward": 175,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.5,
+    "pair_spread_kmh": 38.1,
+    "pair_speeds_kmh": [
+     0.4,
+     0.5,
+     109.4,
+     0.0
+    ],
+    "echo_cover": 0.566
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 31.7,
+     "toward": 182
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.432,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.057,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.069,
+    "0.8 x 700 hPa wind": 0.074
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:50:00+00:00",
+   "engine": {
+    "speed": 10.5,
+    "toward": 90,
+    "conf": "low",
+    "known": true,
+    "sharp": 13.8,
+    "pair_spread_kmh": 38.1,
+    "pair_speeds_kmh": [
+     0.5,
+     109.4,
+     0.0,
+     0.0
+    ],
+    "echo_cover": 0.566
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 14.1,
+     "toward": 111
+    },
+    "local 0.5deg": {
+     "speed": 9.2,
+     "toward": 90
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.42,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.095,
+    "band>=35dBZ": 0.088,
+    "local 0.5deg": 0.101,
+    "0.8 x 700 hPa wind": 0.076
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T18:55:00+00:00",
+   "engine": {
+    "speed": 10.7,
+    "toward": 99,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.9,
+    "pair_spread_kmh": 38.1,
+    "pair_speeds_kmh": [
+     109.4,
+     0.0,
+     0.0,
+     0.5
+    ],
+    "echo_cover": 0.5643
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 47.6,
+     "toward": 51
+    },
+    "local 0.5deg": {
+     "speed": 12.0,
+     "toward": 98
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 71.0,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    88.7
+   ],
+   "radar_observed_block_next_h": 0.295,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.03,
+    "band>=35dBZ": 0.026,
+    "local 0.5deg": 0.029,
+    "0.8 x 700 hPa wind": 0.028
+   },
+   "radar_observed_current_and_next_hour": 0.87
+  },
+  {
+   "t": "2026-11-18T19:00:00+00:00",
+   "engine": {
+    "speed": 48.4,
+    "toward": 180,
+    "conf": "high",
+    "known": true,
+    "sharp": 11.2,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.0,
+     0.5,
+     0.2
+    ],
+    "echo_cover": 0.5643
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 14.9,
+     "toward": 77
+    },
+    "local 0.5deg": {
+     "speed": 24.7,
+     "toward": 19
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.258,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.053,
+    "band>=35dBZ": 0.255,
+    "local 0.5deg": 0.482,
+    "0.8 x 700 hPa wind": 0.357
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:05:00+00:00",
+   "engine": {
+    "speed": 61.3,
+    "toward": 57,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.0,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.5,
+     0.2,
+     0.0
+    ],
+    "echo_cover": 0.5643
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 85.4,
+     "toward": 45
+    },
+    "local 0.5deg": {
+     "speed": 7.2,
+     "toward": 202
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.254,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.267,
+    "band>=35dBZ": 0.268,
+    "local 0.5deg": 0.163,
+    "0.8 x 700 hPa wind": 0.336
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:10:00+00:00",
+   "engine": {
+    "speed": 14.5,
+    "toward": 133,
+    "conf": "low",
+    "known": true,
+    "sharp": 9.3,
+    "pair_spread_kmh": 42.8,
+    "pair_speeds_kmh": [
+     0.5,
+     0.2,
+     0.0,
+     122.8
+    ],
+    "echo_cover": 0.5643
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 78.9,
+     "toward": 22
+    },
+    "local 0.5deg": {
+     "speed": 11.7,
+     "toward": 245
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.25,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.254,
+    "band>=35dBZ": 0.273,
+    "local 0.5deg": 0.239,
+    "0.8 x 700 hPa wind": 0.303
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:15:00+00:00",
+   "engine": {
+    "speed": 88.3,
+    "toward": 19,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.0,
+    "pair_spread_kmh": 47.6,
+    "pair_speeds_kmh": [
+     0.2,
+     0.0,
+     122.8,
+     111.8
+    ],
+    "echo_cover": 0.5623
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 33.1,
+     "toward": 329
+    },
+    "local 0.5deg": {
+     "speed": 4.3,
+     "toward": 293
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.237,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.23,
+    "band>=35dBZ": 0.468,
+    "local 0.5deg": 0.488,
+    "0.8 x 700 hPa wind": 0.298
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:20:00+00:00",
+   "engine": {
+    "speed": 44.2,
+    "toward": 68,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 47.6,
+    "pair_speeds_kmh": [
+     0.0,
+     122.8,
+     111.8,
+     0.0
+    ],
+    "echo_cover": 0.5623
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 110.2,
+     "toward": 23
+    },
+    "local 0.5deg": {
+     "speed": 51.1,
+     "toward": 44
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.2,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.276,
+    "band>=35dBZ": 0.196,
+    "local 0.5deg": 0.311,
+    "0.8 x 700 hPa wind": 0.283
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:25:00+00:00",
+   "engine": {
+    "speed": 11.7,
+    "toward": 65,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.4,
+    "pair_spread_kmh": 42.6,
+    "pair_speeds_kmh": [
+     122.8,
+     111.8,
+     0.0,
+     125.6
+    ],
+    "echo_cover": 0.5623
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 32.5,
+     "toward": 325
+    },
+    "local 0.5deg": {
+     "speed": 40.0,
+     "toward": 221
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.164,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.33,
+    "band>=35dBZ": 0.305,
+    "local 0.5deg": 0.344,
+    "0.8 x 700 hPa wind": 0.205
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:30:00+00:00",
+   "engine": {
+    "speed": 68.3,
+    "toward": 232,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.5,
+    "pair_spread_kmh": 47.6,
+    "pair_speeds_kmh": [
+     111.8,
+     0.0,
+     125.6,
+     0.3
+    ],
+    "echo_cover": 0.552
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 93.6,
+     "toward": 46
+    },
+    "local 0.5deg": {
+     "speed": 22.8,
+     "toward": 54
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.114,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.254,
+    "band>=35dBZ": 0.106,
+    "local 0.5deg": 0.183,
+    "0.8 x 700 hPa wind": 0.126
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:35:00+00:00",
+   "engine": {
+    "speed": 88.6,
+    "toward": 44,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 50.4,
+    "pair_speeds_kmh": [
+     0.0,
+     125.6,
+     0.3,
+     124.6
+    ],
+    "echo_cover": 0.552
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 93.8,
+     "toward": 45
+    },
+    "local 0.5deg": {
+     "speed": 22.6,
+     "toward": 28
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.1,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.083,
+    "band>=35dBZ": 0.081,
+    "local 0.5deg": 0.123,
+    "0.8 x 700 hPa wind": 0.1
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:40:00+00:00",
+   "engine": {
+    "speed": 53.4,
+    "toward": 179,
+    "conf": "low",
+    "known": true,
+    "sharp": 9.3,
+    "pair_spread_kmh": 50.4,
+    "pair_speeds_kmh": [
+     125.6,
+     0.3,
+     124.6,
+     0.0
+    ],
+    "echo_cover": 0.552
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 39.3,
+     "toward": 50
+    },
+    "local 0.5deg": {
+     "speed": 11.3,
+     "toward": 152
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.079,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.114,
+    "band>=35dBZ": 0.08,
+    "local 0.5deg": 0.154,
+    "0.8 x 700 hPa wind": 0.08
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:45:00+00:00",
+   "engine": {
+    "speed": 86.8,
+    "toward": 43,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 43.5,
+    "pair_speeds_kmh": [
+     0.3,
+     124.6,
+     0.0,
+     0.0
+    ],
+    "echo_cover": 0.552
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 54.8,
+     "toward": 243
+    },
+    "local 0.5deg": {
+     "speed": 19.9,
+     "toward": 60
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.057,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.025,
+    "band>=35dBZ": 0.058,
+    "local 0.5deg": 0.029,
+    "0.8 x 700 hPa wind": 0.026
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:50:00+00:00",
+   "engine": {
+    "speed": 83.6,
+    "toward": 176,
+    "conf": "low",
+    "known": true,
+    "sharp": 9.4,
+    "pair_spread_kmh": 48.3,
+    "pair_speeds_kmh": [
+     124.6,
+     0.0,
+     0.0,
+     115.3
+    ],
+    "echo_cover": 0.5511
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 11.7,
+     "toward": 65
+    },
+    "local 0.5deg": {
+     "speed": 41.7,
+     "toward": 37
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.048,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.009,
+    "band>=35dBZ": 0.006,
+    "local 0.5deg": 0.008,
+    "0.8 x 700 hPa wind": 0.008
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T19:55:00+00:00",
+   "engine": {
+    "speed": 44.1,
+    "toward": 205,
+    "conf": "low",
+    "known": true,
+    "sharp": 9.9,
+    "pair_spread_kmh": 39.8,
+    "pair_speeds_kmh": [
+     0.0,
+     0.0,
+     115.3,
+     0.4
+    ],
+    "echo_cover": 0.5286
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 35.2,
+     "toward": 48
+    },
+    "local 0.5deg": {
+     "speed": 15.9,
+     "toward": 19
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 63.9,
+     "toward": 42
+    }
+   },
+   "steer_700": [
+    222,
+    79.9
+   ],
+   "radar_observed_block_next_h": 0.045,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.003,
+    "band>=35dBZ": 0.003,
+    "local 0.5deg": 0.003,
+    "0.8 x 700 hPa wind": 0.004
+   },
+   "radar_observed_current_and_next_hour": 0.299
+  },
+  {
+   "t": "2026-11-18T20:00:00+00:00",
+   "engine": {
+    "speed": 0.0,
+    "toward": 0,
+    "conf": "low",
+    "known": false,
+    "sharp": 11.6,
+    "pair_spread_kmh": 48.0,
+    "pair_speeds_kmh": [
+     0.0,
+     115.3,
+     0.4,
+     123.9
+    ],
+    "echo_cover": 0.5175
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 43.0,
+     "toward": 42
+    },
+    "local 0.5deg": {
+     "speed": 11.1,
+     "toward": 108
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 65.3,
+     "toward": 40
+    }
+   },
+   "steer_700": [
+    220,
+    81.6
+   ],
+   "radar_observed_block_next_h": 0.041,
+   "extrapolated_current_and_next_hour": {
+    "engine": null,
+    "band>=35dBZ": 0.049,
+    "local 0.5deg": 0.036,
+    "0.8 x 700 hPa wind": 0.052
+   },
+   "radar_observed_current_and_next_hour": 0.041
+  }
+ ],
+ "Nov 24": [
+  {
+   "t": "2026-11-25T05:30:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.7,
+    "pair_spread_kmh": 20.3,
+    "pair_speeds_kmh": [
+     0.4,
+     0.0,
+     65.0,
+     0.3
+    ],
+    "echo_cover": 0.4297
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 34.2,
+     "toward": 54
+    },
+    "local 0.5deg": {
+     "speed": 49.2,
+     "toward": 24
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 47.7,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    59.6
+   ],
+   "radar_observed_block_next_h": 0.013,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.002,
+    "band>=35dBZ": 0.006,
+    "local 0.5deg": 0.001,
+    "0.8 x 700 hPa wind": 0.005
+   },
+   "radar_observed_current_and_next_hour": 0.025
+  },
+  {
+   "t": "2026-11-25T05:35:00+00:00",
+   "engine": {
+    "speed": 97.4,
+    "toward": 74,
+    "conf": "low",
+    "known": true,
+    "sharp": 11.0,
+    "pair_spread_kmh": 21.6,
+    "pair_speeds_kmh": [
+     0.0,
+     65.0,
+     0.3,
+     49.4
+    ],
+    "echo_cover": 0.4297
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 88.6,
+     "toward": 176
+    },
+    "local 0.5deg": {
+     "speed": 53.2,
+     "toward": 38
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 47.7,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    59.6
+   ],
+   "radar_observed_block_next_h": 0.013,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.031,
+    "band>=35dBZ": 0.004,
+    "local 0.5deg": 0.003,
+    "0.8 x 700 hPa wind": 0.003
+   },
+   "radar_observed_current_and_next_hour": 0.025
+  },
+  {
+   "t": "2026-11-25T05:40:00+00:00",
+   "engine": {
+    "speed": 14.5,
+    "toward": 47,
+    "conf": "medium",
+    "known": true,
+    "sharp": 18.7,
+    "pair_spread_kmh": 19.8,
+    "pair_speeds_kmh": [
+     65.0,
+     0.3,
+     49.4,
+     66.2
+    ],
+    "echo_cover": 0.45
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 67.0,
+     "toward": 35
+    },
+    "local 0.5deg": {
+     "speed": 60.9,
+     "toward": 37
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 47.7,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    59.6
+   ],
+   "radar_observed_block_next_h": 0.013,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.0,
+    "band>=35dBZ": 0.001,
+    "local 0.5deg": 0.001,
+    "0.8 x 700 hPa wind": 0.001
+   },
+   "radar_observed_current_and_next_hour": 0.025
+  },
+  {
+   "t": "2026-11-25T05:45:00+00:00",
+   "engine": {
+    "speed": 62.5,
+    "toward": 39,
+    "conf": "low",
+    "known": true,
+    "sharp": 11.2,
+    "pair_spread_kmh": 21.9,
+    "pair_speeds_kmh": [
+     0.3,
+     49.4,
+     66.2,
+     0.1
+    ],
+    "echo_cover": 0.443
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 65.1,
+     "toward": 42
+    },
+    "local 0.5deg": {
+     "speed": 15.6,
+     "toward": 238
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 47.7,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    59.6
+   ],
+   "radar_observed_block_next_h": 0.013,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.004,
+    "band>=35dBZ": 0.004,
+    "local 0.5deg": 0.002,
+    "0.8 x 700 hPa wind": 0.003
+   },
+   "radar_observed_current_and_next_hour": 0.025
+  },
+  {
+   "t": "2026-11-25T05:50:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 14.8,
+    "pair_spread_kmh": 18.8,
+    "pair_speeds_kmh": [
+     49.4,
+     66.2,
+     0.1,
+     56.4
+    ],
+    "echo_cover": 0.443
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 18.4,
+     "toward": 111
+    },
+    "local 0.5deg": {
+     "speed": 45.5,
+     "toward": 40
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 47.7,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    59.6
+   ],
+   "radar_observed_block_next_h": 0.013,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.004,
+    "band>=35dBZ": 0.005,
+    "local 0.5deg": 0.004,
+    "0.8 x 700 hPa wind": 0.004
+   },
+   "radar_observed_current_and_next_hour": 0.025
+  },
+  {
+   "t": "2026-11-25T05:55:00+00:00",
+   "engine": {
+    "speed": 55.0,
+    "toward": 35,
+    "conf": "medium",
+    "known": true,
+    "sharp": 13.4,
+    "pair_spread_kmh": 18.4,
+    "pair_speeds_kmh": [
+     66.2,
+     0.1,
+     56.4,
+     51.0
+    ],
+    "echo_cover": 0.443
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 57.1,
+     "toward": 32
+    },
+    "local 0.5deg": {
+     "speed": 9.9,
+     "toward": 32
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 47.7,
+     "toward": 41
+    }
+   },
+   "steer_700": [
+    221,
+    59.6
+   ],
+   "radar_observed_block_next_h": 0.011,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.002,
+    "band>=35dBZ": 0.001,
+    "local 0.5deg": 0.001,
+    "0.8 x 700 hPa wind": 0.001
+   },
+   "radar_observed_current_and_next_hour": 0.025
+  },
+  {
+   "t": "2026-11-25T06:00:00+00:00",
+   "engine": {
+    "speed": 30.0,
+    "toward": 180,
+    "conf": "medium",
+    "known": true,
+    "sharp": 11.8,
+    "pair_spread_kmh": 15.6,
+    "pair_speeds_kmh": [
+     0.1,
+     56.4,
+     51.0,
+     27.4
+    ],
+    "echo_cover": 0.443
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 42.3,
+     "toward": 34
+    },
+    "local 0.5deg": {
+     "speed": 16.2,
+     "toward": 102
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.018,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.04,
+    "band>=35dBZ": 0.025,
+    "local 0.5deg": 0.039,
+    "0.8 x 700 hPa wind": 0.023
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:05:00+00:00",
+   "engine": {
+    "speed": 55.0,
+    "toward": 32,
+    "conf": "medium",
+    "known": true,
+    "sharp": 11.6,
+    "pair_spread_kmh": 8.0,
+    "pair_speeds_kmh": [
+     56.4,
+     51.0,
+     27.4,
+     42.4
+    ],
+    "echo_cover": 0.443
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 28.7,
+     "toward": 22
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.041,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.017,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.006,
+    "0.8 x 700 hPa wind": 0.015
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:10:00+00:00",
+   "engine": {
+    "speed": 32.1,
+    "toward": 55,
+    "conf": "medium",
+    "known": true,
+    "sharp": 13.1,
+    "pair_spread_kmh": 13.2,
+    "pair_speeds_kmh": [
+     51.0,
+     27.4,
+     42.4,
+     0.1
+    ],
+    "echo_cover": 0.4474
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 26.0,
+     "toward": 135
+    },
+    "local 0.5deg": {
+     "speed": 31.1,
+     "toward": 54
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.066,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.035,
+    "band>=35dBZ": 0.066,
+    "local 0.5deg": 0.033,
+    "0.8 x 700 hPa wind": 0.012
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:15:00+00:00",
+   "engine": {
+    "speed": 37.8,
+    "toward": 41,
+    "conf": "medium",
+    "known": true,
+    "sharp": 13.2,
+    "pair_spread_kmh": 19.3,
+    "pair_speeds_kmh": [
+     27.4,
+     42.4,
+     0.1,
+     70.2
+    ],
+    "echo_cover": 0.448
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 60.6,
+     "toward": 31
+    },
+    "local 0.5deg": {
+     "speed": 22.5,
+     "toward": 266
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.092,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.022,
+    "band>=35dBZ": 0.017,
+    "local 0.5deg": 0.004,
+    "0.8 x 700 hPa wind": 0.014
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:20:00+00:00",
+   "engine": {
+    "speed": 26.4,
+    "toward": 90,
+    "conf": "medium",
+    "known": true,
+    "sharp": 13.2,
+    "pair_spread_kmh": 19.9,
+    "pair_speeds_kmh": [
+     42.4,
+     0.1,
+     70.2,
+     54.5
+    ],
+    "echo_cover": 0.448
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 40.0,
+     "toward": 41
+    },
+    "local 0.5deg": {
+     "speed": 25.8,
+     "toward": 67
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.109,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.029,
+    "band>=35dBZ": 0.021,
+    "local 0.5deg": 0.022,
+    "0.8 x 700 hPa wind": 0.014
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:25:00+00:00",
+   "engine": {
+    "speed": 55.7,
+    "toward": 33,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.3,
+    "pair_spread_kmh": 20.2,
+    "pair_speeds_kmh": [
+     0.1,
+     70.2,
+     54.5,
+     58.0
+    ],
+    "echo_cover": 0.4519
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 38.7,
+     "toward": 43
+    },
+    "local 0.5deg": {
+     "speed": 18.4,
+     "toward": 111
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.127,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.014,
+    "band>=35dBZ": 0.013,
+    "local 0.5deg": 0.015,
+    "0.8 x 700 hPa wind": 0.009
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:30:00+00:00",
+   "engine": {
+    "speed": 89.0,
+    "toward": 28,
+    "conf": "high",
+    "known": true,
+    "sharp": 11.8,
+    "pair_spread_kmh": 5.3,
+    "pair_speeds_kmh": [
+     70.2,
+     54.5,
+     58.0,
+     58.6
+    ],
+    "echo_cover": 0.4515
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 30.1,
+     "toward": 56
+    },
+    "local 0.5deg": {
+     "speed": 21.7,
+     "toward": 128
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.15,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.016,
+    "band>=35dBZ": 0.008,
+    "local 0.5deg": 0.012,
+    "0.8 x 700 hPa wind": 0.006
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:35:00+00:00",
+   "engine": {
+    "speed": 43.9,
+    "toward": 44,
+    "conf": "high",
+    "known": true,
+    "sharp": 11.9,
+    "pair_spread_kmh": 2.6,
+    "pair_speeds_kmh": [
+     54.5,
+     58.0,
+     58.6,
+     56.8
+    ],
+    "echo_cover": 0.4515
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 46.0,
+     "toward": 43
+    },
+    "local 0.5deg": {
+     "speed": 23.8,
+     "toward": 309
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.233,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.008,
+    "band>=35dBZ": 0.01,
+    "local 0.5deg": 0.0,
+    "0.8 x 700 hPa wind": 0.004
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:40:00+00:00",
+   "engine": {
+    "speed": 23.0,
+    "toward": 77,
+    "conf": "medium",
+    "known": true,
+    "sharp": 11.3,
+    "pair_spread_kmh": 17.8,
+    "pair_speeds_kmh": [
+     58.0,
+     58.6,
+     56.8,
+     0.0
+    ],
+    "echo_cover": 0.4515
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 90.9,
+     "toward": 148
+    },
+    "local 0.5deg": {
+     "speed": 51.0,
+     "toward": 38
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.266,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.001,
+    "band>=35dBZ": 0.029,
+    "local 0.5deg": 0.017,
+    "0.8 x 700 hPa wind": 0.006
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:45:00+00:00",
+   "engine": {
+    "speed": 33.3,
+    "toward": 45,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.0,
+    "pair_spread_kmh": 20.3,
+    "pair_speeds_kmh": [
+     58.6,
+     56.8,
+     0.0,
+     0.0
+    ],
+    "echo_cover": 0.4515
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 33.4,
+     "toward": 180
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.298,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.005,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.0,
+    "0.8 x 700 hPa wind": 0.007
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:50:00+00:00",
+   "engine": {
+    "speed": 105.6,
+    "toward": 21,
+    "conf": "low",
+    "known": true,
+    "sharp": 9.8,
+    "pair_spread_kmh": 20.2,
+    "pair_speeds_kmh": [
+     56.8,
+     0.0,
+     0.0,
+     57.9
+    ],
+    "echo_cover": 0.4515
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 101.5,
+     "toward": 21
+    },
+    "local 0.5deg": {
+     "speed": 17.6,
+     "toward": 312
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.325,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.012,
+    "band>=35dBZ": 0.011,
+    "local 0.5deg": 0.003,
+    "0.8 x 700 hPa wind": 0.013
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T06:55:00+00:00",
+   "engine": {
+    "speed": 46.0,
+    "toward": 37,
+    "conf": "low",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 20.4,
+    "pair_speeds_kmh": [
+     0.0,
+     0.0,
+     57.9,
+     53.7
+    ],
+    "echo_cover": 0.4576
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 20.4,
+     "toward": 11
+    },
+    "local 0.5deg": {
+     "speed": 44.2,
+     "toward": 41
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 39.7,
+     "toward": 31
+    }
+   },
+   "steer_700": [
+    211,
+    49.6
+   ],
+   "radar_observed_block_next_h": 0.348,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.016,
+    "band>=35dBZ": 0.01,
+    "local 0.5deg": 0.016,
+    "0.8 x 700 hPa wind": 0.013
+   },
+   "radar_observed_current_and_next_hour": 0.378
+  },
+  {
+   "t": "2026-11-25T07:00:00+00:00",
+   "engine": {
+    "speed": 67.0,
+    "toward": 35,
+    "conf": "medium",
+    "known": true,
+    "sharp": 10.1,
+    "pair_spread_kmh": 18.1,
+    "pair_speeds_kmh": [
+     0.0,
+     57.9,
+     53.7,
+     61.7
+    ],
+    "echo_cover": 0.4713
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 36.2,
+     "toward": 127
+    },
+    "local 0.5deg": {
+     "speed": 47.4,
+     "toward": 190
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.361,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.385,
+    "band>=35dBZ": 0.322,
+    "local 0.5deg": 0.126,
+    "0.8 x 700 hPa wind": 0.63
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:05:00+00:00",
+   "engine": {
+    "speed": 10.7,
+    "toward": 81,
+    "conf": "high",
+    "known": true,
+    "sharp": 10.2,
+    "pair_spread_kmh": 4.3,
+    "pair_speeds_kmh": [
+     57.9,
+     53.7,
+     61.7,
+     54.5
+    ],
+    "echo_cover": 0.4752
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 28.8,
+     "toward": 66
+    },
+    "local 0.5deg": {
+     "speed": 28.4,
+     "toward": 183
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.369,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.666,
+    "band>=35dBZ": 0.569,
+    "local 0.5deg": 0.305,
+    "0.8 x 700 hPa wind": 0.624
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:10:00+00:00",
+   "engine": {
+    "speed": 27.9,
+    "toward": 97,
+    "conf": "medium",
+    "known": true,
+    "sharp": 11.8,
+    "pair_spread_kmh": 17.9,
+    "pair_speeds_kmh": [
+     53.7,
+     61.7,
+     54.5,
+     0.2
+    ],
+    "echo_cover": 0.4766
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 25.0,
+     "toward": 180
+    },
+    "local 0.5deg": {
+     "speed": 20.9,
+     "toward": 71
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.382,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.373,
+    "band>=35dBZ": 0.411,
+    "local 0.5deg": 0.456,
+    "0.8 x 700 hPa wind": 0.532
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:15:00+00:00",
+   "engine": {
+    "speed": 52.7,
+    "toward": 41,
+    "conf": "low",
+    "known": true,
+    "sharp": 12.9,
+    "pair_spread_kmh": 20.5,
+    "pair_speeds_kmh": [
+     61.7,
+     54.5,
+     0.2,
+     0.1
+    ],
+    "echo_cover": 0.4892
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 36.6,
+     "toward": 137
+    },
+    "local 0.5deg": {
+     "speed": 43.0,
+     "toward": 166
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.386,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.456,
+    "band>=35dBZ": 0.231,
+    "local 0.5deg": 0.261,
+    "0.8 x 700 hPa wind": 0.47
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:20:00+00:00",
+   "engine": {
+    "speed": 44.7,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 11.1,
+    "pair_spread_kmh": 17.3,
+    "pair_speeds_kmh": [
+     54.5,
+     0.2,
+     0.1,
+     0.0
+    ],
+    "echo_cover": 0.4979
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 40.8,
+     "toward": 43
+    },
+    "local 0.5deg": {
+     "speed": 10.6,
+     "toward": 38
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.395,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.427,
+    "band>=35dBZ": 0.417,
+    "local 0.5deg": 0.279,
+    "0.8 x 700 hPa wind": 0.404
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:25:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 13.9,
+    "pair_spread_kmh": 17.7,
+    "pair_speeds_kmh": [
+     0.2,
+     0.1,
+     0.0,
+     56.8
+    ],
+    "echo_cover": 0.5
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 80.7,
+     "toward": 162
+    },
+    "local 0.5deg": {
+     "speed": 28.1,
+     "toward": 45
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.4,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.361,
+    "band>=35dBZ": 0.11,
+    "local 0.5deg": 0.369,
+    "0.8 x 700 hPa wind": 0.342
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:30:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 16.7,
+    "pair_spread_kmh": 17.7,
+    "pair_speeds_kmh": [
+     0.1,
+     0.0,
+     56.8,
+     0.6
+    ],
+    "echo_cover": 0.4958
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 40.0,
+     "toward": 41
+    },
+    "local 0.5deg": {
+     "speed": 36.7,
+     "toward": 35
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.394,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.32,
+    "band>=35dBZ": 0.305,
+    "local 0.5deg": 0.315,
+    "0.8 x 700 hPa wind": 0.294
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:35:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 16.8,
+    "pair_spread_kmh": 17.8,
+    "pair_speeds_kmh": [
+     0.0,
+     56.8,
+     0.6,
+     0.2
+    ],
+    "echo_cover": 0.4939
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 60.6,
+     "toward": 31
+    },
+    "local 0.5deg": {
+     "speed": 55.6,
+     "toward": 188
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.328,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.218,
+    "band>=35dBZ": 0.2,
+    "local 0.5deg": 0.118,
+    "0.8 x 700 hPa wind": 0.195
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:40:00+00:00",
+   "engine": {
+    "speed": 15.7,
+    "toward": 42,
+    "conf": "medium",
+    "known": true,
+    "sharp": 15.9,
+    "pair_spread_kmh": 17.8,
+    "pair_speeds_kmh": [
+     56.8,
+     0.6,
+     0.2,
+     0.2
+    ],
+    "echo_cover": 0.4839
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 26.1,
+     "toward": 121
+    },
+    "local 0.5deg": {
+     "speed": 24.3,
+     "toward": 78
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.314,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.145,
+    "band>=35dBZ": 0.114,
+    "local 0.5deg": 0.111,
+    "0.8 x 700 hPa wind": 0.132
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:45:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 25.2,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.6,
+     0.2,
+     0.2,
+     0.1
+    ],
+    "echo_cover": 0.4839
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 11.1,
+     "toward": 108
+    },
+    "local 0.5deg": {
+     "speed": 25.9,
+     "toward": 130
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.293,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.076,
+    "band>=35dBZ": 0.059,
+    "local 0.5deg": 0.053,
+    "0.8 x 700 hPa wind": 0.076
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:50:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 19.6,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.2,
+     0.2,
+     0.1,
+     0.5
+    ],
+    "echo_cover": 0.4732
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 40.8,
+     "toward": 43
+    },
+    "local 0.5deg": {
+     "speed": 30.0,
+     "toward": 52
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.3,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.066,
+    "band>=35dBZ": 0.064,
+    "local 0.5deg": 0.064,
+    "0.8 x 700 hPa wind": 0.064
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T07:55:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 13.7,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.2,
+     0.1,
+     0.5,
+     0.0
+    ],
+    "echo_cover": 0.4732
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 30.3,
+     "toward": 120
+    },
+    "local 0.5deg": {
+     "speed": 20.0,
+     "toward": 23
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 40.6,
+     "toward": 46
+    }
+   },
+   "steer_700": [
+    226,
+    50.8
+   ],
+   "radar_observed_block_next_h": 0.284,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.033,
+    "band>=35dBZ": 0.019,
+    "local 0.5deg": 0.033,
+    "0.8 x 700 hPa wind": 0.03
+   },
+   "radar_observed_current_and_next_hour": 0.628
+  },
+  {
+   "t": "2026-11-25T08:00:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 25.2,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.1,
+     0.5,
+     0.0,
+     0.1
+    ],
+    "echo_cover": 0.4554
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 38.7,
+     "toward": 43
+    },
+    "local 0.5deg": {
+     "speed": 29.0,
+     "toward": 51
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.267,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.391,
+    "band>=35dBZ": 0.296,
+    "local 0.5deg": 0.315,
+    "0.8 x 700 hPa wind": 0.322
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:05:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 23.0,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.5,
+     0.0,
+     0.1,
+     0.0
+    ],
+    "echo_cover": 0.4437
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 44.7,
+     "toward": 26
+    },
+    "local 0.5deg": {
+     "speed": 26.8,
+     "toward": 144
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.239,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.363,
+    "band>=35dBZ": 0.257,
+    "local 0.5deg": 0.183,
+    "0.8 x 700 hPa wind": 0.303
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:10:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 19.9,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.1,
+     0.0,
+     0.5
+    ],
+    "echo_cover": 0.4232
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 51.6,
+     "toward": 36
+    },
+    "local 0.5deg": {
+     "speed": 23.1,
+     "toward": 160
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.202,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.296,
+    "band>=35dBZ": 0.209,
+    "local 0.5deg": 0.195,
+    "0.8 x 700 hPa wind": 0.267
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:15:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 20.7,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.1,
+     0.0,
+     0.5,
+     0.1
+    ],
+    "echo_cover": 0.4044
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 55.3,
+     "toward": 38
+    },
+    "local 0.5deg": {
+     "speed": 68.6,
+     "toward": 4
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.174,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.258,
+    "band>=35dBZ": 0.178,
+    "local 0.5deg": 0.161,
+    "0.8 x 700 hPa wind": 0.224
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:20:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 18.6,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.0,
+     0.5,
+     0.1,
+     0.3
+    ],
+    "echo_cover": 0.3886
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 16.7,
+     "toward": 120
+    },
+    "local 0.5deg": {
+     "speed": 34.1,
+     "toward": 51
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.148,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.233,
+    "band>=35dBZ": 0.246,
+    "local 0.5deg": 0.212,
+    "0.8 x 700 hPa wind": 0.196
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:25:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 21.9,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.5,
+     0.1,
+     0.3,
+     0.0
+    ],
+    "echo_cover": 0.3732
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 60.1,
+     "toward": 27
+    },
+    "local 0.5deg": {
+     "speed": 16.9,
+     "toward": 351
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.125,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.161,
+    "band>=35dBZ": 0.105,
+    "local 0.5deg": 0.167,
+    "0.8 x 700 hPa wind": 0.145
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:30:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 16.0,
+    "pair_spread_kmh": 17.4,
+    "pair_speeds_kmh": [
+     0.1,
+     0.3,
+     0.0,
+     58.2
+    ],
+    "echo_cover": 0.3583
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 50.9,
+     "toward": 28
+    },
+    "local 0.5deg": {
+     "speed": 30.1,
+     "toward": 56
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.109,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.103,
+    "band>=35dBZ": 0.084,
+    "local 0.5deg": 0.117,
+    "0.8 x 700 hPa wind": 0.086
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:35:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 20.8,
+    "pair_spread_kmh": 17.4,
+    "pair_speeds_kmh": [
+     0.3,
+     0.0,
+     58.2,
+     0.0
+    ],
+    "echo_cover": 0.3565
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 20.9,
+     "toward": 71
+    },
+    "local 0.5deg": {
+     "speed": 46.0,
+     "toward": 192
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.094,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.079,
+    "band>=35dBZ": 0.092,
+    "local 0.5deg": 0.079,
+    "0.8 x 700 hPa wind": 0.065
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:40:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 24.2,
+    "pair_spread_kmh": 17.4,
+    "pair_speeds_kmh": [
+     0.0,
+     58.2,
+     0.0,
+     0.1
+    ],
+    "echo_cover": 0.3479
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 56.4,
+     "toward": 31
+    },
+    "local 0.5deg": {
+     "speed": 45.9,
+     "toward": 29
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.079,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.056,
+    "band>=35dBZ": 0.041,
+    "local 0.5deg": 0.045,
+    "0.8 x 700 hPa wind": 0.043
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:45:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "medium",
+    "known": true,
+    "sharp": 22.1,
+    "pair_spread_kmh": 17.4,
+    "pair_speeds_kmh": [
+     58.2,
+     0.0,
+     0.1,
+     0.3
+    ],
+    "echo_cover": 0.3362
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 55.4,
+     "toward": 21
+    },
+    "local 0.5deg": {
+     "speed": 17.1,
+     "toward": 193
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.07,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.052,
+    "band>=35dBZ": 0.033,
+    "local 0.5deg": 0.045,
+    "0.8 x 700 hPa wind": 0.039
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:50:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 20.6,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.0,
+     0.1,
+     0.3,
+     0.2
+    ],
+    "echo_cover": 0.3296
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 15.7,
+     "toward": 42
+    },
+    "local 0.5deg": {
+     "speed": 39.5,
+     "toward": 14
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.039,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.017,
+    "band>=35dBZ": 0.018,
+    "local 0.5deg": 0.016,
+    "0.8 x 700 hPa wind": 0.016
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T08:55:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 23.1,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.1,
+     0.3,
+     0.2,
+     0.3
+    ],
+    "echo_cover": 0.3208
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 11.7,
+     "toward": 65
+    },
+    "local 0.5deg": {
+     "speed": 41.7,
+     "toward": 358
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 32.4,
+     "toward": 10
+    }
+   },
+   "steer_700": [
+    190,
+    40.5
+   ],
+   "radar_observed_block_next_h": 0.042,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.005,
+    "band>=35dBZ": 0.005,
+    "local 0.5deg": 0.005,
+    "0.8 x 700 hPa wind": 0.005
+   },
+   "radar_observed_current_and_next_hour": 0.306
+  },
+  {
+   "t": "2026-11-25T09:00:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 14.4,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.3,
+     0.2,
+     0.3,
+     0.2
+    ],
+    "echo_cover": 0.3103
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 34.3,
+     "toward": 337
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 33.8,
+     "toward": 32
+    }
+   },
+   "steer_700": [
+    212,
+    42.2
+   ],
+   "radar_observed_block_next_h": 0.039,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.04,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.023,
+    "0.8 x 700 hPa wind": 0.043
+   },
+   "radar_observed_current_and_next_hour": 0.055
+  },
+  {
+   "t": "2026-11-25T09:05:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 14.0,
+    "pair_spread_kmh": 0.1,
+    "pair_speeds_kmh": [
+     0.2,
+     0.3,
+     0.2,
+     0.0
+    ],
+    "echo_cover": 0.3067
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 25.5,
+     "toward": 38
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 33.8,
+     "toward": 32
+    }
+   },
+   "steer_700": [
+    212,
+    42.2
+   ],
+   "radar_observed_block_next_h": 0.035,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.034,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.04,
+    "0.8 x 700 hPa wind": 0.042
+   },
+   "radar_observed_current_and_next_hour": 0.055
+  },
+  {
+   "t": "2026-11-25T09:10:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 14.0,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.3,
+     0.2,
+     0.0,
+     0.7
+    ],
+    "echo_cover": 0.2951
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 13.3,
+     "toward": 180
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 33.8,
+     "toward": 32
+    }
+   },
+   "steer_700": [
+    212,
+    42.2
+   ],
+   "radar_observed_block_next_h": 0.034,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.028,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.025,
+    "0.8 x 700 hPa wind": 0.047
+   },
+   "radar_observed_current_and_next_hour": 0.055
+  },
+  {
+   "t": "2026-11-25T09:15:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 18.7,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.2,
+     0.0,
+     0.7,
+     0.2
+    ],
+    "echo_cover": 0.2817
+   },
+   "alt": {
+    "band>=35dBZ": null,
+    "local 0.5deg": {
+     "speed": 11.4,
+     "toward": 126
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 33.8,
+     "toward": 32
+    }
+   },
+   "steer_700": [
+    212,
+    42.2
+   ],
+   "radar_observed_block_next_h": 0.035,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.033,
+    "band>=35dBZ": null,
+    "local 0.5deg": 0.026,
+    "0.8 x 700 hPa wind": 0.058
+   },
+   "radar_observed_current_and_next_hour": 0.055
+  },
+  {
+   "t": "2026-11-25T09:20:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 26.6,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.0,
+     0.7,
+     0.2,
+     0.4
+    ],
+    "echo_cover": 0.2703
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 29.4,
+     "toward": 80
+    },
+    "local 0.5deg": {
+     "speed": 37.5,
+     "toward": 27
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 33.8,
+     "toward": 32
+    }
+   },
+   "steer_700": [
+    212,
+    42.2
+   ],
+   "radar_observed_block_next_h": 0.035,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.03,
+    "band>=35dBZ": 0.059,
+    "local 0.5deg": 0.048,
+    "0.8 x 700 hPa wind": 0.052
+   },
+   "radar_observed_current_and_next_hour": 0.055
+  },
+  {
+   "t": "2026-11-25T09:25:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 18.9,
+    "pair_spread_kmh": 0.3,
+    "pair_speeds_kmh": [
+     0.7,
+     0.2,
+     0.4,
+     0.1
+    ],
+    "echo_cover": 0.2655
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 70.5,
+     "toward": 32
+    },
+    "local 0.5deg": {
+     "speed": 34.0,
+     "toward": 11
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 33.8,
+     "toward": 32
+    }
+   },
+   "steer_700": [
+    212,
+    42.2
+   ],
+   "radar_observed_block_next_h": 0.035,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.037,
+    "band>=35dBZ": 0.056,
+    "local 0.5deg": 0.026,
+    "0.8 x 700 hPa wind": 0.04
+   },
+   "radar_observed_current_and_next_hour": 0.055
+  },
+  {
+   "t": "2026-11-25T09:30:00+00:00",
+   "engine": {
+    "speed": 17.0,
+    "toward": 38,
+    "conf": "high",
+    "known": true,
+    "sharp": 22.9,
+    "pair_spread_kmh": 0.2,
+    "pair_speeds_kmh": [
+     0.2,
+     0.4,
+     0.1,
+     0.1
+    ],
+    "echo_cover": 0.2616
+   },
+   "alt": {
+    "band>=35dBZ": {
+     "speed": 85.1,
+     "toward": 16
+    },
+    "local 0.5deg": {
+     "speed": 45.6,
+     "toward": 101
+    },
+    "0.8 x 700 hPa wind": {
+     "speed": 33.8,
+     "toward": 32
+    }
+   },
+   "steer_700": [
+    212,
+    42.2
+   ],
+   "radar_observed_block_next_h": 0.037,
+   "extrapolated_current_and_next_hour": {
+    "engine": 0.03,
+    "band>=35dBZ": 0.032,
+    "local 0.5deg": 0.054,
+    "0.8 x 700 hPa wind": 0.034
+   },
+   "radar_observed_current_and_next_hour": 0.055
+  }
+ ]
+}
