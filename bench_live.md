@@ -1,5 +1,5 @@
 {
- "run": "20261125T212919Z",
+ "run": "20261125T213552Z",
  "sources": {
   "nws_gridpoint": {
    "status": "ok",
@@ -8,17 +8,17 @@
   },
   "wpc_ero": {
    "status": "ok",
-   "seconds": 2.3,
-   "failures": 0
-  },
-  "wpc_qpf": {
-   "status": "ok",
-   "seconds": 299.5,
+   "seconds": 0.5,
    "failures": 0
   },
   "refs": {
    "status": "ok",
-   "seconds": 1.8,
+   "seconds": 240.0,
+   "failures": 0
+  },
+  "wpc_qpf": {
+   "status": "ok",
+   "seconds": 91.5,
    "failures": 0
   }
  },
@@ -29,12 +29,15 @@
   "wpc_ero": {
    "new": 5
   },
+  "refs": {
+   "new": 1135
+  },
   "wpc_qpf": {
    "new": 1646
   }
  },
  "failures": 0,
- "files_written": 7
+ "files_written": 9
 }
 # Collector live test
 
@@ -42,9 +45,9 @@
 
 ```
 {
- "run": "20261125T212919Z",
+ "run": "20261125T213552Z",
  "collector_version": "1.0",
- "started": "2026-11-25T21:29:19.534133+00:00",
+ "started": "2026-11-25T21:35:52.547345+00:00",
  "sources": {
   "nws_gridpoint": {
    "status": "ok",
@@ -53,22 +56,21 @@
   },
   "wpc_ero": {
    "status": "ok",
-   "seconds": 2.3,
-   "failures": 0
-  },
-  "wpc_qpf": {
-   "status": "ok",
-   "seconds": 299.5,
+   "seconds": 0.5,
    "failures": 0
   },
   "refs": {
    "status": "ok",
-   "seconds": 1.8,
+   "seconds": 240.0,
+   "failures": 0
+  },
+  "wpc_qpf": {
+   "status": "ok",
+   "seconds": 91.5,
    "failures": 0
   }
  },
  "nws_update_time": "2026-11-25T20:26:28+00:00",
- "wpc_qpf_files_listed": 823,
  "refs_cycles_listed": [
   "2026112400",
   "2026112406",
@@ -80,14 +82,18 @@
   "2026112518"
  ],
  "refs_stopped_for_time": true,
- "finished": "2026-11-25T21:34:23.249549+00:00",
- "http_requests": 834,
+ "wpc_qpf_files_listed": 823,
+ "finished": "2026-11-25T21:41:24.715555+00:00",
+ "http_requests": 1298,
  "counts": {
   "nws_gridpoint": {
    "new": 2
   },
   "wpc_ero": {
    "new": 5
+  },
+  "refs": {
+   "new": 1135
   },
   "wpc_qpf": {
    "new": 1646
@@ -144,7 +150,7 @@ Failures (0):
  ],
  "url": "https://api.weather.gov/gridpoints/MTR/85,105",
  "sha256": "3deb03d68877231fa93250148d2e3433bce6248a938fcd2ad0a73c32b23109b1",
- "retrieved": "2026-11-25T21:29:19.662830+00:00",
+ "retrieved": "2026-11-25T21:35:52.621860+00:00",
  "source": "nws_gridpoint"
 }
 ```
@@ -192,8 +198,94 @@ Failures (0):
  ],
  "url": "https://api.weather.gov/gridpoints/MTR/85,105",
  "sha256": "7cce0690c912b41b153449e0dc77cce65945134bdeb31ca90d5a4bff202350ef",
- "retrieved": "2026-11-25T21:29:19.662830+00:00",
+ "retrieved": "2026-11-25T21:35:52.621860+00:00",
  "source": "nws_gridpoint"
+}
+```
+
+## refs: 1135 records {'forecast': 906, 'file': 229}
+
+```
+{
+ "type": "forecast",
+ "key": "refs|avrg|2026112518|APCP:surface:0-1 hour acc fcst:wt ens mean:process=193",
+ "product": "avrg",
+ "field": "APCP",
+ "descriptor": "APCP:surface:0-1 hour acc fcst:wt ens mean:process=193",
+ "issued": "2026-11-25T18:00:00+00:00",
+ "fh": 1,
+ "valid_start": "2026-11-25T18:00:00+00:00",
+ "valid_end": "2026-11-25T19:00:00+00:00",
+ "interval_h": 1,
+ "threshold": null,
+ "members": "14",
+ "url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/refs/prod/refs.20261125/18/ensprod/refs.t18z.avrg.f01.conus.grib2",
+ "byte_range": "0-",
+ "sha256": "6cd42e01e944ae68c60d4b1c65140f4c9b3e783209d8e1f89d45e59601dfd9a7",
+ "retrieved": "2026-11-25T21:35:55.805402+00:00",
+ "block_cell": {
+  "row": 600,
+  "col": 178,
+  "lat": 37.76344,
+  "lon": -122.41227,
+  "dist_km": 0.36,
+  "value": 0.0
+ },
+ "cells": {
+  "values(first row)": [
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ]
+ },
+ "units": "kg m**-2",
+ "source": "refs"
+}
+```
+
+```
+{
+ "type": "forecast",
+ "key": "refs|eas|2026112518|APCP:surface:0-1 hour acc fcst:prob >0.254:prob fcst 0/14:process=197",
+ "product": "eas",
+ "field": "APCP",
+ "descriptor": "APCP:surface:0-1 hour acc fcst:prob >0.254:prob fcst 0/14:process=197",
+ "issued": "2026-11-25T18:00:00+00:00",
+ "fh": 1,
+ "valid_start": "2026-11-25T18:00:00+00:00",
+ "valid_end": "2026-11-25T19:00:00+00:00",
+ "interval_h": 1,
+ "threshold": {
+  "op": ">",
+  "value": 0.254,
+  "text": "prob >0.254"
+ },
+ "members": null,
+ "url": "https://nomads.ncep.noaa.gov/pub/data/nccf/com/refs/prod/refs.20261125/18/ensprod/refs.t18z.eas.f01.conus.grib2",
+ "byte_range": "0-320274",
+ "sha256": "fbb85abf0d4f15ae1831757a047edae5e3c1317323fe1dcdc9ab3bcb7c92e20c",
+ "retrieved": "2026-11-25T21:35:56.818836+00:00",
+ "block_cell": {
+  "row": 600,
+  "col": 178,
+  "lat": 37.76331,
+  "lon": -122.41286,
+  "dist_km": 0.32,
+  "value": 0.03125
+ },
+ "cells": {
+  "values(first row)": [
+   0.03125,
+   0.03125,
+   0.03125,
+   0.03125,
+   0.03125
+  ]
+ },
+ "units": "kg m**-2",
+ "source": "refs"
 }
 ```
 
@@ -206,13 +298,13 @@ Failures (0):
  "product": "day1",
  "field": "ERO category",
  "issued": "2026-11-25 15:42:00",
- "valid_start": "16Z 11/25/26 - 12Z 11/26/26",
+ "valid_start": "2026-11-25 16:00:00",
  "valid_end": "2026-11-26 12:00:00",
  "last_modified": "Wed, 25 Nov 2026 20:00:47 GMT",
  "url": "https://ftp.wpc.ncep.noaa.gov/shapefiles/qpf/excessive/EXCESSIVERAIN_Day1_latest.zip",
  "bytes": 7666,
  "sha256": "7f8fbdff916fcdcedbbba4429f516fef22fc0641a14774a06e066402e2919699",
- "retrieved": "2026-11-25T21:29:20.760947+00:00",
+ "retrieved": "2026-11-25T21:35:53.023327+00:00",
  "fields": [
   "dn",
   "PRODUCT",
@@ -228,8 +320,10 @@ Failures (0):
  "category": "none (outside all areas)",
  "category_rank": 0,
  "issue_attr": "2026-11-25 15:42:00",
- "start_attr": "16Z 11/25/26 - 12Z 11/26/26",
+ "start_attr": "2026-11-25 16:00:00",
  "end_attr": "2026-11-26 12:00:00",
+ "valid_text": "16Z 11/25/26 - 12Z 11/26/26",
+ "time_zone_note": "WPC attribute times are recorded exactly as published (no zone given in the file)",
  "source": "wpc_ero"
 }
 ```
@@ -241,13 +335,13 @@ Failures (0):
  "product": "day2",
  "field": "ERO category",
  "issued": "2026-11-25 19:49:00",
- "valid_start": "12Z 11/26/26 - 12Z 11/27/26",
+ "valid_start": "2026-11-26 12:00:00",
  "valid_end": "2026-11-27 12:00:00",
  "last_modified": "Wed, 25 Nov 2026 20:00:53 GMT",
  "url": "https://ftp.wpc.ncep.noaa.gov/shapefiles/qpf/excessive/EXCESSIVERAIN_Day2_latest.zip",
  "bytes": 4837,
  "sha256": "de68c566b46755a536c6977c995687493dde0dcd60b5d56b0e336d7e75621355",
- "retrieved": "2026-11-25T21:29:21.118542+00:00",
+ "retrieved": "2026-11-25T21:35:53.072731+00:00",
  "fields": [
   "dn",
   "PRODUCT",
@@ -263,8 +357,10 @@ Failures (0):
  "category": "none (outside all areas)",
  "category_rank": 0,
  "issue_attr": "2026-11-25 19:49:00",
- "start_attr": "12Z 11/26/26 - 12Z 11/27/26",
+ "start_attr": "2026-11-26 12:00:00",
  "end_attr": "2026-11-27 12:00:00",
+ "valid_text": "12Z 11/26/26 - 12Z 11/27/26",
+ "time_zone_note": "WPC attribute times are recorded exactly as published (no zone given in the file)",
  "source": "wpc_ero"
 }
 ```
@@ -274,21 +370,21 @@ Failures (0):
 ```
 {
  "type": "forecast",
- "key": "wpc_qpf|p06m|2026112000|f006",
+ "key": "wpc_qpf|p06m|2026112600|f168",
  "product": "p06m",
  "field": "QPF",
- "issued": "2026-11-20T00:00:00+00:00",
- "fh": 6,
- "valid_start": "2026-11-20T00:00:00+00:00",
- "valid_end": "2026-11-20T06:00:00+00:00",
+ "issued": "2026-11-26T00:00:00+00:00",
+ "fh": 168,
+ "valid_start": "2026-12-02T18:00:00+00:00",
+ "valid_end": "2026-12-03T00:00:00+00:00",
  "interval_h": 6,
- "url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f006.grb",
- "listed_mtime": "19-Nov-2026 21:51",
- "last_modified": "Thu, 19 Nov 2026 21:51:45 GMT",
- "bytes": 154640,
- "sha256": "94ea8f4b92ccc23046a4bb5e17e6174e9b32fc4433661df5ac8c2fecbdf8cf67",
- "retrieved": "2026-11-25T21:29:22.872002+00:00",
- "wmo_header": "LEMB98 KWNH 200000",
+ "url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112600f168.grb",
+ "listed_mtime": "25-Nov-2026 20:46",
+ "last_modified": "Wed, 25 Nov 2026 20:46:33 GMT",
+ "bytes": 56003,
+ "sha256": "ee5659d679ed9dc47786844c9b708f08a45824e0e8e9114f601e10607d1c1cf6",
+ "retrieved": "2026-11-25T21:39:53.315052+00:00",
+ "wmo_header": "LEMQ98 KWNH 260000",
  "block_cell": {
   "row": 766,
   "col": 121,
@@ -314,36 +410,36 @@ Failures (0):
 ```
 {
  "type": "forecast",
- "key": "wpc_qpf|p06m|2026112000|f012",
- "product": "p06m",
+ "key": "wpc_qpf|p24m|2026112600|f168",
+ "product": "p24m",
  "field": "QPF",
- "issued": "2026-11-20T00:00:00+00:00",
- "fh": 12,
- "valid_start": "2026-11-20T06:00:00+00:00",
- "valid_end": "2026-11-20T12:00:00+00:00",
- "interval_h": 6,
- "url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p06m_2026112000f012.grb",
- "listed_mtime": "19-Nov-2026 21:52",
- "last_modified": "Thu, 19 Nov 2026 21:52:54 GMT",
- "bytes": 147131,
- "sha256": "fa96e1c002021ddb77fc4e3aa2b65ceac4983d33cde08f6474561af97d75d7ac",
- "retrieved": "2026-11-25T21:29:23.910318+00:00",
- "wmo_header": "LEMC98 KWNH 200000",
+ "issued": "2026-11-26T00:00:00+00:00",
+ "fh": 168,
+ "valid_start": "2026-12-02T00:00:00+00:00",
+ "valid_end": "2026-12-03T00:00:00+00:00",
+ "interval_h": 24,
+ "url": "https://ftp.wpc.ncep.noaa.gov/2p5km_qpf/p24m_2026112600f168.grb",
+ "listed_mtime": "25-Nov-2026 16:40",
+ "last_modified": "Wed, 25 Nov 2026 16:40:42 GMT",
+ "bytes": 125678,
+ "sha256": "5eb0a47678d6900076b96fac0657ef5bb23ea24e0c416e35164c3a154198d3b6",
+ "retrieved": "2026-11-25T21:39:53.676248+00:00",
+ "wmo_header": null,
  "block_cell": {
   "row": 766,
   "col": 121,
   "lat": 37.77233,
   "lon": -122.4095,
   "dist_km": 1.35,
-  "value": 1.25
+  "value": 5.75
  },
  "cells": {
   "values(first row)": [
-   2.375,
-   2.75,
-   2.125,
-   1.5,
-   1.5
+   6.125,
+   5.875,
+   5.875,
+   5.875,
+   5.75
   ]
  },
  "units": "kg m**-2",
