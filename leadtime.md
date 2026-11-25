@@ -1,6 +1,6 @@
 # Lead-time scorecards vs the Mint gauge
 
-Generated 2026-11-25T07:53 UTC · last 60 days · truth: SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24) · heavy = an hour >= 0.20". One verdict per gauge hour per bucket (the latest forecast issued in it). Probabilistic sources say heavy at >= 20% of runs.
+Generated 2026-11-25T08:08 UTC · last 60 days · truth: SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24) · heavy = an hour >= 0.20". One verdict per gauge hour per bucket (the latest forecast issued in it). Probabilistic sources say heavy at >= 20% of runs.
 
 
 ## 0–1 h (the hour in progress and the next)
@@ -23,7 +23,7 @@ Primary forecast by what carried the hour (heavy = the same rule as above):
 | radar-corroborated | 30 | 0.084 | +0.007 | 5 | 0 | 5 |
 | models | 10 | 0.000 | +0.000 | 0 | 0 | 0 |
 
-Corroborating sources (radar hours): ECMWF 7, Flood Advisory 16, HRRR 12, Mint gauge 0.23" last hour 1, Mint gauge 0.26" last hour 1, Mint gauge 0.54" last hour 1, Mint gauge 0.93" last hour 1, NBM 5, ensemble 12
+Corroborating sources (radar hours): ECMWF 7, Flood Advisory 17, HRRR 13, Mint gauge 0.23" last hour 1, Mint gauge 0.26" last hour 1, Mint gauge 0.29" last hour 2, Mint gauge 0.54" last hour 1, Mint gauge 0.93" last hour 1, NBM 5, ensemble 12
 
 76 radar hours predate the corroboration record; inferred from the archived sources at that hour (no gauge or NWS products).
 
