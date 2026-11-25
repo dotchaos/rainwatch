@@ -257,24 +257,165 @@
     "partial": 0,
     "no_forecast": 0
    }
+  },
+  {
+   "start": "2026-11-25T07:00:00+00:00",
+   "end": "2026-11-25T07:00:00+00:00",
+   "total": 0.29,
+   "peak_t": "2026-11-25T07:00:00+00:00",
+   "peak": 0.29,
+   "heavy": true,
+   "missing_hours": 0,
+   "done": false,
+   "leads": [
+    {
+     "lead_h": 24,
+     "status": "ok",
+     "issued": "2026-11-24T06:12:23.021669+00:00",
+     "valid_until": "2026-11-27T07:00:00+00:00",
+     "onset_err_h": -4.0,
+     "onset_called": true,
+     "peak_err_h": -3.0,
+     "peak_pred": 0.039,
+     "total_pred": 0.199,
+     "p_heavy": 0.0,
+     "threshold": "missed",
+     "threshold_runs": [
+      0,
+      122
+     ],
+     "p_heavy_hour_max": 0.02,
+     "inside": {
+      "onset": false,
+      "peak_t": false,
+      "peak": false,
+      "total": true
+     }
+    },
+    {
+     "lead_h": 12,
+     "status": "ok",
+     "issued": "2026-11-24T18:03:23.109253+00:00",
+     "valid_until": "2026-11-27T19:00:00+00:00",
+     "onset_err_h": -4.0,
+     "onset_called": true,
+     "peak_err_h": -1.0,
+     "peak_pred": 0.043,
+     "total_pred": 0.17,
+     "p_heavy": 0.0,
+     "threshold": "missed",
+     "threshold_runs": [
+      0,
+      122
+     ],
+     "p_heavy_hour_max": 0.02,
+     "inside": {
+      "onset": false,
+      "peak_t": false,
+      "peak": false,
+      "total": true
+     }
+    },
+    {
+     "lead_h": 6,
+     "status": "ok",
+     "issued": "2026-11-25T00:07:40.549802+00:00",
+     "valid_until": "2026-11-28T01:00:00+00:00",
+     "onset_err_h": -6.9,
+     "onset_called": true,
+     "peak_err_h": null,
+     "peak_pred": null,
+     "total_pred": null,
+     "p_heavy": null,
+     "threshold": null,
+     "threshold_runs": null,
+     "p_heavy_hour_max": 0.02,
+     "invalid": {
+      "peak_t": "the forecast's first rain event starts 2026-11-25T00:07:40.549802+00:00, a different event from this storm",
+      "peak": "the forecast's first rain event starts 2026-11-25T00:07:40.549802+00:00, a different event from this storm",
+      "total": "the forecast's first rain event starts 2026-11-25T00:07:40.549802+00:00, a different event from this storm",
+      "threshold": "the forecast's first rain event starts 2026-11-25T00:07:40.549802+00:00, a different event from this storm"
+     },
+     "inside": {
+      "onset": null,
+      "peak_t": null,
+      "peak": null,
+      "total": null
+     }
+    },
+    {
+     "lead_h": 3,
+     "status": "ok",
+     "issued": "2026-11-25T03:05:44.896580+00:00",
+     "valid_until": "2026-11-28T04:00:00+00:00",
+     "onset_err_h": -3.0,
+     "onset_called": true,
+     "peak_err_h": -1.0,
+     "peak_pred": 0.043,
+     "total_pred": 0.162,
+     "p_heavy": 0.0,
+     "threshold": "missed",
+     "threshold_runs": [
+      0,
+      122
+     ],
+     "p_heavy_hour_max": 0.02,
+     "inside": {
+      "onset": false,
+      "peak_t": true,
+      "peak": false,
+      "total": true
+     }
+    },
+    {
+     "lead_h": 1,
+     "status": "ok",
+     "issued": "2026-11-25T05:07:03.102950+00:00",
+     "valid_until": "2026-11-28T06:00:00+00:00",
+     "onset_err_h": -2.0,
+     "onset_called": true,
+     "peak_err_h": -1.0,
+     "peak_pred": 0.043,
+     "total_pred": 0.176,
+     "p_heavy": 0.008,
+     "threshold": "missed",
+     "threshold_runs": [
+      1,
+      122
+     ],
+     "p_heavy_hour_max": 0.02,
+     "inside": {
+      "onset": false,
+      "peak_t": true,
+      "peak": false,
+      "total": true
+     }
+    }
+   ],
+   "coverage": {
+    "scored": 5,
+    "rejected": 0,
+    "partial": 1,
+    "no_forecast": 0
+   }
   }
  ],
  "range_coverage": {
   "onset": [
    5,
-   8
+   12
   ],
   "peak_t": [
-   6,
-   9
+   8,
+   13
   ],
   "peak": [
    0,
-   9
+   13
   ],
   "total": [
-   7,
-   9
+   11,
+   13
   ]
  },
  "archive_start": "2026-11-13T18:47:54.564415+00:00"
