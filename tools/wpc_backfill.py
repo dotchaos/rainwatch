@@ -83,7 +83,10 @@ def main():
                     time.sleep(3)
             got = datetime.now(UTC).isoformat()
             if not hasattr(f, "status_code") or f.status_code != 200 or f.content[:4] != b"GRIB":
-                manifest["failures"].append({"url": url, "status": getattr(f, "status_code", str(f)), "at": got})
+                c = getattr(f, "content", b"") or b""
+                manifest["failures"].append({"url": url, "status": getattr(f, "status_code", str(f)), "at": got, "bytes": len(c),
+                                             "content_type": getattr(f, "headers", {}).get("Content-Type"),
+                                             "head": c[:24].hex(), "head_text": c[:80].decode("latin-1")})
                 continue
             sha = hashlib.sha256(f.content).hexdigest()
             entry = {"folder": folder, "file": name, "url": url, "issued": issued.isoformat(),
