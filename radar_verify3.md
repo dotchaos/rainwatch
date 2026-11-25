@@ -4,8 +4,8 @@ Intervals of 1 h or less only. MRMS PrecipRate every 2 min; Rainwatch N0Q every 
 
 | Gauge | Name | Network | km |
 |---|---|---|---|
-| OAK | Oakland | ASOS (QC'd) | 16.7 |
-| SFO | SAN FRANCISCO INTL | ASOS (QC'd) | 16.2 |
+| KOAK | Oakland | ASOS (QC'd) | 16.7 |
+| KSFO | SAN FRANCISCO INTL | ASOS (QC'd) | 16.2 |
 | AAMC1 | San Francisco Bay - Alemeda Tide | HADS (raw) | 10.3 |
 | ACMC1 | ARROYO CORTE MADERA  AT ARROYO CORTE MADERA DEL PRESIDIO | HADS (raw) | 18.5 |
 | AISC1 | Angel Island | HADS (raw) | 9.9 |
@@ -59,8 +59,8 @@ Intervals of 1 h or less only. MRMS PrecipRate every 2 min; Rainwatch N0Q every 
 | ITLC1 | HADS | 0.04 (Sun 3:25 PM) | 0.002 / 0.004 | 0.003 / 0.003 | 0.005 / 0.005 | 0.005 / 0.005 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC) | - |
 | EZCC1 | HADS | 0.04 (Sun 3:47 PM) | 0.021 / 0.019 | 0.011 / 0.017 | 0.024 / 0.024 | 0.027 / 0.025 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 3.3 of 6 h | - |
 | UPYC1 | HADS | 0.08 (Sun 1:35 PM) | 0.014 / 0.017 | 0.003 / 0.004 | 0.023 / 0.023 | 0.029 / 0.026 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 4.3 of 6 h | - |
-| SFO | ASOS | 0.24 (Sun 3:56 PM) | 0.091 / 0.072 | 0.082 / 0.075 | 0.061 / 0.057 | 0.058 / 0.058 | 2 | 0 / 0 | 0 / 0 | - | MRMS 0.3x gauge; RW 0.3x gauge |
-| OAK | HADS | 0.16 (Sun 2:53 PM) | 0.068 / 0.063 | 0.061 / 0.051 | 0.038 / 0.038 | 0.04 / 0.04 | 2 | 0 / 0 | 0 / 0 | raw HADS (no QC) | - |
+| KSFO | ASOS | 0.24 (Sun 3:56 PM) | 0.091 / 0.072 | 0.082 / 0.075 | 0.061 / 0.057 | 0.058 / 0.058 | 2 | 0 / 0 | 0 / 0 | - | MRMS 0.3x gauge; RW 0.3x gauge |
+| KOAK | ASOS | 0.16 (Sun 2:53 PM) | 0.068 / 0.063 | 0.061 / 0.051 | 0.038 / 0.038 | 0.04 / 0.04 | 2 | 0 / 0 | 0 / 0 | - | - |
 | TBNC1 | HADS | 0.04 (Sun 12:56 PM) | 0.011 / 0.01 | 0.011 / 0.011 | 0.016 / 0.018 | 0.026 / 0.023 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 3.8 of 6 h | - |
 | RMLC1 | HADS | 0.04 (Sun 3:40 PM) | 0.007 / 0.007 | 0.002 / 0.003 | 0.005 / 0.005 | 0.006 / 0.005 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC) | - |
 | ACMC1 | HADS | 0.04 (Sun 12:43 PM) | 0.031 / 0.031 | 0.008 / 0.01 | 0.024 / 0.022 | 0.027 / 0.028 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 3.8 of 6 h | - |
@@ -86,8 +86,8 @@ Intervals of 1 h or less only. MRMS PrecipRate every 2 min; Rainwatch N0Q every 
 | ITLC1 | HADS | 0.06 (Wed 11:10 AM) | 0.017 / 0.018 | 0.025 / 0.029 | 0.011 / 0.011 | 0.012 / 0.007 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC) | - |
 | EZCC1 | HADS | 0.08 (Wed 10:07 AM) | 0.009 / 0.011 | 0.03 / 0.047 | 0.025 / 0.024 | 0.024 / 0.02 | 0 | 0 / 0 | 0 / 1 | raw HADS (no QC) | - |
 | UPYC1 | HADS | 0.08 (Wed 8:44 AM) | 0 / 0 | 0.083 / 0.064 | 0.024 / 0.024 | 0.034 / 0.03 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 3.8 of 6 h | - |
-| SFO | ASOS | 0.73 (Wed 9:56 AM) | 0.188 / 0.178 | 0.684 / 0.6 | 0.159 / 0.158 | 0.079 / 0.077 | 5 | 5 / 5 | 0 / 0 | - | - |
-| OAK | HADS | 0.55 (Wed 9:53 AM) | 0.167 / 0.16 | 0.562 / 0.533 | 0.146 / 0.145 | 0.066 / 0.071 | 4 | 4 / 4 | 0 / 0 | raw HADS (no QC) | - |
+| KSFO | ASOS | 0.73 (Wed 9:56 AM) | 0.188 / 0.178 | 0.684 / 0.6 | 0.159 / 0.158 | 0.079 / 0.077 | 5 | 5 / 5 | 0 / 0 | - | - |
+| KOAK | ASOS | 0.55 (Wed 9:53 AM) | 0.167 / 0.16 | 0.562 / 0.533 | 0.146 / 0.145 | 0.066 / 0.071 | 4 | 4 / 4 | 0 / 0 | - | - |
 | TBNC1 | HADS | 0.12 (Wed 6:32 AM) | 0.09 / 0.094 | 0.098 / 0.105 | 0.026 / 0.026 | 0.029 / 0.029 | 2 | 0 / 2 | 0 / 0 | raw HADS (no QC) | - |
 | RMLC1 | HADS | 0.17 (Wed 10:25 AM) | 0.013 / 0.013 | 0.035 / 0.046 | 0.017 / 0.016 | 0.013 / 0.011 | 7 | 0 / 2 | 0 / 0 | raw HADS (no QC) | - |
 | ACMC1 | HADS | 0.2 (Wed 8:44 AM) | 0.075 / 0.074 | 0.183 / 0.147 | 0.025 / 0.025 | 0.022 / 0.023 | 1 | 0 / 1 | 0 / 0 | raw HADS (no QC); coverage 4.1 of 6 h | - |
@@ -105,16 +105,16 @@ Intervals of 1 h or less only. MRMS PrecipRate every 2 min; Rainwatch N0Q every 
 
 | Gauge | Net | Gauge max interval | MRMS pt / nb at that interval | RW pt / nb at that interval | MAE per interval MRMS pt / nb | MAE RW pt / nb | Gauge intervals >=0.10 | caught MRMS nb / RW nb | radar >=0.10 when gauge <0.02: MRMS nb / RW nb | Gauge flags | Radar disagreement (info) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| SFOC1 | HADS | 0.29 (Tue 10:43 PM) | 0.18 / 0.167 | 0.59 / 0.478 | 0.038 / 0.04 | 0.105 / 0.091 | 2 | 2 / 2 | 0 / 0 | raw HADS (no QC) | - |
+| SFOC1 | HADS | 0.29 (Tue 10:43 PM) | 0.18 / 0.167 | 0.59 / 0.478 | 0.038 / 0.04 | 0.102 / 0.089 | 2 | 2 / 2 | 0 / 0 | raw HADS (no QC) | - |
 | SBMC1 | HADS | 0.08 (Tue 11:54 PM) | 0.05 / 0.052 | 0.152 / 0.157 | 0.019 / 0.017 | 0.037 / 0.043 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 0.8 of 6 h | - |
-| MXSC1 | HADS | 0.0 (Tue 9:00 PM) | 0.0 / 0.0 | 0.001 / 0.0 | 0.057 / 0.055 | 0.105 / 0.106 | 0 | 0 / 0 | 2 / 2 | raw HADS (no QC); far below neighbours (0.00 vs median 0.33 of 3) | gauge 0.00 while radar 0.64 |
+| MXSC1 | HADS | 0.0 (Tue 9:00 PM) | 0.0 / 0.0 | 0.001 / 0.0 | 0.057 / 0.055 | 0.104 / 0.105 | 0 | 0 / 0 | 2 / 2 | raw HADS (no QC); far below neighbours (0.00 vs median 0.33 of 3) | gauge 0.00 while radar 0.63 |
 | ETEC1 | HADS | 0.04 (Tue 11:45 PM) | 0.009 / 0.012 | 0.018 / 0.015 | 0.003 / 0.003 | 0.003 / 0.003 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC) | - |
 | OAMC1 | HADS | 0.13 (Wed 12:00 AM) | 0.11 / 0.12 | 0.241 / 0.239 | 0.017 / 0.017 | 0.033 / 0.031 | 2 | 1 / 1 | 0 / 0 | raw HADS (no QC) | - |
 | ITLC1 | HADS | 0.07 (Wed 12:00 AM) | 0.033 / 0.029 | 0.017 / 0.027 | 0.002 / 0.002 | 0.004 / 0.003 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC) | - |
 | EZCC1 | HADS | 0.04 (Tue 11:10 PM) | 0.023 / 0.023 | 0.021 / 0.035 | 0.018 / 0.019 | 0.03 / 0.026 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 2.0 of 6 h | - |
 | UPYC1 | HADS | 0.04 (Tue 10:17 PM) | 0.038 / 0.036 | 0.028 / 0.041 | 0.025 / 0.026 | 0.034 / 0.031 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 3.2 of 6 h | - |
-| SFO | ASOS | 0.16 (Tue 10:56 PM) | 0.064 / 0.071 | 0.291 / 0.191 | 0.035 / 0.033 | 0.034 / 0.014 | 2 | 0 / 2 | 0 / 0 | - | - |
-| OAK | HADS | 0.11 (Tue 11:53 PM) | 0.069 / 0.063 | 0.079 / 0.1 | 0.01 / 0.012 | 0.008 / 0.006 | 1 | 0 / 1 | 0 / 0 | raw HADS (no QC) | - |
+| KSFO | ASOS | 0.16 (Tue 10:56 PM) | 0.064 / 0.071 | 0.291 / 0.191 | 0.035 / 0.033 | 0.033 / 0.014 | 2 | 0 / 2 | 0 / 0 | - | - |
+| KOAK | ASOS | 0.11 (Tue 11:53 PM) | 0.069 / 0.063 | 0.079 / 0.1 | 0.01 / 0.012 | 0.008 / 0.006 | 1 | 0 / 1 | 0 / 0 | - | - |
 | TBNC1 | HADS | 0.04 (Tue 10:45 PM) | 0 / 0 | 0 / 0 | 0.022 / 0.021 | 0.023 / 0.024 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC); coverage 2.6 of 6 h | - |
 | RMLC1 | HADS | 0.07 (Wed 12:00 AM) | 0.032 / 0.022 | 0.013 / 0.015 | 0.003 / 0.003 | 0.003 / 0.003 | 0 | 0 / 0 | 0 / 0 | raw HADS (no QC) | - |
 | ACMC1 | HADS | 0.16 (Tue 10:56 PM) | 0.077 / 0.078 | 0.121 / 0.141 | 0.031 / 0.03 | 0.027 / 0.021 | 1 | 0 / 1 | 0 / 0 | raw HADS (no QC); coverage 2.1 of 6 h | - |

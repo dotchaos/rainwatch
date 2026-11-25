@@ -1,22 +1,24 @@
 {
  "stations": [
   {
-   "id": "OAK",
+   "id": "KOAK",
    "name": "Oakland",
    "lat": 37.7178,
    "lon": -122.233,
    "km": 16.7,
    "net": "CA_ASOS",
-   "kind": "ASOS (QC'd)"
+   "kind": "ASOS (QC'd)",
+   "asos_id": "OAK"
   },
   {
-   "id": "SFO",
+   "id": "KSFO",
    "name": "SAN FRANCISCO INTL",
    "lat": 37.619,
    "lon": -122.3749,
    "km": 16.2,
    "net": "CA_ASOS",
-   "kind": "ASOS (QC'd)"
+   "kind": "ASOS (QC'd)",
+   "asos_id": "SFO"
   },
   {
    "id": "AAMC1",
@@ -2795,7 +2797,7 @@
      }
     ]
    },
-   "SFO": {
+   "KSFO": {
     "mae": {
      "mrms_point": 0.061,
      "mrms_nbhd": 0.057,
@@ -2870,16 +2872,14 @@
      }
     ]
    },
-   "OAK": {
+   "KOAK": {
     "mae": {
      "mrms_point": 0.038,
      "mrms_nbhd": 0.038,
      "n0q_point": 0.04,
      "n0q_nbhd": 0.04
     },
-    "flags": [
-     "raw HADS (no QC)"
-    ],
+    "flags": [],
     "radar_disagreement": [],
     "intervals": [
      {
@@ -12891,7 +12891,7 @@
      }
     ]
    },
-   "SFO": {
+   "KSFO": {
     "mae": {
      "mrms_point": 0.159,
      "mrms_nbhd": 0.158,
@@ -12963,16 +12963,14 @@
      }
     ]
    },
-   "OAK": {
+   "KOAK": {
     "mae": {
      "mrms_point": 0.146,
      "mrms_nbhd": 0.145,
      "n0q_point": 0.066,
      "n0q_nbhd": 0.071
     },
-    "flags": [
-     "raw HADS (no QC)"
-    ],
+    "flags": [],
     "radar_disagreement": [],
     "intervals": [
      {
@@ -23073,8 +23071,8 @@
     "mae": {
      "mrms_point": 0.038,
      "mrms_nbhd": 0.04,
-     "n0q_point": 0.105,
-     "n0q_nbhd": 0.091
+     "n0q_point": 0.102,
+     "n0q_nbhd": 0.089
     },
     "flags": [
      "raw HADS (no QC)"
@@ -23127,8 +23125,8 @@
       "gauge": 0.04,
       "mrms_point": 0.071,
       "mrms_nbhd": 0.064,
-      "n0q_point": 0.075,
-      "n0q_nbhd": 0.084,
+      "n0q_point": 0.056,
+      "n0q_nbhd": 0.074,
       "mrms_files": 30
      },
      {
@@ -23202,15 +23200,15 @@
     "mae": {
      "mrms_point": 0.057,
      "mrms_nbhd": 0.055,
-     "n0q_point": 0.105,
-     "n0q_nbhd": 0.106
+     "n0q_point": 0.104,
+     "n0q_nbhd": 0.105
     },
     "flags": [
      "raw HADS (no QC)",
      "far below neighbours (0.00 vs median 0.33 of 3)"
     ],
     "radar_disagreement": [
-     "gauge 0.00 while radar 0.64"
+     "gauge 0.00 while radar 0.63"
     ],
     "intervals": [
      {
@@ -23259,8 +23257,8 @@
       "gauge": 0.0,
       "mrms_point": 0.038,
       "mrms_nbhd": 0.042,
-      "n0q_point": 0.051,
-      "n0q_nbhd": 0.041,
+      "n0q_point": 0.045,
+      "n0q_nbhd": 0.035,
       "mrms_files": 30
      },
      {
@@ -23863,8 +23861,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.002,
-      "n0q_nbhd": 0.002,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -23873,8 +23871,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.001,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 3
      },
      {
@@ -23903,8 +23901,8 @@
       "gauge": 0.0,
       "mrms_point": 0.003,
       "mrms_nbhd": 0.003,
-      "n0q_point": 0.001,
-      "n0q_nbhd": 0.001,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -24187,8 +24185,8 @@
       "gauge": 0.0,
       "mrms_point": 0.007,
       "mrms_nbhd": 0.015,
-      "n0q_point": 0.017,
-      "n0q_nbhd": 0.014,
+      "n0q_point": 0.016,
+      "n0q_nbhd": 0.012,
       "mrms_files": 30
      },
      {
@@ -24791,8 +24789,8 @@
       "gauge": 0.01,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -24801,8 +24799,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 3
      },
      {
@@ -24831,8 +24829,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -25301,17 +25299,17 @@
       "gauge": 0.04,
       "mrms_point": 0.086,
       "mrms_nbhd": 0.092,
-      "n0q_point": 0.137,
-      "n0q_nbhd": 0.123,
+      "n0q_point": 0.135,
+      "n0q_nbhd": 0.121,
       "mrms_files": 29
      }
     ]
    },
-   "SFO": {
+   "KSFO": {
     "mae": {
      "mrms_point": 0.035,
      "mrms_nbhd": 0.033,
-     "n0q_point": 0.034,
+     "n0q_point": 0.033,
      "n0q_nbhd": 0.014
     },
     "flags": [],
@@ -25363,8 +25361,8 @@
       "gauge": 0.01,
       "mrms_point": 0.042,
       "mrms_nbhd": 0.041,
-      "n0q_point": 0.037,
-      "n0q_nbhd": 0.042,
+      "n0q_point": 0.035,
+      "n0q_nbhd": 0.04,
       "mrms_files": 30
      },
      {
@@ -25379,16 +25377,14 @@
      }
     ]
    },
-   "OAK": {
+   "KOAK": {
     "mae": {
      "mrms_point": 0.01,
      "mrms_nbhd": 0.012,
      "n0q_point": 0.008,
      "n0q_nbhd": 0.006
     },
-    "flags": [
-     "raw HADS (no QC)"
-    ],
+    "flags": [],
     "radar_disagreement": [],
     "intervals": [
      {
@@ -26156,8 +26152,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.001,
-      "n0q_nbhd": 0.001,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -26166,8 +26162,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.001,
-      "n0q_nbhd": 0.001,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 3
      },
      {
@@ -26196,8 +26192,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -27180,8 +27176,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -27190,8 +27186,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 3
      },
      {
@@ -27220,8 +27216,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -28034,8 +28030,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.001,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -28044,8 +28040,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 3
      },
      {
@@ -28074,8 +28070,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -28888,8 +28884,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.001,
-      "n0q_nbhd": 0.001,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -28898,8 +28894,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 3
      },
      {
@@ -28928,8 +28924,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -29596,8 +29592,8 @@
       "gauge": 0.0,
       "mrms_point": 0.02,
       "mrms_nbhd": 0.022,
-      "n0q_point": 0.026,
-      "n0q_nbhd": 0.023,
+      "n0q_point": 0.023,
+      "n0q_nbhd": 0.019,
       "mrms_files": 27
      },
      {
@@ -30284,8 +30280,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -30294,8 +30290,8 @@
       "gauge": 0.0,
       "mrms_point": 0.001,
       "mrms_nbhd": 0.001,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 3
      },
      {
@@ -30324,8 +30320,8 @@
       "gauge": 0.0,
       "mrms_point": 0.0,
       "mrms_nbhd": 0.0,
-      "n0q_point": 0.0,
-      "n0q_nbhd": 0.0,
+      "n0q_point": 0,
+      "n0q_nbhd": 0,
       "mrms_files": 2
      },
      {
@@ -30909,7 +30905,7 @@
       "mrms_point": 0.009,
       "mrms_nbhd": 0.01,
       "n0q_point": 0.013,
-      "n0q_nbhd": 0.01,
+      "n0q_nbhd": 0.009,
       "mrms_files": 14
      },
      {
