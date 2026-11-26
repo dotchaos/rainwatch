@@ -17,9 +17,9 @@
  "last_card": "2026-11-26T01",
  "last_flood": "2026-11-25T10",
  "last_hrrr": "2026-11-25T22:00:00+00:00:ad9be413728f0280",
- "last_shading": "2026-11-26T00",
- "last_signals": "2026-11-26T00",
- "last_snapshot": "2026-11-26T00",
+ "last_shading": "2026-11-26T01",
+ "last_signals": "2026-11-26T01",
+ "last_snapshot": "2026-11-26T01",
  "nws_seen": [
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.3",
   "urn:oid:2.49.0.1.840.0.f44cdf38b306227a23905cf0f5ed5f8d4854fc84.001.2",
