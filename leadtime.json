@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-26T11:16:44.097705+00:00",
+ "generated": "2026-11-26T11:31:52.545782+00:00",
  "truth": "SFOC1 (US Mint) only; hours from its raw accumulator readings, each increment in the clock hour holding most of its interval (v0.24)",
  "window_days": 60,
  "heavy_in": 0.2,
