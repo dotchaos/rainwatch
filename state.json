@@ -16,7 +16,7 @@
  },
  "last_card": "2026-11-27T23",
  "last_flood": "2026-11-27T23",
- "last_hrrr": "2026-11-27T21:00:00+00:00:9b110e2bed8dcaf7",
+ "last_hrrr": "2026-11-27T22:00:00+00:00:9b110e2bed8dcaf7",
  "last_shading": "2026-11-27T23",
  "last_signals": "2026-11-27T23",
  "last_snapshot": "2026-11-27T23",
@@ -235,6 +235,7 @@
   "d92e47f64efe6bd08f11ebee112b34dec04cfa1d429bf6940e4a84bf78153461",
   "bda72c2bdb0bdd72316baaeb493a1dea6c1120208a1549ce0319b62e6417be13",
   "f885229bc135ac7c79eb4d3c5a51e0aa376c3e65b5e4e77261ddb9e59a0e7578",
-  "753971277c7eac71802d5a3a5ee12b10a2419d3a35cb8ce3a02b06d3b095dafb"
+  "753971277c7eac71802d5a3a5ee12b10a2419d3a35cb8ce3a02b06d3b095dafb",
+  "ed46a0ad6fd9a45f25cd1dc00aff97b047b93346938ba52c91cde44cff0b80d7"
  ]
 }
