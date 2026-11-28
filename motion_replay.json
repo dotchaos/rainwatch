@@ -1,5 +1,5 @@
 {
- "definition": "Motion tracker replay harness and baseline (read-only). John, Nov 28 2026.\n\nReplays the production tracker (nowcast.estimate_motion + check_steering, unchanged) at every 5-minute issue time over\neach storm's peak 6 h plus 6 h either side, using the archived IEM N0Q frames production would have used\n(newest 5 frames within 30 min). Radar input and Z-R are the production ones throughout.\n\nMetrics, kept separate on purpose:\n\nRainfall-nowcast accuracy\n  R1  motion-isolating 60-min nowcast. For issue time t and each of 9 fixed points (the block + 8 points 5 km away at\n      45\u00b0 steps): forecast = sum over k=1..12 of rate(latest frame, at point - v*5k min) * 5/60, using the motion v\n      the forecast actually used; observed = sum of rate(frame t+5k, at point) * 5/60. Same frames, same Z-R on both\n      sides, so Z-R error cancels and only motion (and growth/decay) is scored. Error = forecast - observed (inches).\n      Reported: MAE over wet cases (forecast or observed >= 0.01\"), bias, and hits / misses / false alarms at 0.20\".\n  R2  production pipeline as delivered (information): nowcast.run's median for the next clock hour at the block vs\n      the radar-observed accumulation in that hour (same Z-R).\nMotion-vector accuracy\n  V1  vector error |v_used - v_ref| (km/h), v_ref = displacement of >= 35 dBZ echo over the FOLLOWING 30 min (frames\n      t -> t+30), accepted only where the two 15-min halves agree within 15 km/h (otherwise no reference).\n  V2  vector error against 0.8 x the 700 hPa wind (GFS, Open-Meteo historical forecast), a second, independent reference.\nConfidence calibration: V1 error by confidence class. Stability: share of consecutive times with a speed jump > 30 km/h\nor a direction change > 60\u00b0 (both moving > 5 km/h).\n",
+ "definition": "Motion tracker replay harness and baseline (read-only). John, Nov 28 2026.\n\nReplays the production tracker (nowcast.estimate_motion + check_steering, unchanged) at every 5-minute issue time over\neach storm's peak 6 h plus 6 h either side, using the archived IEM N0Q frames production would have used\n(newest 5 frames within 30 min). Radar input and Z-R are the production ones throughout.\n\nMetrics, kept separate on purpose:\n\nRainfall-nowcast accuracy\n  R1  motion-isolating 60-min nowcast. For issue time t and each of 9 fixed points (the block + 8 points 5 km away at\n      45\u00b0 steps): forecast = sum over k=1..12 of rate(latest frame, at point - v*5k min) * 5/60, using the motion v\n      the forecast actually used; observed = sum of rate(frame t+5k, at point) * 5/60. Same frames, same Z-R on both\n      sides, so Z-R error cancels and only motion (and growth/decay) is scored. Error = forecast - observed (inches).\n      Reported: MAE over wet cases (forecast or observed >= 0.01\"), bias, and hits / misses / false alarms at 0.20\".\n  R2  production pipeline as delivered (information): nowcast.run's median for the next clock hour at the block vs\n      the radar-observed accumulation in that hour (same Z-R).\nMotion-vector accuracy\n  V1  vector error |v_used - v_ref| (km/h). v_ref = displacement of rain over the FOLLOWING 30 min (frames t -> t+30)\n      by plain cross-correlation of rain-rate fields after removing persistent echo (per-pixel minimum over t..t+30),\n      accepted only where the two 15-min halves agree within 15 km/h. (A first version used phase correlation of\n      >= 35 dBZ masks; it locked onto zero shift like the tracker and was discarded.)\n  V2  vector error against 0.8 x the 700 hPa wind (GFS, Open-Meteo historical forecast), a second, independent reference.\nConfidence calibration: V1 error by confidence class. Stability: share of consecutive times with a speed jump > 30 km/h\nor a direction change > 60\u00b0 (both moving > 5 km/h).\n",
  "storms": {
   "Nov 15": {
    "window": [
@@ -64,7 +64,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -123,7 +123,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "too little >= 35 dBZ echo",
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -182,7 +182,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "too little >= 35 dBZ echo",
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -241,7 +241,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -300,7 +300,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "too little >= 35 dBZ echo",
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -359,7 +359,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "too little >= 35 dBZ echo",
+     "v1_none": "too little moving rain",
      "v2_err": 24.5
     },
     {
@@ -416,9 +416,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 50.9,
-     "v1_ref_kmh": 66.7,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 33.4
     },
     {
@@ -477,7 +477,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "too little >= 35 dBZ echo",
+     "v1_none": "too little moving rain",
      "v2_err": 30.3
     },
     {
@@ -536,7 +536,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "too little >= 35 dBZ echo",
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -593,8 +593,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 34.1,
-     "v1_ref_kmh": 0.8,
+     "v1_err": 34.6,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -713,7 +713,7 @@
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
-     "v1_none": "too little >= 35 dBZ echo",
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -770,9 +770,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 86.8,
-     "v1_ref_kmh": 66.6,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -829,8 +829,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 124.7,
-     "v1_ref_kmh": 130.3,
+     "v1_err": 37.9,
+     "v1_ref_kmh": 2.6,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -888,9 +888,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 66.0,
+     "v1_ref_kmh": 67.3,
+     "v1_none": null,
      "v2_err": 31.4
     },
     {
@@ -1006,9 +1006,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 36.0,
-     "v1_ref_kmh": 0.4,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -1183,9 +1183,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.4,
-     "v1_ref_kmh": 3.7,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -1419,9 +1419,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.7,
-     "v1_ref_kmh": 0.2,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -1596,9 +1596,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 31.4,
-     "v1_ref_kmh": 1.5,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -1773,8 +1773,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 68.5,
-     "v1_ref_kmh": 74.0,
+     "v1_err": 68.7,
+     "v1_ref_kmh": 74.2,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -1832,9 +1832,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 88.9,
+     "v1_ref_kmh": 66.8,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -1950,9 +1950,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 31.7,
-     "v1_ref_kmh": 0.4,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -2009,9 +2009,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 83.9,
-     "v1_ref_kmh": 64.8,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -2068,9 +2068,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 33.9,
+     "v1_ref_kmh": 5.8,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -2127,9 +2127,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 30.8,
-     "v1_ref_kmh": 2.6,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -2245,9 +2245,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.6,
-     "v1_ref_kmh": 1.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -2304,9 +2304,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 34.9,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -2481,8 +2481,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 10.5,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 11.9,
+     "v1_ref_kmh": 3.4,
      "v1_none": null,
      "v2_err": 27.6
     },
@@ -2540,9 +2540,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 12.5,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 33.3
     },
     {
@@ -2599,9 +2599,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 35.6,
+     "v1_ref_kmh": 0.9,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -2658,9 +2658,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 11.7,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 31.8
     },
     {
@@ -2717,8 +2717,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.0,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 35.7,
+     "v1_ref_kmh": 2.4,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -2777,7 +2777,7 @@
       0.0
      ],
      "v1_err": 34.9,
-     "v1_ref_kmh": 0.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -2894,8 +2894,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 34.3,
-     "v1_ref_kmh": 2.0,
+     "v1_err": 33.8,
+     "v1_ref_kmh": 3.7,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -2953,8 +2953,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 34.9,
-     "v1_ref_kmh": 0.8,
+     "v1_err": 35.5,
+     "v1_ref_kmh": 1.4,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -3071,8 +3071,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.6,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 36.9,
+     "v1_ref_kmh": 1.4,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -3130,8 +3130,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.6,
-     "v1_ref_kmh": 0.3,
+     "v1_err": 35.5,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -3189,8 +3189,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 36.6,
-     "v1_ref_kmh": 1.8,
+     "v1_err": 36.9,
+     "v1_ref_kmh": 1.4,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -3248,8 +3248,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.2,
-     "v1_ref_kmh": 0.5,
+     "v1_err": 36.8,
+     "v1_ref_kmh": 1.8,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -3307,8 +3307,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.6,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 36.2,
+     "v1_ref_kmh": 0.9,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -3366,8 +3366,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.4,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 37.5,
+     "v1_ref_kmh": 2.6,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -3425,8 +3425,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 20.8,
-     "v1_ref_kmh": 0.0,
+     "v1_err": 20.7,
+     "v1_ref_kmh": 1.4,
      "v1_none": null,
      "v2_err": 14.8
     },
@@ -3484,8 +3484,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 35.6,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 35.5,
+     "v1_ref_kmh": 1.4,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -3543,9 +3543,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 16.5,
+     "v1_ref_kmh": 0.9,
+     "v1_none": null,
      "v2_err": 19.0
     },
     {
@@ -3661,9 +3661,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 13.0,
+     "v1_ref_kmh": 1.4,
+     "v1_none": null,
      "v2_err": 23.5
     },
     {
@@ -3720,9 +3720,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 11.7,
+     "v1_ref_kmh": 0.0,
+     "v1_none": null,
      "v2_err": 23.5
     },
     {
@@ -4015,9 +4015,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 54.9,
+     "v1_ref_kmh": 21.3,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -4074,9 +4074,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 42.5,
+     "v1_ref_kmh": 56.3,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -4133,9 +4133,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 44.8,
+     "v1_ref_kmh": 59.0,
+     "v1_none": null,
      "v2_err": 19.2
     },
     {
@@ -4192,9 +4192,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 79.4,
+     "v1_ref_kmh": 46.1,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -4251,9 +4251,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 87.6,
+     "v1_ref_kmh": 41.5,
+     "v1_none": null,
      "v2_err": 20.7
     },
     {
@@ -4310,9 +4310,9 @@
       0.0295,
       0.0016
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 14.5,
+     "v1_ref_kmh": 46.9,
+     "v1_none": null,
      "v2_err": 52.0
     },
     {
@@ -4369,9 +4369,9 @@
       0.0387,
       0.0016
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 10.6,
+     "v1_ref_kmh": 48.1,
+     "v1_none": null,
      "v2_err": 29.8
     },
     {
@@ -4428,8 +4428,8 @@
       0.0,
       0.0016
      ],
-     "v1_err": 30.1,
-     "v1_ref_kmh": 45.1,
+     "v1_err": 35.9,
+     "v1_ref_kmh": 61.7,
      "v1_none": null,
      "v2_err": 30.5
     },
@@ -4664,9 +4664,9 @@
       0.0,
       0.0016
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 87.0,
+     "v1_ref_kmh": 20.7,
+     "v1_none": null,
      "v2_err": 36.1
     },
     {
@@ -4841,9 +4841,9 @@
       0.0,
       0.0016
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 98.2,
+     "v1_ref_kmh": 31.7,
+     "v1_none": null,
      "v2_err": 34.4
     },
     {
@@ -4900,9 +4900,9 @@
       0.0,
       0.0016
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 39.6,
+     "v1_ref_kmh": 49.0,
+     "v1_none": null,
      "v2_err": 28.9
     },
     {
@@ -5018,9 +5018,9 @@
       0.0,
       0.0377
      ],
-     "v1_err": 93.6,
-     "v1_ref_kmh": 9.9,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 53.8
     },
     {
@@ -5195,9 +5195,9 @@
       0.0144,
       0.0377
      ],
-     "v1_err": 70.7,
-     "v1_ref_kmh": 10.6,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 30.5
     },
     {
@@ -5254,8 +5254,8 @@
       0.0156,
       0.0377
      ],
-     "v1_err": 9.6,
-     "v1_ref_kmh": 16.6,
+     "v1_err": 67.3,
+     "v1_ref_kmh": 72.6,
      "v1_none": null,
      "v2_err": 31.0
     },
@@ -5372,8 +5372,8 @@
       0.024,
       0.0377
      ],
-     "v1_err": 33.7,
-     "v1_ref_kmh": 4.4,
+     "v1_err": 40.8,
+     "v1_ref_kmh": 65.8,
      "v1_none": null,
      "v2_err": 20.2
     },
@@ -5431,9 +5431,9 @@
       0.0031,
       0.0377
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 33.0,
+     "v1_ref_kmh": 67.7,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -5490,8 +5490,8 @@
       0.0205,
       0.0377
      ],
-     "v1_err": 40.6,
-     "v1_ref_kmh": 38.5,
+     "v1_err": 17.0,
+     "v1_ref_kmh": 79.3,
      "v1_none": null,
      "v2_err": 27.8
     },
@@ -5549,9 +5549,9 @@
       0.0217,
       0.0377
      ],
-     "v1_err": 17.9,
-     "v1_ref_kmh": 28.4,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 29.4
     },
     {
@@ -5608,9 +5608,9 @@
       0.0157,
       0.0377
      ],
-     "v1_err": 29.5,
-     "v1_ref_kmh": 28.3,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 9.3
     },
     {
@@ -5667,9 +5667,9 @@
       0.0141,
       0.0377
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 60.6,
+     "v1_ref_kmh": 37.1,
+     "v1_none": null,
      "v2_err": 37.6
     },
     {
@@ -5726,9 +5726,9 @@
       0.0025,
       0.0258
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 50.8,
+     "v1_ref_kmh": 38.9,
+     "v1_none": null,
      "v2_err": 34.1
     },
     {
@@ -5844,9 +5844,9 @@
       0.1004,
       0.0258
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 115.1,
+     "v1_ref_kmh": 104.7,
+     "v1_none": null,
      "v2_err": 29.5
     },
     {
@@ -5903,9 +5903,9 @@
       0.0941,
       0.0258
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 104.5,
+     "v1_ref_kmh": 92.9,
+     "v1_none": null,
      "v2_err": 26.4
     },
     {
@@ -6139,9 +6139,9 @@
       0.0111,
       0.0258
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 122.3,
+     "v1_ref_kmh": 78.6,
+     "v1_none": null,
      "v2_err": 23.3
     },
     {
@@ -6198,9 +6198,9 @@
       0.0057,
       0.0258
      ],
-     "v1_err": 48.5,
-     "v1_ref_kmh": 84.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -6257,9 +6257,9 @@
       0.0111,
       0.0258
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 39.6,
+     "v1_ref_kmh": 82.5,
+     "v1_none": null,
      "v2_err": 13.1
     },
     {
@@ -6316,9 +6316,9 @@
       0.0409,
       0.0258
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 74.3,
+     "v1_ref_kmh": 80.5,
+     "v1_none": null,
      "v2_err": 31.1
     },
     {
@@ -6729,9 +6729,9 @@
       0.0238,
       0.0919
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 44.2,
+     "v1_ref_kmh": 80.8,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -6788,8 +6788,8 @@
       0.0345,
       0.0919
      ],
-     "v1_err": 21.1,
-     "v1_ref_kmh": 28.9,
+     "v1_err": 48.7,
+     "v1_ref_kmh": 85.1,
      "v1_none": null,
      "v2_err": 13.8
     },
@@ -6847,9 +6847,9 @@
       0.0325,
       0.0919
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 63.6,
+     "v1_ref_kmh": 24.6,
+     "v1_none": null,
      "v2_err": 27.2
     },
     {
@@ -6965,9 +6965,9 @@
       0.0418,
       0.0919
      ],
-     "v1_err": 25.1,
-     "v1_ref_kmh": 59.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 32.0
     },
     {
@@ -7260,8 +7260,8 @@
       0.0946,
       0.1628
      ],
-     "v1_err": 65.7,
-     "v1_ref_kmh": 82.7,
+     "v1_err": 63.8,
+     "v1_ref_kmh": 80.8,
      "v1_none": null,
      "v2_err": 20.1
     },
@@ -7319,8 +7319,8 @@
       0.0895,
       0.1628
      ],
-     "v1_err": 46.2,
-     "v1_ref_kmh": 63.1,
+     "v1_err": 65.8,
+     "v1_ref_kmh": 82.8,
      "v1_none": null,
      "v2_err": 20.1
     },
@@ -7378,8 +7378,8 @@
       0.0875,
       0.1628
      ],
-     "v1_err": 47.4,
-     "v1_ref_kmh": 33.7,
+     "v1_err": 66.1,
+     "v1_ref_kmh": 83.1,
      "v1_none": null,
      "v2_err": 20.1
     },
@@ -7437,8 +7437,8 @@
       0.0801,
       0.1628
      ],
-     "v1_err": 44.0,
-     "v1_ref_kmh": 28.8,
+     "v1_err": 68.0,
+     "v1_ref_kmh": 85.1,
      "v1_none": null,
      "v2_err": 20.1
     },
@@ -7850,8 +7850,8 @@
       0.0301,
       0.0977
      ],
-     "v1_err": 20.3,
-     "v1_ref_kmh": 63.7,
+     "v1_err": 40.6,
+     "v1_ref_kmh": 84.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -8204,8 +8204,8 @@
       0.1509,
       0.0977
      ],
-     "v1_err": 64.8,
-     "v1_ref_kmh": 51.5,
+     "v1_err": 55.3,
+     "v1_ref_kmh": 72.3,
      "v1_none": null,
      "v2_err": 26.7
     },
@@ -8381,8 +8381,8 @@
       0.0798,
       0.0977
      ],
-     "v1_err": 22.2,
-     "v1_ref_kmh": 16.0,
+     "v1_err": 180.6,
+     "v1_ref_kmh": 163.8,
      "v1_none": null,
      "v2_err": 26.7
     },
@@ -8440,9 +8440,9 @@
       0.0547,
       0.0977
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 178.4,
+     "v1_ref_kmh": 161.6,
+     "v1_none": null,
      "v2_err": 26.7
     },
     {
@@ -8499,8 +8499,8 @@
       0.0564,
       0.0977
      ],
-     "v1_err": 59.3,
-     "v1_ref_kmh": 76.3,
+     "v1_err": 175.0,
+     "v1_ref_kmh": 158.2,
      "v1_none": null,
      "v2_err": 26.7
     },
@@ -8617,8 +8617,8 @@
       0.0434,
       0.0806
      ],
-     "v1_err": 50.8,
-     "v1_ref_kmh": 58.9,
+     "v1_err": 164.9,
+     "v1_ref_kmh": 158.1,
      "v1_none": null,
      "v2_err": 31.0
     },
@@ -8676,9 +8676,9 @@
       0.0521,
       0.0806
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 57.3,
+     "v1_ref_kmh": 71.6,
+     "v1_none": null,
      "v2_err": 23.7
     },
     {
@@ -8794,8 +8794,8 @@
       0.0463,
       0.0806
      ],
-     "v1_err": 20.5,
-     "v1_ref_kmh": 35.0,
+     "v1_err": 63.9,
+     "v1_ref_kmh": 80.9,
      "v1_none": null,
      "v2_err": 21.1
     },
@@ -8853,9 +8853,9 @@
       0.0496,
       0.0806
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 53.1,
+     "v1_ref_kmh": 70.1,
+     "v1_none": null,
      "v2_err": 21.1
     },
     {
@@ -8912,9 +8912,9 @@
       0.048,
       0.0806
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 50.8,
+     "v1_ref_kmh": 67.7,
+     "v1_none": null,
      "v2_err": 21.1
     },
     {
@@ -8971,8 +8971,8 @@
       0.0563,
       0.0806
      ],
-     "v1_err": 63.6,
-     "v1_ref_kmh": 80.5,
+     "v1_err": 65.3,
+     "v1_ref_kmh": 82.3,
      "v1_none": null,
      "v2_err": 21.1
     },
@@ -9148,9 +9148,9 @@
       0.137,
       0.0806
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 32.2,
+     "v1_ref_kmh": 70.2,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -9384,9 +9384,9 @@
       0.1062,
       0.0311
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 51.9,
+     "v1_ref_kmh": 68.9,
+     "v1_none": null,
      "v2_err": 24.6
     },
     {
@@ -9443,8 +9443,8 @@
       0.1137,
       0.0311
      ],
-     "v1_err": 31.6,
-     "v1_ref_kmh": 44.5,
+     "v1_err": 50.0,
+     "v1_ref_kmh": 67.0,
      "v1_none": null,
      "v2_err": 24.6
     },
@@ -9679,9 +9679,9 @@
       0.0246,
       0.0311
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 54.9,
+     "v1_ref_kmh": 44.7,
+     "v1_none": null,
      "v2_err": 24.6
     },
     {
@@ -10210,9 +10210,9 @@
       0.0126,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 54.6,
+     "v1_ref_kmh": 71.6,
+     "v1_none": null,
      "v2_err": 36.6
     },
     {
@@ -10387,9 +10387,9 @@
       0.0216,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 68.6,
+     "v1_ref_kmh": 85.6,
+     "v1_none": null,
      "v2_err": 36.6
     },
     {
@@ -10446,9 +10446,9 @@
       0.0199,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 50.8,
+     "v1_ref_kmh": 67.8,
+     "v1_none": null,
      "v2_err": 36.6
     },
     {
@@ -10505,9 +10505,9 @@
       0.0265,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 32.4,
+     "v1_ref_kmh": 49.0,
+     "v1_none": null,
      "v2_err": 36.6
     },
     {
@@ -10682,9 +10682,9 @@
       0.0,
       0.0288
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 44.2,
+     "v1_ref_kmh": 61.1,
+     "v1_none": null,
      "v2_err": 29.1
     },
     {
@@ -10741,9 +10741,9 @@
       0.0014,
       0.0288
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 58.3,
+     "v1_ref_kmh": 75.2,
+     "v1_none": null,
      "v2_err": 29.1
     },
     {
@@ -10918,9 +10918,9 @@
       0.0048,
       0.0288
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 65.9,
+     "v1_ref_kmh": 73.8,
+     "v1_none": null,
      "v2_err": 37.6
     },
     {
@@ -10977,9 +10977,9 @@
       0.004,
       0.0288
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 65.9,
+     "v1_ref_kmh": 74.3,
+     "v1_none": null,
      "v2_err": 37.6
     },
     {
@@ -11036,9 +11036,9 @@
       0.0024,
       0.0288
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 83.2,
+     "v1_ref_kmh": 89.8,
+     "v1_none": null,
      "v2_err": 38.9
     },
     {
@@ -11095,9 +11095,9 @@
       0.0037,
       0.0288
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 55.6,
+     "v1_ref_kmh": 72.6,
+     "v1_none": null,
      "v2_err": 29.1
     },
     {
@@ -11272,9 +11272,9 @@
       0.0374,
       0.0288
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 48.6,
+     "v1_ref_kmh": 65.5,
+     "v1_none": null,
      "v2_err": 29.1
     },
     {
@@ -11331,9 +11331,9 @@
       0.0327,
       0.0288
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 44.4,
+     "v1_ref_kmh": 61.3,
+     "v1_none": null,
      "v2_err": 29.1
     },
     {
@@ -11390,9 +11390,9 @@
       0.0253,
       0.1237
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 130.9,
+     "v1_ref_kmh": 74.3,
+     "v1_none": null,
      "v2_err": 20.0
     },
     {
@@ -11449,9 +11449,9 @@
       0.0306,
       0.1237
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 81.9,
+     "v1_ref_kmh": 65.1,
+     "v1_none": null,
      "v2_err": 30.1
     },
     {
@@ -11567,8 +11567,8 @@
       0.0175,
       0.1237
      ],
-     "v1_err": 12.4,
-     "v1_ref_kmh": 51.7,
+     "v1_err": 10.0,
+     "v1_ref_kmh": 52.7,
      "v1_none": null,
      "v2_err": 17.6
     },
@@ -11626,9 +11626,9 @@
       0.0167,
       0.1237
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 163.3,
+     "v1_ref_kmh": 117.3,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -11803,9 +11803,9 @@
       0.0258,
       0.1237
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 115.3,
+     "v1_ref_kmh": 98.6,
+     "v1_none": null,
      "v2_err": 30.1
     },
     {
@@ -12039,9 +12039,9 @@
       0.0207,
       0.1237
      ],
-     "v1_err": 94.6,
-     "v1_ref_kmh": 85.6,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 40.1
     },
     {
@@ -12098,9 +12098,9 @@
       0.0604,
       0.2601
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 105.0,
+     "v1_ref_kmh": 89.6,
+     "v1_none": null,
      "v2_err": 44.0
     },
     {
@@ -12157,9 +12157,9 @@
       0.1057,
       0.2601
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 109.4,
+     "v1_ref_kmh": 94.7,
+     "v1_none": null,
      "v2_err": 45.0
     },
     {
@@ -12275,9 +12275,9 @@
       0.0842,
       0.2601
      ],
-     "v1_err": 2.7,
-     "v1_ref_kmh": 15.6,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 44.0
     },
     {
@@ -12393,9 +12393,9 @@
       0.1254,
       0.2601
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 61.2,
+     "v1_ref_kmh": 77.8,
+     "v1_none": null,
      "v2_err": 44.0
     },
     {
@@ -12570,9 +12570,9 @@
       0.2318,
       0.2601
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 38.3,
+     "v1_ref_kmh": 55.3,
+     "v1_none": null,
      "v2_err": 44.0
     },
     {
@@ -12747,9 +12747,9 @@
       0.3872,
       0.2601
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 57.3,
+     "v1_ref_kmh": 74.0,
+     "v1_none": null,
      "v2_err": 44.0
     },
     {
@@ -12802,9 +12802,9 @@
        0.0889
       ]
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 54.5,
+     "v1_ref_kmh": 71.4,
+     "v1_none": null,
      "v2_err": 33.5
     }
    ],
@@ -12818,7 +12818,7 @@
      "medium": 3,
      "low": 200
     },
-    "slow_tracker": 4,
+    "slow_tracker": 13,
     "r1": {
      "cases": 1953,
      "wet_cases": 1172,
@@ -12839,27 +12839,28 @@
      "mae_wet": 0.0536,
      "bias_wet": -0.0286
     },
+    "v1_reference_near_zero_share": 0.189,
     "v1": {
-     "with_reference": 55,
-     "no_reference": 162,
-     "median_err": 35.4,
-     "share_over_25": 0.782
+     "with_reference": 90,
+     "no_reference": 127,
+     "median_err": 52.5,
+     "share_over_25": 0.9
     },
     "v1_by_confidence": {
      "high": {
-      "n": 4,
-      "median_err": 23.0,
+      "n": 6,
+      "median_err": 30.1,
       "share_over_25": 0.5
      },
      "medium": {
-      "n": 1,
-      "median_err": 33.7,
-      "share_over_25": 1.0
+      "n": 2,
+      "median_err": 25.7,
+      "share_over_25": 0.5
      },
      "low": {
-      "n": 50,
-      "median_err": 35.5,
-      "share_over_25": 0.8
+      "n": 82,
+      "median_err": 54.5,
+      "share_over_25": 0.939
      }
     },
     "v2": {
@@ -12992,9 +12993,9 @@
       0.0027,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 69.2,
+     "v1_ref_kmh": 77.3,
+     "v1_none": null,
      "v2_err": 48.7
     },
     {
@@ -13051,9 +13052,9 @@
       0.0,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 68.8,
+     "v1_ref_kmh": 78.5,
+     "v1_none": null,
      "v2_err": 46.4
     },
     {
@@ -13110,9 +13111,9 @@
       0.0,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 73.1,
+     "v1_ref_kmh": 82.6,
+     "v1_none": null,
      "v2_err": 46.4
     },
     {
@@ -13169,9 +13170,9 @@
       0.0059,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 75.5,
+     "v1_ref_kmh": 84.6,
+     "v1_none": null,
      "v2_err": 47.5
     },
     {
@@ -13228,9 +13229,9 @@
       0.0118,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 69.9,
+     "v1_ref_kmh": 79.7,
+     "v1_none": null,
      "v2_err": 46.4
     },
     {
@@ -13287,9 +13288,9 @@
       0.0274,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 74.5,
+     "v1_ref_kmh": 83.0,
+     "v1_none": null,
      "v2_err": 48.7
     },
     {
@@ -13346,9 +13347,9 @@
       0.0491,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 78.0,
+     "v1_ref_kmh": 85.1,
+     "v1_none": null,
      "v2_err": 51.1
     },
     {
@@ -13405,9 +13406,9 @@
       0.1054,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 77.1,
+     "v1_ref_kmh": 86.4,
+     "v1_none": null,
      "v2_err": 47.5
     },
     {
@@ -13464,9 +13465,9 @@
       0.232,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 76.6,
+     "v1_ref_kmh": 85.1,
+     "v1_none": null,
      "v2_err": 48.7
     },
     {
@@ -13523,9 +13524,9 @@
       0.3856,
       0.0329
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 112.6,
+     "v1_ref_kmh": 101.6,
+     "v1_none": null,
      "v2_err": 48.7
     },
     {
@@ -13582,8 +13583,8 @@
       0.2763,
       0.0329
      ],
-     "v1_err": 89.3,
-     "v1_ref_kmh": 78.6,
+     "v1_err": 118.1,
+     "v1_ref_kmh": 107.7,
      "v1_none": null,
      "v2_err": 47.5
     },
@@ -13641,9 +13642,9 @@
       0.0086,
       0.3148
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 123.1,
+     "v1_ref_kmh": 112.7,
+     "v1_none": null,
      "v2_err": 52.8
     },
     {
@@ -13700,9 +13701,9 @@
       0.0056,
       0.3148
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 124.8,
+     "v1_ref_kmh": 114.3,
+     "v1_none": null,
      "v2_err": 51.7
     },
     {
@@ -13877,9 +13878,9 @@
       0.0855,
       0.3148
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 27.1,
+     "v1_ref_kmh": 80.3,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -13995,9 +13996,9 @@
       0.0394,
       0.3148
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 69.5,
+     "v1_ref_kmh": 78.3,
+     "v1_none": null,
      "v2_err": 51.7
     },
     {
@@ -14054,9 +14055,9 @@
       0.1334,
       0.3148
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 70.6,
+     "v1_ref_kmh": 80.0,
+     "v1_none": null,
      "v2_err": 51.7
     },
     {
@@ -14113,9 +14114,9 @@
       0.1596,
       0.3148
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 57.3,
+     "v1_ref_kmh": 66.7,
+     "v1_none": null,
      "v2_err": 49.6
     },
     {
@@ -14172,9 +14173,9 @@
       0.0701,
       0.3148
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 56.1,
+     "v1_ref_kmh": 66.2,
+     "v1_none": null,
      "v2_err": 51.7
     },
     {
@@ -14231,9 +14232,9 @@
       0.0903,
       0.3148
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 60.6,
+     "v1_ref_kmh": 68.3,
+     "v1_none": null,
      "v2_err": 50.6
     },
     {
@@ -14290,8 +14291,8 @@
       0.341,
       0.3148
      ],
-     "v1_err": 43.8,
-     "v1_ref_kmh": 34.6,
+     "v1_err": 56.4,
+     "v1_ref_kmh": 69.1,
      "v1_none": null,
      "v2_err": 55.0
     },
@@ -14467,9 +14468,9 @@
       0.3329,
       0.1606
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 86.1,
+     "v1_ref_kmh": 79.9,
+     "v1_none": null,
      "v2_err": 48.3
     },
     {
@@ -14526,9 +14527,9 @@
       0.279,
       0.1606
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 27.4,
+     "v1_ref_kmh": 56.7,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -14644,9 +14645,9 @@
       0.3552,
       0.1606
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 25.5,
+     "v1_ref_kmh": 71.8,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -14703,8 +14704,8 @@
       0.3929,
       0.1606
      ],
-     "v1_err": 14.5,
-     "v1_ref_kmh": 68.1,
+     "v1_err": 31.3,
+     "v1_ref_kmh": 79.1,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -15057,9 +15058,9 @@
       0.0335,
       0.1213
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 153.4,
+     "v1_ref_kmh": 95.9,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -15116,9 +15117,9 @@
       0.0366,
       0.1213
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 156.3,
+     "v1_ref_kmh": 99.3,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -15234,9 +15235,9 @@
       0.0118,
       0.1213
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 158.3,
+     "v1_ref_kmh": 101.7,
+     "v1_none": null,
      "v2_err": 16.8
     },
     {
@@ -16060,9 +16061,9 @@
       0.0645,
       0.0075
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 82.3,
+     "v1_ref_kmh": 30.5,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -16296,9 +16297,9 @@
       0.0111,
       0.0075
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 13.9,
+     "v1_ref_kmh": 75.6,
+     "v1_none": null,
      "v2_err": 21.6
     },
     {
@@ -16709,9 +16710,9 @@
       0.0013,
       0.0254
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 94.0,
+     "v1_ref_kmh": 35.2,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -16886,9 +16887,9 @@
       0.0109,
       0.0254
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 79.0,
+     "v1_ref_kmh": 85.3,
+     "v1_none": null,
      "v2_err": 73.0
     },
     {
@@ -16945,9 +16946,9 @@
       0.0063,
       0.0254
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 211.4,
+     "v1_ref_kmh": 203.1,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -17004,9 +17005,9 @@
       0.0089,
       0.0254
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 43.4,
+     "v1_ref_kmh": 55.4,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -17063,9 +17064,9 @@
       0.0089,
       0.0254
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 61.6,
+     "v1_ref_kmh": 62.1,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -17122,9 +17123,9 @@
       0.017,
       0.0254
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 78.5,
+     "v1_ref_kmh": 51.2,
+     "v1_none": null,
      "v2_err": 12.9
     },
     {
@@ -17299,9 +17300,9 @@
       0.1636,
       0.2144
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 82.3,
+     "v1_ref_kmh": 60.5,
+     "v1_none": null,
      "v2_err": 80.5
     },
     {
@@ -17417,9 +17418,9 @@
       0.0081,
       0.2144
      ],
-     "v1_err": 72.9,
-     "v1_ref_kmh": 27.4,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -17535,9 +17536,9 @@
       0.0421,
       0.2144
      ],
-     "v1_err": 137.4,
-     "v1_ref_kmh": 67.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -17594,9 +17595,9 @@
       0.0606,
       0.2144
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 106.5,
+     "v1_ref_kmh": 33.4,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -17948,9 +17949,9 @@
       0.0409,
       0.7184
      ],
-     "v1_err": 143.7,
-     "v1_ref_kmh": 91.7,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -18184,9 +18185,9 @@
       0.1059,
       0.7184
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 35.6,
+     "v1_ref_kmh": 48.8,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -18538,9 +18539,9 @@
       0.303,
       0.7184
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 67.3,
+     "v1_ref_kmh": 22.0,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -19069,9 +19070,9 @@
       0.2128,
       0.6125
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 85.0,
+     "v1_ref_kmh": 34.1,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -19246,9 +19247,9 @@
       0.3234,
       0.6125
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 86.8,
+     "v1_ref_kmh": 33.7,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -19364,9 +19365,9 @@
       0.1619,
       0.2575
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 80.0,
+     "v1_ref_kmh": 33.9,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -19836,9 +19837,9 @@
       0.3294,
       0.2575
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 78.0,
+     "v1_ref_kmh": 25.8,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -19895,9 +19896,9 @@
       0.2586,
       0.2575
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 83.3,
+     "v1_ref_kmh": 90.7,
+     "v1_none": null,
      "v2_err": 64.5
     },
     {
@@ -19954,9 +19955,9 @@
       0.1831,
       0.2575
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 86.6,
+     "v1_ref_kmh": 92.7,
+     "v1_none": null,
      "v2_err": 65.9
     },
     {
@@ -20131,9 +20132,9 @@
       0.113,
       0.0412
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 26.2,
+     "v1_ref_kmh": 88.4,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -20190,9 +20191,9 @@
       0.0464,
       0.0412
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 49.7,
+     "v1_ref_kmh": 88.3,
+     "v1_none": null,
      "v2_err": 38.4
     },
     {
@@ -20308,9 +20309,9 @@
       0.3627,
       0.0412
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 20.6,
+     "v1_ref_kmh": 19.3,
+     "v1_none": null,
      "v2_err": 53.3
     },
     {
@@ -20603,9 +20604,9 @@
       0.0478,
       0.0412
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 67.8,
+     "v1_ref_kmh": 30.4,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -20780,9 +20781,9 @@
       0.0,
       0.0881
      ],
-     "v1_err": 139.3,
-     "v1_ref_kmh": 47.6,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 31.4
     },
     {
@@ -20898,9 +20899,9 @@
       0.2707,
       0.0881
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 38.7,
+     "v1_ref_kmh": 18.7,
+     "v1_none": null,
      "v2_err": 61.3
     },
     {
@@ -21193,9 +21194,9 @@
       0.0485,
       0.0881
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 65.9,
+     "v1_ref_kmh": 27.9,
+     "v1_none": null,
      "v2_err": 35.9
     },
     {
@@ -21606,9 +21607,9 @@
       0.0954,
       0.1109
      ],
-     "v1_err": 28.5,
-     "v1_ref_kmh": 36.9,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 55.2
     },
     {
@@ -21783,9 +21784,9 @@
       0.0655,
       0.1109
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 16.6,
+     "v1_ref_kmh": 88.8,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -21901,9 +21902,9 @@
       0.0921,
       0.1109
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 24.7,
+     "v1_ref_kmh": 96.6,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -21960,9 +21961,9 @@
       0.086,
       0.1109
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 17.9,
+     "v1_ref_kmh": 89.6,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -22137,9 +22138,9 @@
       0.0836,
       0.0034
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 73.5,
+     "v1_ref_kmh": 97.6,
+     "v1_none": null,
      "v2_err": 41.8
     },
     {
@@ -22373,9 +22374,9 @@
       0.0004,
       0.0034
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 72.8,
+     "v1_ref_kmh": 99.4,
+     "v1_none": null,
      "v2_err": 40.5
     },
     {
@@ -22432,9 +22433,9 @@
       0.0,
       0.0034
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 32.1,
+     "v1_ref_kmh": 97.0,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -22491,9 +22492,9 @@
       0.0,
       0.0034
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 26.6,
+     "v1_ref_kmh": 92.1,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -22550,9 +22551,9 @@
       0.0,
       0.0034
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 82.3,
+     "v1_ref_kmh": 100.6,
+     "v1_none": null,
      "v2_err": 47.6
     },
     {
@@ -22668,9 +22669,9 @@
       0.0,
       0.0034
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 15.3,
+     "v1_ref_kmh": 79.7,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -22786,9 +22787,9 @@
       0.0,
       0.0034
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 150.5,
+     "v1_ref_kmh": 72.3,
+     "v1_none": null,
      "v2_err": 26.0
     },
     {
@@ -22963,9 +22964,9 @@
       0.0,
       0.009
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 163.3,
+     "v1_ref_kmh": 82.5,
+     "v1_none": null,
      "v2_err": 7.2
     },
     {
@@ -23081,9 +23082,9 @@
       0.0,
       0.009
      ],
-     "v1_err": 107.9,
-     "v1_ref_kmh": 95.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 63.6
     },
     {
@@ -23140,9 +23141,9 @@
       0.0,
       0.009
      ],
-     "v1_err": 80.6,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -23199,9 +23200,9 @@
       0.0,
       0.009
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 154.1,
+     "v1_ref_kmh": 93.0,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -23258,8 +23259,8 @@
       0.0004,
       0.009
      ],
-     "v1_err": 80.6,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 160.8,
+     "v1_ref_kmh": 96.7,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -23376,8 +23377,8 @@
       0.0,
       0.009
      ],
-     "v1_err": 15.7,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 65.8,
+     "v1_ref_kmh": 81.5,
      "v1_none": null,
      "v2_err": 65.0
     },
@@ -23435,8 +23436,8 @@
       0.0116,
       0.009
      ],
-     "v1_err": 13.5,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 13.4,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 67.6
     },
@@ -23494,9 +23495,9 @@
       0.0076,
       0.009
      ],
-     "v1_err": 11.0,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 71.8
     },
     {
@@ -23553,9 +23554,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 75.5,
-     "v1_ref_kmh": 0.5,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -23612,9 +23613,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 11.7,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 65.3
     },
     {
@@ -23671,9 +23672,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 11.6,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 65.3
     },
     {
@@ -23730,9 +23731,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 12.4,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 64.0
     },
     {
@@ -23789,9 +23790,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 11.1,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 66.6
     },
     {
@@ -23848,9 +23849,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 11.0,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 66.6
     },
     {
@@ -23907,9 +23908,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 14.6,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 61.4
     },
     {
@@ -23966,9 +23967,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 14.5,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 61.4
     },
     {
@@ -24025,9 +24026,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 15.7,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 60.2
     },
     {
@@ -24084,8 +24085,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 15.6,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 22.5,
+     "v1_ref_kmh": 10.9,
      "v1_none": null,
      "v2_err": 60.2
     },
@@ -24143,9 +24144,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 36.1,
-     "v1_ref_kmh": 30.3,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 60.2
     },
     {
@@ -24202,9 +24203,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 16.1,
-     "v1_ref_kmh": 19.2,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 64.0
     },
     {
@@ -24438,9 +24439,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 76.7,
+     "v1_ref_kmh": 93.7,
+     "v1_none": null,
      "v2_err": 59.3
     },
     {
@@ -24497,9 +24498,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 224.5,
-     "v1_ref_kmh": 229.4,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 59.3
     },
     {
@@ -24969,9 +24970,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 59.2,
+     "v1_ref_kmh": 76.2,
+     "v1_none": null,
      "v2_err": 41.0
     },
     {
@@ -25146,9 +25147,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 19.0,
-     "v1_ref_kmh": 9.2,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 41.0
     },
     {
@@ -25205,9 +25206,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 5.7,
-     "v1_ref_kmh": 0.2,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 52.5
     },
     {
@@ -25323,9 +25324,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 137.4,
-     "v1_ref_kmh": 139.4,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 41.0
     },
     {
@@ -25382,9 +25383,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 52.0,
-     "v1_ref_kmh": 9.7,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -25559,9 +25560,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 117.9,
-     "v1_ref_kmh": 108.3,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 41.0
     },
     {
@@ -25689,7 +25690,7 @@
      "medium": 0,
      "low": 213
     },
-    "slow_tracker": 3,
+    "slow_tracker": 34,
     "r1": {
      "cases": 1953,
      "wet_cases": 1536,
@@ -25710,17 +25711,18 @@
      "mae_wet": 0.147,
      "bias_wet": -0.0805
     },
+    "v1_reference_near_zero_share": 0.014,
     "v1": {
-     "with_reference": 32,
-     "no_reference": 185,
-     "median_err": 23.8,
-     "share_over_25": 0.5
+     "with_reference": 69,
+     "no_reference": 148,
+     "median_err": 72.8,
+     "share_over_25": 0.884
     },
     "v1_by_confidence": {
      "high": {
-      "n": 0,
-      "median_err": null,
-      "share_over_25": null
+      "n": 1,
+      "median_err": 78.5,
+      "share_over_25": 1.0
      },
      "medium": {
       "n": 0,
@@ -25728,9 +25730,9 @@
       "share_over_25": null
      },
      "low": {
-      "n": 32,
-      "median_err": 23.8,
-      "share_over_25": 0.5
+      "n": 68,
+      "median_err": 71.7,
+      "share_over_25": 0.882
      }
     },
     "v2": {
@@ -25748,7 +25750,7 @@
     "2026-11-24T23:00:00+00:00",
     "2026-11-25T17:00:00+00:00"
    ],
-   "frames": 235,
+   "frames": 236,
    "rows": [
     {
      "t": "2026-11-24T23:00:00+00:00",
@@ -26217,8 +26219,8 @@
       0.0041,
       0.0064
      ],
-     "v1_err": 42.6,
-     "v1_ref_kmh": 15.2,
+     "v1_err": 42.3,
+     "v1_ref_kmh": 15.1,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -26276,9 +26278,9 @@
       0.0038,
       0.0064
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 18.8,
+     "v1_ref_kmh": 90.4,
+     "v1_none": null,
      "v2_err": 28.6
     },
     {
@@ -26508,9 +26510,13 @@
        0.0195
       ]
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "r2": [
+      0.0017,
+      0.0105
+     ],
+     "v1_err": 54.8,
+     "v1_ref_kmh": 68.3,
+     "v1_none": null,
      "v2_err": 29.0
     },
     {
@@ -26562,6 +26568,10 @@
        0.0208,
        0.0274
       ]
+     ],
+     "r2": [
+      0.0067,
+      0.0105
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
@@ -26618,9 +26628,13 @@
        0.0263
       ]
      ],
-     "v1_err": 67.5,
-     "v1_ref_kmh": 79.5,
-     "v1_none": null,
+     "r2": [
+      0.0,
+      0.0105
+     ],
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 29.7
     },
     {
@@ -26672,6 +26686,10 @@
        0.0038,
        0.0227
       ]
+     ],
+     "r2": [
+      0.0,
+      0.0105
      ],
      "v1_err": null,
      "v1_ref_kmh": null,
@@ -26728,6 +26746,10 @@
        0.0227
       ]
      ],
+     "r2": [
+      0.0,
+      0.0105
+     ],
      "v1_err": null,
      "v1_ref_kmh": null,
      "v1_none": "halves disagree",
@@ -26783,8 +26805,12 @@
        0.0227
       ]
      ],
-     "v1_err": 33.3,
-     "v1_ref_kmh": 0.1,
+     "r2": [
+      0.0009,
+      0.0105
+     ],
+     "v1_err": 179.4,
+     "v1_ref_kmh": 149.9,
      "v1_none": null,
      "v2_err": 13.4
     },
@@ -26838,8 +26864,12 @@
        0.0227
       ]
      ],
-     "v1_err": 10.4,
-     "v1_ref_kmh": 0.1,
+     "r2": [
+      0.0,
+      0.0105
+     ],
+     "v1_err": 181.7,
+     "v1_ref_kmh": 191.0,
      "v1_none": null,
      "v2_err": 35.8
     },
@@ -26893,8 +26923,12 @@
        0.0227
       ]
      ],
-     "v1_err": 14.5,
-     "v1_ref_kmh": 0.2,
+     "r2": [
+      0.001,
+      0.0105
+     ],
+     "v1_err": 14.7,
+     "v1_ref_kmh": 9.0,
      "v1_none": null,
      "v2_err": 32.2
     },
@@ -26948,8 +26982,12 @@
        0.0227
       ]
      ],
-     "v1_err": 15.5,
-     "v1_ref_kmh": 0.3,
+     "r2": [
+      0.0,
+      0.0105
+     ],
+     "v1_err": 13.7,
+     "v1_ref_kmh": 2.1,
      "v1_none": null,
      "v2_err": 30.2
     },
@@ -26965,9 +27003,51 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
-     "v1_err": 16.9,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "r1": [
+      [
+       0.0,
+       0.0121
+      ],
+      [
+       0.0086,
+       0.0198
+      ],
+      [
+       0.0,
+       0.0188
+      ],
+      [
+       0.0,
+       0.0037
+      ],
+      [
+       0.0,
+       0.0043
+      ],
+      [
+       0.0,
+       0.0023
+      ],
+      [
+       0.003,
+       0.0111
+      ],
+      [
+       0.0078,
+       0.0155
+      ],
+      [
+       0.0207,
+       0.021
+      ]
+     ],
+     "r2": [
+      0.0,
+      0.0105
+     ],
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 28.9
     },
     {
@@ -26982,8 +27062,50 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
+     "r1": [
+      [
+       0.0055,
+       0.0112
+      ],
+      [
+       0.0449,
+       0.0189
+      ],
+      [
+       0.0141,
+       0.0172
+      ],
+      [
+       0.0011,
+       0.0037
+      ],
+      [
+       0.0042,
+       0.0043
+      ],
+      [
+       0.0043,
+       0.0023
+      ],
+      [
+       0.007,
+       0.0111
+      ],
+      [
+       0.0126,
+       0.0135
+      ],
+      [
+       0.0456,
+       0.0191
+      ]
+     ],
+     "r2": [
+      0.0112,
+      0.0105
+     ],
      "v1_err": 11.1,
-     "v1_ref_kmh": 0.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 37.2
     },
@@ -26999,9 +27121,51 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
-     "v1_err": 13.5,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "r1": [
+      [
+       0.0448,
+       0.0105
+      ],
+      [
+       0.0247,
+       0.0166
+      ],
+      [
+       0.0078,
+       0.0156
+      ],
+      [
+       0.0073,
+       0.0037
+      ],
+      [
+       0.0035,
+       0.0043
+      ],
+      [
+       0.0081,
+       0.0023
+      ],
+      [
+       0.0347,
+       0.0111
+      ],
+      [
+       0.0503,
+       0.0122
+      ],
+      [
+       0.0368,
+       0.0182
+      ]
+     ],
+     "r2": [
+      0.0187,
+      0.0105
+     ],
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 32.9
     },
     {
@@ -27016,12 +27180,50 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
+     "r1": [
+      [
+       0.0727,
+       0.0092
+      ],
+      [
+       0.0492,
+       0.0153
+      ],
+      [
+       0.0464,
+       0.0123
+      ],
+      [
+       0.051,
+       0.0037
+      ],
+      [
+       0.02,
+       0.0043
+      ],
+      [
+       0.0175,
+       0.0014
+      ],
+      [
+       0.0434,
+       0.0044
+      ],
+      [
+       0.0803,
+       0.0064
+      ],
+      [
+       0.053,
+       0.0166
+      ]
+     ],
      "r2": [
       0.0152,
       0.0
      ],
-     "v1_err": 11.1,
-     "v1_ref_kmh": 0.0,
+     "v1_err": 10.6,
+     "v1_ref_kmh": 4.4,
      "v1_none": null,
      "v2_err": 37.2
     },
@@ -27037,12 +27239,50 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
+     "r1": [
+      [
+       0.0436,
+       0.0059
+      ],
+      [
+       0.0751,
+       0.0081
+      ],
+      [
+       0.0954,
+       0.0095
+      ],
+      [
+       0.0425,
+       0.0032
+      ],
+      [
+       0.0125,
+       0.0043
+      ],
+      [
+       0.0128,
+       0.0014
+      ],
+      [
+       0.0136,
+       0.0021
+      ],
+      [
+       0.0398,
+       0.0023
+      ],
+      [
+       0.0595,
+       0.007
+      ]
+     ],
      "r2": [
       0.0118,
       0.0
      ],
-     "v1_err": 10.5,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 12.4,
+     "v1_ref_kmh": 2.1,
      "v1_none": null,
      "v2_err": 40.3
     },
@@ -27058,13 +27298,51 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
+     "r1": [
+      [
+       0.0226,
+       0.0027
+      ],
+      [
+       0.0551,
+       0.0034
+      ],
+      [
+       0.0361,
+       0.0067
+      ],
+      [
+       0.0058,
+       0.0023
+      ],
+      [
+       0.0034,
+       0.0043
+      ],
+      [
+       0.0078,
+       0.0014
+      ],
+      [
+       0.0161,
+       0.0011
+      ],
+      [
+       0.0149,
+       0.0006
+      ],
+      [
+       0.0488,
+       0.0023
+      ]
+     ],
      "r2": [
       0.0059,
       0.0
      ],
-     "v1_err": 12.1,
-     "v1_ref_kmh": 0.5,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 34.1
     },
     {
@@ -27079,13 +27357,51 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
+     "r1": [
+      [
+       0.0148,
+       0.0013
+      ],
+      [
+       0.0182,
+       0.0005
+      ],
+      [
+       0.0197,
+       0.0051
+      ],
+      [
+       0.0154,
+       0.0017
+      ],
+      [
+       0.0123,
+       0.0005
+      ],
+      [
+       0.0099,
+       0.0007
+      ],
+      [
+       0.0114,
+       0.0006
+      ],
+      [
+       0.0097,
+       0.0
+      ],
+      [
+       0.0067,
+       0.0
+      ]
+     ],
      "r2": [
       0.002,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "frames missing",
+     "v1_err": 8.8,
+     "v1_ref_kmh": 2.9,
+     "v1_none": null,
      "v2_err": 35.6
     },
     {
@@ -27100,12 +27416,50 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
+     "r1": [
+      [
+       0.0071,
+       0.0
+      ],
+      [
+       0.0017,
+       0.0
+      ],
+      [
+       0.0077,
+       0.0037
+      ],
+      [
+       0.0118,
+       0.0006
+      ],
+      [
+       0.0015,
+       0.0005
+      ],
+      [
+       0.0026,
+       0.0
+      ],
+      [
+       0.0005,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ]
+     ],
      "r2": [
       0.0,
       0.0
      ],
-     "v1_err": 10.7,
-     "v1_ref_kmh": 0.0,
+     "v1_err": 8.9,
+     "v1_ref_kmh": 1.8,
      "v1_none": null,
      "v2_err": 38.7
     },
@@ -27121,119 +27475,30 @@
      "confidence": "low",
      "source": "radar",
      "reason": null,
-     "r2": [
-      0.0,
-      0.0
-     ],
-     "v1_err": 10.7,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
-     "v2_err": 38.7
-    },
-    {
-     "t": "2026-11-25T01:30:00+00:00",
-     "frames": 5,
-     "coverage": 0.2995,
-     "raw_known": true,
-     "raw_speed": 10.7,
-     "known": true,
-     "speed": 10.7,
-     "toward": 81,
-     "confidence": "low",
-     "source": "radar",
-     "reason": null,
-     "r2": [
-      0.0,
-      0.0
-     ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "frames missing",
-     "v2_err": 38.7
-    },
-    {
-     "t": "2026-11-25T01:35:00+00:00",
-     "frames": 5,
-     "coverage": 0.3119,
-     "raw_known": true,
-     "raw_speed": 10.7,
-     "known": true,
-     "speed": 10.7,
-     "toward": 81,
-     "confidence": "low",
-     "source": "radar",
-     "reason": null,
-     "r2": [
-      0.0,
-      0.0
-     ],
-     "v1_err": 10.8,
-     "v1_ref_kmh": 0.2,
-     "v1_none": null,
-     "v2_err": 38.7
-    },
-    {
-     "t": "2026-11-25T01:40:00+00:00",
-     "frames": 5,
-     "coverage": 0.3396,
-     "raw_known": true,
-     "raw_speed": 10.7,
-     "known": true,
-     "speed": 10.7,
-     "toward": 81,
-     "confidence": "low",
-     "source": "radar",
-     "reason": null,
-     "r2": [
-      0.0,
-      0.0
-     ],
-     "v1_err": 10.7,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
-     "v2_err": 38.7
-    },
-    {
-     "t": "2026-11-25T01:45:00+00:00",
-     "frames": 5,
-     "skip": "no frame at issue time"
-    },
-    {
-     "t": "2026-11-25T01:50:00+00:00",
-     "frames": 5,
-     "coverage": 0.3237,
-     "raw_known": true,
-     "raw_speed": 9.3,
-     "known": true,
-     "speed": 9.3,
-     "toward": 65,
-     "confidence": "low",
-     "source": "radar",
-     "reason": null,
      "r1": [
       [
        0.0,
        0.0
       ],
       [
-       0.0,
+       0.0006,
+       0.0
+      ],
+      [
+       0.0026,
+       0.003
+      ],
+      [
+       0.0012,
+       0.0
+      ],
+      [
+       0.001,
        0.0
       ],
       [
        0.0,
        0.0
-      ],
-      [
-       0.0,
-       0.0014
-      ],
-      [
-       0.0,
-       0.0
-      ],
-      [
-       0.0,
-       0.0011
       ],
       [
        0.0,
@@ -27252,19 +27517,196 @@
       0.0,
       0.0
      ],
-     "v1_err": 9.4,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 8.9,
+     "v1_ref_kmh": 1.8,
      "v1_none": null,
-     "v2_err": 37.4
+     "v2_err": 38.7
     },
     {
-     "t": "2026-11-25T01:55:00+00:00",
+     "t": "2026-11-25T01:30:00+00:00",
      "frames": 5,
-     "coverage": 0.3373,
+     "coverage": 0.2995,
      "raw_known": true,
-     "raw_speed": 8.9,
+     "raw_speed": 10.7,
      "known": true,
-     "speed": 8.9,
+     "speed": 10.7,
+     "toward": 81,
+     "confidence": "low",
+     "source": "radar",
+     "reason": null,
+     "r1": [
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0021
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "r2": [
+      0.0,
+      0.0
+     ],
+     "v1_err": 11.8,
+     "v1_ref_kmh": 1.4,
+     "v1_none": null,
+     "v2_err": 38.7
+    },
+    {
+     "t": "2026-11-25T01:35:00+00:00",
+     "frames": 5,
+     "coverage": 0.3119,
+     "raw_known": true,
+     "raw_speed": 10.7,
+     "known": true,
+     "speed": 10.7,
+     "toward": 81,
+     "confidence": "low",
+     "source": "radar",
+     "reason": null,
+     "r1": [
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0021
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "r2": [
+      0.0,
+      0.0
+     ],
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
+     "v2_err": 38.7
+    },
+    {
+     "t": "2026-11-25T01:40:00+00:00",
+     "frames": 5,
+     "coverage": 0.3396,
+     "raw_known": true,
+     "raw_speed": 10.7,
+     "known": true,
+     "speed": 10.7,
+     "toward": 81,
+     "confidence": "low",
+     "source": "radar",
+     "reason": null,
+     "r1": [
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0016
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "r2": [
+      0.0,
+      0.0
+     ],
+     "v1_err": 3.3,
+     "v1_ref_kmh": 12.4,
+     "v1_none": null,
+     "v2_err": 38.7
+    },
+    {
+     "t": "2026-11-25T01:45:00+00:00",
+     "frames": 5,
+     "coverage": 0.339,
+     "raw_known": true,
+     "raw_speed": 11.1,
+     "known": true,
+     "speed": 11.1,
      "toward": 72,
      "confidence": "low",
      "source": "radar",
@@ -27284,6 +27726,65 @@
       ],
       [
        0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0011
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "r2": [
+      0.0,
+      0.0
+     ],
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
+     "v2_err": 37.2
+    },
+    {
+     "t": "2026-11-25T01:50:00+00:00",
+     "frames": 5,
+     "coverage": 0.3237,
+     "raw_known": true,
+     "raw_speed": 10.7,
+     "known": true,
+     "speed": 10.7,
+     "toward": 81,
+     "confidence": "low",
+     "source": "radar",
+     "reason": null,
+     "r1": [
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
        0.0014
       ],
       [
@@ -27314,17 +27815,76 @@
      "v1_err": null,
      "v1_ref_kmh": null,
      "v1_none": "halves disagree",
-     "v2_err": 38.6
+     "v2_err": 38.7
+    },
+    {
+     "t": "2026-11-25T01:55:00+00:00",
+     "frames": 5,
+     "coverage": 0.3373,
+     "raw_known": true,
+     "raw_speed": 10.5,
+     "known": true,
+     "speed": 10.5,
+     "toward": 90,
+     "confidence": "low",
+     "source": "radar",
+     "reason": null,
+     "r1": [
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0014
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0011
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ],
+      [
+       0.0,
+       0.0
+      ]
+     ],
+     "r2": [
+      0.0,
+      0.0
+     ],
+     "v1_err": 175.2,
+     "v1_ref_kmh": 170.8,
+     "v1_none": null,
+     "v2_err": 40.3
     },
     {
      "t": "2026-11-25T02:00:00+00:00",
      "frames": 5,
      "coverage": 0.3373,
      "raw_known": true,
-     "raw_speed": 8.4,
+     "raw_speed": 10.7,
      "known": true,
-     "speed": 8.4,
-     "toward": 90,
+     "speed": 10.7,
+     "toward": 81,
      "confidence": "low",
      "source": "radar",
      "reason": null,
@@ -27370,20 +27930,20 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
-     "v2_err": 45.6
+     "v1_err": 165.7,
+     "v1_ref_kmh": 159.9,
+     "v1_none": null,
+     "v2_err": 43.3
     },
     {
      "t": "2026-11-25T02:05:00+00:00",
      "frames": 5,
      "coverage": 0.3371,
      "raw_known": true,
-     "raw_speed": 8.4,
+     "raw_speed": 10.7,
      "known": true,
-     "speed": 8.4,
-     "toward": 90,
+     "speed": 10.7,
+     "toward": 81,
      "confidence": "low",
      "source": "radar",
      "reason": null,
@@ -27432,7 +27992,7 @@
      "v1_err": null,
      "v1_ref_kmh": null,
      "v1_none": "halves disagree",
-     "v2_err": 45.6
+     "v2_err": 43.3
     },
     {
      "t": "2026-11-25T02:10:00+00:00",
@@ -27606,8 +28166,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 59.7,
-     "v1_ref_kmh": 70.6,
+     "v1_err": 60.9,
+     "v1_ref_kmh": 71.4,
      "v1_none": null,
      "v2_err": 40.1
     },
@@ -27724,8 +28284,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 44.0,
-     "v1_ref_kmh": 56.5,
+     "v1_err": 51.5,
+     "v1_ref_kmh": 64.7,
      "v1_none": null,
      "v2_err": 37.0
     },
@@ -27783,8 +28343,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 21.0,
-     "v1_ref_kmh": 59.9,
+     "v1_err": 4.1,
+     "v1_ref_kmh": 63.9,
      "v1_none": null,
      "v2_err": 16.8
     },
@@ -27842,9 +28402,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 62.8,
+     "v1_ref_kmh": 76.0,
+     "v1_none": null,
      "v2_err": 37.0
     },
     {
@@ -27901,8 +28461,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 27.5,
-     "v1_ref_kmh": 55.0,
+     "v1_err": 36.4,
+     "v1_ref_kmh": 65.4,
      "v1_none": null,
      "v2_err": 25.9
     },
@@ -27960,8 +28520,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 59.1,
-     "v1_ref_kmh": 68.0,
+     "v1_err": 59.0,
+     "v1_ref_kmh": 68.4,
      "v1_none": null,
      "v2_err": 41.7
     },
@@ -28019,9 +28579,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 6.4,
+     "v1_ref_kmh": 69.0,
+     "v1_none": null,
      "v2_err": 22.6
     },
     {
@@ -28137,9 +28697,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 54.5,
+     "v1_ref_kmh": 68.0,
+     "v1_none": null,
      "v2_err": 30.7
     },
     {
@@ -28196,8 +28756,8 @@
       0.0008,
       0.0
      ],
-     "v1_err": 17.9,
-     "v1_ref_kmh": 63.5,
+     "v1_err": 5.0,
+     "v1_ref_kmh": 66.9,
      "v1_none": null,
      "v2_err": 28.3
     },
@@ -28373,9 +28933,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 22.7,
+     "v1_ref_kmh": 64.0,
+     "v1_none": null,
      "v2_err": 19.5
     },
     {
@@ -28432,8 +28992,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 50.3,
-     "v1_ref_kmh": 33.5,
+     "v1_err": 50.0,
+     "v1_ref_kmh": 67.0,
      "v1_none": null,
      "v2_err": 28.9
     },
@@ -28609,9 +29169,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 61.7,
+     "v1_ref_kmh": 70.9,
+     "v1_none": null,
      "v2_err": 35.4
     },
     {
@@ -28668,9 +29228,9 @@
       0.0,
       0.0
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 74.0,
+     "v1_ref_kmh": 79.3,
+     "v1_none": null,
      "v2_err": 36.6
     },
     {
@@ -28845,9 +29405,9 @@
       0.0,
       0.0071
      ],
-     "v1_err": 27.0,
-     "v1_ref_kmh": 19.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 42.7
     },
     {
@@ -28904,9 +29464,9 @@
       0.0,
       0.0071
      ],
-     "v1_err": 44.2,
-     "v1_ref_kmh": 53.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 42.7
     },
     {
@@ -29081,8 +29641,8 @@
       0.0,
       0.0071
      ],
-     "v1_err": 96.0,
-     "v1_ref_kmh": 16.3,
+     "v1_err": 156.0,
+     "v1_ref_kmh": 72.7,
      "v1_none": null,
      "v2_err": 39.4
     },
@@ -29140,9 +29700,9 @@
       0.0077,
       0.0071
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 127.8,
+     "v1_ref_kmh": 83.2,
+     "v1_none": null,
      "v2_err": 5.6
     },
     {
@@ -29258,9 +29818,9 @@
       0.0,
       0.0071
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 86.9,
+     "v1_ref_kmh": 72.4,
+     "v1_none": null,
      "v2_err": 31.2
     },
     {
@@ -29317,9 +29877,9 @@
       0.0,
       0.0071
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 70.9,
+     "v1_ref_kmh": 59.1,
+     "v1_none": null,
      "v2_err": 32.5
     },
     {
@@ -29435,9 +29995,9 @@
       0.0,
       0.0071
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 60.6,
+     "v1_ref_kmh": 55.7,
+     "v1_none": null,
      "v2_err": 39.7
     },
     {
@@ -29671,9 +30231,9 @@
       0.0092,
       0.0176
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 45.7,
+     "v1_ref_kmh": 37.9,
+     "v1_none": null,
      "v2_err": 33.2
     },
     {
@@ -29730,9 +30290,9 @@
       0.0097,
       0.0176
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 44.4,
+     "v1_ref_kmh": 36.3,
+     "v1_none": null,
      "v2_err": 31.9
     },
     {
@@ -29789,9 +30349,9 @@
       0.0059,
       0.0176
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 38.0,
+     "v1_ref_kmh": 55.0,
+     "v1_none": null,
      "v2_err": 30.7
     },
     {
@@ -29907,9 +30467,9 @@
       0.1125,
       0.0176
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 79.5,
+     "v1_ref_kmh": 23.3,
+     "v1_none": null,
      "v2_err": 63.0
     },
     {
@@ -29966,9 +30526,9 @@
       0.0139,
       0.0176
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 20.2,
+     "v1_ref_kmh": 23.0,
+     "v1_none": null,
      "v2_err": 33.2
     },
     {
@@ -30025,9 +30585,9 @@
       0.054,
       0.0176
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 40.5,
+     "v1_ref_kmh": 26.2,
+     "v1_none": null,
      "v2_err": 14.9
     },
     {
@@ -30084,9 +30644,9 @@
       0.0197,
       0.0176
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 20.4,
+     "v1_ref_kmh": 23.8,
+     "v1_none": null,
      "v2_err": 30.7
     },
     {
@@ -30143,9 +30703,9 @@
       0.0328,
       0.0176
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 63.3,
+     "v1_ref_kmh": 24.2,
+     "v1_none": null,
      "v2_err": 9.1
     },
     {
@@ -30202,9 +30762,9 @@
       0.0296,
       0.3608
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 52.9,
+     "v1_ref_kmh": 27.7,
+     "v1_none": null,
      "v2_err": 0.0
     },
     {
@@ -30261,9 +30821,9 @@
       0.0827,
       0.3608
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 31.9,
+     "v1_ref_kmh": 26.9,
+     "v1_none": null,
      "v2_err": 15.3
     },
     {
@@ -30320,9 +30880,9 @@
       0.2261,
       0.3608
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 10.4,
+     "v1_ref_kmh": 22.6,
+     "v1_none": null,
      "v2_err": 16.8
     },
     {
@@ -30379,9 +30939,9 @@
       0.1751,
       0.3608
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 63.2,
+     "v1_ref_kmh": 39.1,
+     "v1_none": null,
      "v2_err": 7.3
     },
     {
@@ -30497,9 +31057,9 @@
       0.1469,
       0.3608
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 27.0,
+     "v1_ref_kmh": 33.1,
+     "v1_none": null,
      "v2_err": 16.1
     },
     {
@@ -30733,9 +31293,9 @@
       0.4837,
       0.3608
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 7.6,
+     "v1_ref_kmh": 40.8,
+     "v1_none": null,
      "v2_err": 11.2
     },
     {
@@ -30792,9 +31352,9 @@
       0.1148,
       0.3608
      ],
-     "v1_err": 68.6,
-     "v1_ref_kmh": 36.9,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 66.8
     },
     {
@@ -30910,9 +31470,9 @@
       0.0662,
       0.267
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 41.5,
+     "v1_ref_kmh": 29.9,
+     "v1_none": null,
      "v2_err": 28.3
     },
     {
@@ -30969,8 +31529,8 @@
       0.4874,
       0.267
      ],
-     "v1_err": 86.3,
-     "v1_ref_kmh": 87.1,
+     "v1_err": 10.1,
+     "v1_ref_kmh": 20.7,
      "v1_none": null,
      "v2_err": 32.5
     },
@@ -31028,9 +31588,9 @@
       0.1541,
       0.267
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 8.4,
+     "v1_ref_kmh": 19.5,
+     "v1_none": null,
      "v2_err": 31.6
     },
     {
@@ -31087,9 +31647,9 @@
       0.1131,
       0.267
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 29.6,
+     "v1_ref_kmh": 30.2,
+     "v1_none": null,
      "v2_err": 12.8
     },
     {
@@ -31205,9 +31765,9 @@
       0.5429,
       0.267
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 30.8,
+     "v1_ref_kmh": 46.9,
+     "v1_none": null,
      "v2_err": 23.9
     },
     {
@@ -31264,9 +31824,9 @@
       0.4792,
       0.267
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 29.9,
+     "v1_ref_kmh": 46.2,
+     "v1_none": null,
      "v2_err": 23.9
     },
     {
@@ -31323,9 +31883,9 @@
       0.4475,
       0.267
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 28.4,
+     "v1_ref_kmh": 44.8,
+     "v1_none": null,
      "v2_err": 23.9
     },
     {
@@ -31382,9 +31942,9 @@
       0.375,
       0.267
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 33.7,
+     "v1_ref_kmh": 49.4,
+     "v1_none": null,
      "v2_err": 25.0
     },
     {
@@ -31500,9 +32060,9 @@
       0.4433,
       0.267
      ],
-     "v1_err": 11.1,
-     "v1_ref_kmh": 16.2,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 23.9
     },
     {
@@ -31736,9 +32296,9 @@
       0.2259,
       0.0387
      ],
-     "v1_err": 3.9,
-     "v1_ref_kmh": 20.8,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 19.2
     },
     {
@@ -31795,9 +32355,9 @@
       0.2216,
       0.0387
      ],
-     "v1_err": 53.5,
-     "v1_ref_kmh": 70.4,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 19.2
     },
     {
@@ -32090,9 +32650,9 @@
       0.1559,
       0.0387
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 84.1,
+     "v1_ref_kmh": 67.8,
+     "v1_none": null,
      "v2_err": 19.2
     },
     {
@@ -32267,9 +32827,9 @@
       0.0502,
       0.0387
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
+     "v1_none": null,
      "v2_err": 19.2
     },
     {
@@ -32326,9 +32886,9 @@
       0.056,
       0.0177
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
+     "v1_none": null,
      "v2_err": 17.0
     },
     {
@@ -32503,9 +33063,9 @@
       0.1186,
       0.0177
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
+     "v1_none": null,
      "v2_err": 17.0
     },
     {
@@ -32562,9 +33122,9 @@
       0.1282,
       0.0177
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
+     "v1_none": null,
      "v2_err": 17.0
     },
     {
@@ -32621,9 +33181,9 @@
       0.1207,
       0.0177
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
+     "v1_none": null,
      "v2_err": 17.0
     },
     {
@@ -32680,8 +33240,8 @@
       0.1114,
       0.0177
      ],
-     "v1_err": 19.4,
-     "v1_ref_kmh": 28.7,
+     "v1_err": 12.7,
+     "v1_ref_kmh": 16.9,
      "v1_none": null,
      "v2_err": 17.0
     },
@@ -32739,8 +33299,8 @@
       0.0971,
       0.0177
      ],
-     "v1_err": 31.9,
-     "v1_ref_kmh": 34.6,
+     "v1_err": 19.7,
+     "v1_ref_kmh": 3.3,
      "v1_none": null,
      "v2_err": 17.0
     },
@@ -32798,9 +33358,9 @@
       0.0814,
       0.0177
      ],
-     "v1_err": null,
-     "v1_ref_kmh": null,
-     "v1_none": "halves disagree",
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
+     "v1_none": null,
      "v2_err": 17.0
     },
     {
@@ -32858,7 +33418,7 @@
       0.0177
      ],
      "v1_err": 17.0,
-     "v1_ref_kmh": 0.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 17.0
     },
@@ -32916,8 +33476,8 @@
       0.0692,
       0.0177
      ],
-     "v1_err": 17.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 17.0
     },
@@ -32975,8 +33535,8 @@
       0.0441,
       0.0177
      ],
-     "v1_err": 17.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 17.0
     },
@@ -33034,8 +33594,8 @@
       0.0378,
       0.0
      ],
-     "v1_err": 16.9,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 17.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 13.8
     },
@@ -33152,8 +33712,8 @@
       0.006,
       0.0
      ],
-     "v1_err": 30.2,
-     "v1_ref_kmh": 0.7,
+     "v1_err": 29.8,
+     "v1_ref_kmh": 0.9,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33211,8 +33771,8 @@
       0.0021,
       0.0
      ],
-     "v1_err": 30.3,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 30.2,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33270,8 +33830,8 @@
       0.0007,
       0.0
      ],
-     "v1_err": 30.4,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 30.2,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33329,8 +33889,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 30.3,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 30.2,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33388,8 +33948,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 30.4,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 37.4,
+     "v1_ref_kmh": 14.2,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33447,8 +34007,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 30.0,
-     "v1_ref_kmh": 0.3,
+     "v1_err": 44.2,
+     "v1_ref_kmh": 20.3,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33506,8 +34066,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 30.4,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 30.7,
+     "v1_ref_kmh": 0.9,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33565,8 +34125,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 30.0,
-     "v1_ref_kmh": 0.3,
+     "v1_err": 30.2,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33624,8 +34184,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 16.9,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 18.8,
+     "v1_ref_kmh": 2.2,
      "v1_none": null,
      "v2_err": 13.8
     },
@@ -33801,8 +34361,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 32.5,
-     "v1_ref_kmh": 1.9,
+     "v1_err": 31.5,
+     "v1_ref_kmh": 1.1,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33861,7 +34421,7 @@
       0.0
      ],
      "v1_err": 32.4,
-     "v1_ref_kmh": 2.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33919,8 +34479,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 32.3,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 32.9,
+     "v1_ref_kmh": 0.9,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -33979,7 +34539,7 @@
       0.0
      ],
      "v1_err": 10.7,
-     "v1_ref_kmh": 0.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 29.7
     },
@@ -34037,8 +34597,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 16.9,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 17.6,
+     "v1_ref_kmh": 0.9,
      "v1_none": null,
      "v2_err": 15.5
     },
@@ -34155,8 +34715,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 32.5,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 32.4,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34214,8 +34774,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 3.4,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 3.3,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 29.7
     },
@@ -34273,8 +34833,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 32.5,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 32.4,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34332,9 +34892,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 32.4,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree",
      "v2_err": 0.0
     },
     {
@@ -34451,7 +35011,7 @@
       0.0
      ],
      "v1_err": 31.8,
-     "v1_ref_kmh": 0.2,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34510,7 +35070,7 @@
       0.0
      ],
      "v1_err": 31.8,
-     "v1_ref_kmh": 0.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34627,8 +35187,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 31.6,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 31.8,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34686,8 +35246,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 32.1,
-     "v1_ref_kmh": 0.4,
+     "v1_err": 29.7,
+     "v1_ref_kmh": 2.2,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34745,8 +35305,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 31.7,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 27.3,
+     "v1_ref_kmh": 4.5,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34804,8 +35364,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 31.9,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 31.8,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34863,8 +35423,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 31.7,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 31.8,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34923,7 +35483,7 @@
       0.0
      ],
      "v1_err": 31.8,
-     "v1_ref_kmh": 0.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -34982,7 +35542,7 @@
       0.0
      ],
      "v1_err": 31.8,
-     "v1_ref_kmh": 0.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -35040,8 +35600,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 31.8,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 31.1,
+     "v1_ref_kmh": 1.8,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -35099,8 +35659,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 31.5,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 31.8,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -35158,8 +35718,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 24.1,
-     "v1_ref_kmh": 0.0,
+     "v1_err": 23.8,
+     "v1_ref_kmh": 0.9,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -35217,8 +35777,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 23.7,
-     "v1_ref_kmh": 0.4,
+     "v1_err": 24.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -35276,9 +35836,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 24.3,
-     "v1_ref_kmh": 0.3,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35335,9 +35895,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 24.1,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35394,9 +35954,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 24.2,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35453,9 +36013,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 23.9,
-     "v1_ref_kmh": 0.2,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35512,9 +36072,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 24.1,
-     "v1_ref_kmh": 0.0,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35571,9 +36131,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 24.0,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35630,9 +36190,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 24.0,
-     "v1_ref_kmh": 0.2,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35689,9 +36249,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 23.9,
-     "v1_ref_kmh": 0.2,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35748,9 +36308,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 19.9,
-     "v1_ref_kmh": 4.6,
-     "v1_none": null,
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "too little moving rain",
      "v2_err": 0.0
     },
     {
@@ -35807,8 +36367,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 24.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 22.0,
+     "v1_ref_kmh": 15.9,
      "v1_none": null,
      "v2_err": 0.0
     },
@@ -35866,9 +36426,9 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
-     "v1_none": null
+     "v1_err": null,
+     "v1_ref_kmh": null,
+     "v1_none": "halves disagree"
     },
     {
      "t": "2026-11-25T14:05:00+00:00",
@@ -35925,7 +36485,7 @@
       0.0
      ],
      "v1_err": 23.8,
-     "v1_ref_kmh": 0.1,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -35982,8 +36542,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36040,8 +36600,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36098,8 +36658,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.0,
-     "v1_ref_kmh": 0.0,
+     "v1_err": 2.4,
+     "v1_ref_kmh": 2.4,
      "v1_none": null
     },
     {
@@ -36156,8 +36716,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36330,8 +36890,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36388,8 +36948,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36446,8 +37006,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36562,8 +37122,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 1.1,
+     "v1_ref_kmh": 1.1,
      "v1_none": null
     },
     {
@@ -36678,8 +37238,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.2,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36736,8 +37296,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36794,8 +37354,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36910,8 +37470,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -36968,8 +37528,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.2,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37026,8 +37586,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37142,8 +37702,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37200,8 +37760,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37316,8 +37876,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37432,8 +37992,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37548,8 +38108,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37606,8 +38166,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.0,
-     "v1_ref_kmh": 0.0,
+     "v1_err": 0.9,
+     "v1_ref_kmh": 0.9,
      "v1_none": null
     },
     {
@@ -37664,8 +38224,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.0,
-     "v1_ref_kmh": 0.0,
+     "v1_err": 2.1,
+     "v1_ref_kmh": 2.1,
      "v1_none": null
     },
     {
@@ -37722,8 +38282,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37780,8 +38340,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.2,
-     "v1_ref_kmh": 0.2,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37838,8 +38398,8 @@
       0.0,
       0.0
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     },
     {
@@ -37950,136 +38510,138 @@
        0.0
       ]
      ],
-     "v1_err": 0.1,
-     "v1_ref_kmh": 0.1,
+     "v1_err": 0.0,
+     "v1_ref_kmh": 0.0,
      "v1_none": null
     }
    ],
    "summary": {
     "issue_times": 217,
-    "scored_times": 216,
-    "motion_known": 216,
+    "scored_times": 217,
+    "motion_known": 217,
     "steering_fallback": 48,
     "confidence": {
      "high": 71,
      "medium": 13,
-     "low": 132
+     "low": 133
     },
-    "slow_tracker": 5,
+    "slow_tracker": 11,
     "r1": {
-     "cases": 1836,
-     "wet_cases": 661,
+     "cases": 1953,
+     "wet_cases": 710,
      "unavailable_times": 0,
-     "mae_wet": 0.0821,
-     "bias_wet": 0.0457,
+     "mae_wet": 0.0781,
+     "bias_wet": 0.0441,
      "heavy_obs": 181,
      "hits": 157,
      "false_alarms": 57
     },
     "r1_block": {
-     "wet_cases": 74,
-     "mae_wet": 0.0862
+     "wet_cases": 81,
+     "mae_wet": 0.0811
     },
     "r2": {
-     "cases": 203,
-     "wet_cases": 65,
-     "mae_wet": 0.1058,
-     "bias_wet": 0.0298
+     "cases": 216,
+     "wet_cases": 77,
+     "mae_wet": 0.0906,
+     "bias_wet": 0.024
     },
+    "v1_reference_near_zero_share": 0.601,
     "v1": {
-     "with_reference": 122,
-     "no_reference": 94,
-     "median_err": 17.1,
-     "share_over_25": 0.361
+     "with_reference": 143,
+     "no_reference": 74,
+     "median_err": 20.2,
+     "share_over_25": 0.455
     },
     "v1_by_confidence": {
      "high": {
-      "n": 51,
-      "median_err": 0.1,
-      "share_over_25": 0.078
+      "n": 56,
+      "median_err": 0.0,
+      "share_over_25": 0.036
      },
      "medium": {
-      "n": 0,
-      "median_err": null,
-      "share_over_25": null
+      "n": 7,
+      "median_err": 41.5,
+      "share_over_25": 0.714
      },
      "low": {
-      "n": 71,
-      "median_err": 30.3,
-      "share_over_25": 0.563
+      "n": 80,
+      "median_err": 31.8,
+      "share_over_25": 0.725
      }
     },
     "v2": {
-     "n": 179,
+     "n": 180,
      "median_err": 19.2
     },
     "stability": {
-     "consecutive_pairs": 175,
-     "unstable_share": 0.183
+     "consecutive_pairs": 177,
+     "unstable_share": 0.181
     }
    }
   }
  },
  "pooled": {
   "issue_times": 651,
-  "scored_times": 650,
-  "motion_known": 650,
+  "scored_times": 651,
+  "motion_known": 651,
   "steering_fallback": 210,
   "confidence": {
    "high": 89,
    "medium": 16,
-   "low": 545
+   "low": 546
   },
-  "slow_tracker": 12,
+  "slow_tracker": 58,
   "r1": {
-   "cases": 5742,
-   "wet_cases": 3369,
+   "cases": 5859,
+   "wet_cases": 3418,
    "unavailable_times": 0,
-   "mae_wet": 0.0861,
-   "bias_wet": -0.0146,
+   "mae_wet": 0.0852,
+   "bias_wet": -0.0141,
    "heavy_obs": 883,
    "hits": 620,
    "false_alarms": 196
   },
   "r1_block": {
-   "wet_cases": 371,
-   "mae_wet": 0.0782
+   "wet_cases": 378,
+   "mae_wet": 0.0772
   },
   "r2": {
-   "cases": 635,
-   "wet_cases": 356,
-   "mae_wet": 0.1053,
-   "bias_wet": -0.0414
+   "cases": 648,
+   "wet_cases": 368,
+   "mae_wet": 0.1022,
+   "bias_wet": -0.0403
   },
+  "v1_reference_near_zero_share": 0.344,
   "v1": {
-   "with_reference": 209,
-   "no_reference": 441,
-   "median_err": 24.2,
-   "share_over_25": 0.493
+   "with_reference": 302,
+   "no_reference": 349,
+   "median_err": 36.6,
+   "share_over_25": 0.685
   },
   "v1_by_confidence": {
    "high": {
-    "n": 55,
-    "median_err": 0.1,
-    "share_over_25": 0.109
+    "n": 63,
+    "median_err": 0.9,
+    "share_over_25": 0.095
    },
    "medium": {
-    "n": 1,
-    "median_err": 33.7,
-    "share_over_25": 1.0
+    "n": 9,
+    "median_err": 40.8,
+    "share_over_25": 0.667
    },
    "low": {
-    "n": 153,
-    "median_err": 31.7,
-    "share_over_25": 0.627
+    "n": 230,
+    "median_err": 50.0,
+    "share_over_25": 0.848
    }
   },
   "v2": {
-   "n": 613,
-   "median_err": 23.0
+   "n": 614,
+   "median_err": 23.1
   },
   "stability": {
-   "consecutive_pairs": 607,
+   "consecutive_pairs": 609,
    "unstable_share": 0.163
   }
  }
