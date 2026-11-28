@@ -91,7 +91,20 @@ def ref_motion(fr, t, lat):
         vs.append(kmh_vec(dy / dt, dx / dt, seq[0].dx, lat))
     if math.dist(vs[1], vs[2]) > 15:
         return None, "halves disagree"
+    if math.hypot(*vs[0]) > 130:
+        return None, "implausible (> 130 km/h)"
     return vs[0], None
+
+
+def staleness(fr, t):
+    """Share of rainy pixels whose reflectivity is identical in frames t and t+30 (a stale mosaic looks like this)."""
+    a, b = fr.get(t), fr.get(t + timedelta(minutes=30))
+    if a is None or b is None:
+        return None
+    wet = (np.nan_to_num(a.dbz, nan=-99) >= 20) | (np.nan_to_num(b.dbz, nan=-99) >= 20)
+    if wet.sum() < 200:
+        return None
+    return round(float((a.dbz[wet] == b.dbz[wet]).mean()), 3)
 
 
 def accum(frame, pts, vy, vx, k_steps):
@@ -176,6 +189,7 @@ def main():
                     row["v1_err"] = round(math.dist(v, ref), 1) if ref else None
                     row["v1_ref_kmh"] = round(math.hypot(*ref), 1) if ref else None
                     row["v1_none"] = why
+                    row["unchanged_30min"] = staleness(fr, t)
                     if st_ and st_[1] >= 15:
                         tw = math.radians((st_[0] + 180) % 360)
                         sv = (0.8 * st_[1] * math.cos(tw), 0.8 * st_[1] * math.sin(tw))
@@ -216,6 +230,9 @@ def summarise(rows):
     v1 = [r["v1_err"] for r in rows if r.get("v1_err") is not None]
     refs_ = [r["v1_ref_kmh"] for r in rows if r.get("v1_ref_kmh") is not None]
     S["v1_reference_near_zero_share"] = round(sum(x < 3 for x in refs_) / len(refs_), 3) if refs_ else None
+    z = [r.get("unchanged_30min") for r in rows if r.get("v1_ref_kmh") is not None and r["v1_ref_kmh"] < 3 and r.get("unchanged_30min") is not None]
+    nz = [r.get("unchanged_30min") for r in rows if r.get("v1_ref_kmh") is not None and r["v1_ref_kmh"] >= 3 and r.get("unchanged_30min") is not None]
+    S["unchanged_30min_median"] = {"ref_near_zero": round(st.median(z), 3) if z else None, "ref_moving": round(st.median(nz), 3) if nz else None}
     S["v1"] = {"with_reference": len(v1), "no_reference": sum(1 for r in known if r.get("v1_err") is None),
                "median_err": round(st.median(v1), 1) if v1 else None, "share_over_25": round(sum(e > 25 for e in v1) / len(v1), 3) if v1 else None}
     S["v1_by_confidence"] = {}
@@ -251,6 +268,7 @@ def report(out):
             ("**V1 median vector error (km/h)**", lambda S: f"{S['v1']['median_err']} (n={S['v1']['with_reference']})"),
             ("V1 share > 25 km/h", lambda S: S["v1"]["share_over_25"]),
             ("V1 reference < 3 km/h (zero-lock check)", lambda S: S["v1_reference_near_zero_share"]),
+            ("Rainy pixels unchanged over 30 min: ref ~0 / ref moving", lambda S: f"{S['unchanged_30min_median']['ref_near_zero']} / {S['unchanged_30min_median']['ref_moving']}"),
             ("V1 high-confidence: median / share > 25", lambda S: f"{S['v1_by_confidence']['high']['median_err']} / {S['v1_by_confidence']['high']['share_over_25']} (n={S['v1_by_confidence']['high']['n']})"),
             ("V1 medium-confidence: median / share > 25", lambda S: f"{S['v1_by_confidence']['medium']['median_err']} / {S['v1_by_confidence']['medium']['share_over_25']} (n={S['v1_by_confidence']['medium']['n']})"),
             ("Tracker < 15 km/h while verifying echo > 30", lambda S: S["slow_tracker"]),
