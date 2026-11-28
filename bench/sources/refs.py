@@ -28,6 +28,12 @@ EXPECTED_FH = range(1, 61)
 PUBLISH_DELAY_H = 3          # before this a cycle is not yet due (counted as awaiting, never unpublished)
 
 
+def apcp_expected(kind: str, fh: int) -> bool:
+    """ffri (flash-flood recurrence) carries precipitation only every 3 h from f06 (6-h and 24-h windows); its other
+    files hold no APCP message by design. Every other product carries APCP in every file."""
+    return kind != "ffri" or (fh >= 6 and fh % 3 == 0)
+
+
 def _links(r, pat):
     return re.findall(pat, r.text) if r is not None and r.status_code == 200 else []
 
@@ -204,7 +210,13 @@ def _file(net, store, fails, cyc, kind, fh, url, stamp, have, deadline=None):
     rows = grib.parse_idx(r.text)
     apcp = [x for x in rows if x["desc"].startswith("APCP:")]
     if not apcp:
-        return _fail(store, fails, url, "no precipitation (APCP) messages in the file's inventory", cyc, kind, fh, idx_records=len(rows))
+        if apcp_expected(kind, fh):
+            return _fail(store, fails, url, "no precipitation (APCP) messages in the file's inventory", cyc, kind, fh, idx_records=len(rows))
+        status = store.add(SRC, {"type": "file", "key": f"file|{url}", "content_id": content_id, "sha256": idx_sha, "listing": stamp,
+                                 "issued": cyc.isoformat(), "product": kind, "fh": fh, "apcp_records": 0,
+                                 "note": "no precipitation message at this forecast hour by design",
+                                 "idx_descriptors": [x["desc"] for x in rows][:5], "retrieved": datetime.now(UTC).isoformat()})
+        return "revised" if status == "revision" else "collected"
     recs = []
     for grp in grib.groups(rows, lambda x: x["desc"].startswith("APCP:")):
         a, b = grp[0]["offset"], grp[-1]["end"]

@@ -142,3 +142,14 @@ def test_published_but_never_collected_then_gone_is_expired(tmp_path):
     store.flush({})
     log, recs, _ = run(tmp_path, "r2", refs_routes({}))                             # cycle listed, file gone
     assert "expired|file|" + URL in {r["key"] for r in recs}
+
+
+def test_ffri_without_precipitation_at_an_off_hour_is_collected_but_not_at_a_due_hour(tmp_path):
+    import bench.checks.fakes as fk
+    off = "refs.t00z.ffri.f04.conus.grib2"
+    due = "refs.t00z.ffri.f06.conus.grib2"
+    blob, idx = refs_file([(OTHER, MSG_A)])
+    _, recs, _ = run(tmp_path, "r1", refs_routes({off: (blob, idx, "28-Nov-2026 03:00"), due: (blob, idx, "28-Nov-2026 03:00")}))
+    got = {r["key"]: r for r in recs}
+    assert got["file|" + fk.DIR + off]["apcp_records"] == 0
+    assert "file|" + fk.DIR + due not in got and "failed|file|" + fk.DIR + due in got
