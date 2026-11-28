@@ -17,4 +17,4 @@ for n in set(re.findall(r'href="(p\d+m_\d{10}f\d{3}\.grb2?)"', t)):
     by[m.group(2)][f"p{m.group(1)}m"].append(int(m.group(3)))
 print("| issuance | products: first-last fh (count) |\n|---|---|")
 for iss in sorted(by):
-    print(f"| {iss} | " + "; ".join(f"{k} f{min(v):03d}-f{max(v):03d} ({len(v)})" for k, v in sorted(by[iss].items())) + " |")
+    print(f"| {iss} | " + "; ".join(f"{k} " + ",".join(str(x) for x in sorted(v)) for k, v in sorted(by[iss].items())) + " |")
