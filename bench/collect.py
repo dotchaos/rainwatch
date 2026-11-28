@@ -3,7 +3,8 @@
     python -m bench.collect --root <bench-data checkout>
 
 Each source runs isolated: a failure in one is recorded and the others continue. The run log lists every failure
-with URL, status and error, plus per-source counts of new / revision / duplicate / missing records.
+with URL, status and error; per-source execution (did it run) separately from collection (did it get everything the
+source has published); and per-source counts of new / revision / duplicate and status records.
 """
 from __future__ import annotations
 
@@ -36,23 +37,41 @@ def main(argv=None):
     store = Store(Path(a.root), stamp, INDEX_DAYS, now)
     log = {"run": stamp, "collector_version": VERSION, "started": now.isoformat(), "sources": {}, "failures": []}
     net = Net()
-    for name, mod in SOURCES:
-        if a.only and name not in a.only:
-            continue
-        s0, f0 = time.time(), len(log["failures"])
-        try:
-            mod.collect(net, store, log, now, t0 + DEADLINES_S[name])
-            status = "ok" if len(log["failures"]) == f0 else "partial"
-        except Exception as e:  # noqa: BLE001
-            log["failures"].append({"source": name, "error": f"crash: {e}", "trace": traceback.format_exc()[-1500:]})
-            status = "failed"
-        log["sources"][name] = {"status": status, "seconds": round(time.time() - s0, 1), "failures": len(log["failures"]) - f0}
+    import signal
+    signal.signal(signal.SIGTERM, lambda *_: (_ for _ in ()).throw(KeyboardInterrupt()))
+    try:
+        for name, mod in SOURCES:
+            if a.only and name not in a.only:
+                continue
+            s0, f0 = time.time(), len(log["failures"])
+            try:
+                mod.collect(net, store, log, now, t0 + DEADLINES_S[name])
+                execution = "ok" if len(log["failures"]) == f0 else "ok with request failures"
+            except Exception as e:  # noqa: BLE001
+                log["failures"].append({"source": name, "error": f"crash: {e}", "trace": traceback.format_exc()[-1500:]})
+                execution = "crashed"
+            cov = log.setdefault("coverage", {}).get(name, {})
+            complete = execution != "crashed" and bool(cov.get("complete"))
+            log["sources"][name] = {"execution": execution, "collection": "complete" if complete else "incomplete",
+                                    "incomplete_reason": None if complete else (cov.get("reason") or execution),
+                                    "seconds": round(time.time() - s0, 1), "failures": len(log["failures"]) - f0}
+    except KeyboardInterrupt:
+        # the runner is stopping this step: keep what was already collected (later runs pick up the rest)
+        log["interrupted"] = True
+        for name, _ in SOURCES:
+            log["sources"].setdefault(name, {"execution": "interrupted", "collection": "incomplete", "incomplete_reason": "interrupted"})
     log["finished"] = datetime.now(UTC).isoformat()
     log["http_requests"] = net.requests
+    log["requests_skipped_at_deadline"] = net.skipped_for_deadline
+    log["execution_ok"] = all(v["execution"] not in ("crashed", "interrupted") for v in log["sources"].values())
+    log["collection_complete"] = all(v["collection"] == "complete" for v in log["sources"].values())
     written = store.flush(log)
-    print(json.dumps({"run": stamp, "sources": log["sources"], "counts": store.counts, "failures": len(log["failures"]),
+    print(json.dumps({"run": stamp, "execution_ok": log["execution_ok"], "collection_complete": log["collection_complete"],
+                      "sources": log["sources"], "counts": store.counts, "failures": len(log["failures"]),
                       "files_written": len(written)}, indent=1))
-    return 0
+    # Exit 1 only when a source crashed (a code or environment fault). Incomplete collection is normal while catching
+    # up and is reported in the run log, not as a failed run.
+    return 0 if log["execution_ok"] else 1
 
 
 if __name__ == "__main__":

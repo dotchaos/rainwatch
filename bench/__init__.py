@@ -6,4 +6,4 @@ hourly, regardless of weather, into an append-only archive on the `bench-data` b
 Independence: nothing here imports `rainwatch` (the production engine), reads production state, or touches the
 `data` branch or the site deployment. See bench/README.md.
 """
-VERSION = "1.0"
+VERSION = "1.1"

@@ -47,7 +47,9 @@ jobs:
           fi
 
       - name: Collect
-        continue-on-error: true
+        # Bounded so the steps below (append, wait, next run) always get to run: a hung collection can't break the
+        # chain. The step fails (red run) only if a source crashed; incomplete collection is in the run log.
+        timeout-minutes: 54
         env:
           BENCH_CONTACT: ${{ vars.RAINWATCH_CONTACT || 'rainwatch-bench (github.com/dotchaos/rainwatch)' }}
         run: python -m bench.collect --root store
@@ -62,7 +64,19 @@ jobs:
           if git diff --cached --diff-filter=MD --quiet; then :; else echo "refusing: run would modify or delete archived files"; exit 1; fi
           git commit -qm "bench $(date -u +%FT%TZ)" || exit 0
           for i in 1 2 3 4 5; do git push -q origin HEAD:bench-data && exit 0; git pull -q --rebase origin bench-data; sleep 5; done
+          echo "PUSH_FAILED=1" >> "$GITHUB_ENV"
           exit 1
+
+      - name: Keep this run's records if the push failed
+        if: always() && env.PUSH_FAILED == '1'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bench-unpushed-${{ github.run_id }}
+          path: |
+            store/records
+            store/index
+            store/runs
+          retention-days: 30
 
       - name: Wait out the rest of the hour
         if: always()
