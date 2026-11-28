@@ -3,7 +3,9 @@ name: bench
 # weather. It reads only outside sources and writes only to the bench-data branch: it never imports the production
 # engine, never touches the data branch, and never deploys the site.
 # GitHub's cron has never fired for this repo (see tick.yml), so like tick this keeps its own clock: each run collects,
-# waits out the rest of the hour, then starts the next run. cancel-in-progress keeps exactly one chain alive.
+# waits out the rest of the hour, then starts the next run. The concurrency group allows one running and one pending
+# run, so a second trigger (the backup cron, a manual start) joins the chain instead of starting another, and never
+# cancels a run part-way through collecting.
 on:
   workflow_dispatch:
   schedule:
@@ -15,7 +17,7 @@ permissions:
 
 concurrency:
   group: bench
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   collect:
