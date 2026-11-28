@@ -15,8 +15,10 @@ Rainfall-nowcast accuracy
   R2  production pipeline as delivered (information): nowcast.run's median for the next clock hour at the block vs
       the radar-observed accumulation in that hour (same Z-R).
 Motion-vector accuracy
-  V1  vector error |v_used - v_ref| (km/h), v_ref = displacement of >= 35 dBZ echo over the FOLLOWING 30 min (frames
-      t -> t+30), accepted only where the two 15-min halves agree within 15 km/h (otherwise no reference).
+  V1  vector error |v_used - v_ref| (km/h). v_ref = displacement of rain over the FOLLOWING 30 min (frames t -> t+30)
+      by plain cross-correlation of rain-rate fields after removing persistent echo (per-pixel minimum over t..t+30),
+      accepted only where the two 15-min halves agree within 15 km/h. (A first version used phase correlation of
+      >= 35 dBZ masks; it locked onto zero shift like the tracker and was discarded.)
   V2  vector error against 0.8 x the 700 hPa wind (GFS, Open-Meteo historical forecast), a second, independent reference.
 Confidence calibration: V1 error by confidence class. Stability: share of consecutive times with a speed jump > 30 km/h
 or a direction change > 60° (both moving > 5 km/h).
@@ -61,18 +63,32 @@ def kmh_vec(vy, vx, dx, lat):
     return (-vy * km * 60, vx * km * math.cos(math.radians(lat)) * 60)
 
 
+def _xcorr_shift(a, b):
+    """Plain (not phase-normalised) cross-correlation peak of b against a, Hann-windowed: rows, cols."""
+    h, w = a.shape
+    win = np.outer(np.hanning(h), np.hanning(w))
+    A, B = np.fft.rfft2(a * win), np.fft.rfft2(b * win)
+    c = np.fft.irfft2(np.conj(A) * B, s=a.shape)
+    r, k = np.unravel_index(np.argmax(c), c.shape)
+    return (r - h if r > h // 2 else r), (k - w if k > w // 2 else k)
+
+
 def ref_motion(fr, t, lat):
-    """>= 35 dBZ echo displacement over t -> t+30, checked against its two 15-min halves."""
-    a, m, b = fr.get(t), fr.get(t + timedelta(minutes=15)), fr.get(t + timedelta(minutes=30))
-    if a is None or m is None or b is None:
+    """Verifying motion over the FOLLOWING 30 min, by a different method from the tracker: plain cross-correlation of
+    rain-rate fields after removing persistent echo (the per-pixel minimum over t..t+30, so clutter and anything that
+    does not move cannot win). Accepted only if the two 15-min halves agree within 15 km/h."""
+    seq = [fr.get(t + timedelta(minutes=5 * k)) for k in range(7)]
+    if any(f is None for f in seq):
         return None, "frames missing"
-    masks = [np.where(np.nan_to_num(f.dbz, nan=-99) >= 35, 1.0, 0.0) for f in (a, m, b)]
-    if min(x.sum() for x in masks) < 50:
-        return None, "too little >= 35 dBZ echo"
+    R = [np.nan_to_num(nowcast.rate_in_per_hr(f.dbz)) for f in seq]
+    floor = np.minimum.reduce(R)
+    mov = [x - floor for x in R]
+    if min((x >= 0.1).sum() for x in (mov[0], mov[3], mov[6])) < 200:
+        return None, "too little moving rain"
     vs = []
-    for (p, q, dt) in ((0, 2, 30), (0, 1, 15), (1, 2, 15)):
-        dy, dx, _ = nowcast.phase_shift(masks[p], masks[q])
-        vs.append(kmh_vec(dy / dt, dx / dt, a.dx, lat))
+    for p, q, dt in ((0, 6, 30), (0, 3, 15), (3, 6, 15)):
+        dy, dx = _xcorr_shift(mov[p], mov[q])
+        vs.append(kmh_vec(dy / dt, dx / dt, seq[0].dx, lat))
     if math.dist(vs[1], vs[2]) > 15:
         return None, "halves disagree"
     return vs[0], None
@@ -198,6 +214,8 @@ def summarise(rows):
     S["r2"] = {"cases": len(r2), "wet_cases": len(r2w), "mae_wet": round(sum(abs(f - o) for f, o in r2w) / len(r2w), 4) if r2w else None,
                "bias_wet": round(sum(f - o for f, o in r2w) / len(r2w), 4) if r2w else None}
     v1 = [r["v1_err"] for r in rows if r.get("v1_err") is not None]
+    refs_ = [r["v1_ref_kmh"] for r in rows if r.get("v1_ref_kmh") is not None]
+    S["v1_reference_near_zero_share"] = round(sum(x < 3 for x in refs_) / len(refs_), 3) if refs_ else None
     S["v1"] = {"with_reference": len(v1), "no_reference": sum(1 for r in known if r.get("v1_err") is None),
                "median_err": round(st.median(v1), 1) if v1 else None, "share_over_25": round(sum(e > 25 for e in v1) / len(v1), 3) if v1 else None}
     S["v1_by_confidence"] = {}
@@ -232,6 +250,7 @@ def report(out):
             ("R2 production next hour, MAE wet / bias", lambda S: f"{S['r2']['mae_wet']} / {S['r2']['bias_wet']} (n={S['r2']['wet_cases']})"),
             ("**V1 median vector error (km/h)**", lambda S: f"{S['v1']['median_err']} (n={S['v1']['with_reference']})"),
             ("V1 share > 25 km/h", lambda S: S["v1"]["share_over_25"]),
+            ("V1 reference < 3 km/h (zero-lock check)", lambda S: S["v1_reference_near_zero_share"]),
             ("V1 high-confidence: median / share > 25", lambda S: f"{S['v1_by_confidence']['high']['median_err']} / {S['v1_by_confidence']['high']['share_over_25']} (n={S['v1_by_confidence']['high']['n']})"),
             ("V1 medium-confidence: median / share > 25", lambda S: f"{S['v1_by_confidence']['medium']['median_err']} / {S['v1_by_confidence']['medium']['share_over_25']} (n={S['v1_by_confidence']['medium']['n']})"),
             ("Tracker < 15 km/h while verifying echo > 30", lambda S: S["slow_tracker"]),
