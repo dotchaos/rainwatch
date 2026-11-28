@@ -54,10 +54,22 @@ def groups(rows: list[dict], want) -> list[list[dict]]:
     return out
 
 
+GRID_KEYS = ("gridType", "Nx", "Ny", "Ni", "Nj", "DxInMetres", "DyInMetres", "latitudeOfFirstGridPointInDegrees",
+             "longitudeOfFirstGridPointInDegrees", "LaDInDegrees", "LoVInDegrees", "Latin1InDegrees", "Latin2InDegrees",
+             "scanningMode", "shapeOfTheEarth")
+
+
+def grid_identity(g, shape) -> tuple:
+    """Identity of a grid's geometry: the GRIB grid section's checksum when available, else its defining keys."""
+    if g.has_key("md5GridSection"):
+        return (shape, "md5", str(g["md5GridSection"]))
+    return (shape,) + tuple(str(g[k]) if g.has_key(k) else None for k in GRID_KEYS)
+
+
 def block_cells(g) -> dict:
     """Native values in a fixed (2k+1)x(2k+1) window centred on the grid cell nearest the block."""
     vals = np.ma.filled(np.ma.asarray(g.values, dtype=float), np.nan)
-    key = (vals.shape, str(g["gridType"]), str(g["latitudeOfFirstGridPointInDegrees"]), str(g["longitudeOfFirstGridPointInDegrees"]))
+    key = grid_identity(g, vals.shape)
     if key not in _cells_cache:
         la, lo = g.latlons()
         lo = np.where(lo > 180, lo - 360, lo)

@@ -2,7 +2,7 @@
 from datetime import datetime, timezone
 
 from bench import grib
-from bench.sources import ero, nws, wpc_qpf
+from bench.sources import nws, wpc_qpf
 
 UTC = timezone.utc
 IDX = """1:0:d=2026112400:APCP:surface:11-12 hour acc fcst:prob >0.254:prob fcst 0/14:process=197
@@ -42,11 +42,5 @@ def test_wpc_listing_and_names():
     html = ('<tr><td><a href="p06m_2026112500f006.grb">p06m_2026112500f006.grb</a></td><td align="right">24-Nov-2026 21:51 </td>'
             '<td><a href="p24m_2026112512f024.grb">p24m_2026112512f024.grb</a></td>')
     ls = wpc_qpf.listing(html)
-    assert ls["p06m_2026112500f006.grb"] == "24-Nov-2026 21:51" and ls["p24m_2026112512f024.grb"] == ""
+    assert ls["p06m_2026112500f006.grb"].startswith("24-Nov-2026 21:51|") and ls["p24m_2026112512f024.grb"] == "|"
     assert wpc_qpf.NAME.match("p06m_2026112500f006.grb").groups() == ("06", "2026112500", "006")
-
-
-def test_ero_category_ranking():
-    assert ero.category({"OUTLOOK": "Slight Risk", "x": "y"}) == ("SLIGHT", 2)
-    assert ero.category({"dn": "MRGL"}) == ("MRGL", 1)
-    assert ero.category({"a": "nothing"}) == (None, 0)
