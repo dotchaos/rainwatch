@@ -15,12 +15,13 @@ Definitions are in motion_replay.json (`definition`). Radar input and Z-R unchan
 | R1 heavy obs / hits / false alarms (>= 0.20") | 121 / 46 / 54 | 581 / 417 / 85 | 181 / 157 / 57 | 883 / 620 / 196 |
 | R1 no extrapolation (times) | 0 | 0 | 0 | 0 |
 | R2 production next hour, MAE wet / bias | 0.0536 / -0.0286 (n=130) | 0.147 / -0.0805 (n=161) | 0.0906 / 0.024 (n=77) | 0.1022 / -0.0403 (n=368) |
-| **V1 median vector error (km/h)** | 52.5 (n=90) | 72.8 (n=69) | 20.2 (n=143) | 36.6 (n=302) |
-| V1 share > 25 km/h | 0.9 | 0.884 | 0.455 | 0.685 |
-| V1 reference < 3 km/h (zero-lock check) | 0.189 | 0.014 | 0.601 | 0.344 |
-| V1 high-confidence: median / share > 25 | 30.1 / 0.5 (n=6) | 78.5 / 1.0 (n=1) | 0.0 / 0.036 (n=56) | 0.9 / 0.095 (n=63) |
+| **V1 median vector error (km/h)** | 50.8 (n=86) | 71.7 (n=68) | 18.8 (n=139) | 35.6 (n=293) |
+| V1 share > 25 km/h | 0.895 | 0.882 | 0.439 | 0.676 |
+| V1 reference < 3 km/h (zero-lock check) | 0.198 | 0.015 | 0.619 | 0.355 |
+| Rainy pixels unchanged over 30 min: ref ~0 / ref moving | 0.006 / 0.013 | 0.02 / 0.016 | 0.007 / 0.017 | 0.007 / 0.015 |
+| V1 high-confidence: median / share > 25 | 30.1 / 0.5 (n=6) | 78.5 / 1.0 (n=1) | 0.0 / 0.018 (n=55) | 0.5 / 0.081 (n=62) |
 | V1 medium-confidence: median / share > 25 | 25.7 / 0.5 (n=2) | None / None (n=0) | 41.5 / 0.714 (n=7) | 40.8 / 0.667 (n=9) |
-| Tracker < 15 km/h while verifying echo > 30 | 13 | 34 | 11 | 58 |
+| Tracker < 15 km/h while verifying echo > 30 | 12 | 34 | 8 | 54 |
 | V2 median error vs 0.8 x 700 hPa (km/h) | 24.6 (n=217) | 20.9 (n=217) | 19.2 (n=180) | 23.1 (n=614) |
 | Unstable consecutive pairs | 0.116 | 0.192 | 0.181 | 0.163 |
 
