@@ -1,0 +1,56 @@
+{
+ "run": "20261128T171934Z",
+ "collector_version": "1.0",
+ "started": "2026-11-28T17:19:34.553856+00:00",
+ "sources": {
+  "nws_gridpoint": {
+   "status": "ok",
+   "seconds": 0.1,
+   "failures": 0
+  },
+  "wpc_ero": {
+   "status": "ok",
+   "seconds": 2.6,
+   "failures": 0
+  },
+  "refs": {
+   "status": "ok",
+   "seconds": 1917.8,
+   "failures": 0
+  },
+  "wpc_qpf": {
+   "status": "ok",
+   "seconds": 410.2,
+   "failures": 0
+  }
+ },
+ "failures": [],
+ "nws_update_time": "2026-11-28T12:25:26+00:00",
+ "refs_cycles_listed": [
+  "2026112700",
+  "2026112706",
+  "2026112712",
+  "2026112718",
+  "2026112800",
+  "2026112806",
+  "2026112812"
+ ],
+ "refs_stopped_for_time": true,
+ "wpc_qpf_files_listed": 807,
+ "finished": "2026-11-28T17:58:25.287705+00:00",
+ "http_requests": 4431,
+ "counts": {
+  "nws_gridpoint": {
+   "new": 2
+  },
+  "wpc_ero": {
+   "new": 5
+  },
+  "refs": {
+   "new": 9512
+  },
+  "wpc_qpf": {
+   "new": 1614
+  }
+ }
+}
