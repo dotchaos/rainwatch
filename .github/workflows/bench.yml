@@ -1,0 +1,79 @@
+name: bench
+# Independent external-benchmark collector (REFS, WPC QPF, WPC ERO, NWS gridpoint forecast). Hourly, whatever the
+# weather. It reads only outside sources and writes only to the bench-data branch: it never imports the production
+# engine, never touches the data branch, and never deploys the site.
+# GitHub's cron has never fired for this repo (see tick.yml), so like tick this keeps its own clock: each run collects,
+# waits out the rest of the hour, then starts the next run. The concurrency group allows one running and one pending
+# run, so a second trigger (the backup cron, a manual start) joins the chain instead of starting another, and never
+# cancels a run part-way through collecting.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 * * * *"   # backup restarter, in case GitHub's scheduler ever starts working
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: bench
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    steps:
+      - name: Note the start time
+        run: echo "T0=$(date +%s)" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests numpy pygrib shapely pyshp pytest
+
+      - name: Collector checks (offline)
+        run: pytest -q bench/checks/check_*.py
+
+      - name: Check out bench-data (created empty on first run)
+        run: |
+          if git fetch -q --depth 1 origin bench-data; then
+            git worktree add -B bench-data store origin/bench-data
+          else
+            git worktree add --orphan -b bench-data store
+          fi
+
+      - name: Collect
+        continue-on-error: true
+        env:
+          BENCH_CONTACT: ${{ vars.RAINWATCH_CONTACT || 'rainwatch-bench (github.com/dotchaos/rainwatch)' }}
+        run: python -m bench.collect --root store
+
+      - name: Append to bench-data (new files only)
+        if: always()
+        run: |
+          cd store
+          git config user.name "rainwatch-bench"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --diff-filter=MD --quiet; then :; else echo "refusing: run would modify or delete archived files"; exit 1; fi
+          git commit -qm "bench $(date -u +%FT%TZ)" || exit 0
+          for i in 1 2 3 4 5; do git push -q origin HEAD:bench-data && exit 0; git pull -q --rebase origin bench-data; sleep 5; done
+          exit 1
+
+      - name: Wait out the rest of the hour
+        if: always()
+        run: |
+          left=$(( 3540 - ($(date +%s) - T0) ))
+          [ "$left" -gt 0 ] && sleep "$left" || true
+
+      - name: Start the next run
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in 1 2 3 4 5; do gh workflow run bench.yml -R ${{ github.repository }} --ref main && exit 0; sleep 15; done
+          exit 1
